@@ -31,4 +31,10 @@ public class SecurityController {
         log.debug("VIEW: security.signup");
         return "security/signup";
     }
+
+    @GetMapping("/oauth/redirect")
+    public String userOAuthRedirect() {
+        log.debug("VIEW security.redirect");
+        return "security/redirect";
+    }
 }
