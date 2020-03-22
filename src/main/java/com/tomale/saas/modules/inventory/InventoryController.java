@@ -14,7 +14,7 @@ public class InventoryController {
 
     public final static Logger log = LogManager.getLogger(InventoryController.class);
 
-    @GetMapping("/")
+    @GetMapping("")
     public String viewDefault() {
         log.debug("VIEW: default");
         return "default";
