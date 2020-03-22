@@ -1,4 +1,9 @@
+bin/
+
 # gradle
 .gradle
 /build/
 gradle/
+
+# vscode
+.settings/
