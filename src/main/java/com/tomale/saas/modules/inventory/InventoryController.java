@@ -16,13 +16,13 @@ public class InventoryController {
 
     @GetMapping("")
     public String viewDefault() {
-        log.debug("VIEW: default");
+        log.debug("VIEW: inventory.default");
         return "inventory/default";
     }
 
     @GetMapping("/dashboard")
     public String viewDashboard() {
-        log.debug("VIEW: dashboard");
+        log.debug("VIEW: inventory.dashboard");
         return "inventory/default";
     }
 }
