@@ -18,4 +18,11 @@ public class DefaultController {
 
         return "default";
     }
+
+    @GetMapping("/dashboard")
+    public String viewDashboard() {
+        log.debug("VIEW: default dashboard");
+
+        return "dashboard";
+    }
 }

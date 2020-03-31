@@ -1,14 +1,18 @@
 <!doctype html>
 <html>
     <head>
+        {% block meta -%}
+        {%- endblock %}
         <title>{% block title %}Welcome{% endblock %}</title>
         {% block links -%}
+        {%- endblock %}
+        {% block headscripts -%}
         {%- endblock %}
     </head>
     <body>
         {% block content -%}
         {%- endblock %}
-        {% block scripts -%}
+        {% block bodyscripts -%}
         {%- endblock %}
     </body>
 </html>

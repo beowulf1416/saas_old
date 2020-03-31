@@ -1,10 +1,16 @@
 {% extends '../base.html' %}
 
+{% block meta %}
+{% endblock %}
+
 {% block title %}Sign Up{% endblock %}
+
+{% block headscripts %}
+{% endblock %}
 
 {% block content %}
 <h1>Sign Up</h1>
 <ul>
-    <li><a id="google" name="google" title="Sign In using Google" href="">Google</a></li>
+    <li><a id="google" name="google" title="Sign In using Google" href="{{ request_url }}">Google</a></li>
 </ul>
 {% endblock %}
