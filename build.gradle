@@ -22,7 +22,7 @@ repositories {
 dependencies {
 	// implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	compileOnly 'org.projectlombok:lombok'
@@ -32,6 +32,8 @@ dependencies {
 	}
 
 	implementation "org.jtwig:jtwig-spring-boot-starter:5.87.0.RELEASE"
+
+	testImplementation 'junit:junit:4.13'
 
 	// postgres
 	implementation "org.postgresql:postgresql:42.1.4"
@@ -45,5 +47,6 @@ dependencies {
 }
 
 test {
-	useJUnitPlatform()
+	// useJUnitPlatform()
+	testLogging.showStandardStreams = true
 }

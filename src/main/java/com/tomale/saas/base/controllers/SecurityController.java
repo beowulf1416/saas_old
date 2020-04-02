@@ -78,8 +78,7 @@ public class SecurityController {
                 code,
                 redirectUriGoogleSignup
             );
-
-            log.debug(tokens);
+            // log.debug(tokens);
 
             Google.getUserInfo(tokens.get("access_token"));
 
