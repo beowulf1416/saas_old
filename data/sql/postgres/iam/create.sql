@@ -13,8 +13,12 @@ set schema 'iam';
 /* functions */
 /* users */
 \ir procs/user_add.sql
+\ir procs/user_add_google.sql
 
+\ir procs/user_email_exists.sql
 \ir procs/user_get_by_email.sql
+
+\ir procs/user_signin.sql
 
 
 set schema 'public';

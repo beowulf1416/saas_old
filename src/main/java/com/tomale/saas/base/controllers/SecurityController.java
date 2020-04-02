@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 
 import java.util.Map;
+import java.util.UUID;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.oauth.providers.Google;
+import com.tomale.saas.base.store.UserStore;
 
 
 @Controller
@@ -40,15 +46,23 @@ public class SecurityController {
     @Value("${oauth.google.redirecturi.signup}")
     private String redirectUriGoogleSignup;
 
+    @Autowired
+    private UserStore userStore;
+
     @GetMapping("/signin")
-    public String userSignIn() {
+    public ModelAndView userSignIn() {
         log.debug("VIEW: security.signin");
-        return "security/signin";
+        
+        ModelAndView mv = new ModelAndView("security/signin");
+        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignup));
+
+        return mv;
     }
 
     @GetMapping("/signout")
     public String userSignOut() {
         log.debug("VIEW: security.signout");
+
         return "security/signout";
     }
 
@@ -57,7 +71,7 @@ public class SecurityController {
         log.debug("VIEW: security.signup");
 
         ModelAndView mv = new ModelAndView("security/signup");
-        mv.addObject("request_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignup));
+        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignup));
 
         return mv;
     }
@@ -80,7 +94,21 @@ public class SecurityController {
             );
             // log.debug(tokens);
 
-            Google.getUserInfo(tokens.get("access_token"));
+            JsonObject data = Google.getUserInfo(tokens.get("access_token"));
+            JsonObject profile = data.getAsJsonObject("profile");
+            log.debug(data);
+            String email = profile.get("email").getAsString();
+            User user = new User(
+                UUID.randomUUID(), 
+                profile.get("name").getAsString(),
+                email
+            );
+
+            if (!userStore.userEmailExists(email)) {
+                // user is already registered
+                userStore.addUser(user, data);
+            }
+            userStore.updateUserLastSignedIn(email);
 
             headers.add("Location", "/dashboard");
             

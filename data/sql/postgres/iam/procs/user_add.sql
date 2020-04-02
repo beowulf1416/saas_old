@@ -2,10 +2,7 @@ create or replace function user_add (
     p_email iam.users.email%type
 )
 returns void
-as
-$$
-declare
-    tmp_id iam.users.id%type;
+as $$
 begin
     insert into iam.users (
         email

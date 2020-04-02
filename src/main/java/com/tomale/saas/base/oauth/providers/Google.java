@@ -19,6 +19,9 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class Google {
     private final static Logger log = LogManager.getLogger(Google.class);
@@ -71,7 +74,7 @@ public class Google {
         return tokens;
     }
 
-    public static void getUserInfo(String accessToken) throws Exception {
+    public static JsonObject getUserInfo(String accessToken) throws Exception {
         GenericUrl url = new GenericUrl(URL_USER_PROFILE);
         HttpRequest request = HTTP_TRANSPORT.createRequestFactory(new HttpRequestInitializer(){
                 @Override
@@ -82,10 +85,14 @@ public class Google {
             .buildGetRequest(url);
         HttpResponse response = request.execute();
         String content = response.parseAsString();
+
+        JsonObject result = new JsonObject();
         if (response.isSuccessStatusCode()) {
-            log.debug(content);
+            result.add("profile", JsonParser.parseString(content));
+            return result;
         } else {
             log.error(content);
+            throw new Exception(content);
         }
     }
 }
