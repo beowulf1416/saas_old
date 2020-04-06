@@ -76,6 +76,41 @@ public class SecurityController {
         return mv;
     }
 
+    @GetMapping("/signin/google/oauth/redirect")
+    public ResponseEntity<String> userSigninGoogleRedirect(
+        @RequestParam String code
+    ) {
+        log.debug("VIEW: security.signin.google");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+        try {
+            Map<String, String> tokens = Google.getTokens(
+                clientId,
+                clientSecret,
+                code,
+                redirectUriGoogleSignup
+            );
+
+            JsonObject data = Google.getUserInfo(tokens.get("access_token"));
+            JsonObject profile = data.getAsJsonObject("profile");
+            log.debug(data);
+            String email = profile.get("email").getAsString();
+
+            User user = userStore.getUserByEmail(email);
+            if (user.isActive()) {
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);
+            } else {
+                // user account is not active
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);    
+            }
+        } catch(Exception e) {
+            log.error(e);
+            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/signup/google/oauth/redirect")
     public ResponseEntity<String> userSignupGoogleRedirect(
         @RequestParam String code
@@ -108,7 +143,7 @@ public class SecurityController {
                 // user is already registered
                 userStore.addUser(user, data);
             }
-            userStore.updateUserLastSignedIn(email);
+            // userStore.sign
 
             headers.add("Location", "/dashboard");
             

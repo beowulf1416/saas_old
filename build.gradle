@@ -43,6 +43,9 @@ dependencies {
 	implementation 'com.google.api-client:google-api-client:1.30.5'
 	implementation 'com.google.oauth-client:google-oauth-client:1.30.6'
 
+	// jwt
+	implementation 'com.auth0:java-jwt:3.10.2'
+
 	// apache ignite
 	implementation 'org.apache.ignite:ignite-core:2.8.0'
 }
