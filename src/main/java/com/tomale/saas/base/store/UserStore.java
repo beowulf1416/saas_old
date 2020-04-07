@@ -22,13 +22,13 @@ public class UserStore {
 
     private static final Logger log = LogManager.getLogger(UserStore.class);
 
-    private static final String SQL_USER_ADD = "{call iam.user_add(?)}";
+    private static final String SQL_USER_ADD = "{? = call iam.user_add(?,?)}";
     private static final String SQL_USER_ADD_GOOGLE = "{call iam.user_add_google(?)}";
 
     private static final String SQL_USER_GET_BY_EMAIL = "{call iam.user_get_by_email(?)}";
 
     private static final String SQL_USER_EMAIL_EXISTS = "{? = call iam.user_email_exists(?)}";
-    private static final String SQL_USER_SIGNIN = "{ call iam.user_signin(?)}";
+    private static final String SQL_USER_SIGNIN = "{? = call iam.user_signin(?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -42,15 +42,25 @@ public class UserStore {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_USER_ADD);
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getName());
+            stmt.registerOutParameter(1, java.sql.Types.OTHER);
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getName());
             stmt.execute();
+
+            Object o = stmt.getObject(1);
+            log.debug(o);
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add user");
         }
     }
 
+    /**
+     * 
+     * @param email
+     * @return null if email is not found, user object if found
+     * @throws Exception
+     */
     public User getUserByEmail(String email) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
@@ -71,7 +81,8 @@ public class UserStore {
                         active
                     );
                 } else {
-                    throw new Exception("An error occured while retrieving user account (1)");
+                    // email not found
+                    return null;
                 }
             } else {
                 throw new Exception("An error occured while retrieving user account (2)");
@@ -82,16 +93,19 @@ public class UserStore {
         }
     }
 
-    public void userSignIn(UUID id) throws Exception {
+    public boolean signIn(UUID id) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_USER_SIGNIN);
-            stmt.setString(1, id.toString());
+            stmt.registerOutParameter(1, java.sql.Types.BOOLEAN);
+            stmt.setObject(2, id);
             stmt.execute();
+
+            return stmt.getBoolean(1);
         } catch(SQLException e) {
             log.error(e);
-            throw new Exception("An error occured while trying to update user last signed in timestamp");
+            throw new Exception("An error occured while trying to sign in a user account");
         }
     }
 

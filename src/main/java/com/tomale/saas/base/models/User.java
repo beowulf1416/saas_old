@@ -24,5 +24,6 @@ public class User {
     public User(@NonNull String name, @NonNull String email) {
         this.name = name;
         this.email = email;
+        this.active = true;
     }
 }

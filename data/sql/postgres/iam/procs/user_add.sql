@@ -4,15 +4,21 @@ create or replace function user_add (
 )
 returns iam.users.id%type
 as $$
+declare
+    tmpId iam.users.id%type;
 begin
     insert into iam.users (
         email,
-        name
+        name,
+        active
     ) values (
         p_email,
-        p_name
+        p_name,
+        true
     ) 
-    returning id;
+    returning id into tmpId;
+
+    return tmpId;
 end
 $$
 language plpgsql;

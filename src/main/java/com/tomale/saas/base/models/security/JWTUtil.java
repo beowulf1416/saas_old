@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.tomale.saas.base.models.User;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -21,7 +22,7 @@ public class JWTUtil {
         this.secret = secret;
     }
 
-    public void generateToken() throws Exception {
+    public void generateToken(User user) throws Exception {
         try {
             Algorithm algo = Algorithm.HMAC256(secret);
             String token = JWT.create()

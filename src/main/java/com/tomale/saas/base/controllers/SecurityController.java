@@ -43,8 +43,8 @@ public class SecurityController {
     @Value("${oauth.google.redirecturi}")
     private String redirectUri;
 
-    @Value("${oauth.google.redirecturi.signup}")
-    private String redirectUriGoogleSignup;
+    @Value("${oauth.google.redirecturi.signin}")
+    private String redirectUriGoogleSignin;
 
     @Autowired
     private UserStore userStore;
@@ -54,7 +54,7 @@ public class SecurityController {
         log.debug("VIEW: security.signin");
         
         ModelAndView mv = new ModelAndView("security/signin");
-        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignup));
+        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
 
         return mv;
     }
@@ -71,7 +71,7 @@ public class SecurityController {
         log.debug("VIEW: security.signup");
 
         ModelAndView mv = new ModelAndView("security/signup");
-        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignup));
+        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
 
         return mv;
     }
@@ -90,20 +90,29 @@ public class SecurityController {
                 clientId,
                 clientSecret,
                 code,
-                redirectUriGoogleSignup
+                redirectUriGoogleSignin
             );
 
             JsonObject data = Google.getUserInfo(tokens.get("access_token"));
             JsonObject profile = data.getAsJsonObject("profile");
             log.debug(data);
             String email = profile.get("email").getAsString();
+            String name = profile.get("given_name").getAsString();
 
             User user = userStore.getUserByEmail(email);
+            if (user == null) {
+                user = new User(name, email);
+                userStore.addUser(
+                    user, 
+                    data
+                );
+            }
+
             if (user.isActive()) {
                 return new ResponseEntity<>(headers, HttpStatus.FOUND);
             } else {
-                // user account is not active
-                return new ResponseEntity<>(headers, HttpStatus.FOUND);    
+                log.debug("//TODO");
+                return new ResponseEntity<>(headers, HttpStatus.FOUND);
             }
         } catch(Exception e) {
             log.error(e);
@@ -111,48 +120,48 @@ public class SecurityController {
         }
     }
 
-    @GetMapping("/signup/google/oauth/redirect")
-    public ResponseEntity<String> userSignupGoogleRedirect(
-        @RequestParam String code
-    ) {
-        log.debug("VIEW: security.signup.google");
+    // @GetMapping("/signup/google/oauth/redirect")
+    // public ResponseEntity<String> userSignupGoogleRedirect(
+    //     @RequestParam String code
+    // ) {
+    //     log.debug("VIEW: security.signup.google");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
-        try {
-            Map<String, String> tokens = Google.getTokens(
-                clientId,
-                clientSecret,
-                code,
-                redirectUriGoogleSignup
-            );
-            // log.debug(tokens);
+    //     try {
+    //         Map<String, String> tokens = Google.getTokens(
+    //             clientId,
+    //             clientSecret,
+    //             code,
+    //             redirectUriGoogleSignup
+    //         );
+    //         // log.debug(tokens);
 
-            JsonObject data = Google.getUserInfo(tokens.get("access_token"));
-            JsonObject profile = data.getAsJsonObject("profile");
-            log.debug(data);
-            String email = profile.get("email").getAsString();
-            User user = new User(
-                UUID.randomUUID(), 
-                profile.get("name").getAsString(),
-                email
-            );
+    //         JsonObject data = Google.getUserInfo(tokens.get("access_token"));
+    //         JsonObject profile = data.getAsJsonObject("profile");
+    //         log.debug(data);
+    //         String email = profile.get("email").getAsString();
+    //         User user = new User(
+    //             UUID.randomUUID(), 
+    //             profile.get("name").getAsString(),
+    //             email
+    //         );
 
-            if (!userStore.userEmailExists(email)) {
-                // user is already registered
-                userStore.addUser(user, data);
-            }
-            // userStore.sign
+    //         if (!userStore.userEmailExists(email)) {
+    //             // user is already registered
+    //             userStore.addUser(user, data);
+    //         }
+    //         // userStore.sign
 
-            headers.add("Location", "/dashboard");
+    //         headers.add("Location", "/dashboard");
             
-            return new ResponseEntity<>(headers, HttpStatus.FOUND);
-        } catch(Exception e) {
-            log.error(e);
-            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    //         return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    //     } catch(Exception e) {
+    //         log.error(e);
+    //         return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     @GetMapping("/oauth/redirect")
     public String userOAuthRedirect(@RequestParam String code) {

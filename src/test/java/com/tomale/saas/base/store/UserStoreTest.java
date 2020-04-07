@@ -60,7 +60,8 @@ public class UserStoreTest {
                 new User(
                     new UUID(1, 1),
                     "test",
-                    "test@test.com"
+                    "test@test.com",
+                    true
                 ),
                 new JsonObject()
             );
@@ -73,6 +74,34 @@ public class UserStoreTest {
     public void getUserByEmail() {
         try {
             User user = us.getUserByEmail("test@test.com");
+            if (user == null) {
+                Assert.fail("Email should be found");
+            }
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void getUserByEmailNotExists() {
+        try {
+            User user = us.getUserByEmail("notexists@testing.com");
+            if (user != null) {
+                Assert.fail("Email should not be found");
+            }
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void userSignin() {
+        try {
+            User user = us.getUserByEmail("test@test.com");
+            boolean result = us.signIn(user.getId());
+            if (result != user.isActive()) {
+                Assert.fail("User should not be able to login");
+            }
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
