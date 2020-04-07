@@ -3,6 +3,9 @@ package com.tomale.saas.base.controllers;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,7 @@ import java.util.UUID;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.User;
+import com.tomale.saas.base.models.security.JWTUtil;
 import com.tomale.saas.base.oauth.providers.Google;
 import com.tomale.saas.base.store.UserStore;
 
@@ -46,6 +50,12 @@ public class SecurityController {
     @Value("${oauth.google.redirecturi.signin}")
     private String redirectUriGoogleSignin;
 
+    @Value("${jwt.issuer}")
+    private String jwtIssuer;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
     @Autowired
     private UserStore userStore;
 
@@ -66,24 +76,25 @@ public class SecurityController {
         return "security/signout";
     }
 
-    @GetMapping("/signup")
-    public ModelAndView userSignUp() {
-        log.debug("VIEW: security.signup");
+    // @GetMapping("/signup")
+    // public ModelAndView userSignUp() {
+    //     log.debug("VIEW: security.signup");
 
-        ModelAndView mv = new ModelAndView("security/signup");
-        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
+    //     ModelAndView mv = new ModelAndView("security/signup");
+    //     mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
 
-        return mv;
-    }
+    //     return mv;
+    // }
 
     @GetMapping("/signin/google/oauth/redirect")
-    public ResponseEntity<String> userSigninGoogleRedirect(
+    public ModelAndView userSigninGoogleRedirect(
+        HttpServletResponse response,
         @RequestParam String code
     ) {
         log.debug("VIEW: security.signin.google");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        // HttpHeaders headers = new HttpHeaders();
+        // headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 
         try {
             Map<String, String> tokens = Google.getTokens(
@@ -95,9 +106,9 @@ public class SecurityController {
 
             JsonObject data = Google.getUserInfo(tokens.get("access_token"));
             JsonObject profile = data.getAsJsonObject("profile");
-            log.debug(data);
+            log.debug(data); // TODO remove
             String email = profile.get("email").getAsString();
-            String name = profile.get("given_name").getAsString();
+            String name = profile.get("name").getAsString();
 
             User user = userStore.getUserByEmail(email);
             if (user == null) {
@@ -109,14 +120,27 @@ public class SecurityController {
             }
 
             if (user.isActive()) {
-                return new ResponseEntity<>(headers, HttpStatus.FOUND);
+                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
+                String token = jwt.generateToken(user);
+
+                response.addCookie(new Cookie("sid", token));
+
+                ModelAndView mv = new ModelAndView("security/redirect");
+                mv.addObject("token", token);
+
+                return mv;
             } else {
-                log.debug("//TODO");
-                return new ResponseEntity<>(headers, HttpStatus.FOUND);
+                ModelAndView mv = new ModelAndView("security/user_account_inactive");
+
+                return mv;
             }
         } catch(Exception e) {
             log.error(e);
-            return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
+
+            ModelAndView mv = new ModelAndView("security/user_account_inactive");
+            mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+
+            return mv;
         }
     }
 

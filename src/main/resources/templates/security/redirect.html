@@ -1,0 +1,19 @@
+{% extends '../base.html' %}
+
+{%  block authorization %}
+<meta name="auth" content="{{ token }}" />
+{% endblock %}
+
+{% block content %}
+<p>redirecting...</p>
+{% endblock %}
+
+{% block bodyscripts %}
+<script>
+(function(){
+    setTimeout(() => {
+        window.location = "/dashboard";
+    }, 5000);
+})();
+</script>
+{% endblock %}

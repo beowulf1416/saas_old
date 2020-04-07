@@ -2,9 +2,17 @@ package com.tomale.saas.base.models.security;
 
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.Date;
+
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tomale.saas.base.models.User;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,23 +22,48 @@ public class JWTUtil {
 
     private static final Logger log = LogManager.getLogger(JWT.class);
 
+    // expire token in 1 hour
+    private static final int JWT_TOKEN_EXPIRE = 60 * 60 * 1000;
+
     private String issuer;
-    private String secret;
+    // private String secret;
+    private Algorithm algorithm;
 
     public JWTUtil(String issuer, String secret) {
         this.issuer = issuer;
-        this.secret = secret;
+        // this.secret = secret;
+        this.algorithm = Algorithm.HMAC256(secret);
     }
 
-    public void generateToken(User user) throws Exception {
+    public String generateToken(User user) throws Exception {
         try {
-            Algorithm algo = Algorithm.HMAC256(secret);
+            Instant current = Instant.now();
+            Instant expires = current.plus(JWT_TOKEN_EXPIRE, ChronoUnit.MILLIS);
+            Date expiry = Date.from(expires);
+
             String token = JWT.create()
                 .withIssuer(issuer)
-                .sign(algo);
+                .withClaim("email", user.getEmail())
+                .withExpiresAt(expiry)
+                .sign(algorithm);
+
+            return token;
         } catch(JWTCreationException e) {
             log.error(e);
             throw new Exception("An error occured while trying to generate JWT token");
+        }
+    }
+
+    public boolean verify(String token) {
+        try {
+            JWTVerifier v = JWT.require(algorithm)
+                .withIssuer(issuer)
+                .build();
+            DecodedJWT decoded = v.verify(token);
+            return true;
+        } catch(JWTVerificationException e) {
+            log.error(e);
+            return false;
         }
     }
 }
