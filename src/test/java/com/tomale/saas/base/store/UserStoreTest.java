@@ -1,5 +1,7 @@
 package com.tomale.saas.base.store;
 
+
+import java.lang.StringBuilder;
 import java.util.UUID;
 
 import javax.sql.DataSource;
@@ -49,18 +51,13 @@ public class UserStoreTest {
 
     @Test
     public void addUser() {
-        // PGSimpleDataSource ds = new PGSimpleDataSource();
-        // ds.setUrl(dbUrl);
-        // ds.setUser(dbUser);
-        // ds.setPassword(dbPw);
 
         try {
-            // UserStore us = new UserStore(new JdbcTemplate(ds));
             us.addUser(
                 new User(
-                    new UUID(1, 1),
+                    UUID.randomUUID(),
                     "test",
-                    "test@test.com",
+                    this.generateRandomEmail(),
                     true
                 ),
                 new JsonObject()
@@ -105,5 +102,29 @@ public class UserStoreTest {
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
+    }
+
+    public String generateRandomEmail() {
+        String allowed = "ABCDEFGHIJKLMNOPQRSTUVWZYZ" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "1234567890";
+
+        // build username
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 10; i++) {
+            int idx = (int) Math.random() * allowed.length();
+            sb.append(allowed.charAt(idx));
+        }
+        String username = sb.toString();
+
+        // build domain
+        sb = new StringBuilder();
+        for(int i = 0; i < 10; i++) {
+            int idx = (int) Math.random() * allowed.length();
+            sb.append(allowed.charAt(idx));
+        }
+        String domain = sb.toString();
+
+        return String.format("%s@%s.com", username, domain);
     }
 }
