@@ -1,19 +1,24 @@
 package com.tomale.saas.base.models.security;
 
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.User;
@@ -38,7 +43,7 @@ public class JWTUtil {
         this.algorithm = Algorithm.HMAC256(secret);
     }
 
-    public String generateToken(User user) throws Exception {
+    public String generateToken(User user, List<String> permissions) throws Exception {
         try {
             Instant current = Instant.now();
             Instant expires = current.plus(JWT_TOKEN_EXPIRE, ChronoUnit.MILLIS);
@@ -47,6 +52,7 @@ public class JWTUtil {
             String token = JWT.create()
                 .withIssuer(issuer)
                 .withClaim("email", user.getEmail())
+                .withArrayClaim("permissions", permissions.toArray(new String[permissions.size()]))
                 .withExpiresAt(expiry)
                 .sign(algorithm);
 
@@ -81,6 +87,17 @@ public class JWTUtil {
             json.add("issuer", new JsonPrimitive(decoded.getIssuer()));
             json.add("expires", new JsonPrimitive(decoded.getExpiresAt().toInstant().getEpochSecond()));
             json.add("email", new JsonPrimitive(decoded.getClaim("email").asString()));
+            List<String> permissions = new ArrayList<String>();
+            Claim claim = decoded.getClaim("permissions");
+            if (!claim.isNull()) {
+                permissions = claim.asList(String.class);
+            }
+
+            JsonArray ja = new JsonArray();
+            for (String permission : permissions) {
+                ja.add(new JsonPrimitive(permission));
+            }
+            json.add("permissions", ja);
 
             return json;
         } catch(JWTVerificationException e) {

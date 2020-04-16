@@ -18,6 +18,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -122,8 +124,14 @@ public class SecurityController {
             }
 
             if (user.isActive()) {
+                // retrieve user permissions
+                List<String> permissions = new ArrayList<String>();
+                // dummy permissions
+                permissions.add("security.default");
+                permissions.add("security.signout");
+                
                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
-                String token = jwt.generateToken(user);
+                String token = jwt.generateToken(user, permissions);
 
                 Cookie cookie = new Cookie(cookieName, token);
                 cookie.setDomain(cookieDomain);
