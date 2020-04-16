@@ -2,6 +2,8 @@ package com.tomale.saas.base.models.security;
 
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -10,7 +12,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonObject;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,15 +30,40 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${app.cookie.name}")
+    private String cookieName;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-
-        log.debug("JWTRequestFilter");
-        log.debug(header);
-
         JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equalsIgnoreCase(cookieName)) {
+                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                        String value = cookie.getValue();
+                        if (jwt.verify(value)) {
+                            try {
+                                JsonObject json = jwt.toJSON(value);
+                                log.debug(json);
+
+                                JWTAuthenticationToken auth = new JWTAuthenticationToken(json);
+                                auth.setAuthenticated(true);
+                                SecurityContextHolder.getContext().setAuthentication(auth);
+
+                            } catch(Exception e) {
+                                log.error(e);
+                            }
+                        } else {
+                            log.warn("Invalid value for cookie '%s'", cookieName);
+                        }
+                    }
+                }
+            }
+        }
+        
 
         filterChain.doFilter(request, response);
     }

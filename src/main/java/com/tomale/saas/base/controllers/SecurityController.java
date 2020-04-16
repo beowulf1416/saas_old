@@ -56,6 +56,18 @@ public class SecurityController {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    @Value("${app.cookie.name}")
+    private String cookieName;
+
+    @Value("${app.cookie.domain}")
+    private String cookieDomain;
+
+    @Value("${app.cookie.secure}")
+    private boolean cookieSecure;
+
+    @Value("${app.cookie.max_age}")
+    private int cookieMaxAge;
+
     @Autowired
     private UserStore userStore;
 
@@ -75,16 +87,6 @@ public class SecurityController {
 
         return "security/signout";
     }
-
-    // @GetMapping("/signup")
-    // public ModelAndView userSignUp() {
-    //     log.debug("VIEW: security.signup");
-
-    //     ModelAndView mv = new ModelAndView("security/signup");
-    //     mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
-
-    //     return mv;
-    // }
 
     @GetMapping("/signin/google/oauth/redirect")
     public ModelAndView userSigninGoogleRedirect(
@@ -123,7 +125,14 @@ public class SecurityController {
                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
                 String token = jwt.generateToken(user);
 
-                response.addCookie(new Cookie("sid", token));
+                Cookie cookie = new Cookie(cookieName, token);
+                cookie.setDomain(cookieDomain);
+                cookie.setSecure(cookieSecure);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                cookie.setMaxAge(cookieMaxAge);
+
+                response.addCookie(cookie);
 
                 ModelAndView mv = new ModelAndView("security/redirect");
                 mv.addObject("token", token);
@@ -143,49 +152,6 @@ public class SecurityController {
             return mv;
         }
     }
-
-    // @GetMapping("/signup/google/oauth/redirect")
-    // public ResponseEntity<String> userSignupGoogleRedirect(
-    //     @RequestParam String code
-    // ) {
-    //     log.debug("VIEW: security.signup.google");
-
-    //     HttpHeaders headers = new HttpHeaders();
-    //     headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-
-    //     try {
-    //         Map<String, String> tokens = Google.getTokens(
-    //             clientId,
-    //             clientSecret,
-    //             code,
-    //             redirectUriGoogleSignup
-    //         );
-    //         // log.debug(tokens);
-
-    //         JsonObject data = Google.getUserInfo(tokens.get("access_token"));
-    //         JsonObject profile = data.getAsJsonObject("profile");
-    //         log.debug(data);
-    //         String email = profile.get("email").getAsString();
-    //         User user = new User(
-    //             UUID.randomUUID(), 
-    //             profile.get("name").getAsString(),
-    //             email
-    //         );
-
-    //         if (!userStore.userEmailExists(email)) {
-    //             // user is already registered
-    //             userStore.addUser(user, data);
-    //         }
-    //         // userStore.sign
-
-    //         headers.add("Location", "/dashboard");
-            
-    //         return new ResponseEntity<>(headers, HttpStatus.FOUND);
-    //     } catch(Exception e) {
-    //         log.error(e);
-    //         return new ResponseEntity<>(headers, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
 
     @GetMapping("/oauth/redirect")
     public String userOAuthRedirect(@RequestParam String code) {
