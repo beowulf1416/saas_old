@@ -1,7 +1,7 @@
 package com.tomale.saas.base.models.security;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -16,14 +16,10 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.User;
-
-import org.apache.logging.log4j.LogManager;
 
 
 public class JWTUtil {
@@ -64,14 +60,17 @@ public class JWTUtil {
     }
 
     public boolean verify(String token) {
+        log.debug("JWTUtil::verify()");
         try {
             JWTVerifier v = JWT.require(algorithm)
                 .withIssuer(issuer)
                 .build();
             DecodedJWT decoded = v.verify(token);
+            log.debug("returning true");
             return true;
         } catch(JWTVerificationException e) {
             log.error(e);
+            log.debug("returning false");
             return false;
         }
     }

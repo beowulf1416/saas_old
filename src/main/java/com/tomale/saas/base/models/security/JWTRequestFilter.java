@@ -36,7 +36,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
 
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -44,6 +43,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                 if (cookie.getName().equalsIgnoreCase(cookieName)) {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         String value = cookie.getValue();
+                        JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
                         if (jwt.verify(value)) {
                             try {
                                 JsonObject json = jwt.toJSON(value);
