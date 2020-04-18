@@ -112,7 +112,7 @@ public class UserStoreTest {
         // build username
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 10; i++) {
-            int idx = (int) Math.random() * allowed.length();
+            int idx = (int) (Math.random() * allowed.length());
             sb.append(allowed.charAt(idx));
         }
         String username = sb.toString();
@@ -120,7 +120,7 @@ public class UserStoreTest {
         // build domain
         sb = new StringBuilder();
         for(int i = 0; i < 10; i++) {
-            int idx = (int) Math.random() * allowed.length();
+            int idx = (int) (Math.random() * allowed.length());
             sb.append(allowed.charAt(idx));
         }
         String domain = sb.toString();
