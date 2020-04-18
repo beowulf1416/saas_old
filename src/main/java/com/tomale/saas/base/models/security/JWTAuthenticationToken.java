@@ -12,8 +12,12 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
+	private JsonObject json;
+
     public JWTAuthenticationToken(JsonObject json) {
-        super(new ArrayList<GrantedAuthority>());
+		super(new ArrayList<GrantedAuthority>());
+		
+		this.json = json;
     }
 
 	@Override
@@ -23,6 +27,7 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getPrincipal() {
+		
 		return null;
 	}
 
