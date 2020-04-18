@@ -1,5 +1,6 @@
 package com.tomale.saas.base.models;
 
+import java.util.List;
 import java.util.UUID;
 
 import lombok.Data;
@@ -13,6 +14,8 @@ public class User {
     private String name;
     private String email;
     private boolean active;
+
+    private List<String> permissions;
 
     public User(@NonNull UUID id, @NonNull String name, @NonNull String email, boolean active) {
         this.id = id;

@@ -90,11 +90,11 @@ public class JWTUtil {
                 .withIssuer(issuer)
                 .build();
             DecodedJWT decoded = v.verify(token);
-            log.debug("returning true");
+            // log.debug("returning true");
             return true;
         } catch(JWTVerificationException e) {
             log.error(e);
-            log.debug("returning false");
+            // log.debug("returning false");
             return false;
         }
     }

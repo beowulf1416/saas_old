@@ -2,6 +2,8 @@ package com.tomale.saas.base.models.security;
 
 import java.io.Serializable;
 
+import com.tomale.saas.base.models.User;
+
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -19,14 +21,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         Object targetDomainObject, 
         Object permission
         ) {
-        
-        log.debug("CustomPermissionEvaluator::hasPermission() {1}");
-        // token
-        log.debug(authentication);
-        log.debug(targetDomainObject);
-        // permission
-        log.debug(permission);
-
         return isAllowed(authentication, permission.toString());
     }
 
@@ -37,16 +31,21 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         String targetType,
         Object permission
         ) {
-        
-        log.debug("CustomPermissionEvaluator::hasPermission() {2}");
-        log.debug(authentication);
-        log.debug(targetType);
-        log.debug(permission);
-
         return isAllowed(authentication, permission.toString());
     }
 
+    /**
+     * checks if user has the specified permission
+     * @param authentication
+     * @param permission
+     * @return
+     */
     private boolean isAllowed(Authentication authentication, String permission) {
+        Object o = authentication.getPrincipal();
+        if (o instanceof User) {
+            User user = (User) o;
+            return user.getPermissions().contains(permission);
+        }
         return false;
     }
 
