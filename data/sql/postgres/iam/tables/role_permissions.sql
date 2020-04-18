@@ -1,3 +1,6 @@
+/**
+ * role and permission mapping
+ */
 create table if not exists role_permissions (
     role_id uuid not null,
     permission_id uuid not null,

@@ -9,3 +9,6 @@ create table if not exists roles (
     constraint pk_roles primary key (id),
     constraint u_roles_1 unique (name)
 );
+
+insert into roles (name) values 
+('system administrator');
