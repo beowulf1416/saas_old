@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
     produces = MediaType.TEXT_HTML_VALUE,
     method = RequestMethod.GET
 )
-public class DefaultController {
+public class ClientController {
 
     @GetMapping("")
     @PreAuthorize("hasPermission(#user, 'admin.clients')")
