@@ -1,11 +1,10 @@
 package com.tomale.saas.base.controllers;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.LogManager;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -26,8 +25,26 @@ public class CustomErrorController implements ErrorController {
     )
     public ModelAndView errorHTML(HttpServletRequest request) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        // log.debug("CustomErrorController::errorHTML()");
-        ModelAndView mv = new ModelAndView("errors/404");
+        HttpStatus value = HttpStatus.valueOf((int) status);
+
+        ModelAndView mv = new ModelAndView();
+
+        switch(value) {
+            case FORBIDDEN: {
+                mv.setViewName("errors/403");
+                break;
+            }
+            case NOT_FOUND: {
+                mv.setViewName("errors/404");
+                break;
+            }
+            default: {
+                log.warn("Unknown error status code: %s", status.toString());
+                mv.setViewName("errors/unknown");
+                break;
+            }
+        }
+
         mv.addObject("status", status);
 
         return mv;
