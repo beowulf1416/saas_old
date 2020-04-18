@@ -3,11 +3,16 @@ package com.tomale.saas.base.configuration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
 import com.tomale.saas.base.models.security.CustomPermissionEvaluator;
 
 @Configuration
+@EnableGlobalMethodSecurity(
+	// securedEnabled = true,
+	prePostEnabled = true
+)
 public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
     @Override

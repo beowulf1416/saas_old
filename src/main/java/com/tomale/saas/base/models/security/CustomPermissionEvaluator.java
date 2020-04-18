@@ -21,11 +21,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         ) {
         
         log.debug("CustomPermissionEvaluator::hasPermission() {1}");
+        // token
         log.debug(authentication);
         log.debug(targetDomainObject);
+        // permission
         log.debug(permission);
 
-        return false;
+        return isAllowed(authentication, permission.toString());
     }
 
     @Override
@@ -41,6 +43,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         log.debug(targetType);
         log.debug(permission);
 
+        return isAllowed(authentication, permission.toString());
+    }
+
+    private boolean isAllowed(Authentication authentication, String permission) {
         return false;
     }
 
