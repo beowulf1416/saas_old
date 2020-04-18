@@ -14,17 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpHeaders;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.models.security.JWTUtil;
 import com.tomale.saas.base.oauth.providers.Google;
@@ -113,7 +109,6 @@ public class SecurityController {
 
             JsonObject data = Google.getUserInfo(tokens.get("access_token"));
             JsonObject profile = data.getAsJsonObject("profile");
-            log.debug(data); // TODO remove
             String email = profile.get("email").getAsString();
             String name = profile.get("name").getAsString();
 
