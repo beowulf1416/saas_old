@@ -70,6 +70,9 @@ public class SecurityController {
     @Value("${app.cookie.max_age}")
     private int cookieMaxAge;
 
+    @Value("${app.cipher.key}")
+    private String cipherKey;
+
     @Autowired
     private UserStore userStore;
 
@@ -130,7 +133,7 @@ public class SecurityController {
                 permissions.add("security.default");
                 permissions.add("security.signout");
                 
-                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret);
+                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
                 String token = jwt.generateToken(user, permissions);
 
                 Cookie cookie = new Cookie(cookieName, token);
