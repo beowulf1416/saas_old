@@ -19,12 +19,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.gson.JsonObject;
-
+import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.models.security.JWTUtil;
 import com.tomale.saas.base.oauth.providers.Google;
+import com.tomale.saas.base.store.ClientStore;
+import com.tomale.saas.base.store.PermissionStore;
 import com.tomale.saas.base.store.UserStore;
 
 
@@ -72,6 +75,12 @@ public class SecurityController {
 
     @Autowired
     private UserStore userStore;
+
+    @Autowired
+    private PermissionStore permissionStore;
+
+    @Autowired
+    private ClientStore clientStore;
 
     @GetMapping("/signin")
     public ModelAndView userSignIn() {
@@ -136,14 +145,16 @@ public class SecurityController {
             }
 
             if (user.isActive()) {
+                UUID user_id = user.getId();
+
+                Client client = clientStore.getDefault();
+                // retrieve user clients
+                List<Client> clients = userStore.userClients(user_id);
                 // retrieve user permissions
-                List<String> permissions = new ArrayList<String>();
-                // dummy permissions
-                permissions.add("security.default");
-                permissions.add("security.signout");
+                List<String> permissions = permissionStore.userPermissions(user_id, client.getId());
                 
                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-                String token = jwt.generateToken(user, permissions);
+                String token = jwt.generateToken(user, permissions, client, clients);
 
                 Cookie cookie = new Cookie(cookieName, token);
                 cookie.setDomain(cookieDomain);

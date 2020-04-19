@@ -22,6 +22,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+
+import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 
 
@@ -40,6 +42,8 @@ public class JWTUtil {
     private static final String CLAIM_EMAIL = "email";
     private static final String CLAIM_PERMISSIONS = "permissions";
     private static final String CLAIM_TOKEN = "token";
+    private static final String CLAIM_CURRENT_CLIENT = "client_current";
+    private static final String CLAIM_CLIENTS = "clients";
 
     public JWTUtil(String issuer, String secret, String cipherKey) {
         this.issuer = issuer;
@@ -56,7 +60,7 @@ public class JWTUtil {
      * @return
      * @throws Exception
      */
-    public String generateToken(User user, List<String> permissions) throws Exception {
+    public String generateToken(User user, List<String> permissions, Client currentClient, List<Client> clients) throws Exception {
         try {
             Instant current = Instant.now();
             Instant expires = current.plus(JWT_TOKEN_EXPIRE, ChronoUnit.MILLIS);
@@ -68,11 +72,16 @@ public class JWTUtil {
             CipherUtil cu = new CipherUtil(cipherKey);
             String encodedPermissions = cu.encrypt(szPermissions);
 
+            String szCurrentClient = gson.toJson(currentClient);
+            String szClients = gson.toJson(clients);
+
             String token = JWT.create()
                 .withIssuer(issuer)
                 .withClaim(CLAIM_EMAIL, user.getEmail())
                 // .withArrayClaim(CLAIM_PERMISSIONS, permissions.toArray(new String[permissions.size()]))
                 .withClaim(CLAIM_PERMISSIONS, encodedPermissions)
+                .withClaim(CLAIM_CURRENT_CLIENT, szCurrentClient)
+                .withClaim(CLAIM_CLIENTS, szClients)
                 .withExpiresAt(expiry)
                 .sign(algorithm);
 
