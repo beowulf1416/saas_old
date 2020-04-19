@@ -1,6 +1,7 @@
 package com.tomale.saas.base.store;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.tomale.saas.base.models.Client;
 
@@ -47,6 +48,15 @@ public class ClientStoreTest {
     public void testAll() {
         try {
             List<Client> clients = cs.getAll();
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testGetDefault() {
+        try {
+            Client client = cs.get(UUID.fromString("45e226b7-aadf-45cb-bf77-811cf5e5c227"));
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }

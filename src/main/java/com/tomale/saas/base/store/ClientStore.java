@@ -54,22 +54,25 @@ public class ClientStore {
         }
     }
 
-    public List<Client> get() throws Exception {
+    public Client get(UUID client_id) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_CLIENTS_GET);
+            stmt.setObject(1, client_id);
             stmt.execute();
 
             ResultSet rs = stmt.getResultSet();
-            ArrayList<Client> results = new ArrayList<Client>();
-            while(rs.next()) {
-                UUID id = UUID.fromString(rs.getString(0));
-                boolean active = rs.getBoolean(1);
-                String name = rs.getString(2);
-                String address = rs.getString(3);
+            if (rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+                String address = rs.getString(4);
+
+                return new Client(id, name, address);
+            } else {
+                throw new Exception("Client Id not found");
             }
-            return results;
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add user");
