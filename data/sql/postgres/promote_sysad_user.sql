@@ -65,6 +65,13 @@ begin
         tmp_cid
     from iam.permissions a
     on conflict do nothing;
+
+    -- associate user to default client
+    insert into iam.user_clients (user_id, client_id)
+    select
+        tmp_uid,
+        tmp_cid
+    on conflict do nothing;
 end
 $$
 language plpgsql;

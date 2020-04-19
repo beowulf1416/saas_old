@@ -13,6 +13,8 @@ set schema 'iam';
 
 \ir tables/roles.sql
 
+\ir tables/user_clients.sql
+
 \ir tables/role_permissions.sql
 \ir tables/role_clients.sql
 \ir tables/role_users.sql
@@ -27,6 +29,8 @@ set schema 'iam';
 \ir procs/user_get_by_email.sql
 
 \ir procs/user_signin.sql
+
+\ir procs/user_clients_all.sql
 
 \ir procs/permissions_user_all.sql
 
