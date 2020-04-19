@@ -38,14 +38,16 @@ public class ClientStore {
             stmt.execute();
 
             ResultSet rs = stmt.getResultSet();
-            ArrayList<Client> results = new ArrayList<Client>();
+            ArrayList<Client> clients = new ArrayList<Client>();
             while(rs.next()) {
-                UUID id = UUID.fromString(rs.getString(0));
-                boolean active = rs.getBoolean(1);
-                String name = rs.getString(2);
-                String address = rs.getString(3);
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+                String address = rs.getString(4);
+
+                clients.add(new Client(id, name, address));
             }
-            return results;
+            return clients;
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add user");
