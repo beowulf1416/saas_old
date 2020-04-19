@@ -24,10 +24,12 @@ public class ClientStore {
     private static final String SQL_CLIENTS_GET = "{call clients.clients_get(?)}";
 
     private final JdbcTemplate jdbc;
+    private String defaultClientId;
 
     @Autowired
-    public ClientStore(JdbcTemplate jdbc) {
+    public ClientStore(JdbcTemplate jdbc, String defaultClientId) {
         this.jdbc = jdbc;
+        this.defaultClientId = defaultClientId;
     }
 
     public List<Client> getAll() throws Exception {
@@ -77,5 +79,9 @@ public class ClientStore {
             log.error(e);
             throw new Exception("An error occured while trying to add user");
         }
+    }
+
+    public Client getDefault() throws Exception {
+        return get(UUID.fromString(defaultClientId));
     }
 }
