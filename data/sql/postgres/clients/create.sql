@@ -10,7 +10,8 @@ set schema 'clients';
 
 
 /** functions **/
-
+\ir procs/clients_all.sql
+\ir procs/clients_get.sql
 
 
 set schema 'public';
