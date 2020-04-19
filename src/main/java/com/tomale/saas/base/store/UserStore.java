@@ -3,6 +3,8 @@ package com.tomale.saas.base.store;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import java.sql.CallableStatement;
@@ -12,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 import com.google.gson.JsonObject;
+import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,8 @@ public class UserStore {
 
     private static final String SQL_USER_EMAIL_EXISTS = "{? = call iam.user_email_exists(?)}";
     private static final String SQL_USER_SIGNIN = "{? = call iam.user_signin(?)}";
+
+    private static final String SQL_USER_CLIENTS_ALL = "{ call iam.user_clients_all(?) }";
 
     private final JdbcTemplate jdbc;
 
@@ -134,7 +139,37 @@ public class UserStore {
         }
     }
 
+    // TODO updateUserLastSignedIn
     public void updateUserLastSignedIn(String email) throws Exception {
 
+    }
+
+    /**
+     * retrieve list of clients associated to user
+     * @param user_id
+     * @return
+     * @throws Exception
+     */
+    public List<Client> userClients(UUID user_id) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_USER_CLIENTS_ALL);
+            stmt.setObject(1, user_id);
+            stmt.execute();
+
+            ArrayList<Client> clients = new ArrayList<Client>();
+            ResultSet rs = stmt.getResultSet();
+            while(rs.next()) {
+                UUID client_id = UUID.fromString(rs.getString(1));
+                String client_name = rs.getString(2);
+
+                clients.add(new Client(client_id, client_name, ""));
+            }
+            return clients;
+        } catch(SQLException e){
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve list of clients associated to user");
+        }
     }
 }

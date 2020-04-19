@@ -2,8 +2,10 @@ package com.tomale.saas.base.store;
 
 
 import java.lang.StringBuilder;
+import java.util.List;
 import java.util.UUID;
 
+import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 
 import org.junit.Test;
@@ -68,7 +70,7 @@ public class UserStoreTest {
     @Test
     public void getUserByEmail() {
         try {
-            User user = us.getUserByEmail("test@test.com");
+            User user = us.getUserByEmail("beowulf1416@gmail.com");
             if (user == null) {
                 Assert.fail("Email should be found");
             }
@@ -92,7 +94,7 @@ public class UserStoreTest {
     @Test
     public void userSignin() {
         try {
-            User user = us.getUserByEmail("test@test.com");
+            User user = us.getUserByEmail("beowulf1416@gmail.com");
             boolean result = us.signIn(user.getId());
             if (result != user.isActive()) {
                 Assert.fail("User should not be able to login");
@@ -124,5 +126,14 @@ public class UserStoreTest {
         String domain = sb.toString();
 
         return String.format("%s@%s.com", username, domain);
+    }
+
+    @Test
+    public void testUserClientsAll() {
+        try {
+            List<Client> clients = us.userClients(UUID.fromString("acad14d7-e610-4894-a53b-a7f4551e0606"));
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
     }
 }
