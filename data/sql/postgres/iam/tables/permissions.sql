@@ -13,4 +13,5 @@ insert into permissions (name) values
 ('admin.clients'),
 ('admin.security.permissions'),
 ('admin.security.roles'),
-('user.authenticated');
+('user.authenticated')
+on conflict do nothing;

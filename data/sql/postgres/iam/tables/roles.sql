@@ -11,4 +11,5 @@ create table if not exists roles (
 );
 
 insert into roles (name) values 
-('system administrator');
+('system administrator')
+on conflict do nothing;

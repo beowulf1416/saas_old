@@ -13,10 +13,16 @@ begin
     from iam.permissions p
         inner join iam.role_permissions rp on p.id = rp.permission_id
         inner join iam.role_users ru on rp.role_id = ru.role_id
-    where
-        rp.client_id = p_client_id
-        and ru.client_id = p_client_id
-        and ru.user_id = p_user_id;
+        inner join iam.users u on ru.user_id = u.id
+        inner join iam.roles r on r.id = ru.role_id
+        inner join iam.role_clients rc on r.id = rc.role_id
+        inner join clients.clients c on rc.client_id = c.id
+    where 
+        u.active = true
+        and r.active = true
+        and c.active = true
+        and u.id = p_user_id
+        and c.id = p_client_id;
 end
 $$
 language plpgsql;
