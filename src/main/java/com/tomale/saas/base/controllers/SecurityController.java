@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,10 +84,23 @@ public class SecurityController {
     }
 
     @GetMapping("/signout")
-    public String userSignOut() {
+    @PreAuthorize("hasPermission(#user, 'user.authenticated')")
+    public ModelAndView userSignOut(HttpServletResponse response) {
         log.debug("VIEW: security.signout");
 
-        return "security/signout";
+        Cookie cookie = new Cookie(cookieName, "");
+        cookie.setDomain(cookieDomain);
+        cookie.setSecure(cookieSecure);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        // @ref https://docs.oracle.com/javaee/7/api/javax/servlet/http/Cookie.html#setMaxAge-int-
+        // delete the cookie
+        cookie.setMaxAge(0);
+
+        response.addCookie(cookie);
+
+        ModelAndView mv = new ModelAndView("security/signout");
+        return mv;
     }
 
     @GetMapping("/signin/google/oauth/redirect")

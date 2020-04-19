@@ -1,7 +1,18 @@
-{% extends '../base.html' %}
+{% extends '/templates/base.html' %}
 
 {% block title %}Sign Out{% endblock %}
 
 {% block content %}
 <h1>Sign Out</h1>
+<div>redirecting ...</div>
+{% endblock %}
+
+{% block bodyscripts %}
+<script>
+(function(){
+    setTimeout(() => {
+        window.location = "/";
+    }, 5000);
+})();
+</script>
 {% endblock %}
