@@ -4,14 +4,13 @@ package com.tomale.saas.base.store;
 import java.lang.StringBuilder;
 import java.util.UUID;
 
-import javax.sql.DataSource;
-
 import com.tomale.saas.base.models.User;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.Assert;
 import org.junit.Before;
+
 import org.postgresql.ds.PGSimpleDataSource;
 
 import org.springframework.beans.factory.annotation.Value;

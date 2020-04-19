@@ -48,7 +48,16 @@ public class UserStore {
             stmt.execute();
 
             Object o = stmt.getObject(1);
-            log.debug(o);
+            if (o == null) {
+                throw new Exception("Unable to add user");
+            } else {
+                if (o instanceof UUID) {
+                    UUID uuid = (UUID) o;
+                    log.debug(String.format("New user created: %s", uuid.toString()));
+                } else {
+                    log.warn(String.format("An error occured during user registration: %s", o));
+                }
+            }
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add user");
