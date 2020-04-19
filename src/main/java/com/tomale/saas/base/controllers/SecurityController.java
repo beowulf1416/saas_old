@@ -119,9 +119,6 @@ public class SecurityController {
     ) {
         log.debug("VIEW: security.signin.google");
 
-        // HttpHeaders headers = new HttpHeaders();
-        // headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-
         try {
             Map<String, String> tokens = Google.getTokens(
                 clientId,
@@ -177,7 +174,7 @@ public class SecurityController {
         } catch(Exception e) {
             log.error(e);
 
-            ModelAndView mv = new ModelAndView("security/user_account_inactive");
+            ModelAndView mv = new ModelAndView();
             mv.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
 
             return mv;
