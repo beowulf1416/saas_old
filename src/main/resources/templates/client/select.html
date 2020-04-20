@@ -3,5 +3,19 @@
 {% block content %}
 <h1>Clients</h1>
 <div>list of clients here</div>
-{{ clients }}
+<ul id="clients">
+    {% for client in clients %}
+    <li><a title="{{ client.name }}" href="/client/selected/{{ client.id }}" class="nav-link nav-link-client">{{ client.name }}</a></li>
+    {% endfor %}
+</ul>
+<client-selection></client-selection>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="text/javascript" src="/static/js/clients.js"></script>
+<script>
+(function(){
+
+})();
+</script>
 {% endblock %}
