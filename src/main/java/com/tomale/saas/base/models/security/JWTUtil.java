@@ -9,6 +9,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -24,6 +26,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.IdValue;
 import com.tomale.saas.base.models.User;
 
 
@@ -72,8 +75,16 @@ public class JWTUtil {
             CipherUtil cu = new CipherUtil(cipherKey);
             String encodedPermissions = cu.encrypt(szPermissions);
 
-            String szCurrentClient = gson.toJson(currentClient);
-            String szClients = gson.toJson(clients);
+            String szCurrentClient = gson.toJson(new IdValue(
+                currentClient.getId().toString(),
+                currentClient.getName()
+            ));
+
+            List<IdValue> clientValues = new ArrayList<IdValue>();
+            for (Client client : clients) {
+                clientValues.add(new IdValue(client.getId().toString(), client.getName()));
+            }
+            String szClients = gson.toJson(clientValues);
 
             String token = JWT.create()
                 .withIssuer(issuer)
@@ -120,6 +131,8 @@ public class JWTUtil {
             json.add("expires", new JsonPrimitive(decoded.getExpiresAt().toInstant().getEpochSecond()));
             json.add("email", new JsonPrimitive(decoded.getClaim(CLAIM_EMAIL).asString()));
 
+            Gson gson = new Gson();
+
             // process secure token (permissions)
             List<String> permissions = new ArrayList<String>();
             Claim cToken = decoded.getClaim(CLAIM_PERMISSIONS);
@@ -128,8 +141,6 @@ public class JWTUtil {
                 String szPermissions = cu.decrypt(cToken.asString());
 
                 Type type = new TypeToken<List<String>>(){}.getType();
-
-                Gson gson = new Gson();
                 permissions = gson.fromJson(szPermissions, type);
             }
 
@@ -138,6 +149,24 @@ public class JWTUtil {
                 ja.add(new JsonPrimitive(permission));
             }
             json.add("permissions", ja);
+
+            // process current client claim
+            Claim cClient = decoded.getClaim(CLAIM_CURRENT_CLIENT);
+            if (!cClient.isNull()) {
+                log.debug(cClient.asString());
+                Type type = new TypeToken<IdValue>(){}.getType();
+                IdValue iv = gson.fromJson(cClient.asString(), type);
+                json.add("client_current", gson.toJsonTree(iv));
+            }
+
+            // process clients claim
+            Claim cClients = decoded.getClaim(CLAIM_CLIENTS);
+            if (!cClients.isNull()) {
+                log.debug(cClients.asString());
+                Type type = new TypeToken<List<IdValue>>(){}.getType();
+                List<IdValue> clients = gson.fromJson(cClients.asString(), type);
+                json.add("clients", gson.toJsonTree(clients));
+            }
 
             return json;
         } catch(JWTVerificationException e) {
