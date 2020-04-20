@@ -1,0 +1,16 @@
+{% extends '/templates/base.html' %}
+
+{% block content %}
+<h1>Unauthenticated</h1>
+<h2>Redirecting to Sign In ...</h2>
+{% endblock %}
+
+{% block bodyscripts %}
+<script>
+(function(){
+    setTimeout(() => {
+        window.location = "/security/signin";
+    }, 5000);
+})();
+</script>
+{% endblock %}

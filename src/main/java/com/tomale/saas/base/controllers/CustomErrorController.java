@@ -30,6 +30,10 @@ public class CustomErrorController implements ErrorController {
         ModelAndView mv = new ModelAndView();
 
         switch(value) {
+            case UNAUTHORIZED: {
+                mv.setViewName("errors/401");
+                break;
+            }
             case FORBIDDEN: {
                 mv.setViewName("errors/403");
                 break;
