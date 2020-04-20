@@ -3,19 +3,25 @@
 {% block content %}
 <h1>Clients</h1>
 <div>list of clients here</div>
-<ul id="clients">
-    {% for client in clients %}
-    <li><a title="{{ client.name }}" href="/client/selected/{{ client.id }}" class="nav-link nav-link-client">{{ client.name }}</a></li>
-    {% endfor %}
-</ul>
-<client-selection></client-selection>
+<datalist id="clients">
+{% for client in clients %}
+    <option value="{{ client.id }}" label="{{ client.name }}">
+{% endfor %}
+</datalist>
+<client-selection for="clients"></client-selection>
 {% endblock %}
 
 {% block bodyscripts %}
 <script type="text/javascript" src="/static/js/clients.js"></script>
 <script>
 (function(){
-
+    // var params = {};
+    // params.clients = [
+    //     {% for client in clients %}
+    //         { 'id':'{{ client.id }}', 'name':'{{ client.name }}' },
+    //     {% endfor %}
+    // ];
+    // window.params = params;
 })();
 </script>
 {% endblock %}
