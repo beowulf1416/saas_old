@@ -2,14 +2,12 @@ package com.tomale.saas.base.controllers;
 
 import com.tomale.saas.base.models.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tomale.saas.base.models.Client;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
