@@ -46,8 +46,10 @@ public class PermissionStoreTest {
     @Test
     public void testUserPermissions() {
         try {
-            UUID randomId = UUID.randomUUID();
-            ps.userPermissions(randomId, randomId);
+            ps.userPermissions(
+                UUID.fromString("acad14d7-e610-4894-a53b-a7f4551e0606"), 
+                UUID.fromString("45e226b7-aadf-45cb-bf77-811cf5e5c227")
+            );
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
