@@ -3,7 +3,6 @@ package com.tomale.saas.base.store;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.CallableStatement;
@@ -26,7 +25,6 @@ public class ClientStore {
     private final JdbcTemplate jdbc;
     private String defaultClientId;
 
-    @Autowired
     public ClientStore(JdbcTemplate jdbc, String defaultClientId) {
         this.jdbc = jdbc;
         this.defaultClientId = defaultClientId;

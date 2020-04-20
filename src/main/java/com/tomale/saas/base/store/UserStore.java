@@ -11,13 +11,11 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 
@@ -37,7 +35,6 @@ public class UserStore {
 
     private final JdbcTemplate jdbc;
 
-    @Autowired
     public UserStore(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }

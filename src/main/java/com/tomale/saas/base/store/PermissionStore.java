@@ -1,9 +1,9 @@
 package com.tomale.saas.base.store;
 
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.apache.logging.log4j.LogManager;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -17,11 +17,10 @@ public class PermissionStore {
 
     private static final Logger log = LogManager.getLogger(PermissionStore.class);
 
-    private static final String SQL_PERMISSIONS_USER = "{call iam.permissions_user_all(?,?)}";
+    private static final String SQL_PERMISSIONS_USER = "{ call iam.permissions_user_all(?,?) }";
 
     private final JdbcTemplate jdbc;
 
-    @Autowired
     public PermissionStore(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
@@ -31,12 +30,16 @@ public class PermissionStore {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_PERMISSIONS_USER);
-            stmt.execute();
             stmt.setObject(1, user_id);
             stmt.setObject(2, client_id);
+            stmt.execute();
 
             ResultSet rs = stmt.getResultSet();
             ArrayList<String> permissions = new ArrayList<String>();
+            while(rs.next()) {
+                String name = rs.getString(1);
+                permissions.add(name);
+            }
             return permissions;
         } catch(SQLException e) {
             log.error(e);
