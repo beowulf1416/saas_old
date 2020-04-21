@@ -1,6 +1,11 @@
 package com.tomale.saas.base.controllers;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import com.tomale.saas.base.models.User;
+import com.tomale.saas.base.models.security.JWTAuthenticationToken;
+import com.tomale.saas.base.store.PermissionStore;
 
 import java.util.List;
 
@@ -8,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.tomale.saas.base.models.Client;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -25,6 +31,11 @@ import org.springframework.web.servlet.ModelAndView;
     produces = MediaType.TEXT_PLAIN_VALUE
 )
 public class ClientController {
+
+    private final static Logger log = LogManager.getLogger(ClientController.class);
+
+    @Autowired
+    private PermissionStore permissionStore;
 
     @GetMapping("")
     @PreAuthorize("hasPermission(#user, 'user.authenticated')")
@@ -46,12 +57,15 @@ public class ClientController {
     @PreAuthorize("hasPermission(#user, 'user.authenticated')")
     public ModelAndView viewSelect(
         HttpServletResponse response,
-        @RequestParam String clientId
+        @RequestParam String client
     ) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth instanceof User) {
-            User user = (User) auth;
+        log.debug(client);
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth instanceof JWTAuthenticationToken) {
+            User user = (User) auth.getPrincipal();
+
+            log.debug(user);
         }
 
         ModelAndView mv = new ModelAndView("client/select");

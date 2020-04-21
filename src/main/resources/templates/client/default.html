@@ -3,12 +3,19 @@
 {% block content %}
 <h1>Clients</h1>
 <div>list of clients here</div>
+<ul id="clientList">
+{% for client in clients %}
+    <li class="client-list-item"><a class="nav-link client-item-link" title="{{ client.name }}" href="/client/select?clientid={{ client.id }}">{{ client.name }}</a></li>
+{% endfor %}
+</ul><!-- #clientList-->
 <datalist id="clients">
 {% for client in clients %}
     <option value="{{ client.id }}" label="{{ client.name }}">
 {% endfor %}
 </datalist>
+<!--
 <client-selector-list for="clients"></client-selector-list>
+-->
 {% endblock %}
 
 {% block bodyscripts %}
