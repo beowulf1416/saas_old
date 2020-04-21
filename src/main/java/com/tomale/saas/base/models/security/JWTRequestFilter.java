@@ -50,7 +50,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                         if (jwt.verify(value)) {
                             try {
                                 JsonObject json = jwt.toJSON(value);
-                                log.debug(json);
+                                // log.debug(json);
 
                                 JWTAuthenticationToken auth = new JWTAuthenticationToken(json);
                                 auth.setAuthenticated(true);

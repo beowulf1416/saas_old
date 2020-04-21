@@ -102,7 +102,7 @@ public class JWTUtil {
     }
 
     public boolean verify(String token) {
-        log.debug("JWTUtil::verify()");
+        // log.debug("JWTUtil::verify()");
         try {
             JWTVerifier v = JWT.require(algorithm)
                 .withIssuer(issuer)
