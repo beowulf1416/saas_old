@@ -5,15 +5,20 @@ import org.apache.logging.log4j.LogManager;
 
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.models.security.JWTAuthenticationToken;
+import com.tomale.saas.base.models.security.JWTUtil;
+import com.tomale.saas.base.store.ClientStore;
 import com.tomale.saas.base.store.PermissionStore;
 
 import java.util.List;
+import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tomale.saas.base.models.Client;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -36,6 +41,30 @@ public class ClientController {
 
     @Autowired
     private PermissionStore permissionStore;
+
+    @Autowired
+    private ClientStore clientStore;
+
+    @Value("${jwt.issuer}")
+    private String jwtIssuer;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${app.cookie.name}")
+    private String cookieName;
+
+    @Value("${app.cookie.domain}")
+    private String cookieDomain;
+
+    @Value("${app.cookie.secure}")
+    private boolean cookieSecure;
+
+    @Value("${app.cookie.max_age}")
+    private int cookieMaxAge;
+
+    @Value("${app.cipher.key}")
+    private String cipherKey;
 
     @GetMapping("")
     @PreAuthorize("hasPermission(#user, 'user.authenticated')")
@@ -65,10 +94,38 @@ public class ClientController {
         if (auth != null && auth instanceof JWTAuthenticationToken) {
             User user = (User) auth.getPrincipal();
 
-            log.debug(user);
-        }
+            try {
+                Client userClient = clientStore.get(UUID.fromString(client));
+                List<Client> clients = user.getClients();
+                List<String> permissions = permissionStore.userPermissions(
+                    user.getId(), 
+                    UUID.fromString(client)
+                );
 
-        ModelAndView mv = new ModelAndView("client/select");
-        return mv;
+                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
+                String token = jwt.generateToken(user, permissions, userClient, clients);
+
+                Cookie cookie = new Cookie(cookieName, token);
+                cookie.setDomain(cookieDomain);
+                cookie.setSecure(cookieSecure);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                cookie.setMaxAge(cookieMaxAge);
+
+                response.addCookie(cookie);
+
+                ModelAndView mv = new ModelAndView("security/redirect");
+
+                return mv;
+                
+            } catch(Exception e) {
+                log.error(e);
+
+                throw new RuntimeException("An error occured while trying to process request");
+            }
+        } else {
+            log.error("error with security context");
+            throw new RuntimeException("An error occured while trying to process request");
+        }
     }
 }

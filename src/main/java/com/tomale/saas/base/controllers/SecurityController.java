@@ -163,7 +163,6 @@ public class SecurityController {
                 response.addCookie(cookie);
 
                 ModelAndView mv = new ModelAndView("security/redirect");
-                mv.addObject("token", token);
 
                 return mv;
             } else {
