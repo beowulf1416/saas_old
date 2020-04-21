@@ -2,13 +2,15 @@
 
 {% block content %}
 <h1>Admin Clients Default</h1>
-<client-list></client-list>
+<client-list id="clientList"></client-list>
 {% endblock %}
 
 {% block bodyscripts %}
 <script type="module" src="/static/js/admin.clients.js"></script>
 <script>
 (function(){
+    const cl = document.getElementById('clientList');
+    console.log(cl);
 })();
 </script>
 {% endblock %}
