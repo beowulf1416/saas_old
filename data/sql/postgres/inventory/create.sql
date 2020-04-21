@@ -6,6 +6,7 @@ set schema 'inventory';
 
 /** tables **/
 \ir tables/items.sql
+\ir tables/item_substitutes.sql
 
 
 /** functions **/
