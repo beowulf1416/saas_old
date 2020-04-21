@@ -151,7 +151,6 @@ public class JWTUtil {
             // process current client claim
             Claim cClient = decoded.getClaim(CLAIM_CURRENT_CLIENT);
             if (!cClient.isNull()) {
-                log.debug(cClient.asString());
                 Type type = new TypeToken<IdValue>(){}.getType();
                 IdValue iv = gson.fromJson(cClient.asString(), type);
                 json.add("client_current", gson.toJsonTree(iv));
@@ -160,7 +159,6 @@ public class JWTUtil {
             // process clients claim
             Claim cClients = decoded.getClaim(CLAIM_CLIENTS);
             if (!cClients.isNull()) {
-                log.debug(cClients.asString());
                 Type type = new TypeToken<List<IdValue>>(){}.getType();
                 List<IdValue> clients = gson.fromJson(cClients.asString(), type);
                 json.add("clients", gson.toJsonTree(clients));
