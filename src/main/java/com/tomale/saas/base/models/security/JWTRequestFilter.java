@@ -39,10 +39,11 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
+        
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
+                // log.debug(cookie.getName());
                 if (cookie.getName().equalsIgnoreCase(cookieName)) {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         String value = cookie.getValue();
@@ -57,6 +58,7 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                                 SecurityContextHolder.getContext().setAuthentication(auth);
 
                             } catch(Exception e) {
+                                log.error("JWTRequestFilter::doFilterInternal()");
                                 log.error(e);
                             }
                         } else {

@@ -41,11 +41,15 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
      * @return
      */
     private boolean isAllowed(Authentication authentication, String permission) {
+        // log.debug("CustomPermissionEvaluator::isAllowed()");
         Object o = authentication.getPrincipal();
         if (o instanceof User) {
             User user = (User) o;
-            return user.getPermissions().contains(permission);
+            boolean value = user.getPermissions().contains(permission);
+            log.debug(String.format("CustomPermissionEvaluator::isAllowed() returning %b", value));
+            return value;
         }
+        log.debug("CustomPermissionEvaluator::isAllowed() returning false");
         return false;
     }
 

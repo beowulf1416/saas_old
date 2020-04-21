@@ -3,6 +3,8 @@ package com.tomale.saas.base.controllers;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import java.util.Enumeration;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,6 +29,9 @@ public class CustomErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         HttpStatus value = HttpStatus.valueOf((int) status);
 
+        // String message = (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
+        // log.debug(message);
+
         ModelAndView mv = new ModelAndView();
 
         switch(value) {
@@ -50,6 +55,13 @@ public class CustomErrorController implements ErrorController {
         }
 
         mv.addObject("status", status);
+
+
+        // log.debug("here");
+        // Enumeration<String> attribs = request.getAttributeNames();
+        // while(attribs.hasMoreElements()) {
+        //     log.debug(attribs.nextElement());
+        // }
 
         return mv;
     }

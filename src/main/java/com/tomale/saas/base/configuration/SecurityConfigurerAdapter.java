@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
+// @EnableWebSecurity(debug=true)
 @EnableWebSecurity
 public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
@@ -28,12 +29,8 @@ public class SecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/", "/security/**").permitAll()
                 .anyRequest().authenticated();
-                // .and()
-            // .formLogin()
-            //     .loginPage("/security/signin")
-            //     .permitAll()
-            //     .and()
-            // .logout().permitAll();
+        
+        http.csrf().disable();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
