@@ -1,5 +1,9 @@
 package com.tomale.saas.modules.admin.clients.controllers;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -7,6 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
+import com.tomale.saas.base.models.Client;
+import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
 
 
 @Controller
@@ -17,9 +26,20 @@ import org.springframework.web.servlet.ModelAndView;
 )
 public class AdminClientController {
 
+    private static final Logger log = LogManager.getLogger(AdminClientController.class);
+
+    @Autowired
+    private AdminClientStore adminClientStore;
+
     @GetMapping("")
     @PreAuthorize("hasPermission(#user, 'admin.clients')")
     public ModelAndView viewDefault() {
+        try {
+            List<Client> clients = adminClientStore.getAll();
+        } catch(Exception e) {
+            log.error(e);
+        }
+
         ModelAndView mv = new ModelAndView("admin/clients/default");
         return mv;
     }
