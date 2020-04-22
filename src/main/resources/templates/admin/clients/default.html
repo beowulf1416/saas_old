@@ -10,7 +10,9 @@
 <script>
 (function(){
     const cl = document.getElementById('clientList');
-    console.log(cl);
+    cl.addEventListener('addClient', function(e){
+        console.log(e);
+    });
 })();
 </script>
 {% endblock %}

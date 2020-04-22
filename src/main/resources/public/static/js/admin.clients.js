@@ -12,6 +12,15 @@ class ClientList extends HTMLElement {
         bAdd.classList.add('client-add');
         bAdd.setAttribute('title', 'Add Client');
         bAdd.innerHTML = '&oplus;';
+
+        self.addClientEvent = new CustomEvent('addClient', {
+            bubbles: true,
+            cancelable: true
+        });
+        bAdd.addEventListener('click', function(e){
+            self.dispatchEvent(self.addClientEvent);
+        });
+
         containerActions.appendChild(bAdd);
 
         const ul = document.createElement('ul');
@@ -29,48 +38,28 @@ class ClientList extends HTMLElement {
             method: 'POST',
             credentials: 'same-origin'
         })
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                if (Array.isArray(data)) {
-                    data.forEach(client => {
-                        // const a = document.createElement('a');
-                        // a.classList.add('nav-link');
-                        // a.classList.add('client-item-link');
-                        // a.setAttribute('href', '#');
-                        // a.setAttribute('title', client.name);
-                        // a.innerText = client.name;
-                        // a.dataset.id = client.id;
-
-
-
-                        // const aRemove = document.createElement('a');
-                        // aRemove.classList.add('client-item-remove-link');
-                        // aRemove.setAttribute('title', 'Remove');
-                        // aRemove.setAttribute('href', '#');
-                        // aRemove.innerHTML = '&ominus;';
-                        // aRemove.dataset.id = client.id;
-
-                        const li = document.createElement('li');
-                        li.classList.add('client-list-item');
-                        li.innerHTML = `
-                            <a class="nav-link client-item-link" title="${client.name}" href="#">${client.name}</a>
-                            <span>&nbsp;</span>
-                            <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
-                        `;
-                        // li.appendChild(a);
-                        // li.appendChild(aRemove);
-                        
-                        ul.appendChild(li);
-                    });
-                }
-            });
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            // console.log(data);
+            if (Array.isArray(data)) {
+                data.forEach(client => {
+                    const li = document.createElement('li');
+                    li.classList.add('client-list-item');
+                    li.innerHTML = `
+                        <a class="nav-link client-item-link" title="${client.name}" href="#">${client.name}</a>
+                        <span>&nbsp;</span>
+                        <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
+                    `;
+                    
+                    ul.appendChild(li);
+                });
+            }
+        });
     }
 
     connectedCallback() {
-
     }
 }
 
