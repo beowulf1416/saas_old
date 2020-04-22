@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
@@ -50,10 +52,27 @@ public class RestAdminClientController {
     public ApiResult addClient(@RequestBody Map<String, Object> params) {
         log.debug(params);
 
-        return new ApiResult(
-            "success",
-            "Client added",
-            null
-        );
+        try {
+            String name = params.get("name").toString();
+            String address = params.get("address").toString();
+
+            String clientId = adminClientStore.add(name, address);
+            JsonObject json = new JsonObject();
+            json.add("clientId", new JsonPrimitive(clientId));
+
+            return new ApiResult(
+                "success",
+                "Client added",
+                json
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
     }
 }

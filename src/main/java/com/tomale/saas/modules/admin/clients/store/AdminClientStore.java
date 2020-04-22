@@ -20,6 +20,7 @@ public class AdminClientStore {
     private static final Logger log = LogManager.getLogger(AdminClientStore.class);
 
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
+    private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -47,7 +48,23 @@ public class AdminClientStore {
             return clients;
         } catch(SQLException e) {
             log.error(e);
-            throw new Exception("An error occured while trying to add user");
+            throw new Exception("An error occured while trying to retrieve clients");
+        }
+    }
+
+    public String add(String name, String address) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ADD);
+            stmt.registerOutParameter(1, java.sql.Types.OTHER);
+            stmt.execute();
+
+            String clientId = (String) stmt.getObject(1);
+            return clientId;
+        } catch(Exception e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to add client");
         }
     }
 }
