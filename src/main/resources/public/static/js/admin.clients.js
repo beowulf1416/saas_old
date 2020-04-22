@@ -95,9 +95,32 @@ class ClientList extends HTMLElement {
 
     connectedCallback() {
         if (this.isConnected) {
-            const btnSave = this.shadowRoot.getElementById('btnSave');
+            const shadow = this.shadowRoot;
+            const btnSave = shadow.getElementById('btnSave');
             btnSave.addEventListener('click', function(e) {
                 console.log('btnSave.clicked');
+                const inputName = shadow.getElementById('clientName');
+                const inputAddr = shadow.getElementById('clientAddress');
+
+                console.log(inputName.value);
+
+                fetch("/api/admin/clients/add", {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: inputName.value,
+                        address: inputAddr.value
+                    })
+                })
+                .then((response) => { 
+                    response.json(); 
+                })
+                .then((data) => {
+                    console.log(data);
+                });
             });
         }
     }

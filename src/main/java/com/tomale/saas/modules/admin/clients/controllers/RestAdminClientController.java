@@ -9,13 +9,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Map;
 
+import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
 
@@ -29,11 +32,6 @@ public class RestAdminClientController {
     @Autowired
     private AdminClientStore adminClientStore;
 
-    @PostMapping("/test")
-    public String test() {
-        return "test";
-    }
-
     @PostMapping("/all")
     @PreAuthorize("hasPermission(#user, 'admin.clients')")
     public List<Client> getAllClients() {
@@ -45,5 +43,17 @@ public class RestAdminClientController {
             log.error(e);
             throw new RuntimeException("An error occured while processing the request");
         }
+    }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    public ApiResult addClient(@RequestBody Map<String, Object> params) {
+        log.debug(params);
+
+        return new ApiResult(
+            "success",
+            "Client added",
+            null
+        );
     }
 }
