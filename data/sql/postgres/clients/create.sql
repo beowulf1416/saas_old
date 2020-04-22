@@ -10,6 +10,7 @@ set schema 'clients';
 
 
 /** functions **/
+\ir procs/client_add.sql
 \ir procs/clients_all.sql
 \ir procs/clients_get.sql
 
