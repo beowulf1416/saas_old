@@ -51,4 +51,31 @@ public class AdminClientStoreTest {
             Assert.fail(e.getMessage());
         }
     }
+
+    public String generateRandomString(int length) {
+        String allowed = "ABCDEFGHIJKLMNOPQRSTUVWZYZ" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "1234567890";
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < length; i++) {
+            int idx = (int) (Math.random() * allowed.length());
+            sb.append(allowed.charAt(idx));
+        }
+        String tmp = sb.toString();
+        return tmp;
+    }
+
+    @Test
+    public void testAdd() {
+        try {
+            String tmp = generateRandomString(10);
+            String id = adminClientStore.add(tmp, tmp);
+            if (id == null) {
+                Assert.fail("Id should not be null");
+            }
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
 }
