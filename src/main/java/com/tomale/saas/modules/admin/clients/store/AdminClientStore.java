@@ -52,15 +52,17 @@ public class AdminClientStore {
         }
     }
 
-    public String add(String name, String address) throws Exception {
+    public UUID add(String name, String address) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_CLIENT_ADD);
             stmt.registerOutParameter(1, java.sql.Types.OTHER);
+            stmt.setString(2, name);
+            stmt.setString(3, address);
             stmt.execute();
 
-            String clientId = (String) stmt.getObject(1);
+            UUID clientId = (UUID) stmt.getObject(1);
             return clientId;
         } catch(Exception e) {
             log.error(e);

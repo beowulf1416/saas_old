@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -56,9 +57,9 @@ public class RestAdminClientController {
             String name = params.get("name").toString();
             String address = params.get("address").toString();
 
-            String clientId = adminClientStore.add(name, address);
+            UUID clientId = adminClientStore.add(name, address);
             JsonObject json = new JsonObject();
-            json.add("clientId", new JsonPrimitive(clientId));
+            json.add("clientId", new JsonPrimitive(clientId.toString()));
 
             return new ApiResult(
                 "success",

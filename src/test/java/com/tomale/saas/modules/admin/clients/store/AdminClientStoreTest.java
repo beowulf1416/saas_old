@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -70,7 +71,7 @@ public class AdminClientStoreTest {
     public void testAdd() {
         try {
             String tmp = generateRandomString(10);
-            String id = adminClientStore.add(tmp, tmp);
+            UUID id = adminClientStore.add(tmp, tmp);
             if (id == null) {
                 Assert.fail("Id should not be null");
             }
