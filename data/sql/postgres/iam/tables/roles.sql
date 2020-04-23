@@ -12,19 +12,3 @@ create table if not exists roles (
     constraint fk_roles_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict
 );
-
-
-do $$
-declare
-    default_client_id clients.clients.id%type;
-begin
-    select
-        a.id into default_client_id
-    from clients.clients a
-    where a.name = 'default';
-
-    insert into roles (client_id, name) values 
-    (default_client_id, 'system administrator');
-end
-$$
-language plpgsql;

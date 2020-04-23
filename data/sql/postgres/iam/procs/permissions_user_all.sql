@@ -15,8 +15,7 @@ begin
         inner join iam.role_users ru on rp.role_id = ru.role_id
         inner join iam.users u on ru.user_id = u.id
         inner join iam.roles r on r.id = ru.role_id
-        inner join iam.role_clients rc on r.id = rc.role_id
-        inner join clients.clients c on rc.client_id = c.id
+        inner join clients.clients c on r.client_id = c.id
     where 
         u.active = true
         and r.active = true

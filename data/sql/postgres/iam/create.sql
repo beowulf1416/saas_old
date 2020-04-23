@@ -37,4 +37,33 @@ set schema 'iam';
 \ir procs/roles/role_add.sql
 
 
+/* init */
+-- create system administrator role
+do $$
+declare
+    default_client_id clients.clients.id%type;
+    tmp_rid iam.roles.id%type;
+begin
+    select
+        a.id into default_client_id
+    from clients.clients a
+    where a.name = 'default';
+
+    insert into roles (client_id, name, active) values
+    (default_client_id, 'system administrator', true)
+    returning id into tmp_rid;
+
+    -- give all permissions to sysad role
+    insert into iam.role_permissions (role_id, permission_id, client_id)
+    select 
+        tmp_rid,
+        a.id,
+        default_client_id
+    from iam.permissions a
+    on conflict do nothing;
+end
+$$
+language plpgsql;
+
+
 set schema 'public';

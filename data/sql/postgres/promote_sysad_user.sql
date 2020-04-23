@@ -1,5 +1,5 @@
 /**
- * 
+ * promote a user to sysad
  */
 
 set schema 'public';
@@ -21,11 +21,6 @@ begin
         a.id into tmp_cid
     from clients.clients a
     where name = 'default';
-
-    -- toggle client to active
-    update clients.clients
-    set active = true
-    where id = tmp_cid;
 
     select
         a.id into tmp_uid
@@ -50,20 +45,6 @@ begin
     -- add user to sysad role
     insert into iam.role_users (role_id, user_id, client_id) values 
     (tmp_rid, tmp_uid, tmp_cid)
-    on conflict do nothing;
-
-    -- add role to default client
-    insert into iam.role_clients (role_id, client_id) values 
-    (tmp_rid, tmp_cid)
-    on conflict do nothing;
-
-    -- give all permissions to sysad role
-    insert into iam.role_permissions (role_id, permission_id, client_id)
-    select 
-        tmp_rid,
-        a.id,
-        tmp_cid
-    from iam.permissions a
     on conflict do nothing;
 
     -- associate user to default client
