@@ -9,7 +9,7 @@ create table if not exists items (
     name text not null,
     description text not null,
     constraint pk_items primary key (id),
-    constraint u_items_1 unique key (client_id, name),
+    constraint u_items_1 unique (client_id, name),
     constraint fk_items_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict
 );

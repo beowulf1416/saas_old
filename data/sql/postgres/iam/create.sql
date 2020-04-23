@@ -10,13 +10,11 @@ set schema 'iam';
 \ir tables/users_google.sql
 
 \ir tables/permissions.sql
-
 \ir tables/roles.sql
 
 \ir tables/user_clients.sql
 
 \ir tables/role_permissions.sql
-\ir tables/role_clients.sql
 \ir tables/role_users.sql
 
 
@@ -36,6 +34,7 @@ set schema 'iam';
 
 /* roles */
 \ir procs/roles/roles_all.sql
+\ir procs/roles/role_add.sql
 
 
 set schema 'public';
