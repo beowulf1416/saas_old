@@ -34,5 +34,8 @@ set schema 'iam';
 
 \ir procs/permissions_user_all.sql
 
+/* roles */
+\ir procs/roles/roles_all.sql
+
 
 set schema 'public';
