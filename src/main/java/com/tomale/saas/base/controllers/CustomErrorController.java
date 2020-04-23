@@ -48,7 +48,7 @@ public class CustomErrorController implements ErrorController {
                 break;
             }
             default: {
-                log.warn("Unknown error status code: %s", status.toString());
+                log.warn(String.format("Unknown error status code: %s", status.toString()));
                 mv.setViewName("errors/unknown");
                 break;
             }
