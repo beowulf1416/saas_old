@@ -43,7 +43,7 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getPrincipal() {
-		log.debug("JWTAuthenticationToken::getPrincipal()");
+		// log.debug("JWTAuthenticationToken::getPrincipal()");
 		String name = "";
 		String email = json.get(ELEM_EMAIL).getAsString();
 		JsonArray ja = json.get(ELEM_PERMISSIONS).getAsJsonArray();
