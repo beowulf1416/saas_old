@@ -21,4 +21,3 @@ public class AdminPermissionStore {
         this.jdbc = jdbc;
     }
 }
-}

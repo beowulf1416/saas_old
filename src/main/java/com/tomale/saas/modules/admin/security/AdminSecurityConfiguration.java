@@ -11,7 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 
 @Configuration
-public class AdminRoleConfiguration {
+public class AdminSecurityConfiguration {
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -25,5 +25,4 @@ public class AdminRoleConfiguration {
     public AdminRoleStore adminRoleStore() {
         return new AdminRoleStore(jdbc);
     }
-}
 }
