@@ -56,4 +56,28 @@ public class AdminRoleStoreTest {
             Assert.fail(e.getMessage());
         }
     }
+
+    public String generateRandomString(int length) {
+        String allowed = "ABCDEFGHIJKLMNOPQRSTUVWZYZ" +
+            "abcdefghijklmnopqrstuvwxyz" +
+            "1234567890";
+
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < length; i++) {
+            int idx = (int) (Math.random() * allowed.length());
+            sb.append(allowed.charAt(idx));
+        }
+        String tmp = sb.toString();
+        return tmp;
+    }
+
+    @Test
+    public void testAdd() {
+        try {
+            String name = this.generateRandomString(10);
+            UUID id = ars.addRole(UUID.fromString(defaultClient), name);
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
 }
