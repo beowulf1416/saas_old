@@ -2,4 +2,13 @@
 
 {% block content %}
 <h1>Security Role Default</h1>
+<roles-list></roles-list>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="module" src="/static/js/admin.roles.js"></script>
+<script>
+(function(){
+})();
+</script>
 {% endblock %}
