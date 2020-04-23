@@ -1,0 +1,52 @@
+package com.tomale.saas.modules.admin.security.store;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import com.tomale.saas.modules.admin.security.Role;
+
+public class AdminRoleStore {
+
+    private static final Logger log = LogManager.getLogger(AdminRoleStore.class);
+
+    private static final String SQL_ROLES_ALL = "{call iam.roles_all(?)}";
+
+    private JdbcTemplate jdbc;
+
+    public AdminRoleStore(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
+
+    public List<Role> getRoles(UUID clientId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_ROLES_ALL);
+            stmt.setObject(1, clientId);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+            ArrayList<Role> roles = new ArrayList<Role>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+
+                roles.add(new Role(id, active, name));
+            }
+            return roles;
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve roles");
+        }
+    }
+}
