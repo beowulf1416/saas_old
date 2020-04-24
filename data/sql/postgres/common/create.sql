@@ -6,6 +6,7 @@ set schema 'common';
 \ir tables/dimensions.sql
 \ir tables/countries.sql
 \ir tables/currencies.sql
+\ir tables/uom.sql
 
 
 /** functions **/
