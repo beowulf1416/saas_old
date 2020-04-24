@@ -35,7 +35,7 @@ public class RestPermissionController {
     @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
     public ApiResult getAllPermissions() {
         try {
-            List<Permission> permissions = adminPermissionStore.getPermissions());
+            List<Permission> permissions = adminPermissionStore.getPermissions();
 
             Gson gson = new Gson();
 
