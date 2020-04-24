@@ -12,8 +12,8 @@ class ClientList extends HTMLElement {
         // self.attachClientItemClickEventHandler = self.attachClientItemClickEventHandler.bind(this);
 
         self.initList(self, container);
-        self.initActions(container);
-        self.initFormAddClient(container);
+        self.initActions(self, container);
+        // self.initFormAddClient(container);
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
@@ -51,7 +51,7 @@ class ClientList extends HTMLElement {
         container.appendChild(ul);
     }
 
-    initActions(container) {
+    initActions(component, container) {
         const containerActions = document.createElement('div');
         containerActions.classList.add('actions-container');
 
@@ -60,12 +60,11 @@ class ClientList extends HTMLElement {
         bAdd.setAttribute('title', 'Add Client');
         bAdd.innerHTML = '&oplus;';
 
-        self.addClientEvent = new CustomEvent('addClient', {
-            bubbles: true,
-            cancelable: true
-        });
         bAdd.addEventListener('click', function(e){
-            self.dispatchEvent(self.addClientEvent);
+            component.dispatchEvent(new CustomEvent('addClient', {
+                bubbles: true,
+                cancelable: true
+            }));
         });
 
         containerActions.appendChild(bAdd);
@@ -104,31 +103,31 @@ class ClientList extends HTMLElement {
     connectedCallback() {
         if (this.isConnected) {
             const shadow = this.shadowRoot;
-            const btnSave = shadow.getElementById('btnSave');
-            btnSave.addEventListener('click', function(e) {
-                const inputName = shadow.getElementById('clientName');
-                const inputAddr = shadow.getElementById('clientAddress');
+            // const btnSave = shadow.getElementById('btnSave');
+            // btnSave.addEventListener('click', function(e) {
+            //     const inputName = shadow.getElementById('clientName');
+            //     const inputAddr = shadow.getElementById('clientAddress');
 
-                console.log(inputName.value);
+            //     console.log(inputName.value);
 
-                fetch("/api/admin/clients/add", {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: inputName.value,
-                        address: inputAddr.value
-                    })
-                })
-                .then((response) => { 
-                    response.json(); 
-                })
-                .then((data) => {
-                    console.log(data);
-                });
-            });
+            //     fetch("/api/admin/clients/add", {
+            //         method: 'POST',
+            //         credentials: 'same-origin',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify({
+            //             name: inputName.value,
+            //             address: inputAddr.value
+            //         })
+            //     })
+            //     .then((response) => { 
+            //         response.json(); 
+            //     })
+            //     .then((data) => {
+            //         console.log(data);
+            //     });
+            // });
         }
     }
 

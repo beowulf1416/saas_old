@@ -3,15 +3,44 @@
 {% block content %}
 <h1>Admin Clients Default</h1>
 <client-list id="clientList"></client-list>
+<modal-dialog id="clientDlg">
+    <form id="frmAddClient">
+        <fieldset>
+            <legend>Client Details</legend>
+            <div class="form-input">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-input" title="Name" />
+            </div><!-- .form-input -->
+            <div class="form-input">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" class="form-input" title="Address" />
+            </div><!-- .form-input -->
+        </fieldset>
+        <fieldset>
+            <button type="button" class="form-button">Save</button>
+        </fieldset>
+    </form>
+    <div>this is a test</div>
+</modal-dialog>
 {% endblock %}
 
 {% block bodyscripts %}
 <script type="module" src="/static/js/admin.clients.js"></script>
+<script type="module" src="/static/js/modal.dialog.js"></script>
 <script>
 (function(){
     const cl = document.getElementById('clientList');
+    const dlg = document.getElementById('clientDlg');
     cl.addEventListener('addClient', function(e){
+        // console.log(e);
+        dlg.show();
+    });
+
+    const bAdd = document.querySelector("#frmAddClient .form-button");
+    console.log(bAdd);
+    bAdd.addEventListener('click', function(e) {
         console.log(e);
+        dlg.hide();
     });
 })();
 </script>
