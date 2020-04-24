@@ -48,11 +48,6 @@ class ClientList extends HTMLElement {
             }
         });
 
-        // self.selectClientEvent = new CustomEvent('selectClient', {
-        //     bubbles: true,
-        //     cancelable: true
-        // });
-
         container.appendChild(ul);
     }
 
@@ -149,7 +144,7 @@ class ClientList extends HTMLElement {
                     cancelable: true,
                     detail: l.dataset.id
                 }));
-            }, false);
+            });
         });
     }
 }
