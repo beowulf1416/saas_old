@@ -28,7 +28,6 @@ class ClientList extends HTMLElement {
             return response.json();
         })
         .then((data) => {
-            // console.log(data);
             if (Array.isArray(data)) {
                 data.forEach(client => {
                     const li = document.createElement('li');
@@ -42,6 +41,11 @@ class ClientList extends HTMLElement {
                     ul.appendChild(li);
                 });
             }
+        });
+
+        self.addClientEvent = new CustomEvent('selectClient', {
+            bubbles: true,
+            cancelable: true
         });
 
         container.appendChild(ul);
@@ -93,12 +97,15 @@ class ClientList extends HTMLElement {
         container.appendChild(formContainer);
     }
 
+    initFormEditClient(container) {
+        
+    }
+
     connectedCallback() {
         if (this.isConnected) {
             const shadow = this.shadowRoot;
             const btnSave = shadow.getElementById('btnSave');
             btnSave.addEventListener('click', function(e) {
-                console.log('btnSave.clicked');
                 const inputName = shadow.getElementById('clientName');
                 const inputAddr = shadow.getElementById('clientAddress');
 
@@ -122,6 +129,15 @@ class ClientList extends HTMLElement {
                     console.log(data);
                 });
             });
+
+            const itemLinks = shadow.querySelectorAll(".client-item-link");
+            const func = function(e) {
+                console.log('item linked');
+            };
+            itemLinks.forEach(l => {
+                l.addEventListener('click', func);
+            });
+            console.log(itemLinks.length);
         }
     }
 }

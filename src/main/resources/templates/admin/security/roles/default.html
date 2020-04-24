@@ -2,13 +2,16 @@
 
 {% block content %}
 <h1>Security Role Default</h1>
+<client-list id="clientList"></client-list>
 <roles-list></roles-list>
 {% endblock %}
 
 {% block bodyscripts %}
+<script type="module" src="/static/js/admin.clients.js"></script>
 <script type="module" src="/static/js/admin.roles.js"></script>
 <script>
 (function(){
+    const clientList = document.getElementById('clientList')
 })();
 </script>
 {% endblock %}
