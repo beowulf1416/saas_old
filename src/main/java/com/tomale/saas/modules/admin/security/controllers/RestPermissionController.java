@@ -14,40 +14,42 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.ApiResult;
-import com.tomale.saas.modules.admin.security.Role;
-import com.tomale.saas.modules.admin.security.store.AdminRoleStore;
+import com.tomale.saas.modules.admin.security.Permission;
+import com.tomale.saas.modules.admin.security.store.AdminPermissionStore;
+
+import com.tomale.saas.base.models.ApiResult;
 
 
 @RestController
-@RequestMapping("/api/admin/security/roles")
-public class RestRoleController {
+@RequestMapping("/api/admin/security/permissions")
+public class RestPermissionController {
 
-    private static final Logger log = LogManager.getLogger(RestRoleController.class);
+    private static final Logger log = LogManager.getLogger(RestPermissionController.class);
 
     @Autowired
-    private AdminRoleStore adminRoleStore;
+    private AdminPermissionStore adminPermissionStore;
 
     @PostMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'admin.security.roles')")
-    public ApiResult getAllRoles(Map<String, Object> data) {
+    @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
+    public ApiResult getAllPermissions() {
         try {
-            String clientId = data.get("clientId").toString();
-            List<Role> roles = adminRoleStore.getRoles(UUID.fromString(clientId));
+            List<Permission> permissions = adminPermissionStore.getPermissions());
 
             Gson gson = new Gson();
 
             return new ApiResult(
                 "success",
-                String.format("%d roles retrieved", roles.size()),
-                gson.toJson(roles)
+                String.format("%d permissions retrieved", permissions.size()),
+                gson.toJson(permissions)
             );
         } catch(Exception e) {
             log.error(e);
 
             return new ApiResult(
                 "error",
-                "An error occured while trying to retrieve roles",
+                "An error occured while trying to retrieve permissions",
                 null
             );
         }
