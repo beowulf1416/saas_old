@@ -20,15 +20,15 @@ set schema 'iam';
 
 /* functions */
 /* users */
-\ir procs/user_add.sql
-\ir procs/user_add_google.sql
+\ir procs/users/user_add.sql
+\ir procs/users/user_add_google.sql
 
-\ir procs/user_email_exists.sql
-\ir procs/user_get_by_email.sql
+\ir procs/users/user_email_exists.sql
+\ir procs/users/user_get_by_email.sql
 
-\ir procs/user_signin.sql
+\ir procs/users/user_signin.sql
 
-\ir procs/user_clients_all.sql
+\ir procs/users/user_clients_all.sql
 
 \ir procs/permissions_user_all.sql
 
