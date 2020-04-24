@@ -54,6 +54,7 @@ class RolesList extends HTMLElement {
     
                         ul.appendChild(li);
                     });
+                    this.attachRoleClickHandler(this);
                 } else {
                     console.error(roles);
                 }
@@ -64,7 +65,25 @@ class RolesList extends HTMLElement {
     }
 
     connectedCallback() {
-        
+    }
+
+    attachRoleClickHandler(component) {
+        const shadow = component.shadowRoot;
+        const links = shadow.querySelectorAll('a.role-link');
+        const func = function(roleId) {
+            console.log('link clicked');
+            component.dispatchEvent(new CustomEvent('roleSelect', {
+                bubbles: true,
+                cancelable: true,
+                details: roleId
+            }));
+        };
+        links.forEach(l => {
+            const roleId = l.dataset.id;
+            l.addEventListener('click', function(e) {
+                func(roleId);
+            });
+        });
     }
 }
 
