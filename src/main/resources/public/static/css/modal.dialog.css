@@ -1,0 +1,8 @@
+/* modal dialog styles */
+div.modal-dialog-wrapper div.dialog-wrapper {
+    visibility: visible;
+}
+
+div.modal-dialog-wrapper div.dialog-wrapper:not(.modal-show) {
+    visibility: hidden;
+}

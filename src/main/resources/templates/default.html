@@ -2,4 +2,16 @@
 
 {% block content %}
 <h1>Default content</h1>
+<modal-dialog>
+    <div>test</div>
+</modal-dialog>
+{% endblock %}
+
+{% block bodyscripts %}
+<script type="module" src="/static/js/modal.dialog.js"></script>
+<script>
+(function(){
+
+})();
+</script>
 {% endblock %}
