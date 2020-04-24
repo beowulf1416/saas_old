@@ -1,5 +1,8 @@
 package com.tomale.saas.modules.admin.security.controllers;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
     method = RequestMethod.GET
 )
 public class RoleController {
+
+    private final static Logger log = LogManager.getLogger(RoleController.class);
 
     @GetMapping("")
     @PreAuthorize("hasPermission(#user, 'admin.security.roles')")
