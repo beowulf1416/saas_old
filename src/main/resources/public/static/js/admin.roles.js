@@ -75,7 +75,7 @@ class RolesList extends HTMLElement {
             component.dispatchEvent(new CustomEvent('roleSelect', {
                 bubbles: true,
                 cancelable: true,
-                details: roleId
+                detail: roleId
             }));
         };
         links.forEach(l => {

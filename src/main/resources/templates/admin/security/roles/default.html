@@ -19,6 +19,12 @@
         console.log(e);
         roleList.setClient(e.detail);
     });
+
+    roleList.addEventListener('roleSelect', function(e) {
+        console.log('roleSelect');
+        console.log(e);
+        console.log(e.detail);
+    });
 })();
 </script>
 {% endblock %}
