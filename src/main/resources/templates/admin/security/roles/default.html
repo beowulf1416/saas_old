@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Security Role Default</h1>
 <client-list id="clientList"></client-list>
-<roles-list></roles-list>
+<roles-list id="roleList"></roles-list>
 {% endblock %}
 
 {% block bodyscripts %}
@@ -12,9 +12,12 @@
 <script>
 (function(){
     const clientList = document.getElementById('clientList')
+    const roleList = document.getElementById('roleList');
+
     clientList.addEventListener('selectClient', function(e) {
         console.log('selectClient');
         console.log(e);
+        roleList.setClient(e.detail);
     });
 })();
 </script>

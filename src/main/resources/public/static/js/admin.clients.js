@@ -9,9 +9,9 @@ class ClientList extends HTMLElement {
         container.classList.add('client-list-container');
 
         self.initList = self.initList.bind(this);
-        self.attachClientItemClickEventHandler = self.attachClientItemClickEventHandler.bind(this);
+        // self.attachClientItemClickEventHandler = self.attachClientItemClickEventHandler.bind(this);
 
-        self.initList(container);
+        self.initList(self, container);
         self.initActions(container);
         self.initFormAddClient(container);
 
@@ -19,7 +19,7 @@ class ClientList extends HTMLElement {
         shadow.appendChild(container);
     }
 
-    initList(container) {
+    initList(component, container) {
         const ul = document.createElement('ul');
         ul.classList.add('client-list');
 
@@ -44,7 +44,7 @@ class ClientList extends HTMLElement {
                     ul.appendChild(li);
                 });
 
-                this.attachClientItemClickEventHandler(container);
+                this.attachClientItemClickEventHandler(component, container);
             }
         });
 
@@ -132,14 +132,11 @@ class ClientList extends HTMLElement {
         }
     }
 
-    attachClientItemClickEventHandler(container) {
+    attachClientItemClickEventHandler(component, container) {
         const items = container.querySelectorAll(".client-item-link");
         items.forEach(l => {
             l.addEventListener('click', function(e) {
-                // this.selectClientEvent
-                // this.dispatchEvent(this.selectClientEvent);
-                console.log(l);
-                this.dispatchEvent(new CustomEvent('selectClient', {
+                component.dispatchEvent(new CustomEvent('selectClient', {
                     bubbles: true,
                     cancelable: true,
                     detail: l.dataset.id
