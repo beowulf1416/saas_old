@@ -19,7 +19,7 @@ begin
             r.client_id,
             r.name
     from iam.roles r
-        inner join iam.role_clients rc on r.id = rc.role_id;
+    where r.client_id = p_client_id;
 end
 $$
 language plpgsql;
