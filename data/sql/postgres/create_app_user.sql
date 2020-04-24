@@ -17,6 +17,11 @@ grant all privileges on all tables in schema iam to saas_app_usr;
 grant usage on schema iam to saas_app_usr;
 grant execute on all functions in schema iam to saas_app_usr;
 
+/** accounting **/
+grant all privileges on all tables in schema accounting to saas_app_usr;
+grant usage on schema accounting to saas_app_usr;
+grant execute on all functions in schema accounting to saas_app_usr;
+
 /** inventory **/
 grant all privileges on all tables in schema inventory to saas_app_usr;
 grant usage on schema inventory to saas_app_usr;

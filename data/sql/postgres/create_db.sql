@@ -24,6 +24,7 @@ create domain email_address
 \ir clients/create.sql
 \ir common/create.sql
 \ir iam/create.sql
+\ir accounting/create.sql
 \ir inventory/create.sql
 
 set schema 'public';
