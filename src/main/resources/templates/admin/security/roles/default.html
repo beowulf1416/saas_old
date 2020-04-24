@@ -12,6 +12,10 @@
 <script>
 (function(){
     const clientList = document.getElementById('clientList')
+    clientList.addEventListener('selectClient', function(e) {
+        console.log('selectClient');
+        console.log(e);
+    });
 })();
 </script>
 {% endblock %}

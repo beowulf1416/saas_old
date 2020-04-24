@@ -8,6 +8,9 @@ class ClientList extends HTMLElement {
         const container = document.createElement('div');
         container.classList.add('client-list-container');
 
+        self.initList = self.initList.bind(this);
+        self.attachClientItemClickEventHandler = self.attachClientItemClickEventHandler.bind(this);
+
         self.initList(container);
         self.initActions(container);
         self.initFormAddClient(container);
@@ -33,20 +36,22 @@ class ClientList extends HTMLElement {
                     const li = document.createElement('li');
                     li.classList.add('client-list-item');
                     li.innerHTML = `
-                        <a class="nav-link client-item-link" title="${client.name}" href="#">${client.name}</a>
+                        <a class="nav-link client-item-link" title="${client.name}" data-id="${client.id}" href="#">${client.name}</a>
                         <span>&nbsp;</span>
                         <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
                     `;
                     
                     ul.appendChild(li);
                 });
+
+                this.attachClientItemClickEventHandler(container);
             }
         });
 
-        self.addClientEvent = new CustomEvent('selectClient', {
-            bubbles: true,
-            cancelable: true
-        });
+        // self.selectClientEvent = new CustomEvent('selectClient', {
+        //     bubbles: true,
+        //     cancelable: true
+        // });
 
         container.appendChild(ul);
     }
@@ -129,16 +134,23 @@ class ClientList extends HTMLElement {
                     console.log(data);
                 });
             });
-
-            const itemLinks = shadow.querySelectorAll(".client-item-link");
-            const func = function(e) {
-                console.log('item linked');
-            };
-            itemLinks.forEach(l => {
-                l.addEventListener('click', func);
-            });
-            console.log(itemLinks.length);
         }
+    }
+
+    attachClientItemClickEventHandler(container) {
+        const items = container.querySelectorAll(".client-item-link");
+        items.forEach(l => {
+            l.addEventListener('click', function(e) {
+                // this.selectClientEvent
+                // this.dispatchEvent(this.selectClientEvent);
+                console.log(l);
+                this.dispatchEvent(new CustomEvent('selectClient', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: l.dataset.id
+                }));
+            }, false);
+        });
     }
 }
 
