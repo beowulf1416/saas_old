@@ -4,19 +4,21 @@
 <h1>Security Role Default</h1>
 <client-list id="clientList"></client-list>
 <roles-list id="roleList"></roles-list>
+<permissions-list id="permissionsList"></permissions-list>
 {% endblock %}
 
 {% block bodyscripts %}
 <script type="module" src="/static/js/admin.clients.js"></script>
 <script type="module" src="/static/js/admin.roles.js"></script>
+<script type="module" src="/static/js/admin.permissions.js"></script>
 <script>
 (function(){
     const clientList = document.getElementById('clientList')
     const roleList = document.getElementById('roleList');
 
     clientList.addEventListener('selectClient', function(e) {
-        console.log('selectClient');
-        console.log(e);
+        // console.log('selectClient');
+        // console.log(e);
         roleList.setClient(e.detail);
     });
 
