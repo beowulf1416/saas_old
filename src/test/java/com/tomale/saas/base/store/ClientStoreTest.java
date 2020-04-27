@@ -31,9 +31,6 @@ public class ClientStoreTest {
     @Value("${spring.datasource.password}")
     private String dbPw;
 
-    @Value("${app.default.client}")
-    private String defaultClient;
-
     private PGSimpleDataSource ds;
     private ClientStore cs;
 
@@ -44,7 +41,7 @@ public class ClientStoreTest {
         ds.setUser(dbUser);
         ds.setPassword(dbPw);
 
-        cs = new ClientStore(new JdbcTemplate(ds), defaultClient);
+        cs = new ClientStore(new JdbcTemplate(ds));
     }
 
     @Test

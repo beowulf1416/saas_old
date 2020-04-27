@@ -24,11 +24,9 @@ public class ClientStore {
     private static final String SQL_CLIENTS_GET = "{call clients.clients_get(?)}";
 
     private final JdbcTemplate jdbc;
-    private String defaultClientId;
 
-    public ClientStore(JdbcTemplate jdbc, String defaultClientId) {
+    public ClientStore(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
-        this.defaultClientId = defaultClientId;
     }
 
     public List<Client> getAll() throws Exception {

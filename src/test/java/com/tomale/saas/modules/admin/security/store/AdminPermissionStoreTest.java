@@ -32,9 +32,6 @@ public class AdminPermissionStoreTest {
     @Value("${spring.datasource.password}")
     private String dbPw;
 
-    @Value("${app.default.client}")
-    private String defaultClient;
-
     private PGSimpleDataSource ds;
     private AdminPermissionStore aps;
 

@@ -16,9 +16,6 @@ public class AppConfiguration {
     @Autowired
     private JdbcTemplate jdbc;
 
-    @Value("${app.default.client}")
-    private String defaultClientId;
-
     @Bean
     public UserStore userStore() {
         return new UserStore(jdbc);
@@ -31,6 +28,6 @@ public class AppConfiguration {
 
     @Bean
     public ClientStore clientStore() {
-        return new ClientStore(jdbc, defaultClientId);
+        return new ClientStore(jdbc);
     }
 }
