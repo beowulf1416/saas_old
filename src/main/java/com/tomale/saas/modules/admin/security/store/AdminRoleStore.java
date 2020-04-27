@@ -19,7 +19,7 @@ public class AdminRoleStore {
     private static final Logger log = LogManager.getLogger(AdminRoleStore.class);
 
     private static final String SQL_ROLES_ALL = "{call iam.roles_all(?)}";
-    private static final String SQL_ROLE_ADD = "{? = iam.role_add(?,?)}";
+    private static final String SQL_ROLE_ADD = "{? = call iam.role_add(?,?)}";
 
     private JdbcTemplate jdbc;
 
