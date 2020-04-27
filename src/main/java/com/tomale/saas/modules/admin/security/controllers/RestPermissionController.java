@@ -54,4 +54,19 @@ public class RestPermissionController {
             );
         }
     }
+
+    @PostMapping("/role")
+    @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
+    public ApiResult getRolePermissions() {
+        try {
+            
+        } catch(Exception e) {
+            log.error(e);
+            return new ApiResult(
+                "error",
+                "An error occured while trying to retrieve permissions",
+                null
+            );
+        }
+    }
 }

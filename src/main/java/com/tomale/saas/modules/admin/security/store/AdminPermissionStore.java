@@ -20,6 +20,7 @@ public class AdminPermissionStore {
     private static final Logger log = LogManager.getLogger(AdminPermissionStore.class);
 
     private static final String SQL_PERMISSIONS_ALL = "{call iam.permissions_all()}";
+    private static final String SQL_PERMISSIONS_ROLE = "{call iam.permissions_role(?,?)}";
 
     private JdbcTemplate jdbc;
 
@@ -45,6 +46,34 @@ public class AdminPermissionStore {
             }
             return permissions;
         } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve permissions");
+        }
+    }
+
+    public List<Permission> getRolePermissions throws Exception (
+        UUID clientId,
+        UUID roleId
+    ) {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_PERMISSIONS_ROLE);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, roleId);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+            ArrayList<Permission> permissions = new ArrayList<Permission>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(4);
+
+                permissions.add(new Permission(id, active, name));
+            }
+            return permissions;
+        } catch(SQLException e){
             log.error(e);
             throw new Exception("An error occured while trying to retrieve permissions");
         }
