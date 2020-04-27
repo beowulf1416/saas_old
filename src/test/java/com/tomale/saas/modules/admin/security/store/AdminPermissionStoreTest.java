@@ -53,7 +53,33 @@ public class AdminPermissionStoreTest {
         try {
             List<Permission> permissions = aps.getPermissions();
         } catch(Exception e){
-            Assert.fail(e);
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRolePermissions() {
+        try {
+            // List<Permission> permissions = aps.getRolePermissions();
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+    
+    @Test
+    public void testRolePermissionAssign() {
+        try {
+            // aps.assignRolePermission(clientId, roleId, permissionId);
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    public void testRolePermissionRevoke() {
+        try {
+            // aps.revokeRolePermission(clientId, roleId, permissionId);
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
         }
     }
 }

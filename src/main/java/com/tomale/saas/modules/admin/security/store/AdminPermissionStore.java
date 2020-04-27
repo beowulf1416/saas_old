@@ -53,10 +53,10 @@ public class AdminPermissionStore {
         }
     }
 
-    public List<Permission> getRolePermissions throws Exception (
+    public List<Permission> getRolePermissions(
         UUID clientId,
         UUID roleId
-    ) {
+    ) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
