@@ -36,6 +36,8 @@ set schema 'iam';
 
 /* roles */
 \ir procs/permissions/permissions_all.sql
+\ir procs/permissions/permissions_role_assign.sql
+\ir procs/permissions/permissions_role_revoke.sql
 
 \ir procs/roles/roles_all.sql
 \ir procs/roles/role_add.sql
