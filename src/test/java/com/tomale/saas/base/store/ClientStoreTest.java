@@ -59,7 +59,7 @@ public class ClientStoreTest {
     @Test
     public void testGetDefault() {
         try {
-            Client client = cs.get(UUID.fromString("45e226b7-aadf-45cb-bf77-811cf5e5c227"));
+            Client client = cs.getDefault();
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }

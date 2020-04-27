@@ -19,6 +19,7 @@ public class ClientStore {
 
     private static final Logger log = LogManager.getLogger(ClientStore.class);
 
+    private static final String SQL_CLIENTS_DEFAULT = "{call clients.client_default()}";
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENTS_GET = "{call clients.clients_get(?)}";
 
@@ -50,7 +51,7 @@ public class ClientStore {
             return clients;
         } catch(SQLException e) {
             log.error(e);
-            throw new Exception("An error occured while trying to add user");
+            throw new Exception("An error occured while trying to retrieve clients");
         }
     }
 
@@ -75,11 +76,31 @@ public class ClientStore {
             }
         } catch(SQLException e) {
             log.error(e);
-            throw new Exception("An error occured while trying to add user");
+            throw new Exception("An error occured while trying to retrieve client");
         }
     }
 
     public Client getDefault() throws Exception {
-        return get(UUID.fromString(defaultClientId));
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENTS_DEFAULT);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+            if (rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+                String address = rs.getString(4);
+
+                return new Client(id, name, address);
+            } else {
+                throw new Exception("Default Client not found");
+            }
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve default client");
+        }
     }
 }
