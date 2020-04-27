@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.util.List;
 import java.util.UUID;
 
+import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.store.ClientStore;
 import com.tomale.saas.modules.admin.security.Role;
 
 import org.junit.Assert;
@@ -32,11 +34,12 @@ public class AdminRoleStoreTest {
     @Value("${spring.datasource.password}")
     private String dbPw;
 
-    @Value("${app.default.client}")
-    private String defaultClient;
-
     private PGSimpleDataSource ds;
+
+    private ClientStore cs;
     private AdminRoleStore ars;
+
+    private UUID defaultClientId;
 
     @Before
     public void setup() {
@@ -45,13 +48,23 @@ public class AdminRoleStoreTest {
         ds.setUser(dbUser);
         ds.setPassword(dbPw);
 
-        ars = new AdminRoleStore(new JdbcTemplate(ds));
+        JdbcTemplate jdbc = new JdbcTemplate(ds);
+        ars = new AdminRoleStore(jdbc);
+
+        try {
+            cs = new ClientStore(jdbc);
+            Client client = cs.getDefault();
+            defaultClientId  = client.getId();
+        } catch(Exception e){
+            Assert.fail(e.getMessage());
+        }
     }
 
     @Test
     public void testAll() {
         try {
-            List<Role> roles = ars.getRoles(UUID.fromString(defaultClient));
+
+            List<Role> roles = ars.getRoles(defaultClientId);
         } catch(Exception e){
             Assert.fail(e.getMessage());
         }
@@ -75,7 +88,7 @@ public class AdminRoleStoreTest {
     public void testAdd() {
         try {
             String name = this.generateRandomString(10);
-            UUID id = ars.addRole(UUID.fromString(defaultClient), name);
+            UUID id = ars.addRole(defaultClientId, name);
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
