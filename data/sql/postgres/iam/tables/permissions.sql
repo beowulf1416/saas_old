@@ -9,9 +9,10 @@ create table if not exists permissions (
     constraint u_permission_1 unique (name)
 );
 
-insert into permissions (name) values 
+insert into permissions (name) values
+('user.authenticated'),
 ('admin.clients'),
 ('admin.security.permissions'),
 ('admin.security.roles'),
-('user.authenticated')
+('admin.security.users')
 on conflict do nothing;
