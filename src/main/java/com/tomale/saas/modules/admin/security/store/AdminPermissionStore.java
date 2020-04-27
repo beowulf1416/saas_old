@@ -40,9 +40,9 @@ public class AdminPermissionStore {
             ResultSet rs = stmt.getResultSet();
             ArrayList<Permission> permissions = new ArrayList<Permission>();
             while(rs.next()) {
-                UUID id = UUID.fromString(rs.getString(1));
+                int id = rs.getInt(1);
                 boolean active = rs.getBoolean(2);
-                String name = rs.getString(4);
+                String name = rs.getString(3);
 
                 permissions.add(new Permission(id, active, name));
             }
@@ -68,9 +68,9 @@ public class AdminPermissionStore {
             ResultSet rs = stmt.getResultSet();
             ArrayList<Permission> permissions = new ArrayList<Permission>();
             while(rs.next()) {
-                UUID id = UUID.fromString(rs.getString(1));
+                int id = rs.getInt(1);
                 boolean active = rs.getBoolean(2);
-                String name = rs.getString(4);
+                String name = rs.getString(3);
 
                 permissions.add(new Permission(id, active, name));
             }
@@ -81,32 +81,30 @@ public class AdminPermissionStore {
         }
     }
 
-    public void assignRolePermission(UUID clientId, UUID roleId, UUID permissionId) throws Exception {
+    public void assignRolePermission(UUID clientId, UUID roleId, int permissionId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_PERMISSIONS_ROLE_ASSIGN);
             stmt.setObject(1, clientId);
             stmt.setObject(2, roleId);
-            stmt.setObject(3, permissionId);
+            stmt.setInt(3, permissionId);
             stmt.execute();
-
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to assign permission to role");
         }
     }
 
-    public void revokeRolePermission(UUID clientId, UUID roleId, UUID permissionId) throws Exception {
+    public void revokeRolePermission(UUID clientId, UUID roleId, int permissionId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_PERMISSIONS_ROLE_REVOKE);
             stmt.setObject(1, clientId);
             stmt.setObject(2, roleId);
-            stmt.setObject(3, permissionId);
+            stmt.setInt(3, permissionId);
             stmt.execute();
-
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to assign permission to role");
