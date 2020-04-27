@@ -2,7 +2,7 @@
  * warehouses
  */
 create table if not exists warehouses (
-    id uuid not null default public.get_random_uuid(),
+    id uuid not null default public.gen_random_uuid(),
     active boolean not null default false,
     created_ts timestamp with time zone not null default(now() at time zone 'utc'),
     client_id uuid not null,

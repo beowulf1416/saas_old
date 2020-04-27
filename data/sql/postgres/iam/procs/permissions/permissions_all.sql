@@ -1,7 +1,7 @@
 /**
  * retrieve all permissions
  */
-create or replace permissions_all ()
+create or replace function permissions_all ()
 returns table (
     id iam.permissions.id%type,
     active iam.permissions.active%type,

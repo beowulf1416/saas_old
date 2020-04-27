@@ -9,7 +9,7 @@ create or replace function permissions_role_assign (
 returns void
 as $$
 begin
-    insert into iam.role_permissions rp (role_id, permission_id, client_id)  values 
+    insert into iam.role_permissions (role_id, permission_id, client_id)  values 
     (p_role_id, p_permission_id, p_client_id)
     on conflict do nothing;
 end
