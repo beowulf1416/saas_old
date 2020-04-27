@@ -81,7 +81,7 @@ public class AdminPermissionStore {
         }
     }
 
-    public void assignRolePermission(UUID clientId, UUID roleId, UUId permissionId) throws Exception {
+    public void assignRolePermission(UUID clientId, UUID roleId, UUID permissionId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
@@ -97,7 +97,7 @@ public class AdminPermissionStore {
         }
     }
 
-    public void revokeRolePermission(UUID clientId, UUID roleId, UUId permissionId) throws Exception {
+    public void revokeRolePermission(UUID clientId, UUID roleId, UUID permissionId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
