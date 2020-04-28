@@ -32,4 +32,11 @@ public class ClientsController {
         ModelAndView mv = new ModelAndView("clients/default");
         return mv;
     }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasPermission(#user, 'clients.admin.users')")
+    public ModelAndView viewUsers() {
+        ModelAndView mv = new ModelAndView("clients/users");
+        return mv;
+    }
 }
