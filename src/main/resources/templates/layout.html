@@ -12,9 +12,13 @@
             <div class="col col-1">2</div>
             <div class="col col-2 col-end">3</div>
         </div>
-        <div class="row row-1">
+        <div class="row row-1 row-wrapper">
+            <div class="col col-0 col-start"></div>
+            <div class="col col-1">
             {% block content %}
             {% endblock %}
+        </div>
+        <div class="col col-2 col-end"></div>
         </div>
         <div class="row row-2 row-end">3</div>
     </div><!-- .column-wrapper -->
