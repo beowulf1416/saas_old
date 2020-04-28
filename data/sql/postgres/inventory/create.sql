@@ -9,6 +9,8 @@ set schema 'inventory';
 \ir tables/locations.sql
 
 \ir tables/categories.sql
+\ir tables/groups.sql
+\ir tables/attributes.sql
 
 \ir tables/items.sql
 \ir tables/item_substitutes.sql
