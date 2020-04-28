@@ -83,11 +83,15 @@ public class SecurityController {
     private ClientStore clientStore;
 
     @GetMapping("/signin")
-    public ModelAndView userSignIn() {
+    public ModelAndView userSignIn(@RequestParam(defaultValue = "", required = false) String dest) {
         log.debug("VIEW: security.signin");
         
         ModelAndView mv = new ModelAndView("security/signin");
-        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(clientId, redirectUriGoogleSignin));
+        mv.addObject("google_oauth_url", Google.getAuthorizationUrl(
+            clientId, 
+            redirectUriGoogleSignin, 
+            dest
+        ));
 
         return mv;
     }
@@ -115,9 +119,11 @@ public class SecurityController {
     @GetMapping("/signin/google/oauth/redirect")
     public ModelAndView userSigninGoogleRedirect(
         HttpServletResponse response,
-        @RequestParam String code
+        @RequestParam String code,
+        @RequestParam(defaultValue = "", required = false) String dest
     ) {
         log.debug("VIEW: security.signin.google");
+        log.debug(dest);
 
         try {
             Map<String, String> tokens = Google.getTokens(

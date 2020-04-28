@@ -30,7 +30,7 @@ public class Google {
     private final static HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private final static JsonFactory JSON_FACTORY = new JacksonFactory();
 
-    public static String getAuthorizationUrl(String clientId, String redirectUri) {
+    public static String getAuthorizationUrl(String clientId, String redirectUri, String destination) {
         String url = new GoogleAuthorizationCodeRequestUrl(
                 clientId, 
                 redirectUri, 
@@ -42,6 +42,7 @@ public class Google {
                     "email"
                 )
             )
+            .set("dest", destination)
             .build();
         return url;
     }
