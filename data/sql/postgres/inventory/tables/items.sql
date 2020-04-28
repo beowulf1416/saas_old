@@ -9,6 +9,7 @@ create table if not exists items (
     name text not null,
     description text not null,
     make varchar(100),
+    brand varchar(100),
     model varchar(100),
     version varchar(100),
     sku varchar(100),
