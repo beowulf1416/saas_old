@@ -8,11 +8,16 @@ import java.util.Enumeration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+import com.tomale.saas.base.models.ApiResult;
+
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -69,6 +74,35 @@ public class CustomErrorController implements ErrorController {
     @Override
     public String getErrorPath() {
         return "/error";
+    }
+
+    @RequestMapping(
+        path = "/error",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ApiResult> errorJSON(HttpServletRequest request) {
+        Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        HttpStatus value = HttpStatus.valueOf((int) status);
+
+        String msg = "";
+
+        switch(value) {
+            case UNAUTHORIZED: {
+                msg = "You are not allowed to view the results of this request";
+                break;
+            }
+            default: {
+                log.warn(String.format("Unknown error status code: %s", status.toString()));
+                msg = String.format("An unknown error has occured (%d)", value);
+                break;
+            }
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return new ResponseEntity<ApiResult>(new ApiResult("error", msg, null), headers, value);
     }
     
 }
