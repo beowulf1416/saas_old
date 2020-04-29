@@ -78,7 +78,7 @@ public class CustomErrorController implements ErrorController {
 
     @RequestMapping(
         path = "/error",
-        method = RequestMethod.POST,
+        method = {RequestMethod.POST, RequestMethod.GET},
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ApiResult> errorJSON(HttpServletRequest request) {
@@ -94,7 +94,7 @@ public class CustomErrorController implements ErrorController {
             }
             default: {
                 log.warn(String.format("Unknown error status code: %s", status.toString()));
-                msg = String.format("An unknown error has occured (%d)", value);
+                msg = String.format("An unknown error has occured (%s)", value.toString());
                 break;
             }
         }
