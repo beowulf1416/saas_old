@@ -6,4 +6,9 @@ Inventory
 
 {% block content %}
 <h1>Inventory default</h1>
+<inventory-item-list id="invItems"></inventory-item-list>
 {% endblock %}
+
+{% block scripts %}
+<script type="module" src="/static/js/inventory/items.list.js"></script>
+{% endblock scripts %}
