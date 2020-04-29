@@ -42,6 +42,7 @@ public class JWTUtil {
 
     private static final String CLAIM_EMAIL = "email";
     private static final String CLAIM_PERMISSIONS = "permissions";
+    private static final String CLAIM_PERMISSIONS_CLEAR = "permissions_clear";
     private static final String CLAIM_TOKEN = "token";
     private static final String CLAIM_CURRENT_CLIENT = "client_current";
     private static final String CLAIM_CLIENTS = "clients";
@@ -89,6 +90,7 @@ public class JWTUtil {
                 .withClaim(CLAIM_EMAIL, user.getEmail())
                 // .withArrayClaim(CLAIM_PERMISSIONS, permissions.toArray(new String[permissions.size()]))
                 .withClaim(CLAIM_PERMISSIONS, encodedPermissions)
+                .withClaim(CLAIM_PERMISSIONS_CLEAR, szPermissions)
                 .withClaim(CLAIM_CURRENT_CLIENT, szCurrentClient)
                 .withClaim(CLAIM_CLIENTS, szClients)
                 .withExpiresAt(expiry)

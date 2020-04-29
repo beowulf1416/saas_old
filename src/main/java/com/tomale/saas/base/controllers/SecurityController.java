@@ -155,6 +155,10 @@ public class SecurityController {
                 List<Client> clients = userStore.userClients(user_id);
                 // retrieve user permissions
                 List<String> permissions = permissionStore.userPermissions(user_id, client.getId());
+                // added user.authenticated permission
+                if (permissions.size() == 0) {
+                    permissions.add("user.authenticated");
+                }
                 
                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
                 String token = jwt.generateToken(user, permissions, client, clients);
