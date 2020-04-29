@@ -8,13 +8,21 @@ class ClientSelector extends HTMLElement {
         const container = document.createElement('div');
         container.classList.add('container');
 
-        this.initSelect(self, container);
+        const form = document.createElement('form');
+        form.classList.add('form-container');
+        container.appendChild(form);
+
+        this.initSelect(self, form);
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
     }
 
     initSelect(component, container) {
+        const s = document.createElement('select');
+        s.classList.add('client-select');
+        s.title = 'Please select client';
+
         fetch('/api/clients/all', {
             method: 'GET',
             credentials: 'same-origin',
@@ -23,12 +31,23 @@ class ClientSelector extends HTMLElement {
             },
         })
         .then((response) => response.json())
-        .then((data) => console.log(data));
-
-        const s = document.createElement('select');
-        s.classList.add('client-select');
-
-        
+        .then((data) => {
+            if (data && data.json) {
+                const clients = JSON.parse(data.json);
+                if (Array.isArray(clients)) {
+                    clients.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.id;
+                        opt.text = c.name;
+                        s.appendChild(opt);
+                    });
+                } else {
+                    console.error(clients);
+                }
+            } else {
+                console.error(data);
+            }
+        });
 
         container.appendChild(s);
     }
