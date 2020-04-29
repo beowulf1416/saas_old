@@ -29,10 +29,24 @@ public class InventoryStore {
 
     public List<InventoryItem> all() throws Exception {
         try {
-            
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_INV_ITEMS_ALL);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+            ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                // boolean active = rs.getBoolean(2);
+                String name = rs.getString(2);
+
+                items.add(new InventoryItem(id, name));
+            }
+            return items;
         } catch(SQLException e) {
             log.error(e.getMessage());
-            throws new Exception("An error occured while trying to retrieve all inventory items");
+            throw new Exception("An error occured while trying to retrieve all inventory items");
         }
     }
 }
