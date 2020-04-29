@@ -10,7 +10,7 @@ class UsersList extends HTMLElement {
 
         this.initList(self, container);
 
-        const shadow = this.shadowRoot;
+        const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
     }
 

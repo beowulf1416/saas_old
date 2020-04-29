@@ -36,7 +36,7 @@ public class RestRoleController {
     @PreAuthorize("hasPermission(#user, 'admin.security.roles')")
     public ApiResult getAllRoles(@RequestBody Map<String, Object> data, HttpServletResponse response) {
         try {
-            log.debug(data);
+            // log.debug(data);
             Object param = data.get("clientId");
             if (param == null) {
                 response.setStatus(HttpStatus.BAD_REQUEST.value());
