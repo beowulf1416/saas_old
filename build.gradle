@@ -47,7 +47,10 @@ dependencies {
 	implementation 'com.auth0:java-jwt:3.10.2'
 
 	// apache ignite
-	implementation 'org.apache.ignite:ignite-core:2.8.0'
+	// implementation 'org.apache.ignite:ignite-core:2.8.0'
+
+	// graphql
+	implementation 'com.graphql-java:graphql-java:11.0'
 }
 
 test {
