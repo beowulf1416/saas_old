@@ -16,7 +16,7 @@ class ClientSelector extends HTMLElement {
 
     initSelect(component, container) {
         fetch('/api/clients/all', {
-            method: 'POST',
+            method: 'GET',
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json'
