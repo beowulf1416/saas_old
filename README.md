@@ -6,6 +6,7 @@ Technologies
 * OAUTH authentication
 * JWT authentication token
 * web components
+* GraphQL
 
 Operations
 * Client Management
