@@ -7,8 +7,10 @@ Inventory
 {% block content %}
 <h1>Inventory default</h1>
 <inventory-item-list id="invItems"></inventory-item-list>
+<inventory-item-editor id="invItemEdit"></inventory-item-editor>
 {% endblock %}
 
 {% block scripts %}
 <script type="module" src="/static/js/inventory/items.list.js"></script>
+<script type="module" src="/static/js/inventory/items.edit.js"></script>
 {% endblock scripts %}
