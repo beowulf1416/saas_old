@@ -1,0 +1,31 @@
+{% extends '/templates/base.html' %}
+
+{% block links -%}
+<link rel="stylesheet" href="/static/css/layout.css">
+{%- endblock %}
+
+{% block page_content %}
+<div id="pageContent">
+    <div class="column-wrapper">
+        <div class="row row-0 row-start row-wrapper">
+            <div class="col col-0 col-start">
+                {% block 1x1 %}
+                {% endblock %}
+            </div>
+            <div class="col col-1">2</div>
+            <div class="col col-2 col-end">
+                <client-selector id="clientSelector"></client-selector>
+            </div>
+        </div>
+        <div class="row row-1 row-wrapper">
+            <div class="col col-0 col-start"></div>
+            <div class="col col-1">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <div class="col col-2 col-end"></div>
+        </div>
+        <div class="row row-2 row-end">3</div>
+    </div><!-- .column-wrapper -->
+</div><!-- #pageContent -->
+{% endblock %}

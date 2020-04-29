@@ -7,15 +7,15 @@
         {%- endblock %}
         <title>{% block title %}Welcome{% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-        {% block links -%}
-        {%- endblock %}
+        {% block baselinks -%}
+        {%- endblock baselinks %}
         {% block headscripts -%}
-        {%- endblock %}
+        {%- endblock headscripts %}
     </head>
     <body>
         {% block page_content %}
-        {% endblock %}
-        {% block bodyscripts -%}
-        {%- endblock %}
+        {% endblock page_content %}
+        {% block basebodyscripts -%}
+        {%- endblock basebodyscripts %}
     </body>
 </html>

@@ -1,32 +1,35 @@
 {% extends '/templates/base.html' %}
 
-{% block links -%}
+{% block baselinks -%}
+<!-- links -->
 <link rel="stylesheet" href="/static/css/layout.css">
-{%- endblock %}
+{%- endblock baselinks %}
 
 {% block page_content %}
 <div id="pageContent">
     <div class="column-wrapper">
         <div class="row row-0 row-start row-wrapper">
-            <div class="col col-0 col-start">1</div>
-            <div class="col col-1">2</div>
-            <div class="col col-2 col-end">
-                <client-selector id="clientSelector"></client-selector>
+            <div class="col col-0 col-start">
+                <a title="SAAS" class="nav-link" href="#">saas_app_name</a>
             </div>
-        </div>
-        <div class="row row-1 row-wrapper">
-            <div class="col col-0 col-start"></div>
             <div class="col col-1">
+                <search-bar id="mainSearch"></search-bar>
+            </div>
+            <div class="col col-2 col-end">3</div>
+        </div><!-- .row-wrapper -->
+        <div class="row row-1">
             {% block content %}
             {% endblock %}
+        </div><!-- .row-wrapper -->
+        <div class="row row-2 row-end">
+            &copy; saas_app_name
         </div>
-        <div class="col col-2 col-end"></div>
-        </div>
-        <div class="row row-2 row-end">3</div>
     </div><!-- .column-wrapper -->
 </div><!-- #pageContent -->
-{% endblock %}
+{% endblock page_content %}
 
-{% block bodyscripts %}
+{% block basebodyscripts %}
+<!-- scripts -->
+<script type="module" src="/static/js/search.bar.js"></script>
 <script type="module" src="/static/js/client.selector.js"></script>
-{% endblock %}
+{% endblock basebodyscripts %}
