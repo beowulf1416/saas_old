@@ -20,6 +20,6 @@ set schema 'inventory';
 
 
 /** functions **/
-
+\ir procs/items/items_all.sql
 
 set schema 'public';
