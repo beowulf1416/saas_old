@@ -8,11 +8,23 @@ class ClientSelector extends HTMLElement {
         const container = document.createElement('div');
         container.classList.add('container');
 
-        const shadow = this.shadowRoot;
+        this.initSelect(self, container);
+
+        const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
     }
 
     initSelect(component, container) {
+        fetch('/api/clients/all', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+
         const s = document.createElement('select');
         s.classList.add('client-select');
 
@@ -27,4 +39,4 @@ class ClientSelector extends HTMLElement {
 }
 
 customElements.define('client-selector', ClientSelector);
-exports { ClientSelector };
+export { ClientSelector };
