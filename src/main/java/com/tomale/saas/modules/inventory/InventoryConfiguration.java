@@ -1,6 +1,6 @@
 package com.tomale.saas.modules.inventory;
 
-import com.tomale.saas.modules.inventory.store.InventoryStore;
+import com.tomale.saas.modules.inventory.store.InventoryItemStore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class InventoryConfiguration {
     private JdbcTemplate jdbc;
 
     @Bean
-    public InventoryStore inventoryStore() {
-        return new InventoryStore(jdbc);
+    public InventoryItemStore inventoryStore() {
+        return new InventoryItemStore(jdbc);
     }
 }
