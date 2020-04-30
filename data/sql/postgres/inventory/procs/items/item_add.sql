@@ -10,6 +10,7 @@ create or replace function item_add (
     p_model items.model%type,
     p_version items.version%type,
     p_sku items.sku%type,
+    p_upc items.upc%type,
     p_length items.length%type,
     p_width items.width%type,
     p_height items.height%type,
@@ -17,12 +18,12 @@ create or replace function item_add (
     p_perishable items.perishable%type,
     p_hazardous items.hazardous%type
 )
-returns items.id%type
+returns inventory.items.id%type
 as $$
 declare
-    tmp_id items.id%type;
+    tmp_id inventory.items.id%type;
 begin
-    insert into items (
+    insert into inventory.items (
         client_id,
         name,
         description,

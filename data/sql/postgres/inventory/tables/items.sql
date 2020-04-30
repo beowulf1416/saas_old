@@ -13,6 +13,7 @@ create table if not exists items (
     model varchar(100),
     version varchar(100),
     sku varchar(100),
+    upc varchar(100),
     length numeric(12,4),
     width numeric(12,4),
     height numeric(12,4),

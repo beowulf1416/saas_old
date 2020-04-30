@@ -11,6 +11,7 @@ create or replace function item_update (
     p_model items.model%type,
     p_version items.version%type,
     p_sku items.sku%type,
+    p_upc items.upc%type,
     p_length items.length%type,
     p_width items.width%type,
     p_height items.height%type,
@@ -31,12 +32,13 @@ begin
         model = p_model,
         version = p_version,
         sku = p_sku,
+        upc = p_upc,
         length = p_length,
         width = p_width,
         height = p_height,
         weight = p_weight,
         perishable = p_perishable,
-        hazardous = p_hazardous,
+        hazardous = p_hazardous
     where client_id = p_client_id
         and item_id = p_item_id; 
 end
