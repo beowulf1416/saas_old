@@ -3,6 +3,9 @@ package com.tomale.saas.modules.inventory.store;
 import java.util.List;
 import java.util.UUID;
 
+import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.store.ClientStore;
+
 import org.junit.Test;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,6 +33,7 @@ public class InventoryItemStoreTest {
 
     private PGSimpleDataSource ds;
     private InventoryItemStore store;
+    private ClientStore clientStore;
 
     @Before
     public void setup() {
@@ -40,6 +44,7 @@ public class InventoryItemStoreTest {
 
         JdbcTemplate jdbc = new JdbcTemplate(ds);
         store = new InventoryItemStore(jdbc);
+        clientStore = new ClientStore(jdbc);
     }
 
     public String generateRandomString(int length) {
@@ -59,7 +64,25 @@ public class InventoryItemStoreTest {
     @Test
     public void testAdd() {
         try {
+            Client client = clientStore.getDefault();
             String tmp = generateRandomString(10);
+            UUID itemId = store.add(
+                client.getId(), 
+                tmp, 
+                tmp, 
+                tmp, 
+                tmp, 
+                tmp, 
+                tmp, 
+                tmp,
+                tmp,
+                0, 
+                0,
+                0,
+                0,
+                false, 
+                false
+            );
         } catch(Exception e){
             Assert.fail(e.getMessage());
         }
