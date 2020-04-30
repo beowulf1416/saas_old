@@ -46,7 +46,7 @@ begin
         a.weight,
         a.perishable,
         a.hazardous
-    from items a
+    from inventory.items a
     where a.client_id = p_client_id;
 end
 $$ language plpgsql;
