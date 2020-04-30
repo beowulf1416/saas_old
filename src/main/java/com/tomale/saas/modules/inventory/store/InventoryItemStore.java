@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class InventoryItemStore {
 
     private static final Logger log = LogManager.getLogger(InventoryItemStore.class);
 
-    private static final String SQL_INV_ITEM_ADD = "{? = call inventory.item_add(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+    private static final String SQL_INV_ITEM_ADD = "{? = call inventory.item_add(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all()}";
 
     private final JdbcTemplate jdbc;
@@ -37,6 +38,7 @@ public class InventoryItemStore {
         String model,
         String version,
         String sku,
+        String upc,
         float length,
         float width,
         float height,
@@ -49,27 +51,28 @@ public class InventoryItemStore {
                 .getConnection()
                 .prepareCall(SQL_INV_ITEM_ADD);
             stmt.registerOutParameter(1, java.sql.Types.OTHER);
-            stmt.setString(2, name);
-            stmt.setString(3, description);
-            stmt.setString(4, make);
-            stmt.setString(5, brand);
-            stmt.setString(6, model);
-            stmt.setString(7, version);
-            stmt.setString(8, sku);
-            stmt.setFloat(9, length);
-            stmt.setFloat(10, width);
-            stmt.setFloat(11, height);
-            stmt.setFloat(12, weight);
-            stmt.setBoolean(13, perishable);
-            stmt.setBoolean(14, hazardous);
-            if (stmt.execute()) {
-                String tmp = stmt.getString(1);
-                return UUID.fromString(tmp);
-            } else {
-                throw new Exception("An error occured while trying to add an inventory item (1)");
-            }
+            stmt.setObject(2, clientId);
+            stmt.setString(3, name);
+            stmt.setString(4, description);
+            stmt.setString(5, make);
+            stmt.setString(6, brand);
+            stmt.setString(7, model);
+            stmt.setString(8, version);
+            stmt.setString(9, sku);
+            stmt.setString(10, upc);
+            stmt.setBigDecimal(11, new BigDecimal(Float.valueOf(length)));
+            stmt.setBigDecimal(12, new BigDecimal(Float.valueOf(width)));
+            stmt.setBigDecimal(13, new BigDecimal(Float.valueOf(height)));
+            stmt.setBigDecimal(14, new BigDecimal(Float.valueOf(weight)));
+            // stmt.setFloat(12, width);
+            // stmt.setFloat(13, height);
+            // stmt.setFloat(14, weight);
+            stmt.setBoolean(15, perishable);
+            stmt.setBoolean(16, hazardous);
+            stmt.execute();
 
-
+            String tmp = stmt.getString(1);
+            return UUID.fromString(tmp);
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add an inventory item (2)");
@@ -87,7 +90,6 @@ public class InventoryItemStore {
             ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
             while(rs.next()) {
                 UUID id = UUID.fromString(rs.getString(1));
-                // boolean active = rs.getBoolean(2);
                 String name = rs.getString(2);
                 String description = rs.getString(3);
                 String make = rs.getString(4);
@@ -95,12 +97,13 @@ public class InventoryItemStore {
                 String model = rs.getString(6);
                 String version = rs.getString(7);
                 String sku = rs.getString(8);
-                float length = rs.getFloat(9);
-                float width = rs.getFloat(10);
-                float height = rs.getFloat(11);
-                float weight = rs.getFloat(12);
-                boolean perishable = rs.getBoolean(13);
-                boolean hazardous = rs.getBoolean(14);
+                String upc = rs.getString(9);
+                float length = rs.getFloat(10);
+                float width = rs.getFloat(11);
+                float height = rs.getFloat(12);
+                float weight = rs.getFloat(13);
+                boolean perishable = rs.getBoolean(14);
+                boolean hazardous = rs.getBoolean(15);
 
                 items.add(new InventoryItem(
                     id, 
@@ -111,6 +114,7 @@ public class InventoryItemStore {
                     model,
                     version,
                     sku,
+                    upc,
                     length,
                     width,
                     height,

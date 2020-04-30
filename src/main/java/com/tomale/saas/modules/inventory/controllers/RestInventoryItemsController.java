@@ -22,7 +22,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.modules.inventory.models.InventoryItem;
-import com.tomale.saas.modules.inventory.store.InventoryStore;
+import com.tomale.saas.modules.inventory.store.InventoryItemStore;
 
 
 @RestController
@@ -32,7 +32,7 @@ public class RestInventoryItemsController {
     private static final Logger log = LogManager.getLogger(RestInventoryItemsController.class);
 
     @Autowired
-    private InventoryStore invStore;
+    private InventoryItemStore invStore;
 
     @GetMapping("/all")
     @PreAuthorize("hasPermission(#user, 'inventory.admin')")
