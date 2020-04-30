@@ -15,6 +15,7 @@ public class InventoryItem {
     private String model;
     private String version;
     private String sku;
+    private String upc;
     private float length;
     private float width;
     private float height;
@@ -32,6 +33,7 @@ public class InventoryItem {
         String model,
         String version,
         String sku,
+        String upc,
         float length,
         float width,
         float height,
@@ -46,6 +48,7 @@ public class InventoryItem {
         this.model = model;
         this.version = version;
         this.sku = sku;
+        this.upc = upc;
         this.length = length;
         this.width = width;
         this.height = height;
