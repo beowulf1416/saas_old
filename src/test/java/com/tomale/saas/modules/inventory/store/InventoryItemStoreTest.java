@@ -89,6 +89,15 @@ public class InventoryItemStoreTest {
         }
     }
 
+    // @Test
+    // public void testUpdate() {
+    //     try {
+
+    //     } catch(Exception e) {
+    //         Assert.fail(e.getMessage());
+    //     }
+    // }
+
     @Test
     public void testAll() {
         try {

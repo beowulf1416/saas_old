@@ -22,6 +22,7 @@ public class InventoryItemStore {
     private static final Logger log = LogManager.getLogger(InventoryItemStore.class);
 
     private static final String SQL_INV_ITEM_ADD = "{? = call inventory.item_add(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+    private static final String SQL_INV_ITEM_UPDATE = "{call inventory.item_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all(?)}";
 
     private final JdbcTemplate jdbc;
@@ -65,9 +66,6 @@ public class InventoryItemStore {
             stmt.setBigDecimal(12, new BigDecimal(Float.valueOf(width)));
             stmt.setBigDecimal(13, new BigDecimal(Float.valueOf(height)));
             stmt.setBigDecimal(14, new BigDecimal(Float.valueOf(weight)));
-            // stmt.setFloat(12, width);
-            // stmt.setFloat(13, height);
-            // stmt.setFloat(14, weight);
             stmt.setBoolean(15, perishable);
             stmt.setBoolean(16, hazardous);
             stmt.execute();
@@ -77,6 +75,51 @@ public class InventoryItemStore {
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add an inventory item (2)");
+        }
+    }
+
+    public void update(
+        UUID clientId,
+        UUID itemId,
+        String name,
+        String description,
+        String make,
+        String brand,
+        String model,
+        String version,
+        String sku,
+        String upc,
+        float length,
+        float width,
+        float height,
+        float weight,
+        boolean perishable,
+        boolean hazardous
+    ) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_INV_ITEM_UPDATE);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, itemId);
+            stmt.setString(3, name);
+            stmt.setString(4, description);
+            stmt.setString(5, make);
+            stmt.setString(6, brand);
+            stmt.setString(7, model);
+            stmt.setString(8, version);
+            stmt.setString(9, sku);
+            stmt.setString(10, upc);
+            stmt.setBigDecimal(11, new BigDecimal(Float.valueOf(length)));
+            stmt.setBigDecimal(12, new BigDecimal(Float.valueOf(width)));
+            stmt.setBigDecimal(13, new BigDecimal(Float.valueOf(height)));
+            stmt.setBigDecimal(14, new BigDecimal(Float.valueOf(weight)));
+            stmt.setBoolean(15, perishable);
+            stmt.setBoolean(16, hazardous);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to update an inventory item");
         }
     }
 
