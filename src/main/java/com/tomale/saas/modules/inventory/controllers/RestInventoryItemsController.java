@@ -64,4 +64,77 @@ public class RestInventoryItemsController {
             );
         }
     }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasPermission(#user, 'inventory.admin'")
+    public ApiResult add(@RequestBody Map<String, Object> data) {
+        try {
+            Object o = data.get("clientId");
+            if (o == null) {
+                return new ApiResult(
+                    "error",
+                    "Client Id is required",
+                    null
+                );
+            }
+            String clientId = o.toString();
+
+            o = data.get("id");
+            if (o == null) {
+                return new ApiResult(
+                    "error",
+                    "Item Id is required",
+                    null
+                );
+            }
+            String itemId = o.toString();
+
+            String name = data.get("name").toString();
+            String description = data.get("description").toString();
+            String make = data.get("make").toString();
+            String brand = data.get("brand").toString();
+            String model = data.get("model").toString();
+            String version = data.get("version").toString();
+            String sku = data.get("sku").toString();
+            String upc = data.get("upc").toString();
+            float length = Float.valueOf(data.get("length").toString());
+            float width = Float.valueOf(data.get("width").toString());
+            float height = Float.valueOf(data.get("height").toString());
+            float weight = Float.valueOf(data.get("weight").toString());
+            boolean perishable = Boolean.valueOf(data.get("perishable").toString());
+            boolean hazardous = Boolean.valueOf(data.get("hazardous").toString());
+
+            invStore.update(
+                UUID.fromString(clientId),
+                UUID.fromString(itemId),
+                name,
+                description,
+                make,
+                brand,
+                model,
+                version,
+                sku,
+                upc,
+                length,
+                width,
+                height,
+                weight,
+                perishable,
+                hazardous
+            );
+
+            return new ApiResult(
+                "success",
+                String.format("Item %s update", itemId),
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
 }
