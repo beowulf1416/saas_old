@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +22,7 @@ public class InventoryItemStore {
     private static final Logger log = LogManager.getLogger(InventoryItemStore.class);
 
     private static final String SQL_INV_ITEM_ADD = "{? = call inventory.item_add(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
-    private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all()}";
+    private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all(?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -71,39 +72,43 @@ public class InventoryItemStore {
             stmt.setBoolean(16, hazardous);
             stmt.execute();
 
-            String tmp = stmt.getString(1);
-            return UUID.fromString(tmp);
+            Object tmp = stmt.getObject(1);
+            return UUID.fromString(tmp.toString());
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to add an inventory item (2)");
         }
     }
 
-    public List<InventoryItem> all() throws Exception {
+    public List<InventoryItem> all(UUID clientId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
                 .prepareCall(SQL_INV_ITEMS_ALL);
+            stmt.setObject(1, clientId);
             stmt.execute();
 
             ResultSet rs = stmt.getResultSet();
             ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
             while(rs.next()) {
                 UUID id = UUID.fromString(rs.getString(1));
-                String name = rs.getString(2);
-                String description = rs.getString(3);
-                String make = rs.getString(4);
-                String brand = rs.getString(5);
-                String model = rs.getString(6);
-                String version = rs.getString(7);
-                String sku = rs.getString(8);
-                String upc = rs.getString(9);
-                float length = rs.getFloat(10);
-                float width = rs.getFloat(11);
-                float height = rs.getFloat(12);
-                float weight = rs.getFloat(13);
-                boolean perishable = rs.getBoolean(14);
-                boolean hazardous = rs.getBoolean(15);
+                boolean active = rs.getBoolean(2);
+                Timestamp created_ts = rs.getTimestamp(3);
+                UUID clientId2 = UUID.fromString(rs.getString(4));
+                String name = rs.getString(5);
+                String description = rs.getString(6);
+                String make = rs.getString(7);
+                String brand = rs.getString(8);
+                String model = rs.getString(9);
+                String version = rs.getString(10);
+                String sku = rs.getString(11);
+                String upc = rs.getString(12);
+                float length = rs.getFloat(13);
+                float width = rs.getFloat(14);
+                float height = rs.getFloat(15);
+                float weight = rs.getFloat(16);
+                boolean perishable = rs.getBoolean(17);
+                boolean hazardous = rs.getBoolean(18);
 
                 items.add(new InventoryItem(
                     id, 

@@ -36,9 +36,18 @@ public class RestInventoryItemsController {
 
     @GetMapping("/all")
     @PreAuthorize("hasPermission(#user, 'inventory.admin')")
-    public ApiResult all() {
+    public ApiResult all(@RequestBody Map<String, Object> data) {
         try {
-            List<InventoryItem> items = invStore.all();
+            Object o = data.get("clientId");
+            if (o == null) {
+                return new ApiResult(
+                    "error",
+                    "Client Id is required",
+                    null
+                );
+            }
+            UUID clientId = UUID.fromString(o.toString());
+            List<InventoryItem> items = invStore.all(clientId);
 
             Gson gson = new Gson();
             return new ApiResult(
