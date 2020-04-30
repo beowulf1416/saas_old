@@ -66,7 +66,7 @@ public class RestInventoryItemsController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasPermission(#user, 'inventory.admin'")
+    @PreAuthorize("hasPermission(#user, 'inventory.admin')")
     public ApiResult add(@RequestBody Map<String, Object> data) {
         try {
             Object o = data.get("clientId");
