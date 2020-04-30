@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AdminPermissionStoreTest {
 
-@Value("${spring.datasource.url}")
+    @Value("${spring.datasource.url}")
     private String dbUrl;
 
     @Value("${spring.datasource.username}")

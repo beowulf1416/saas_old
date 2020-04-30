@@ -63,7 +63,6 @@ public class AdminRoleStoreTest {
     @Test
     public void testAll() {
         try {
-
             List<Role> roles = ars.getRoles(defaultClientId);
         } catch(Exception e){
             Assert.fail(e.getMessage());
