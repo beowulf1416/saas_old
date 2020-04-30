@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.store.ClientStore;
+import com.tomale.saas.modules.inventory.models.InventoryItem;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -84,6 +85,16 @@ public class InventoryItemStoreTest {
                 false
             );
         } catch(Exception e){
+            Assert.fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAll() {
+        try {
+            Client client = clientStore.getDefault();
+            List<InventoryItem> items = store.all(client.getId());
+        } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
     }
