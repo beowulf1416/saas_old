@@ -9,6 +9,7 @@ class InventoryItemEditor extends HTMLElement {
         form.classList.add('form-item-edit');
 
         this.initGeneral(self, form);
+        this.initSubstitutes(self, form);
 
         this.initActions(self, form);
 
@@ -76,6 +77,28 @@ class InventoryItemEditor extends HTMLElement {
                 <label for="UPC">UPC</label>
                 <input type="text" id="upc" name="uoc" title="Universal Product Code" />
             </div><!-- .form-group -->
+        `;
+
+        container.appendChild(fieldset);
+    }
+
+    initSubstitutes(component, container) {
+        const fieldset = document.createElement('fieldset');
+        fieldset.classList.add('substitutes');
+        fieldset.innerHTML = `
+            <legend>Substitutes</legend>
+            <table id="tblSubstitutes">
+                <caption>Substitutes</caption>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>SKU</th>
+                        <th>UPC</th>
+                    </tr>
+                <thead>
+                <tbody>
+                </tbody>
+            </table><!-- #tblSubstitutes -->
         `;
 
         container.appendChild(fieldset);
