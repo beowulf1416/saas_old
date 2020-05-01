@@ -1,5 +1,8 @@
 'use strict';
 
+import { AdminClients } from '/static/js/api/admin.clients.js';
+
+
 class ClientEditor extends HTMLElement {
 
     constructor() {
@@ -40,15 +43,26 @@ class ClientEditor extends HTMLElement {
 
     connectedCallback() {
         if (this.isConnected) {
+            const component = this;
             const shadow = this.shadowRoot;
-            const bSave = shadow.querySelector('#bSave');
+            const bSave = shadow.querySelector('.bSave');
             bSave.addEventListener('click', function(e) {
-                console.log('client editor button save clicked');
+                const ac = new AdminClients();
+                ac.add('test', 'test', console.log);
+
+                component.dispatchEvent(new CustomEvent('save', {
+                    bubbles: true,
+                    cancelable: true
+                }));
             });
 
-            const bCancel = shadow.querySelector('#bCancel');
+            const bCancel = shadow.querySelector('.bCancel');
             bCancel.addEventListener('click', function(e) {
                 console.log('client editor button cancel clicked');
+                component.dispatchEvent(new CustomEvent('cancel', {
+                    bubbles: true,
+                    cancelable: true
+                }));
             });
         }
     }
