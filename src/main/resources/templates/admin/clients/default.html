@@ -10,18 +10,21 @@
 
 {% block scripts %}
 <script type="module" src="/static/js/admin/admin.clients.js"></script>
-<script type="module" src="/static/js/admin/clients/client.edit.js"></script>
+<script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
+<script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script>
 (function(){
     const cl = document.getElementById('clientList');
     const dlg = document.getElementById('clientDlg');
+    
     cl.addEventListener('addClient', function(e){
-        // console.log(e);
         const modal = dlg.show();
-        const bSave = modal.querySelector('button.form-btn-save');
-        bSave.addEventListener('click', function(e) {
-            
+        const editor = modal.querySelector('.dialog-wrapper client-editor');
+        editor.addEventListener('save', function(e) {
+            dlg.hide();
+        });
+        editor.addEventListener('cancel', function(e) {
             dlg.hide();
         });
     });
