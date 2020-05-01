@@ -33,7 +33,10 @@ class ModalDialog extends HTMLElement {
         wrapper.classList.add('modal-wrapper');
         wrapper.appendChild(dialog);
         wrapper.addEventListener('click', function(e) {
-            body.removeChild(this);
+            // hide dialog if wrapper is clicked
+            if (e.target == this) {
+                body.removeChild(this);
+            }
         });
 
         body.appendChild(wrapper);
