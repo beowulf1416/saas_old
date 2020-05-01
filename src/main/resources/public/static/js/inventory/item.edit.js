@@ -10,6 +10,8 @@ class InventoryItemEditor extends HTMLElement {
 
         this.initGeneral(self, form);
 
+        this.initActions(self, form);
+
         const div = document.createElement('div');
         div.classList.add('container');
         div.appendChild(form);
@@ -18,8 +20,24 @@ class InventoryItemEditor extends HTMLElement {
         shadow.appendChild(div);
     }
 
+    initActions(component, container) {
+        const fieldset = document.createElement('fieldset');
+        fieldset.classList.add('actions');
+        fieldset.innerHTML = `
+            <button type="button" class="btn-save">Save</button>
+        `;
+
+        const button = fieldset.querySelector('button.btn-save');
+        button.addEventListener('click', function(e) {
+            console.log('button save clicked');
+        });
+
+        container.appendChild(fieldset);
+    }
+
     initGeneral(component, container) {
         const fieldset = document.createElement('fieldset');
+        fieldset.classList.add('general');
         fieldset.innerHTML = `
             <legend>General</legend>
             <div class="form-group">
