@@ -25,6 +25,7 @@ class InventoryItemList extends HTMLElement {
                         <th></th>
                         <th>Name</th>
                         <th>SKU</th>
+                        <th>UPC</th>
                     </tr>
                 </thead>
                 <tbody>
