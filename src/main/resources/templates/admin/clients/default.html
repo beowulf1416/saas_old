@@ -17,15 +17,14 @@
             </div><!-- .form-input -->
         </fieldset>
         <fieldset>
-            <button type="button" class="form-button">Save</button>
+            <button type="button" class="form-button form-btn-save">Save</button>
         </fieldset>
     </form>
-    <div>this is a test</div>
 </modal-dialog>
 {% endblock %}
 
-{% block bodyscripts %}
-<script type="module" src="/static/js/admin.clients.js"></script>
+{% block scripts %}
+<script type="module" src="/static/js/admin/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script>
 (function(){
@@ -36,12 +35,17 @@
         dlg.show();
     });
 
-    const bAdd = document.querySelector("#frmAddClient .form-button");
-    console.log(bAdd);
+    const bAdd = document.querySelector("#frmAddClient .form-btn-save");
+    // console.log(bAdd);
     bAdd.addEventListener('click', function(e) {
         console.log(e);
         dlg.hide();
     });
+
+    // const bSave = dlg.shadowQuerySelector('button.form-btn-save');
+    // bSave.addEventListener('click', function(e) {
+    //     console.log('button save clicked');
+    // });
 })();
 </script>
-{% endblock %}
+{% endblock scripts %}

@@ -5,6 +5,8 @@ class ClientList extends HTMLElement {
     constructor() {
         self = super();
 
+        console.log('constructor');
+
         const container = document.createElement('div');
         container.classList.add('client-list-container');
 
@@ -57,7 +59,8 @@ class ClientList extends HTMLElement {
 
         const bAdd = document.createElement('button');
         bAdd.classList.add('client-add');
-        bAdd.setAttribute('title', 'Add Client');
+        bAdd.title = 'Add Client';
+        // bAdd.setAttribute('title', 'Add Client');
         bAdd.innerHTML = '&oplus;';
 
         bAdd.addEventListener('click', function(e){
