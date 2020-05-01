@@ -36,10 +36,7 @@ public class AdminClientController {
     public ModelAndView viewDefault() {
         log.debug("AdminClientController::viewDefault()");
         try {
-            // List<Client> clients = adminClientStore.getAll();
-            
             ModelAndView mv = new ModelAndView("admin/clients/default");
-            // mv.addObject("clients", clients);
 
             return mv;
         } catch(Exception e) {
