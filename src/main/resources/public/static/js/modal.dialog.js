@@ -21,8 +21,6 @@ class ModalDialog extends HTMLElement {
     }
 
     show() {
-        console.log('show');
-
         const body = document.querySelector('body');
 
         const dialog = document.createElement('div');
@@ -40,13 +38,14 @@ class ModalDialog extends HTMLElement {
         });
 
         body.appendChild(wrapper);
+
+        return wrapper;
     }
 
     hide() {
-        console.log('hide');
-        const modalDlgWrapper = document.querySelector('div.modal-dialog-wrapper');
-        const dlgWrapper = modalDlgWrapper.querySelector('div.dialog-wrapper');
-        dlgWrapper.classList.toggle('modal-show');
+        const body = document.querySelector('body');
+        const wrapper = document.querySelector('div.modal-wrapper');
+        body.removeChild(wrapper);
     }
 }
 

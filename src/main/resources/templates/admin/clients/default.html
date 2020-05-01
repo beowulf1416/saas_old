@@ -32,20 +32,13 @@
     const dlg = document.getElementById('clientDlg');
     cl.addEventListener('addClient', function(e){
         // console.log(e);
-        dlg.show();
+        const modal = dlg.show();
+        const bSave = modal.querySelector('button.form-btn-save');
+        bSave.addEventListener('click', function(e) {
+            console.log('button save clicked');
+            dlg.hide();
+        });
     });
-
-    const bAdd = document.querySelector("#frmAddClient .form-btn-save");
-    // console.log(bAdd);
-    bAdd.addEventListener('click', function(e) {
-        console.log(e);
-        dlg.hide();
-    });
-
-    // const bSave = dlg.shadowQuerySelector('button.form-btn-save');
-    // bSave.addEventListener('click', function(e) {
-    //     console.log('button save clicked');
-    // });
 })();
 </script>
 {% endblock scripts %}
