@@ -8,8 +8,6 @@ class ClientList extends HTMLElement {
     constructor() {
         self = super();
 
-        console.log('constructor');
-
         const container = document.createElement('div');
         container.classList.add('client-list-container');
 
