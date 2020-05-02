@@ -49,14 +49,60 @@ class AdminClientUsersTable extends HTMLElement {
 
     setClient(clientId) {
         const self = this;
-        AdminClients.users(clientId, function(e) {
-            console.log(e);
-        });
+        self.dataset.clientId = clientId;
+        this.refresh();
     }
 
     refresh() {
         const self = this;
-        // AdminClients.users()
+        const clientId = self.dataset.clientId;
+        AdminClients.users(clientId, function(e) {
+            if (e.status == 'success') {
+                if (e.json) {
+                    const data = JSON.parse(e.json);
+                    if (Array.isArray(data)) {
+                        const tbl = self.shadowRoot.querySelector("table.users tbody");
+                        while(tbl.firstChild) {
+                            tbl.removeChild(tbl.lastChild);
+                        }
+                        data.forEach(d => {
+                            const tr = document.createElement('tr');
+                            tr.classList.add('user-row');
+                            tr.innerHTML = `
+                                <td></td>
+                                <td>${d.active}</td>
+                                <td>${d.name}</td>
+                                <td>${d.email}</td>
+                            `;
+                            tbl.appendChild(tr);
+                        });
+
+                        const tr = document.createElement('tr');
+                        tr.classList.add('user-add');
+                        tr.innerHTML = `
+                            <td>
+                                <a id="userAdd" class="nav-link user-row-add" title="Add User" href="#">Add User</a>
+                            </td>
+                        `;
+                        tbl.appendChild(tr);
+
+                        const lAdd = tbl.querySelector("a#userAdd");
+                        lAdd.addEventListener('click', function(e) {
+                            self.dispatchEvent(new CustomEvent('onadduser', {
+                                bubbles: true,
+                                cancelable: true
+                            }));
+                        });
+                    } else {
+
+                    }
+                } else {
+                    console.error(e.json);
+                }
+            } else {
+                console.error(e.message);
+            }
+        });
     }
 }
 

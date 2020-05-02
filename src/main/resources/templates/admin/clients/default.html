@@ -44,6 +44,10 @@ Administer Clients
     ctbl.addEventListener('onselectclient', function(e) {
         utbl.setClient(e.detail.clientId);
     });
+
+    utbl.addEventListener('onadduser', function(e) {
+        console.log('onaddclient');
+    });
 })();
 </script>
 {% endblock scripts %}
