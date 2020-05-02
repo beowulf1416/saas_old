@@ -23,6 +23,8 @@ public class AdminClientStore {
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
     private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)}";
+    private static final String SQL_CLIENT_ADD_USER = "{call iam.client_user_add(?,?)}";
+    private static final String SQL_CLIENT_REMOVE_USER = "{call iam.client_user_remove(?,?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -95,5 +97,37 @@ public class AdminClientStore {
             log.error(e);
             throw new Exception("An error occured while trying to retrieve all users for client");
         }
+    }
+
+    public void addUsertoClient(UUID clientId, UUID userId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ADD_USER);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, userId);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to add user to client");
+        }
+
+
+    }
+
+    public void removeUserFromClient(UUID clientId, UUID userId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_REMOVE_USER);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, userId);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to add user to client");
+        }
+
+
     }
 }
