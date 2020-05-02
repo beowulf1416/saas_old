@@ -29,6 +29,7 @@ set schema 'iam';
 \ir procs/users/user_signin.sql
 
 \ir procs/users/user_clients_all.sql
+\ir procs/users/client_users_all.sql
 
 \ir procs/permissions_user_all.sql
 \ir procs/permissions/permissions_role.sql
