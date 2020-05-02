@@ -1,11 +1,15 @@
 {% extends '/templates/layout.html' %}
 
+{% block title -%}
+Unauthenticated
+{%- endblock %}
+
 {% block content %}
 <h1>Unauthenticated</h1>
 <h2>Redirecting to Sign In ...</h2>
 {% endblock %}
 
-{% block bodyscripts %}
+{% block scripts %}
 <script>
 (function(){
     setTimeout(() => {
@@ -13,4 +17,4 @@
     }, 5000);
 })();
 </script>
-{% endblock %}
+{% endblock scripts %}
