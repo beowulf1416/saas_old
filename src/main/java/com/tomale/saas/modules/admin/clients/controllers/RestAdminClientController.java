@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.User;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
 
 
@@ -83,6 +85,32 @@ public class RestAdminClientController {
 
             response.setStatus(HttpStatus.BAD_REQUEST.value());
 
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/users")
+    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    public ApiResult allUsers(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            List<User> users = adminClientStore.getAllUsers(UUID.fromString(szClientId));
+           
+            Gson gson = new Gson();
+
+            return new ApiResult(
+                "success", 
+                String.format("%d users", users.size()), 
+                gson.toJson(users)
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error",
                 e.getMessage(),
