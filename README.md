@@ -8,7 +8,7 @@ Technologies
 * web components
 * GraphQL
 
-Operations
+Functional Areas
 * User, Roles and Permissions Management
 * Client Management
 * Accounting
