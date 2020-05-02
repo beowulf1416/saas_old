@@ -9,5 +9,9 @@ Technologies
 * GraphQL
 
 Operations
+* User, Roles and Permissions Management
 * Client Management
+* Accounting
+* Human Resources Management
 * Inventory Management
+* Project Management
