@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.User;
 
 
 public class AdminClientStore {
@@ -21,6 +22,7 @@ public class AdminClientStore {
 
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
+    private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)";
 
     private final JdbcTemplate jdbc;
 
@@ -67,6 +69,31 @@ public class AdminClientStore {
         } catch(Exception e) {
             log.error(e);
             throw new Exception("An error occured while trying to add client");
+        }
+    }
+
+    public List<User> getAllUsers(UUID clientId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_USERS);
+            stmt.setObject(1, clientId);
+            stmt.execute();
+            ResultSet rs = stmt.getResultSet();
+
+            ArrayList<User> users = new ArrayList<User>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String email = rs.getString(3);
+                String name = rs.getString(4);
+
+                users.add(new User(id, name, email, active));
+            }
+            return users;
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve all users for client");
         }
     }
 }
