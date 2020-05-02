@@ -1,5 +1,8 @@
 'use strict';
 
+import { AdminClients } from '/static/js/api/admin.clients.js';
+
+
 class ClientList extends HTMLElement {
 
     constructor() {
@@ -11,11 +14,10 @@ class ClientList extends HTMLElement {
         container.classList.add('client-list-container');
 
         self.initList = self.initList.bind(this);
-        // self.attachClientItemClickEventHandler = self.attachClientItemClickEventHandler.bind(this);
+        self.refresh = self.refresh.bind(this);
 
         self.initList(self, container);
         self.initActions(self, container);
-        // self.initFormAddClient(container);
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
@@ -25,32 +27,63 @@ class ClientList extends HTMLElement {
         const ul = document.createElement('ul');
         ul.classList.add('client-list');
 
-        fetch('/api/admin/clients/all', {
-            method: 'POST',
-            credentials: 'same-origin'
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            if (Array.isArray(data)) {
-                data.forEach(client => {
-                    const li = document.createElement('li');
-                    li.classList.add('client-list-item');
-                    li.innerHTML = `
-                        <a class="nav-link client-item-link" title="${client.name}" data-id="${client.id}" href="#">${client.name}</a>
-                        <span>&nbsp;</span>
-                        <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
-                    `;
-                    
-                    ul.appendChild(li);
-                });
+        this.refresh();
 
-                this.attachClientItemClickEventHandler(component, container);
-            }
-        });
+        // fetch('/api/admin/clients/all', {
+        //     method: 'POST',
+        //     credentials: 'same-origin'
+        // })
+        // .then((response) => {
+        //     return response.json();
+        // })
+        // .then((data) => {
+        //     if (Array.isArray(data)) {
+        //         data.forEach(client => {
+        //             const li = document.createElement('li');
+        //             li.classList.add('client-list-item');
+        //             li.innerHTML = `
+        //                 <a class="nav-link client-item-link" title="${client.name}" data-id="${client.id}" href="#">${client.name}</a>
+        //                 <span>&nbsp;</span>
+        //                 <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
+        //             `;
+                    
+        //             ul.appendChild(li);
+        //         });
+
+        //         this.attachClientItemClickEventHandler(component, container);
+        //     }
+        // });
 
         container.appendChild(ul);
+    }
+
+    refresh() {
+        const self = this;
+        AdminClients.all(function(e) {
+            if (e && e.status == 'success') {
+                const data = JSON.parse(e.json);
+                if (Array.isArray(data)) {
+                    const shadow = self.shadowRoot;
+                    const ul = shadow.querySelector('ul.client-list');
+                    const clients = data;
+                    clients.forEach(client => {
+                        const li = document.createElement('li');
+                        li.classList.add('client-list-item');
+                        li.innerHTML = `
+                            <a class="nav-link client-item-link" title="${client.name}" data-id="${client.id}" href="#">${client.name}</a>
+                            <span>&nbsp;</span>
+                            <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
+                        `;
+
+                        ul.appendChild(li);
+                    });
+                } else {
+                    console.error('unexpected data');
+                }
+            } else {
+                console.error(e);
+            }
+        });
     }
 
     initActions(component, container) {
@@ -60,7 +93,6 @@ class ClientList extends HTMLElement {
         const bAdd = document.createElement('button');
         bAdd.classList.add('client-add');
         bAdd.title = 'Add Client';
-        // bAdd.setAttribute('title', 'Add Client');
         bAdd.innerHTML = '&oplus;';
 
         bAdd.addEventListener('click', function(e){
