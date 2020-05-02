@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.ApiResult;
@@ -39,14 +40,25 @@ public class RestAdminClientController {
 
     @PostMapping("/all")
     @PreAuthorize("hasPermission(#user, 'admin.clients')")
-    public List<Client> getAllClients() {
+    public ApiResult getAllClients(HttpServletResponse response) {
         log.debug("RestAdminController::getAllClients()");
         try {
             List<Client> clients = adminClientStore.getAll();
-            return clients;
+            Gson gson = new Gson();
+            return new ApiResult(
+                "success",
+                String.format("%d clients", clients.size()),
+                gson.toJson(clients)
+            );
         } catch(Exception e) {
             log.error(e);
-            throw new RuntimeException("An error occured while processing the request");
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+            return new ApiResult(
+                "error",
+                "An error occured while processing the request",
+                null
+            );
         }
     }
 

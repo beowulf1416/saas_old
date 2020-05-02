@@ -15,9 +15,16 @@ class AdminClients {
             })
         })
         .then((response) => response.json())
-        .then((data) => {
-            func(data);
-        });
+        .then((data) => func(data));
+    }
+
+    static all(func) {
+        fetch('/api/admin/clients/all', {
+            method: 'POST',
+            credentials: 'same-origin'
+        })
+        .then((response) => response.json())
+        .then((data) => func(data));
     }
 }
 

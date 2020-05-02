@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script type="module" src="/static/js/admin/admin.clients.js"></script>
+<script type="module" src="/static/js/components/admin/clients/admin.clients.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
@@ -22,6 +22,7 @@
         const modal = dlg.show();
         const editor = modal.querySelector('.dialog-wrapper client-editor');
         editor.addEventListener('save', function(e) {
+            dlg.refresh();
             dlg.hide();
         });
         editor.addEventListener('cancel', function(e) {
