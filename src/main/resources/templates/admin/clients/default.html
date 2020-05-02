@@ -6,27 +6,28 @@ Administer Clients
 
 {% block content %}
 <h1>Admin Clients Default</h1>
-<client-list id="clientList"></client-list>
+<clients-table id="clientTbl"></clients-table>
 <modal-dialog id="clientDlg">
     <client-editor id="clientEditor"></client-editor>
 </modal-dialog>
 {% endblock %}
 
 {% block scripts %}
-<script type="module" src="/static/js/components/admin/clients/admin.clients.list.js"></script>
+<script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script>
 (function(){
-    const cl = document.getElementById('clientList');
+    const ctbl = document.getElementById('clientTbl');
     const dlg = document.getElementById('clientDlg');
-    
-    cl.addEventListener('addClient', function(e){
+
+    ctbl.addEventListener('onaddclient', function(e) {
         const modal = dlg.show();
         const editor = modal.querySelector('.dialog-wrapper client-editor');
+
         editor.addEventListener('save', function(e) {
-            cl.refresh();
+            ctbl.refresh();
             dlg.hide();
         });
         editor.addEventListener('cancel', function(e) {
