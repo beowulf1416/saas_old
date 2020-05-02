@@ -10,17 +10,20 @@ Administer Clients
 <modal-dialog id="clientDlg">
     <client-editor id="clientEditor"></client-editor>
 </modal-dialog>
+<client-users-table id="clientUsersTbl"></client-users-table>
 {% endblock %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
+<script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script>
 (function(){
     const ctbl = document.getElementById('clientTbl');
     const dlg = document.getElementById('clientDlg');
+    const utbl = document.getElementById('clientUsersTbl');
 
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = dlg.show();
@@ -36,6 +39,10 @@ Administer Clients
         editor.addEventListener('error', function(e) {
             console.error(e);
         });
+    });
+
+    ctbl.addEventListener('onselectclient', function(e) {
+        utbl.setClient(e.detail.clientId);
     });
 })();
 </script>

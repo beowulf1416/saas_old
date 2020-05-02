@@ -75,6 +75,20 @@ class AdminClientsTable extends HTMLElement {
                         tbl.appendChild(tr);
                     });
 
+                    const lClients = tbl.querySelectorAll('tbody .client-row-link');
+                    lClients.forEach(l => {
+                        l.addEventListener('click', function(e) {
+                            self.dispatchEvent(new CustomEvent('onselectclient', {
+                                bubbles: true,
+                                cancelable: true,
+                                detail: {
+                                    clientId: l.dataset.id
+                                }
+                            }));
+                        });
+                    });
+                    
+
                     const tr = document.createElement('tr');
                     tr.classList.add('client-add');
                     tr.innerHTML = `
