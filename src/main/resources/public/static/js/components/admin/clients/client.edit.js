@@ -45,11 +45,15 @@ class ClientEditor extends HTMLElement {
         if (this.isConnected) {
             const component = this;
             const shadow = this.shadowRoot;
+
+            const tName = shadow.querySelector('input#name');
+            const tAddr = shadow.querySelector('input#address');
+
             const bSave = shadow.querySelector('.bSave');
             bSave.addEventListener('click', function(e) {
-                const ac = new AdminClients();
-                ac.add('test', 'test', console.log);
-
+                AdminClients.add(tName.value, tAddr.value, function(e) {
+                    console.log(e);
+                });
                 component.dispatchEvent(new CustomEvent('save', {
                     bubbles: true,
                     cancelable: true
