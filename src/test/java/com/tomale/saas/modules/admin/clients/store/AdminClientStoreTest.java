@@ -17,6 +17,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.User;
+import com.tomale.saas.base.store.ClientStore;
 
 
 @SpringBootTest
@@ -32,6 +34,7 @@ public class AdminClientStoreTest {
     private String dbPw;
 
     private PGSimpleDataSource ds;
+    private ClientStore cs;
     private AdminClientStore adminClientStore;
 
     @Before
@@ -41,6 +44,7 @@ public class AdminClientStoreTest {
         ds.setUser(dbUser);
         ds.setPassword(dbPw);
 
+        cs = new ClientStore(new JdbcTemplate(ds));
         adminClientStore = new AdminClientStore(new JdbcTemplate(ds));
     }
 
@@ -80,10 +84,11 @@ public class AdminClientStoreTest {
         }
     }
 
+    @Test
     public void testGetUsers() {
         try {
-            Client client = clientStore.getDefault();
-            List<User> users = store.getAllUsers(client.getId());
+            Client client = cs.getDefault();
+            List<User> users = adminClientStore.getAllUsers(client.getId());
         } catch(Exception e) {
             Assert.fail(e.getMessage());
         }
