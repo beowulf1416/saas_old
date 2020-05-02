@@ -79,4 +79,13 @@ public class AdminClientStoreTest {
             Assert.fail(e.getMessage());
         }
     }
+
+    public void testGetUsers() {
+        try {
+            Client client = clientStore.getDefault();
+            List<User> users = store.getAllUsers(client.getId());
+        } catch(Exception e) {
+            Assert.fail(e.getMessage());
+        }
+    }
 }
