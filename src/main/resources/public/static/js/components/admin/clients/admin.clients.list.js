@@ -29,31 +29,6 @@ class ClientList extends HTMLElement {
 
         this.refresh();
 
-        // fetch('/api/admin/clients/all', {
-        //     method: 'POST',
-        //     credentials: 'same-origin'
-        // })
-        // .then((response) => {
-        //     return response.json();
-        // })
-        // .then((data) => {
-        //     if (Array.isArray(data)) {
-        //         data.forEach(client => {
-        //             const li = document.createElement('li');
-        //             li.classList.add('client-list-item');
-        //             li.innerHTML = `
-        //                 <a class="nav-link client-item-link" title="${client.name}" data-id="${client.id}" href="#">${client.name}</a>
-        //                 <span>&nbsp;</span>
-        //                 <a class="nav-link client-item-remove-link" title="Remove" href="#">&ominus;</a>
-        //             `;
-                    
-        //             ul.appendChild(li);
-        //         });
-
-        //         this.attachClientItemClickEventHandler(component, container);
-        //     }
-        // });
-
         container.appendChild(ul);
     }
 
@@ -65,6 +40,10 @@ class ClientList extends HTMLElement {
                 if (Array.isArray(data)) {
                     const shadow = self.shadowRoot;
                     const ul = shadow.querySelector('ul.client-list');
+                    while(ul.firstChild) {
+                        ul.removeChild(ul.lastChild);
+                    }
+
                     const clients = data;
                     clients.forEach(client => {
                         const li = document.createElement('li');

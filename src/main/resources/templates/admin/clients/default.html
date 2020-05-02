@@ -1,5 +1,9 @@
 {% extends '/templates/layout.html' %}
 
+{% block title -%}
+Administer Clients
+{%- endblock %}
+
 {% block content %}
 <h1>Admin Clients Default</h1>
 <client-list id="clientList"></client-list>
@@ -22,11 +26,14 @@
         const modal = dlg.show();
         const editor = modal.querySelector('.dialog-wrapper client-editor');
         editor.addEventListener('save', function(e) {
-            dlg.refresh();
+            cl.refresh();
             dlg.hide();
         });
         editor.addEventListener('cancel', function(e) {
             dlg.hide();
+        });
+        editor.addEventListener('error', function(e) {
+            console.error(e);
         });
     });
 })();

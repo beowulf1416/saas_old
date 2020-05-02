@@ -52,12 +52,18 @@ class ClientEditor extends HTMLElement {
             const bSave = shadow.querySelector('.bSave');
             bSave.addEventListener('click', function(e) {
                 AdminClients.add(tName.value, tAddr.value, function(e) {
-                    console.log(e);
+                    if (e && e.status == 'success') {
+                        component.dispatchEvent(new CustomEvent('save', {
+                            bubbles: true,
+                            cancelable: true
+                        }));
+                    } else {
+                        component.dispatchEvent(new CustomEvent('error', {
+                            bubbles: true,
+                            cancelable: true
+                        }));
+                    }
                 });
-                component.dispatchEvent(new CustomEvent('save', {
-                    bubbles: true,
-                    cancelable: true
-                }));
             });
 
             const bCancel = shadow.querySelector('.bCancel');
