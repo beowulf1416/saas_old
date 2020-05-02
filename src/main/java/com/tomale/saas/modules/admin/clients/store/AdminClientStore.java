@@ -22,7 +22,7 @@ public class AdminClientStore {
 
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
-    private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)";
+    private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)}";
 
     private final JdbcTemplate jdbc;
 
