@@ -12,7 +12,20 @@ Administer Clients
 </modal-dialog>
 <client-users-table id="clientUsersTbl"></client-users-table>
 <modal-dialog id="usersDlg">
-    <users-list id="usersList"></users-list>
+    <!-- <users-list id="usersList"></users-list> -->
+    <div id="userAddWrapper">
+        <form class="form-user-add">
+            <fieldset>
+                <legend>User</legend>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-input-email" title="Email address" />
+                </div><!-- .form-group -->
+            </fieldset>
+            <button type="button" id="btnAdd" title="Add User">Add</button>
+            <button type="button" id="btnCancel" title="Cancel">Cancel</button>
+        </form>
+    </div><!-- #userAddWrapper -->
 </modal-dialog>
 {% endblock %}
 
@@ -20,14 +33,20 @@ Administer Clients
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
-<script type="module" src="/static/js/components/users/users.list.js"></script>
+<!-- <script type="module" src="/static/js/components/users/users.list.js"></script> -->
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
-<script>
+<script type="module">
+'use strict';
+import { AdminClients } from '/static/js/api/admin.clients.js';
+
 (function(){
+    let clientId = '';
     const ctbl = document.getElementById('clientTbl');
-    const dlg = document.getElementById('clientDlg');
     const utbl = document.getElementById('clientUsersTbl');
+
+    const dlg = document.getElementById('clientDlg');
+    const udlg = document.getElementById('usersDlg');
 
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = dlg.show();
@@ -46,11 +65,47 @@ Administer Clients
     });
 
     ctbl.addEventListener('onselectclient', function(e) {
+        clientId = e.detail.clientId;
         utbl.setClient(e.detail.clientId);
     });
 
     utbl.addEventListener('onadduser', function(e) {
-        console.log('onaddclient');
+        const modal = udlg.show();
+        const bAdd = modal.querySelector('form.form-user-add button#btnAdd');
+        bAdd.addEventListener('click', function(e) {
+            if (clientId == '') {
+                console.log('Please select a client');
+            } else {
+                const tEmail = modal.querySelector('form.form-user-add input#email');
+                AdminClients.addUserToClient(clientId, tEmail.value, function(e) {
+                    console.log(e);
+                });
+            }
+            udlg.hide();
+        });
+
+        const bCancel = modal.querySelector('form.form-user-add button#btnCancel');
+        bCancel.addEventListener('click', function(e) {
+            console.log('cancel');
+            udlg.hide();
+        });
+        
+        // AdminClients.users(clientId, function(e) {
+        //     if (e.status == 'success') {
+        //         const data = JSON.parse(e.json);
+        //         if (Array.isArray(data)) {
+        //             const userList = modal.querySelector('users-list#usersList');
+        //             userList.setUsers(data);
+        //             userList.addEventListener('onselectuser', function(e) {
+        //                 console.log(e);
+        //             });
+        //         } else {
+        //             console.error('unexpected data');
+        //         }
+        //     } else {
+        //         console.error(e.message);
+        //     }
+        // });
     });
 })();
 </script>
