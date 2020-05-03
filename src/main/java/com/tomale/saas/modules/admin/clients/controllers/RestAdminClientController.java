@@ -118,4 +118,60 @@ public class RestAdminClientController {
             );
         }
     }
+
+    @PostMapping("/user/add")
+    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    public ApiResult addUserToClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szUserId = params.get("userId").toString();
+
+            adminClientStore.addUsertoClient(
+                UUID.fromString(szClientId),
+                UUID.fromString(szUserId)
+            );
+
+            return new ApiResult(
+                "success",
+                "user added to client",
+                 null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/user/remove")
+    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    public ApiResult removeUserFromClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szEmail = params.get("email").toString();
+
+            // adminClientStore.removeUserFromClient(
+            //     UUID.fromString(szClientId),
+            //     UUID.fromString(szUserId)
+            // );
+
+            return new ApiResult(
+                "success",
+                "user added to client",
+                 null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
 }
