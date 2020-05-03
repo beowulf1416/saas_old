@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.tomale.saas.base.models.User;
+
 
 public class AdminUsersStore {
 
@@ -22,4 +24,8 @@ public class AdminUsersStore {
     public AdminUsersStore(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
+
+    // public User getUserByEmail(String email) {
+    //     // TODO
+    // }
 }

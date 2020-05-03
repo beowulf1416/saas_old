@@ -29,6 +29,7 @@ import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
+import com.tomale.saas.base.store.UserStore;
 
 
 @RestController
@@ -39,6 +40,9 @@ public class RestAdminClientController {
 
     @Autowired
     private AdminClientStore adminClientStore;
+
+    @Autowired
+    private UserStore userStore;
 
     @PostMapping("/all")
     @PreAuthorize("hasPermission(#user, 'admin.clients')")
@@ -154,10 +158,12 @@ public class RestAdminClientController {
             String szClientId = params.get("clientId").toString();
             String szEmail = params.get("email").toString();
 
-            // adminClientStore.removeUserFromClient(
-            //     UUID.fromString(szClientId),
-            //     UUID.fromString(szUserId)
-            // );
+            User user = userStore.getUserByEmail(szEmail);
+
+            adminClientStore.removeUserFromClient(
+                UUID.fromString(szClientId),
+                user.getId()
+            );
 
             return new ApiResult(
                 "success",
