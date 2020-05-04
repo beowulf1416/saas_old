@@ -29,10 +29,8 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 	private static final String ELEM_CLIENTS = "clients";
 
 	private JsonObject json;
-	private Collection<GrantedAuthority> authorities;
 
     public JWTAuthenticationToken(JsonObject json) {
-		// super(new ArrayList<GrantedAuthority>());
 		super(populateAuthorities(json));
 		this.json = json;
 	}
@@ -62,8 +60,6 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 		for (JsonElement je : ja) {
 			permissions.add(je.getAsString());
 		}
-
-		// log.debug(json.get(ELEM_CLIENTS));
 
 		JsonArray jClients = json.get(ELEM_CLIENTS).getAsJsonArray();
 		ArrayList<Client> clients = new ArrayList<Client>();

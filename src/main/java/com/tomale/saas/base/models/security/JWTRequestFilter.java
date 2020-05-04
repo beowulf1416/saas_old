@@ -14,7 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -36,6 +40,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Value("${app.cipher.key}")
     private String cipherKey;
 
+    @Autowired
+    private AuthenticationManager authMgr;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -53,10 +60,14 @@ public class JWTRequestFilter extends OncePerRequestFilter {
                                 JsonObject json = jwt.toJSON(value);
                                 // log.debug(json);
 
-                                JWTAuthenticationToken auth = new JWTAuthenticationToken(json);
-                                auth.setAuthenticated(true);
-                                SecurityContextHolder.getContext().setAuthentication(auth);
-
+                                JWTAuthenticationToken preauth = new JWTAuthenticationToken(json);
+                                // auth.setAuthenticated(true);
+                                try {
+                                    Authentication postauth = authMgr.authenticate(preauth);
+                                    SecurityContextHolder.getContext().setAuthentication(postauth);
+                                } catch(AuthenticationException e) {
+                                    log.error(e);
+                                }
                             } catch(Exception e) {
                                 log.error("JWTRequestFilter::doFilterInternal()");
                                 log.error(e);

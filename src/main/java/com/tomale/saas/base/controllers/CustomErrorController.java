@@ -51,6 +51,8 @@ public class CustomErrorController implements ErrorController {
             case FORBIDDEN: {
                 mv.setViewName("errors/403");
 
+                // log.debug(request.getUserPrincipal());
+
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 log.debug(auth);
                 if (auth instanceof JWTAuthenticationToken) {
