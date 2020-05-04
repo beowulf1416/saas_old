@@ -7,17 +7,20 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
+import com.tomale.saas.base.models.security.JWTAuthenticationToken;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +41,6 @@ public class CustomErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         HttpStatus value = HttpStatus.valueOf((int) status);
 
-        // String message = (String) request.getAttribute(RequestDispatcher.ERROR_MESSAGE);
-        // log.debug(message);
-
         ModelAndView mv = new ModelAndView();
 
         switch(value) {
@@ -51,11 +51,16 @@ public class CustomErrorController implements ErrorController {
             case FORBIDDEN: {
                 mv.setViewName("errors/403");
 
-                Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                if (o instanceof User) {
-                    User user = (User) o;
-                    List<Client> clients = user.getClients();
-                    mv.addObject("clients", clients);
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                log.debug(auth);
+                if (auth instanceof JWTAuthenticationToken) {
+                    Object o = auth.getPrincipal();
+                    // log.debug(o);
+                    if (o instanceof User) {
+                        User user = (User) o;
+                        List<Client> clients = user.getClients();
+                        mv.addObject("clients", clients);
+                    }
                 }
 
                 break;
