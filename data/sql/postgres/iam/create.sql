@@ -58,9 +58,15 @@ begin
     from clients.clients a
     where a.name = 'default';
 
-    insert into roles (client_id, name, active) values
+    -- create sysadmin role
+    insert into iam.roles (client_id, name, active) values
     (default_client_id, 'system administrator', true)
-    returning id into tmp_rid;
+    on conflict do nothing;
+
+    select 
+        a.id into tmp_rid
+    from iam.roles a
+    where a.client_id = default_client_id;
 
     -- give all permissions to sysad role
     insert into iam.role_permissions (role_id, permission_id, client_id)

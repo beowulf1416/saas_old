@@ -9,4 +9,5 @@ create table if not exists currencies (
 );
 
 insert into currencies (id, name) values 
-(1, 'peso');
+(1, 'peso')
+on conflict do nothing;

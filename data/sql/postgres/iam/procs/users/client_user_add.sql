@@ -1,7 +1,7 @@
 /**
  * add user to client
  */
-create or replace function client_users_add (
+create or replace function client_user_add (
     p_client_id clients.clients.id%type,
     p_user_id iam.users.id%type
 )

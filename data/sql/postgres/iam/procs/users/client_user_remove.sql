@@ -1,7 +1,7 @@
 /**
  * remove user from client
  */
-create or replace client_user_remove (
+create or replace function client_user_remove (
     p_client_id clients.clients.id%type,
     p_user_id iam.users.id%type
 )

@@ -13,4 +13,5 @@ create table if not exists clients (
 
 /** add default client **/
 insert into clients (name, address, active) values 
-('default', 'N/A', true);
+('default', 'N/A', true)
+on conflict do nothing;

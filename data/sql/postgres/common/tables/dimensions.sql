@@ -13,4 +13,5 @@ insert into dimensions (id, name) values
 (2, 'area'),
 (3, 'volume'),
 (4, 'weight'),
-(5, 'quantity');
+(5, 'quantity')
+on conflict do nothing;

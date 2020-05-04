@@ -1,7 +1,7 @@
 /**
  * accounting
  */
-create schema accounting;
+create schema if not exists accounting;
 set schema 'accounting';
 
 
