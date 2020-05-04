@@ -5,6 +5,7 @@ Administer Clients
 {%- endblock %}
 
 {% block content %}
+<notification-list id="notifications"></notification-list>
 <h1>Admin Clients Default</h1>
 <clients-table id="clientTbl"></clients-table>
 <modal-dialog id="clientDlg">
@@ -17,6 +18,7 @@ Administer Clients
         <form class="form-user-add">
             <fieldset>
                 <legend>User</legend>
+                <notification-list id="formNotifications"></notification-list>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" class="form-input-email" title="Email address" />
@@ -30,10 +32,10 @@ Administer Clients
 {% endblock %}
 
 {% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
-<!-- <script type="module" src="/static/js/components/users/users.list.js"></script> -->
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
@@ -41,6 +43,8 @@ Administer Clients
 import { AdminClients } from '/static/js/api/admin.clients.js';
 
 (function(){
+    const notifications = document.getElementById('notifications');
+
     let clientId = '';
     const ctbl = document.getElementById('clientTbl');
     const utbl = document.getElementById('clientUsersTbl');
@@ -60,6 +64,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             dlg.hide();
         });
         editor.addEventListener('error', function(e) {
+            notifications.add('error', e.message, 3000);
             console.error(e);
         });
     });
@@ -71,17 +76,21 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
     utbl.addEventListener('onadduser', function(e) {
         const modal = udlg.show();
+        const fNotifications = modal.querySelector('notification-list');
         const bAdd = modal.querySelector('form.form-user-add button#btnAdd');
         bAdd.addEventListener('click', function(e) {
             if (clientId == '') {
+                fNotifications.add('error', 'Please select a client', 5000);
                 console.log('Please select a client');
             } else {
                 const tEmail = modal.querySelector('form.form-user-add input#email');
                 AdminClients.addUserToClient(clientId, tEmail.value, function(e) {
                     if (e.status == 'success') {
+                        fNotifications.add('success', 'user added to client', 3000);
                         utbl.refresh();
                         udlg.hide();
                     } else {
+                        fNotifications.add('error', e.message, 3000);
                         console.error(e.message);
                     }
                 });
