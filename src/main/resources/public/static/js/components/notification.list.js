@@ -29,7 +29,8 @@ class NotificationList extends HTMLElement {
         li.classList.add('message');
         li.classList.add('message-' + status);
         li.textContent = msg;
-        if (timemout && Number.isInteger(timeout)) {
+        ul.appendChild(li);
+        if (timeout && Number.isInteger(timeout)) {
             setTimeout(() => {
                 ul.removeChild(li);
             }, timeout);
