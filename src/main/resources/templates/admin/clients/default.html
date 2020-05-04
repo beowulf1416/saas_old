@@ -78,34 +78,20 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             } else {
                 const tEmail = modal.querySelector('form.form-user-add input#email');
                 AdminClients.addUserToClient(clientId, tEmail.value, function(e) {
-                    console.log(e);
+                    if (e.status == 'success') {
+                        utbl.refresh();
+                        udlg.hide();
+                    } else {
+                        console.error(e.message);
+                    }
                 });
             }
-            udlg.hide();
         });
 
         const bCancel = modal.querySelector('form.form-user-add button#btnCancel');
         bCancel.addEventListener('click', function(e) {
-            console.log('cancel');
             udlg.hide();
         });
-        
-        // AdminClients.users(clientId, function(e) {
-        //     if (e.status == 'success') {
-        //         const data = JSON.parse(e.json);
-        //         if (Array.isArray(data)) {
-        //             const userList = modal.querySelector('users-list#usersList');
-        //             userList.setUsers(data);
-        //             userList.addEventListener('onselectuser', function(e) {
-        //                 console.log(e);
-        //             });
-        //         } else {
-        //             console.error('unexpected data');
-        //         }
-        //     } else {
-        //         console.error(e.message);
-        //     }
-        // });
     });
 })();
 </script>
