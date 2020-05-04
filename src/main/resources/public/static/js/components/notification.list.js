@@ -5,6 +5,13 @@ class NotificationList extends HTMLElement {
     constructor() {
         self = super();
 
+        const style = document.createElement('link');
+        style.rel = "stylesheet";
+        style.href = "/static/css/modal.dialog.css";
+
+        const head = document.querySelector('head');
+        head.appendChild(style);
+
         const ul = document.createElement('ul');
         ul.classList.add('notification-list');
 

@@ -1,0 +1,18 @@
+/** notification list styles **/
+notification-list {
+    padding: 2px;
+}
+
+notification-list ul {
+    list-style-type: none;
+}
+
+notification-list li.message-success {
+    background: green;
+    border: solid 1px green;
+}
+
+notification-list li.message-error {
+    background: red;
+    border: solid 1px red;
+}
