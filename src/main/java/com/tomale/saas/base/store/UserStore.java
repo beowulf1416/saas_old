@@ -93,7 +93,7 @@ public class UserStore {
                     );
                 } else {
                     // email not found
-                    return null;
+                    throw new Exception(String.format("The email address '%s' was not found", email));
                 }
             } else {
                 throw new Exception("An error occured while retrieving user account (2)");
