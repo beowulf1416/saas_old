@@ -15,10 +15,10 @@ import com.tomale.saas.base.models.security.CustomPermissionEvaluator;
 )
 public class SecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
-    @Override
-	protected MethodSecurityExpressionHandler createExpressionHandler() {
-		DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
-		handler.setPermissionEvaluator(new CustomPermissionEvaluator());
-		return handler;
-	}
+    // @Override
+	// protected MethodSecurityExpressionHandler createExpressionHandler() {
+	// 	DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+	// 	handler.setPermissionEvaluator(new CustomPermissionEvaluator());
+	// 	return handler;
+	// }
 }

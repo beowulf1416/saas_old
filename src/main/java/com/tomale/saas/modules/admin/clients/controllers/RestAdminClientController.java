@@ -45,7 +45,7 @@ public class RestAdminClientController {
     private UserStore userStore;
 
     @PostMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult getAllClients(HttpServletResponse response) {
         log.debug("RestAdminController::getAllClients()");
         try {
@@ -69,7 +69,7 @@ public class RestAdminClientController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult addClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String name = params.get("name").toString();
@@ -98,7 +98,7 @@ public class RestAdminClientController {
     }
 
     @PostMapping("/users")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult allUsers(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
@@ -124,7 +124,7 @@ public class RestAdminClientController {
     }
 
     @PostMapping("/user/add")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult addUserToClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
@@ -154,7 +154,7 @@ public class RestAdminClientController {
     }
 
     @PostMapping("/user/remove")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult removeUserFromClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();

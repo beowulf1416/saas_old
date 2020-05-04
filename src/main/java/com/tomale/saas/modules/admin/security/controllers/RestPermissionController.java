@@ -37,7 +37,7 @@ public class RestPermissionController {
     private AdminPermissionStore adminPermissionStore;
 
     @PostMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
+    @PreAuthorize("hasAuthority('admin.security.permissions')")
     public ApiResult getAllPermissions() {
         try {
             List<Permission> permissions = adminPermissionStore.getPermissions();
@@ -61,7 +61,7 @@ public class RestPermissionController {
     }
 
     @PostMapping("/role")
-    @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
+    @PreAuthorize("hasAuthority('admin.security.permissions')")
     public ApiResult getRolePermissions(@RequestBody Map<String, Object> data, HttpServletResponse response) {
         try {
             Object oClientId = data.get("clientId");

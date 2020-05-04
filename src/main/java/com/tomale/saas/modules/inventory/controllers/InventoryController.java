@@ -15,14 +15,14 @@ public class InventoryController {
     public final static Logger log = LogManager.getLogger(InventoryController.class);
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'inventory.dashboard')")
+    @PreAuthorize("hasAuthority('inventory.dashboard')")
     public String viewDefault() {
         log.debug("VIEW: inventory.default");
         return "inventory/default";
     }
 
     @GetMapping("/dashboard")
-    @PreAuthorize("hasPermission(#user, 'inventory.dashboard')")
+    @PreAuthorize("hasAuthority('inventory.dashboard')")
     public String viewDashboard() {
         log.debug("VIEW: inventory.dashboard");
         return "inventory/default";

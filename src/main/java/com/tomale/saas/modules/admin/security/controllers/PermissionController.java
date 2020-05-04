@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PermissionController {
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'admin.security.permissions')")
+    @PreAuthorize("hasAuthority('admin.security.permissions')")
     public ModelAndView viewDefault() {
         ModelAndView mv = new ModelAndView("admin/security/permissions/default");
         return mv;

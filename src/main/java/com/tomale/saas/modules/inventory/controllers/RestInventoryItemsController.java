@@ -35,7 +35,7 @@ public class RestInventoryItemsController {
     private InventoryItemStore invStore;
 
     @GetMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'inventory.admin')")
+    @PreAuthorize("hasAuthority('inventory.admin')")
     public ApiResult all(@RequestBody Map<String, Object> data) {
         try {
             Object o = data.get("clientId");
@@ -66,7 +66,7 @@ public class RestInventoryItemsController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasPermission(#user, 'inventory.admin')")
+    @PreAuthorize("hasAuthority('inventory.admin')")
     public ApiResult add(@RequestBody Map<String, Object> data) {
         try {
             Object o = data.get("clientId");

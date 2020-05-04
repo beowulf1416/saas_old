@@ -97,7 +97,7 @@ public class SecurityController {
     }
 
     @GetMapping("/signout")
-    @PreAuthorize("hasPermission(#user, 'user.authenticated')")
+    @PreAuthorize("hasAuthority('user.authenticated')")
     public ModelAndView userSignOut(HttpServletResponse response) {
         log.debug("VIEW: security.signout");
 

@@ -32,7 +32,7 @@ public class AdminClientController {
     private AdminClientStore adminClientStore;
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'admin.clients')")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ModelAndView viewDefault() {
         log.debug("AdminClientController::viewDefault()");
         try {

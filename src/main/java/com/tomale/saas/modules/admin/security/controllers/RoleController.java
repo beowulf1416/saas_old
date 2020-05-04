@@ -23,7 +23,7 @@ public class RoleController {
     private final static Logger log = LogManager.getLogger(RoleController.class);
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'admin.security.roles')")
+    @PreAuthorize("hasAuthority('admin.security.roles')")
     public ModelAndView viewDefault() {
         ModelAndView mv = new ModelAndView("admin/security/roles/default");
         return mv;

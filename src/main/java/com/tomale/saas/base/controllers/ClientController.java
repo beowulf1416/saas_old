@@ -67,7 +67,7 @@ public class ClientController {
     private String cipherKey;
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'user.authenticated')")
+    @PreAuthorize("hasAuthority('user.authenticated')")
     public ModelAndView viewDefault() {
         ModelAndView mv = new ModelAndView("client/default");
 
@@ -83,7 +83,7 @@ public class ClientController {
     }
 
     @GetMapping("/select")
-    @PreAuthorize("hasPermission(#user, 'user.authenticated')")
+    @PreAuthorize("hasAuthority('user.authenticated')")
     public ModelAndView viewSelect(
         HttpServletResponse response,
         @RequestParam String client

@@ -33,7 +33,7 @@ public class RestRoleController {
     private AdminRoleStore adminRoleStore;
 
     @PostMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'admin.security.roles')")
+    @PreAuthorize("hasAuthority('admin.security.roles')")
     public ApiResult getAllRoles(@RequestBody Map<String, Object> data, HttpServletResponse response) {
         try {
             // log.debug(data);

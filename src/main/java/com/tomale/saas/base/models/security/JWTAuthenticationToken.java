@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 import com.google.gson.JsonObject;
@@ -28,12 +29,22 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 	private static final String ELEM_CLIENTS = "clients";
 
 	private JsonObject json;
+	private Collection<GrantedAuthority> authorities;
 
     public JWTAuthenticationToken(JsonObject json) {
-		super(new ArrayList<GrantedAuthority>());
-		
+		// super(new ArrayList<GrantedAuthority>());
+		super(populateAuthorities(json));
 		this.json = json;
-    }
+	}
+	
+	private static Collection<GrantedAuthority> populateAuthorities(JsonObject json) {
+		JsonArray ja = json.get(ELEM_PERMISSIONS).getAsJsonArray();
+		Collection<GrantedAuthority> permissions = new ArrayList<GrantedAuthority>();
+		for (JsonElement je : ja) {
+			permissions.add(new GrantedAuthorityPermission(je.getAsString()));
+		}
+		return permissions;
+	}
 
 	@Override
 	public Object getCredentials() {
@@ -70,5 +81,14 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 		return user;
 	}
 
+	// @Override
+	// public Collection<GrantedAuthority> getAuthorities() {
+	// 	JsonArray ja = json.get(ELEM_PERMISSIONS).getAsJsonArray();
+	// 	ArrayList<GrantedAuthority> permissions = new ArrayList<GrantedAuthority>();
+	// 	for (JsonElement je : ja) {
+	// 		permissions.add(new GrantedAuthorityImpl);
+	// 	}
 
+	// 	return permissions;
+	// }
 }

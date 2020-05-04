@@ -27,14 +27,14 @@ public class ClientsController {
     
     
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'clients.admin')")
+    @PreAuthorize("hasAuthority('clients.admin')")
     public ModelAndView viewDefault() {
         ModelAndView mv = new ModelAndView("clients/default");
         return mv;
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasPermission(#user, 'clients.admin.users')")
+    @PreAuthorize("hasAuthority('clients.admin.users')")
     public ModelAndView viewUsers() {
         ModelAndView mv = new ModelAndView("clients/users");
         return mv;

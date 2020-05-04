@@ -23,7 +23,7 @@ public class UsersController {
     private final static Logger log = LogManager.getLogger(UsersController.class);
 
     @GetMapping("")
-    @PreAuthorize("hasPermission(#user, 'admin.security.users')")
+    @PreAuthorize("hasAuthority('admin.security.users')")
     public ModelAndView viewDefault() {
         ModelAndView mv = new ModelAndView("admin/security/users/default");
         return mv;

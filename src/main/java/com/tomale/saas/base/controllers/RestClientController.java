@@ -33,7 +33,7 @@ public class RestClientController {
     private ClientStore clientStore;
 
     @GetMapping("/all")
-    @PreAuthorize("hasPermission(#user, 'user.authenticated')")
+    @PreAuthorize("hasAuthority('user.authenticated')")
     public ApiResult all() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object o = auth.getPrincipal();
