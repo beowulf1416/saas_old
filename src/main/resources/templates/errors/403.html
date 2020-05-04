@@ -8,4 +8,7 @@ Forbidden
 <h1>Error</h1>
 <h2>Forbidden</h2>
 <div>{{ status }}</div>
+{% if clients is defined %}
+<div>You have not been allowed to view the results of this page</div>
+{% endif %}
 {% endblock %}
