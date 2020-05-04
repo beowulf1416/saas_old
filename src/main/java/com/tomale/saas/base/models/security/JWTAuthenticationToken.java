@@ -80,15 +80,4 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
 		return user;
 	}
-
-	// @Override
-	// public Collection<GrantedAuthority> getAuthorities() {
-	// 	JsonArray ja = json.get(ELEM_PERMISSIONS).getAsJsonArray();
-	// 	ArrayList<GrantedAuthority> permissions = new ArrayList<GrantedAuthority>();
-	// 	for (JsonElement je : ja) {
-	// 		permissions.add(new GrantedAuthorityImpl);
-	// 	}
-
-	// 	return permissions;
-	// }
 }
