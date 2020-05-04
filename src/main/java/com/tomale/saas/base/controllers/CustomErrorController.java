@@ -4,17 +4,21 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
 import com.tomale.saas.base.models.ApiResult;
+import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.User;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,6 +50,14 @@ public class CustomErrorController implements ErrorController {
             }
             case FORBIDDEN: {
                 mv.setViewName("errors/403");
+
+                Object o = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                if (o instanceof User) {
+                    User user = (User) o;
+                    List<Client> clients = user.getClients();
+                    mv.addObject("clients", clients);
+                }
+
                 break;
             }
             case NOT_FOUND: {
@@ -89,7 +101,11 @@ public class CustomErrorController implements ErrorController {
 
         switch(value) {
             case UNAUTHORIZED: {
-                msg = "You are not allowed to view the results of this request";
+                msg = "You are not signed in";
+                break;
+            }
+            case FORBIDDEN: {
+                msg = "You are not permitted to see the results of this request";
                 break;
             }
             default: {
