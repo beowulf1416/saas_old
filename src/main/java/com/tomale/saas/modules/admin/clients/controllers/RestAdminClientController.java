@@ -128,11 +128,13 @@ public class RestAdminClientController {
     public ApiResult addUserToClient(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
-            String szUserId = params.get("userId").toString();
+            String szEmail = params.get("email").toString();
+
+            User user = userStore.getUserByEmail(szEmail);
 
             adminClientStore.addUsertoClient(
                 UUID.fromString(szClientId),
-                UUID.fromString(szUserId)
+                user.getId()
             );
 
             return new ApiResult(
