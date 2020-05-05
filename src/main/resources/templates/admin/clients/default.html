@@ -74,7 +74,15 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
     ctbl.addEventListener('onselectclient', function(e) {
         clientId = e.detail.clientId;
-        utbl.setClient(e.detail.clientId);
+        // utbl.setClient(e.detail.clientId);
+
+        AdminClients.users(clientId, function(e) {
+            if (e.status == 'success') {
+                utbl.setUsers(JSON.parse(e.json));
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
 
         AdminClients.roles(clientId, function(e) {
             if (e.status == 'success') {
