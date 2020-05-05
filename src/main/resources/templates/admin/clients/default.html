@@ -102,6 +102,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             udlg.hide();
         });
     });
+
+    utbl.addEventListener('onselectuser', function(e) {
+        console.log(e);
+    });
 })();
 </script>
 {% endblock scripts %}

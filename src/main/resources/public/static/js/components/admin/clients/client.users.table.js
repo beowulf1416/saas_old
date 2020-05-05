@@ -29,19 +29,22 @@ class AdminClientUsersTable extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('tbl-wrapper');
         div.innerHTML = `
-            <table class="users">
-                <caption>Users</caption>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Status</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table><!-- .users -->
+            <form class="form-users">
+                <table class="users">
+                    <caption>Users</caption>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th>Active</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table><!-- .users -->
+            </form>
         `;
 
         container.append(div);
@@ -70,11 +73,25 @@ class AdminClientUsersTable extends HTMLElement {
                             tr.classList.add('user-row');
                             tr.innerHTML = `
                                 <td></td>
+                                <td>
+                                    <input type="radio" name="selectedUser" class="user-select" title="Select" value="${d.id}" />
+                                </td>
                                 <td>${d.active}</td>
                                 <td>${d.name}</td>
-                                <td>${d.email}</td>
+                                <td>
+                                    <a class="nav-link nav-email" href="mailto: ${d.email}" title="Send email to ${d.email}">${d.email}</a>
+                                </td>
                             `;
                             tbl.appendChild(tr);
+
+                            const userSelect = tr.querySelector('input.user-select');
+                            userSelect.addEventListener('change', function(e) {
+                                self.dispatchEvent(new CustomEvent('onselectuser', {
+                                    bubbles: true,
+                                    cancelable: true,
+                                    detail: userSelect.value
+                                }));
+                            });
                         });
 
                         const tr = document.createElement('tr');
