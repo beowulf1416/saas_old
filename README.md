@@ -3,6 +3,7 @@
 Multi-tenant Business Operations Software
 
 Technologies
+* Spring Web Framework
 * OAUTH authentication
 * JWT authentication token
 * web components
