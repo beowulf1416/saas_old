@@ -17,6 +17,8 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,42 +48,76 @@ public class JWTRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        try {
+            JWTAuthenticationToken auth = parseAuthToken(request);
+            if (auth != null) {       
+                Authentication postAuth = authMgr.authenticate(auth);
+                SecurityContextHolder.getContext().setAuthentication(postAuth);
+            }
+        } catch(AuthenticationException e) {
+            log.error(e);
+        }
         
+        // Cookie[] cookies = request.getCookies();
+        // if (cookies != null) {
+        //     for (Cookie cookie : cookies) {
+        //         // log.debug(cookie.getName());
+        //         if (cookie.getName().equalsIgnoreCase(cookieName)) {
+        //             if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        //                 String value = cookie.getValue();
+        //                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
+        //                 if (jwt.verify(value)) {
+        //                     try {
+        //                         JsonObject json = jwt.toJSON(value);
+        //                         // log.debug(json);
+
+        //                         JWTAuthenticationToken preauth = new JWTAuthenticationToken(json);
+        //                         // auth.setAuthenticated(true);
+        //                         try {
+        //                             Authentication postauth = authMgr.authenticate(preauth);
+        //                             SecurityContextHolder.getContext().setAuthentication(postauth);
+        //                         } catch(AuthenticationException e) {
+        //                             log.error(e);
+        //                         }
+        //                     } catch(Exception e) {
+        //                         log.error("JWTRequestFilter::doFilterInternal()");
+        //                         log.error(e);
+        //                     }
+        //                 } else {
+        //                     log.warn("Invalid value for cookie '%s'", cookieName);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        
+
+        filterChain.doFilter(request, response);
+    }
+
+    public JWTAuthenticationToken parseAuthToken(HttpServletRequest request) throws AuthenticationException {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                // log.debug(cookie.getName());
                 if (cookie.getName().equalsIgnoreCase(cookieName)) {
-                    if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                        String value = cookie.getValue();
-                        JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-                        if (jwt.verify(value)) {
-                            try {
-                                JsonObject json = jwt.toJSON(value);
-                                // log.debug(json);
-
-                                JWTAuthenticationToken preauth = new JWTAuthenticationToken(json);
-                                // auth.setAuthenticated(true);
-                                try {
-                                    Authentication postauth = authMgr.authenticate(preauth);
-                                    SecurityContextHolder.getContext().setAuthentication(postauth);
-                                } catch(AuthenticationException e) {
-                                    log.error(e);
-                                }
-                            } catch(Exception e) {
-                                log.error("JWTRequestFilter::doFilterInternal()");
-                                log.error(e);
-                            }
-                        } else {
-                            log.warn("Invalid value for cookie '%s'", cookieName);
+                    String value = cookie.getValue();
+                    JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
+                    if (jwt.verify(value)) {
+                        try {
+                            JsonObject json = jwt.toJSON(value);
+                            JWTAuthenticationToken token = new JWTAuthenticationToken(json);
+                            return token;
+                        } catch(Exception e) {
+                            throw new AuthenticationServiceException("Unable to parse cookie", e);
                         }
+                    } else {
+                        throw new BadCredentialsException("Invalid value for cookie");
                     }
                 }
             }
         }
-        
-
-        filterChain.doFilter(request, response);
+        return null;
     }
 
 }
