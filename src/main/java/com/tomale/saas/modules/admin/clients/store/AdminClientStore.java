@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
+import com.tomale.saas.modules.admin.security.Role;
 
 
 public class AdminClientStore {
@@ -23,6 +24,7 @@ public class AdminClientStore {
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
     private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)}";
+    private static final String SQL_CLIENT_ROLES = "{call iam.client_roles_all(?)}";
     private static final String SQL_CLIENT_ADD_USER = "{call iam.client_user_add(?,?)}";
     private static final String SQL_CLIENT_REMOVE_USER = "{call iam.client_user_remove(?,?)}";
 
@@ -96,6 +98,30 @@ public class AdminClientStore {
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to retrieve all users for client");
+        }
+    }
+
+    public List<Role> getAllRoles(UUID clientId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ROLES);
+            stmt.setObject(1, clientId);
+            stmt.execute();
+            ResultSet rs = stmt.getResultSet();
+
+            ArrayList<Role> roles = new ArrayList<Role>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+
+                roles.add(new Role(id, active, clientId, name));
+            }
+            return roles;
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve all roles for client");
         }
     }
 

@@ -29,6 +29,7 @@ import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
+import com.tomale.saas.modules.admin.security.Role;
 import com.tomale.saas.base.store.UserStore;
 
 
@@ -110,6 +111,32 @@ public class RestAdminClientController {
                 "success", 
                 String.format("%d users", users.size()), 
                 gson.toJson(users)
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/roles")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult allRoles(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            List<Role> roles = adminClientStore.getAllRoles(UUID.fromString(szClientId));
+
+            Gson gson = new Gson();
+
+            return new ApiResult(
+                "success", 
+                String.format("%d roles", roles.size()), 
+                gson.toJson(roles)
             );
         } catch(Exception e) {
             log.error(e);
