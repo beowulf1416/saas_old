@@ -29,7 +29,11 @@ import { Clients } from '/static/js/api/clients.js';
     cl.setClients(clients);
     cl.addEventListener('onselectclient', function(e) {
         Clients.select(e.detail.clientId, function(e) {
-            console.log(e);
+            if (e.status == 'success') {
+                window.location.reload();
+            } else {
+                console.error(e.message);
+            }
         });
     });
 })();
