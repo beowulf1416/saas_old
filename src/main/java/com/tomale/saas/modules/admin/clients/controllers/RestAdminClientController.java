@@ -29,7 +29,9 @@ import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
+import com.tomale.saas.modules.admin.security.Permission;
 import com.tomale.saas.modules.admin.security.Role;
+import com.tomale.saas.modules.admin.security.store.AdminPermissionStore;
 import com.tomale.saas.base.store.UserStore;
 
 
@@ -44,6 +46,9 @@ public class RestAdminClientController {
 
     @Autowired
     private UserStore userStore;
+
+    @Autowired
+    private AdminPermissionStore adminPermissionStore;
 
     @PostMapping("/all")
     @PreAuthorize("hasAuthority('admin.clients')")
@@ -141,6 +146,35 @@ public class RestAdminClientController {
         } catch(Exception e) {
             log.error(e);
 
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/roles/permissions'")
+    public ApiResult rolePermissions(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szRoleId = params.get("roleId").toString();
+
+            List<Permission> permisssions = adminPermissionStore.getRolePermissions(
+                UUID.fromString(szClientId),
+                UUID.fromString(szRoleId)
+            );
+
+            Gson gson = new Gson();
+
+            return new ApiResult(
+                "success",
+                String.format("%d permissoins", permisssions.size()), 
+                gson.toJson(permisssions)
+            );
+        } catch(Exception e) {
+            log.error(e);
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error",
