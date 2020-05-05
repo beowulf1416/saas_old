@@ -44,6 +44,7 @@ set schema 'iam';
 
 \ir procs/roles/roles_all.sql
 \ir procs/roles/role_add.sql
+\ir procs/roles/client_roles_all.sql
 
 
 /* init */
