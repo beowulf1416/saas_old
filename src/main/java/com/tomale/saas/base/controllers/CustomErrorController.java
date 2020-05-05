@@ -14,7 +14,9 @@ import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.models.security.JWTAuthenticationToken;
+import com.tomale.saas.base.models.security.JWTRequestFilter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class CustomErrorController implements ErrorController {
 
     private final static Logger log = LogManager.getLogger(CustomErrorController.class);
+
+    @Autowired
+    private JWTRequestFilter jwtFilter;
 
     @RequestMapping(
         path = "/error",
@@ -51,18 +56,14 @@ public class CustomErrorController implements ErrorController {
             case FORBIDDEN: {
                 mv.setViewName("errors/403");
 
-                // log.debug(request.getUserPrincipal());
-
-                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-                log.debug(auth);
-                if (auth instanceof JWTAuthenticationToken) {
-                    Object o = auth.getPrincipal();
-                    // log.debug(o);
-                    if (o instanceof User) {
-                        User user = (User) o;
-                        List<Client> clients = user.getClients();
-                        mv.addObject("clients", clients);
-                    }
+                // this always gives the incorrection auth object, using a workaround
+                // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                Authentication auth = jwtFilter.parseAuthToken(request);
+                Object o = auth.getPrincipal();
+                if (o instanceof User) {
+                    User user = (User) o;
+                    List<Client> clients = user.getClients();
+                    mv.addObject("clients", clients);
                 }
 
                 break;
@@ -88,6 +89,13 @@ public class CustomErrorController implements ErrorController {
         // }
 
         return mv;
+    }
+
+    private void parseAuthToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+
+        }
     }
 
     @Override
