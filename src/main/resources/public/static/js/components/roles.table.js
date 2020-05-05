@@ -20,6 +20,9 @@ class RolesTable extends HTMLElement {
         const self = this;
         if (Array.isArray(roles)) {
             const tbl = this.shadowRoot.querySelector('table.tbl-roles tbody');
+            while(tbl.firstChild) {
+                tbl.removeChild(tbl.lastChild);
+            }
             roles.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.classList.add('role-item');
