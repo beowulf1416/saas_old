@@ -66,6 +66,7 @@ class PermissionsTable extends HTMLElement {
                     <thead>
                         <tr>
                             <th><th>
+                            <th>Active</th>
                             <th>Name</th>
                         </tr>
                     </thead>
