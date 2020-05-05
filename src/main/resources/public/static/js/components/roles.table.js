@@ -6,7 +6,7 @@ class RolesTable extends HTMLElement {
         self = super();
 
         const div = document.createElement('div');
-        div.classList('wrapper');
+        div.classList.add('wrapper');
 
         this.initTable(self, div);
 
@@ -19,7 +19,20 @@ class RolesTable extends HTMLElement {
     setRoles(roles) {
         const self = this;
         if (Array.isArray(roles)) {
+            const tbl = this.shadowRoot.querySelector('table.tbl-roles tbody');
+            roles.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.classList.add('role-item');
+                tr.innerHTML = `
+                    <td>
+                        <input type="radio" name="selectedRole" class="form-input-radio" value="${r.id}" />
+                    </td>
+                    <td>${r.active}</td>
+                    <td>${r.name}</td>
+                `;
 
+                tbl.appendChild(tr);
+            });
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,
@@ -33,15 +46,20 @@ class RolesTable extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
+            <form class="form-roles">
             <table class="tbl-roles">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Active</th>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-            </table><!-- .tbl-roles -->
+                    <caption>Roles</caption>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Active</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table><!-- .tbl-roles -->
+            </form>
         `;
 
         container.appendChild(div);

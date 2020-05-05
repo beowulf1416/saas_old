@@ -29,6 +29,7 @@ Administer Clients
         </form>
     </div><!-- #userAddWrapper -->
 </modal-dialog>
+<roles-table id="rolesTbl"></roles-table>
 {% endblock %}
 
 {% block scripts %}
@@ -36,6 +37,7 @@ Administer Clients
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
+<script type="module" src="/static/js/components/roles.table.js"></script>
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
@@ -48,6 +50,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     let clientId = '';
     const ctbl = document.getElementById('clientTbl');
     const utbl = document.getElementById('clientUsersTbl');
+    const rolesTbl = document.getElementById('rolesTbl');
 
     const dlg = document.getElementById('clientDlg');
     const udlg = document.getElementById('usersDlg');
@@ -72,6 +75,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     ctbl.addEventListener('onselectclient', function(e) {
         clientId = e.detail.clientId;
         utbl.setClient(e.detail.clientId);
+
+        AdminClients.roles(clientId, function(e) {
+            if (e.status == 'success') {
+                rolesTbl.setRoles(JSON.parse(e.json));
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 
     utbl.addEventListener('onadduser', function(e) {

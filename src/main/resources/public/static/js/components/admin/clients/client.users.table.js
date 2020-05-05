@@ -35,7 +35,6 @@ class AdminClientUsersTable extends HTMLElement {
                     <thead>
                         <tr>
                             <th></th>
-                            <th></th>
                             <th>Active</th>
                             <th>Name</th>
                             <th>Email</th>
@@ -72,7 +71,6 @@ class AdminClientUsersTable extends HTMLElement {
                             const tr = document.createElement('tr');
                             tr.classList.add('user-row');
                             tr.innerHTML = `
-                                <td></td>
                                 <td>
                                     <input type="radio" name="selectedUser" class="user-select" title="Select" value="${d.id}" />
                                 </td>
