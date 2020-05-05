@@ -243,4 +243,94 @@ public class RestAdminClientController {
             );
         }
     }
+
+    @PostMapping("/users/roles")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult getUserRoles(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szUserId = params.get("userId").toString();
+            
+            List<Role> roles = adminClientStore.getUserRoles(
+                UUID.fromString(szClientId),
+                UUID.fromString(szUserId)
+            );
+
+            Gson gson = new Gson();
+
+            return new ApiResult(
+                "success",
+                String.format("%d roles", roles.size()),
+                gson.toJson(roles)
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/users/roles/add")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult assignRoleToUser(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szRoleId = params.get("roleId").toString();
+            String szUserId = params.get("userId").toString();
+            
+            adminClientStore.assignRoleToUser(
+                UUID.fromString(szClientId), 
+                UUID.fromString(szRoleId),
+                UUID.fromString(szUserId)
+            );
+
+            return new ApiResult(
+                "success",
+                "user assigned to role",
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/users/roles/remove")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult removeRoleFromUser(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szRoleId = params.get("roleId").toString();
+            String szUserId = params.get("userId").toString();
+            
+            adminClientStore.removeRoleFromUser(
+                UUID.fromString(szClientId), 
+                UUID.fromString(szRoleId),
+                UUID.fromString(szUserId)
+            );
+
+            return new ApiResult(
+                "success",
+                "user removed from role",
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
 }

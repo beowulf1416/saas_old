@@ -23,10 +23,15 @@ public class AdminClientStore {
 
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
+
     private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)}";
-    private static final String SQL_CLIENT_ROLES = "{call iam.client_roles_all(?)}";
     private static final String SQL_CLIENT_ADD_USER = "{call iam.client_user_add(?,?)}";
     private static final String SQL_CLIENT_REMOVE_USER = "{call iam.client_user_remove(?,?)}";
+
+    private static final String SQL_CLIENT_ROLES = "{call iam.client_roles_all(?)}";
+    private static final String SQL_CLIENT_USER_ROLES = "{call iam.client_user_roles(?,?)}";
+    private static final String SQL_CLIENT_ROLE_ASSIGN_USER = "{call iam.role_assign_user(?,?,?)}";
+    private static final String SQL_CLIENT_ROLE_REMOVE_USER = "{call iam.role_remove_user(?,?,?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -101,6 +106,31 @@ public class AdminClientStore {
         }
     }
 
+    public List<Role> getUserRoles(UUID clientId, UUID userId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_USER_ROLES);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, userId);
+            stmt.execute();
+            ResultSet rs = stmt.getResultSet();
+
+            ArrayList<Role> roles = new ArrayList<Role>();
+            while(rs.next()) {
+                UUID id = UUID.fromString(rs.getString(1));
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+
+                roles.add(new Role(id, active, clientId, name));
+            }
+            return roles;
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to retrieve all roles for user");
+        }
+    }
+
     public List<Role> getAllRoles(UUID clientId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
@@ -137,8 +167,6 @@ public class AdminClientStore {
             log.error(e);
             throw new Exception("An error occured while trying to add user to client");
         }
-
-
     }
 
     public void removeUserFromClient(UUID clientId, UUID userId) throws Exception {
@@ -153,7 +181,35 @@ public class AdminClientStore {
             log.error(e);
             throw new Exception("An error occured while trying to add user to client");
         }
+    }
 
+    public void assignRoleToUser(UUID clientId, UUID roleId, UUID userId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ROLE_ASSIGN_USER);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, roleId);
+            stmt.setObject(3, userId);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to assign user to role");
+        }
+    }
 
+    public void removeRoleFromUser(UUID clientId, UUID roleId, UUID userId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ROLE_REMOVE_USER);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, roleId);
+            stmt.setObject(3, userId);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to remove user from role");
+        }
     }
 }
