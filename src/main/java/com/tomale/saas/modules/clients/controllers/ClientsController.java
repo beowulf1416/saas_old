@@ -39,4 +39,11 @@ public class ClientsController {
         ModelAndView mv = new ModelAndView("clients/users");
         return mv;
     }
+
+    @GetMapping("/roles")
+    @PreAuthorize("hasAuthority('clients.admin.roles')")
+    public ModelAndView viewRoles() {
+        ModelAndView mv = new ModelAndView("clients/roles");
+        return mv;
+    }
 }
