@@ -16,5 +16,7 @@ insert into permissions (name) values
 ('admin.security.roles'),
 ('admin.security.users'),
 ('clients.admin'),
+('clients.admin.users'),
+('clients.admin.roles'),
 ('inventory.admin')
 on conflict do nothing;
