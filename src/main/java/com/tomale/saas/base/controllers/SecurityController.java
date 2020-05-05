@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.SessionUtil;
 import com.tomale.saas.base.models.User;
 import com.tomale.saas.base.models.security.JWTUtil;
 import com.tomale.saas.base.oauth.providers.Google;
@@ -52,11 +53,11 @@ public class SecurityController {
     @Value("${oauth.google.redirecturi.signin}")
     private String redirectUriGoogleSignin;
 
-    @Value("${jwt.issuer}")
-    private String jwtIssuer;
+    // @Value("${jwt.issuer}")
+    // private String jwtIssuer;
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    // @Value("${jwt.secret}")
+    // private String jwtSecret;
 
     @Value("${app.cookie.name}")
     private String cookieName;
@@ -70,8 +71,11 @@ public class SecurityController {
     @Value("${app.cookie.max_age}")
     private int cookieMaxAge;
 
-    @Value("${app.cipher.key}")
-    private String cipherKey;
+    // @Value("${app.cipher.key}")
+    // private String cipherKey;
+
+    @Autowired
+    private SessionUtil sessionUtil;
 
     @Autowired
     private UserStore userStore;
@@ -160,15 +164,17 @@ public class SecurityController {
                     permissions.add("user.authenticated");
                 }
                 
-                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-                String token = jwt.generateToken(user, permissions, client, clients);
+                // JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
+                // String token = jwt.generateToken(user, permissions, client, clients);
 
-                Cookie cookie = new Cookie(cookieName, token);
-                cookie.setDomain(cookieDomain);
-                cookie.setSecure(cookieSecure);
-                cookie.setHttpOnly(true);
-                cookie.setPath("/");
-                cookie.setMaxAge(cookieMaxAge);
+                // Cookie cookie = new Cookie(cookieName, token);
+                // cookie.setDomain(cookieDomain);
+                // cookie.setSecure(cookieSecure);
+                // cookie.setHttpOnly(true);
+                // cookie.setPath("/");
+                // cookie.setMaxAge(cookieMaxAge);
+
+                Cookie cookie = sessionUtil.generateCookie(user, permissions, client, clients);
 
                 response.addCookie(cookie);
 
