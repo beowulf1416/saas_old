@@ -30,6 +30,7 @@ Administer Clients
     </div><!-- #userAddWrapper -->
 </modal-dialog>
 <roles-table id="rolesTbl"></roles-table>
+<permissions-table id="permissionsTbl"></permissions-table>
 {% endblock %}
 
 {% block scripts %}
@@ -38,6 +39,7 @@ Administer Clients
 <script type="module" src="/static/js/components/admin/clients/client.edit.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
 <script type="module" src="/static/js/components/roles.table.js"></script>
+<script type="module" src="/static/js/components/permissions.table.js"></script>
 <script type="module" src="/static/js/api/admin.clients.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
@@ -51,6 +53,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const ctbl = document.getElementById('clientTbl');
     const utbl = document.getElementById('clientUsersTbl');
     const rolesTbl = document.getElementById('rolesTbl');
+    const permissionsTbl = document.getElementById('permissionsTbl');
 
     const dlg = document.getElementById('clientDlg');
     const udlg = document.getElementById('usersDlg');
@@ -134,7 +137,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     rolesTbl.addEventListener('onselectrole', function(e) {
-        console.log(e);
+        const roleId = e.detail.roleId;
+        AdminClients.rolePermissions(clientId, roleId, function(e) {
+            if (e.status == 'success') {
+                permissionsTbl.setPermissions(JSON.parse(e.json));
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 })();
 </script>
