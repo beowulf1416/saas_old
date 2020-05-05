@@ -37,14 +37,18 @@ set schema 'iam';
 \ir procs/permissions/permissions_role.sql
 
 
-/* roles */
+/* permissions */
 \ir procs/permissions/permissions_all.sql
 \ir procs/permissions/permissions_role_assign.sql
 \ir procs/permissions/permissions_role_revoke.sql
 
+/* roles */
 \ir procs/roles/roles_all.sql
 \ir procs/roles/role_add.sql
 \ir procs/roles/client_roles_all.sql
+\ir procs/roles/client_user_roles.sql
+\ir procs/roles/role_assign_user.sql
+\ir procs/roles/role_remove_user.sql
 
 
 /* init */
