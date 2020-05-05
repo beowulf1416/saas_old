@@ -1,6 +1,6 @@
 'use strict';
 
-import { AdminClients } from "/static/js/api/admin.clients.js";
+// import { AdminClients } from "/static/js/api/admin.clients.js";
 
 class AdminClientUsersTable extends HTMLElement {
 
