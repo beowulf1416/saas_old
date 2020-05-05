@@ -41,7 +41,9 @@ class PermissionsTable extends HTMLElement {
                     self.dispatchEvent(new CustomEvent('onselectpermission', {
                         bubbles: true,
                         cancelable: true,
-                        detail: permSelect.value
+                        detail: {
+                            permissionId: permSelect.value
+                        }
                     }));
                 });
             });

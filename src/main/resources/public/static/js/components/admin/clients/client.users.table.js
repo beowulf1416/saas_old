@@ -12,11 +12,13 @@ class AdminClientUsersTable extends HTMLElement {
 
         this.initTable(self, container);
         
-        this.refresh = this.refresh.bind(this);
-        this.setClient = this.setClient.bind(this);
+        // this.refresh = this.refresh.bind(this);
+        // this.setClient = this.setClient.bind(this);
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(container);
+
+        this.setUsers = this.setUsers.bind(this);
     }
 
     connectedCallback() {
@@ -73,7 +75,9 @@ class AdminClientUsersTable extends HTMLElement {
                     self.dispatchEvent(new CustomEvent('onselectuser', {
                         bubbles: true,
                         cancelable: true,
-                        detail: userSelect.value
+                        detail: {
+                            userId: userSelect.value
+                        }
                     }));
                 });
             });

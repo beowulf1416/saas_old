@@ -123,7 +123,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     utbl.addEventListener('onselectuser', function(e) {
-        console.log(e);
+        const userId = e.detail.userId;
+        AdminClients.userRoles(clientId, userId, function(e) {
+            if (e.status == 'success') {
+                rolesTbl.setRoles(JSON.parse(e.json));
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 
     rolesTbl.addEventListener('onselectrole', function(e) {

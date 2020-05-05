@@ -41,7 +41,9 @@ class RolesTable extends HTMLElement {
                     self.dispatchEvent(new CustomEvent('onselectrole', {
                         bubbles: true,
                         cancelable: true,
-                        detail: roleSelect.value
+                        detail: {
+                            roleId: roleSelect.value
+                        }
                     }));
                 });
             });
