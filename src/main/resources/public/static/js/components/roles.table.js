@@ -28,13 +28,22 @@ class RolesTable extends HTMLElement {
                 tr.classList.add('role-item');
                 tr.innerHTML = `
                     <td>
-                        <input type="radio" name="selectedRole" class="form-input-radio" value="${r.id}" />
+                        <input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
                     </td>
                     <td>${r.active}</td>
                     <td>${r.name}</td>
                 `;
 
                 tbl.appendChild(tr);
+
+                const roleSelect = tr.querySelector('input.role-select');
+                roleSelect.addEventListener('change', function(e) {
+                    self.dispatchEvent(new CustomEvent('onselectrole', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: roleSelect.value
+                    }));
+                });
             });
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {

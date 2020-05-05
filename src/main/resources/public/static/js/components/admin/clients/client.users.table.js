@@ -58,7 +58,7 @@ class AdminClientUsersTable extends HTMLElement {
                 tr.classList.add('user-row');
                 tr.innerHTML = `
                     <td>
-                        <input type="radio" name="selectedUser" class="user-select" title="Select" value="${u.id}" />
+                        <input type="radio" name="selectedUser" class="form-input-radio user-select" title="Select" value="${u.id}" />
                     </td>
                     <td>${u.active}</td>
                     <td>${u.name}</td>
