@@ -111,6 +111,9 @@ public class RestClientController {
                         user.getId(), 
                         selectedClient.getId()
                     );
+                    if (permissions.size() == 0) {
+                        permissions.add("user.authenticated");
+                    }
 
                     Cookie cookie = sessionUtil.generateCookie(user, 
                         permissions, 
