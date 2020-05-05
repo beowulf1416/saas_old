@@ -81,7 +81,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
         AdminClients.users(clientId, function(e) {
             if (e.status == 'success') {
-                utbl.setUsers(JSON.parse(e.json));
+                utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
             } else {
                 notifications.add('error', e.message);
             }
@@ -89,7 +89,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
         AdminClients.roles(clientId, function(e) {
             if (e.status == 'success') {
-                rolesTbl.setRoles(JSON.parse(e.json));
+                rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
                 notifications.add('error', e.message);
             }
@@ -129,7 +129,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         const userId = e.detail.userId;
         AdminClients.userRoles(clientId, userId, function(e) {
             if (e.status == 'success') {
-                rolesTbl.setRoles(JSON.parse(e.json));
+                rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
                 notifications.add('error', e.message);
             }
@@ -145,6 +145,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
                 notifications.add('error', e.message);
             }
         });
+    });
+
+    rolesTbl.addEventListener('onaddrole', function(e) {
+        console.log(e);
     });
 })();
 </script>
