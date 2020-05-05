@@ -51,10 +51,13 @@ class AdminClientUsersTable extends HTMLElement {
         container.append(div);
     }
 
-    setUsers(users) {
+    setUsers(users, options) {
         const self = this;
         if (Array.isArray(users)) {
             const tbl = self.shadowRoot.querySelector("table.users tbody");
+            while(tbl.firstChild) {
+                tbl.removeChild(tbl.lastChild);
+            }
             users.forEach(u => {
                 const tr = document.createElement('tr');
                 tr.classList.add('user-row');
@@ -81,6 +84,26 @@ class AdminClientUsersTable extends HTMLElement {
                     }));
                 });
             });
+
+            if (options && options.allowAdd == true) {
+                const tr = document.createElement('tr');
+                tr.classList.add('user-item-add');
+                tr.innerHTML = `
+                    <td colspan="4">
+                        <a title="Add User" id="userAdd" class="nav-link user-item-add" href="#">Add</a>
+                    </td>
+                `;
+
+                tbl.appendChild(tr);
+
+                const userAdd = tbl.querySelector('a.user-item-add');
+                userAdd.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onadduser', {
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                });
+            }
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,

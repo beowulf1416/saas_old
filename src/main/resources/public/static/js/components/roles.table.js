@@ -16,7 +16,7 @@ class RolesTable extends HTMLElement {
         this.setRoles = this.setRoles.bind(this);
     }
 
-    setRoles(roles) {
+    setRoles(roles, options) {
         const self = this;
         if (Array.isArray(roles)) {
             const tbl = this.shadowRoot.querySelector('table.tbl-roles tbody');
@@ -47,6 +47,25 @@ class RolesTable extends HTMLElement {
                     }));
                 });
             });
+
+            if (options && options.allowAdd == true) {
+                const tr = document.createElement('tr');
+                tr.classList.add('role-add');
+                tr.innerHTML = `
+                    <td colspan="3">
+                        <a title="Add Role" id="roleAdd" class="nav-link role-item-add" href="#">Add</a>
+                    </td>
+                `;
+                tbl.appendChild(tr);
+
+                const roleAdd = tbl.querySelector('a.role-item-add');
+                roleAdd.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onaddrole', {
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                });
+            }
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,
