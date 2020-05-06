@@ -111,6 +111,16 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     };
 
+    const refreshUsers = function(clientId) {
+        AdminClients.users(clientId, function(e) {
+            if (e.status == 'success') {
+                utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    };
+
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = document.getElementById('clientDlg');
         const dlg = modal.show();
@@ -132,14 +142,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     ctbl.addEventListener('onselectclient', function(e) {
         currentClientId = e.detail.clientId;
 
-        AdminClients.users(currentClientId, function(e) {
-            if (e.status == 'success') {
-                utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
-            } else {
-                notifications.add('error', e.message);
-            }
-        });
-
+        refreshUsers(currentClientId);
         refreshRoles(currentClientId);
     });
 
@@ -185,7 +188,15 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     utbl.addEventListener('onupdateuseractive', function(e) {
-        console.log(e);
+        const userId = e.detail.userId;
+        const active = e.detail.active && e.detail.active == 'true' ? false : true;
+        AdminClients.userSetActive(userId, active, function(e) {
+            if (e.status == 'success') {
+                refreshUsers(currentClientId);
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 
     rolesTbl.addEventListener('onselectrole', function(e) {
@@ -220,11 +231,11 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     rolesTbl.addEventListener('onupdateroleactive', function(e) {
         const roleId = e.detail.roleId;
         // toggle active value
-        let active = e.detail.active && e.detail.active == 'true' ? false : true;
+        const active = e.detail.active && e.detail.active == 'true' ? false : true;
 
         AdminClients.roleSetActive(roleId, active, function(e) {
             if (e.status == 'success') {
-                console.log(e);
+                refreshRoles(currentClientId);
             } else {
                 notifications.add('error', e.message);
             }
@@ -264,7 +275,17 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     permissionsTbl.addEventListener('onupdatepermissionactive', function(e) {
-        console.log(e);
+        const permissionId = e.detail.permissionId;
+        // toggle active value
+        const active = e.detail.active && e.detail.active == 'true' ? false : true;
+
+        AdminClients.permissionSetActive(permissionId, active, function(e) {
+            if (e.status == 'success') {
+                refreshPermissions(currentClientId, currentRoleId);
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 })();
 </script>
