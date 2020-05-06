@@ -1,5 +1,5 @@
 /**
- * 
+ * add a role
  */
 create or replace function role_add (
     p_client_id clients.clients.id%type,
