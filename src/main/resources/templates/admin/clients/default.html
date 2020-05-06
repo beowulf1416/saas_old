@@ -13,7 +13,6 @@ Administer Clients
 </modal-dialog>
 <client-users-table id="clientUsersTbl"></client-users-table>
 <modal-dialog id="usersDlg">
-    <!-- <users-list id="usersList"></users-list> -->
     <div id="userAddWrapper">
         <form class="form-user-add">
             <fieldset>
@@ -30,6 +29,22 @@ Administer Clients
     </div><!-- #userAddWrapper -->
 </modal-dialog>
 <roles-table id="rolesTbl"></roles-table>
+<modal-dialog id="roleDlg">
+    <div id="roleAddWrapper">
+        <notification-list></notification-list>
+        <form class="form-role-add">
+            <fieldset>
+                <legend>Role</legend>
+                <div class="form-group">
+                    <label for="roleName">Name</label>
+                    <input type="text" id="roleName" name="roleName" class="form-input text" title="Role Name" />
+                </div><!-- .form-group -->
+            </fieldset>
+            <button type="button" id="btnAddRole" title="Add Role">Add</button>
+            <button type="button" id="btnCancelRole" title="Cancel">Cancel</button>
+        </form>
+    </div><!-- #roleAddWrapper -->
+</modal-dialog>
 <permissions-table id="permissionsTbl"></permissions-table>
 {% endblock %}
 
@@ -49,25 +64,29 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 (function(){
     const notifications = document.getElementById('notifications');
 
-    let clientId = '';
+    let currentClientId = '';
+    let currentUserId = '';
+    let currentRoleId = '';
+
     const ctbl = document.getElementById('clientTbl');
     const utbl = document.getElementById('clientUsersTbl');
     const rolesTbl = document.getElementById('rolesTbl');
     const permissionsTbl = document.getElementById('permissionsTbl');
 
-    const dlg = document.getElementById('clientDlg');
-    const udlg = document.getElementById('usersDlg');
+    // const dlg = document.getElementById('clientDlg');
+    // const udlg = document.getElementById('usersDlg');
 
     ctbl.addEventListener('onaddclient', function(e) {
-        const modal = dlg.show();
-        const editor = modal.querySelector('.dialog-wrapper client-editor');
+        const modal = document.getElementById('clientDlg');
+        const dlg = modal.show();
+        const editor = dlg.querySelector('.dialog-wrapper client-editor');
 
         editor.addEventListener('save', function(e) {
             ctbl.refresh();
-            dlg.hide();
+            modal.hide();
         });
         editor.addEventListener('cancel', function(e) {
-            dlg.hide();
+            modal.hide();
         });
         editor.addEventListener('error', function(e) {
             notifications.add('error', e.message, 3000);
@@ -76,10 +95,9 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     ctbl.addEventListener('onselectclient', function(e) {
-        clientId = e.detail.clientId;
-        // utbl.setClient(e.detail.clientId);
+        currentClientId = e.detail.clientId;
 
-        AdminClients.users(clientId, function(e) {
+        AdminClients.users(currentClientId, function(e) {
             if (e.status == 'success') {
                 utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
             } else {
@@ -87,7 +105,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             }
         });
 
-        AdminClients.roles(clientId, function(e) {
+        AdminClients.roles(currentClientId, function(e) {
             if (e.status == 'success') {
                 rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
@@ -97,20 +115,21 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     utbl.addEventListener('onadduser', function(e) {
-        const modal = udlg.show();
-        const fNotifications = modal.querySelector('notification-list');
-        const bAdd = modal.querySelector('form.form-user-add button#btnAdd');
+        const modal = document.getElementById('usersDlg');
+        const dlg = modal.show();
+        const fNotifications = dlg.querySelector('notification-list');
+        const bAdd = dlg.querySelector('form.form-user-add button#btnAdd');
         bAdd.addEventListener('click', function(e) {
-            if (clientId == '') {
+            if (currentClientId == '') {
                 fNotifications.add('error', 'Please select a client', 5000);
                 console.log('Please select a client');
             } else {
                 const tEmail = modal.querySelector('form.form-user-add input#email');
-                AdminClients.addUserToClient(clientId, tEmail.value, function(e) {
+                AdminClients.addUserToClient(currentClientId, tEmail.value, function(e) {
                     if (e.status == 'success') {
                         fNotifications.add('success', 'user added to client', 3000);
                         utbl.refresh();
-                        udlg.hide();
+                        modal.hide();
                     } else {
                         fNotifications.add('error', e.message, 3000);
                         console.error(e.message);
@@ -119,15 +138,15 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             }
         });
 
-        const bCancel = modal.querySelector('form.form-user-add button#btnCancel');
+        const bCancel = dlg.querySelector('form.form-user-add button#btnCancel');
         bCancel.addEventListener('click', function(e) {
-            udlg.hide();
+            modal.hide();
         });
     });
 
     utbl.addEventListener('onselectuser', function(e) {
-        const userId = e.detail.userId;
-        AdminClients.userRoles(clientId, userId, function(e) {
+        currentUserId = e.detail.userId;
+        AdminClients.userRoles(currentClientId, currentUserId, function(e) {
             if (e.status == 'success') {
                 rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
@@ -137,8 +156,8 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     rolesTbl.addEventListener('onselectrole', function(e) {
-        const roleId = e.detail.roleId;
-        AdminClients.rolePermissions(clientId, roleId, function(e) {
+        currentRoleId = e.detail.roleId;
+        AdminClients.rolePermissions(currentClientId, currentRoleId, function(e) {
             if (e.status == 'success') {
                 permissionsTbl.setPermissions(JSON.parse(e.json));
             } else {
@@ -148,7 +167,25 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     rolesTbl.addEventListener('onaddrole', function(e) {
-        console.log(e);
+        const modal = document.getElementById('roleDlg');
+        const dlg = modal.show();
+        const bAdd = dlg.querySelector('form.form-role-add button#btnAddRole');
+        bAdd.addEventListener('click', function(e) {
+            const role = dlg.querySelector('input#roleName');
+            AdminClients.addRole(currentClientId, role.value, function(e) {
+                if (e.status == 'success') {
+                    modal.hide();
+                } else {
+                    const notifications = dlg.querySelector('notification-list');
+                    notifications.add('error', e.message);
+                }
+            });
+        });
+
+        const bCancel = dlg.querySelector('form.form-role-add button#btnCancelRole');
+        bCancel.addEventListener('click', function(e) {
+            modal.hide();
+        });
     });
 })();
 </script>
