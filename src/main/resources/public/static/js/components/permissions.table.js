@@ -32,7 +32,9 @@ class PermissionsTable extends HTMLElement {
                         <td>
                             <input type="checkbox" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
                         </td>
-                        <td>${p.active}</td>
+                        <td>
+                            <a title="Toggle Active" class="nav-link permission-active" href="#" data-id="${p.id}" data-active="${p.active}">${p.active}</a>
+                        </td>
                         <td>${p.name}</td>
                     `;
                 } else {
@@ -40,7 +42,9 @@ class PermissionsTable extends HTMLElement {
                         <td>
                             <input type="radio" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
                         </td>
-                        <td>${p.active}</td>
+                        <td>
+                            <a title="Toggle Active" class="nav-link permission-active" href="#" data-id="${p.id}" data-active="${p.active}">${p.active}</a>
+                        </td>
                         <td>${p.name}</td>
                     `;
                 }
@@ -54,6 +58,18 @@ class PermissionsTable extends HTMLElement {
                         cancelable: true,
                         detail: {
                             permissionId: permSelect.value
+                        }
+                    }));
+                });
+
+                const aActive = tr.querySelector('a.permission-active');
+                aActive.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onupdatepermissionactive', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            permissionId: aActive.dataset.id,
+                            active: aActive.dataset.active
                         }
                     }));
                 });

@@ -65,7 +65,9 @@ class AdminClientUsersTable extends HTMLElement {
                     <td>
                         <input type="radio" name="selectedUser" class="form-input-radio user-select" title="Select" value="${u.id}" />
                     </td>
-                    <td>${u.active}</td>
+                    <td>
+                        <a title="Toggle Active" class="nav-link user-active" href="#" data-id="${u.id}" data-active="${u.active}">${u.active}</a>
+                    </td>
                     <td>${u.name}</td>
                     <td>
                         <a class="nav-link nav-email" href="mailto: ${u.email}" title="Send email to ${u.email}">${u.email}</a>
@@ -80,6 +82,18 @@ class AdminClientUsersTable extends HTMLElement {
                         cancelable: true,
                         detail: {
                             userId: userSelect.value
+                        }
+                    }));
+                });
+
+                const aActive = tr.querySelector('a.user-active');
+                aActive.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onupdateuseractive', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            userId: aActive.dataset.id,
+                            active: aActive.dataset.active
                         }
                     }));
                 });
