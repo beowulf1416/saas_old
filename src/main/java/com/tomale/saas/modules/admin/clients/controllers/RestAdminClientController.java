@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.tomale.saas.base.models.ApiResult;
@@ -51,6 +54,8 @@ public class RestAdminClientController {
     @Autowired
     private AdminPermissionStore adminPermissionStore;
 
+    private Gson gson = new Gson();
+
 
     @PostMapping("/all")
     @PreAuthorize("hasAuthority('admin.clients')")
@@ -58,7 +63,6 @@ public class RestAdminClientController {
         log.debug("RestAdminController::getAllClients()");
         try {
             List<Client> clients = adminClientStore.getAll();
-            Gson gson = new Gson();
             return new ApiResult(
                 "success",
                 String.format("%d clients", clients.size()),
@@ -94,7 +98,7 @@ public class RestAdminClientController {
             );
         } catch(Exception e) {
             log.error(e);
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error",
                 e.getMessage(),
@@ -108,8 +112,6 @@ public class RestAdminClientController {
     public ApiResult clientPermissions(HttpServletResponse response) {
         try {
             List<Permission> permissions = adminPermissionStore.getPermissions();
-
-            Gson gson = new Gson();
 
             return new ApiResult(
                 "success", 
@@ -134,8 +136,6 @@ public class RestAdminClientController {
         try {
             String szClientId = params.get("clientId").toString();
             List<User> users = adminClientStore.getAllUsers(UUID.fromString(szClientId));
-           
-            Gson gson = new Gson();
 
             return new ApiResult(
                 "success", 
@@ -160,8 +160,6 @@ public class RestAdminClientController {
         try {
             String szClientId = params.get("clientId").toString();
             List<Role> roles = adminClientStore.getAllRoles(UUID.fromString(szClientId));
-
-            Gson gson = new Gson();
 
             return new ApiResult(
                 "success", 
@@ -221,12 +219,62 @@ public class RestAdminClientController {
                 UUID.fromString(szRoleId)
             );
 
-            Gson gson = new Gson();
-
             return new ApiResult(
                 "success",
                 String.format("%d permissoins", permisssions.size()), 
                 gson.toJson(permisssions)
+            );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/roles/permissions/add")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult rolePermissionsAdd(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String szRoleId = params.get("roleId").toString();
+            Object permissionIds = params.get("permissionIds");
+
+            JsonElement elem = gson.toJsonTree(permissionIds);
+            if (elem instanceof JsonArray) {
+                int count = 0;
+                for(JsonElement e : elem.getAsJsonArray()) {
+                    String permissionId = e.getAsString();
+                    adminPermissionStore.assignRolePermission(
+                        UUID.fromString(szClientId),
+                        UUID.fromString(szRoleId),
+                        Integer.parseInt(permissionId)
+                    );
+                    count++;
+                }
+
+                return new ApiResult(
+                    "success",
+                    String.format("%d permissions assigned to role", count),
+                    null
+                );
+            } else {
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+                return new ApiResult(
+                    "error", 
+                    "incorrect permissions", 
+                    null
+                );
+            }
+        } catch(NumberFormatException e) {
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return new ApiResult(
+                "error", 
+                "incorrect permissions id", 
+                null
             );
         } catch(Exception e) {
             log.error(e);
@@ -310,8 +358,6 @@ public class RestAdminClientController {
                 UUID.fromString(szClientId),
                 UUID.fromString(szUserId)
             );
-
-            Gson gson = new Gson();
 
             return new ApiResult(
                 "success",
