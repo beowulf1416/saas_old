@@ -14,9 +14,10 @@ class PermissionsTable extends HTMLElement {
         shadow.appendChild(div);
 
         this.setPermissions = this.setPermissions.bind(this);
+        this.getSelected = this.getSelected.bind(this);
     }
 
-    setPermissions(permissions) {
+    setPermissions(permissions, options) {
         const self = this;
         if (Array.isArray(permissions)) {
             const tbl = this.shadowRoot.querySelector('table.tbl-permissions tbody');
@@ -26,13 +27,23 @@ class PermissionsTable extends HTMLElement {
             permissions.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.classList.add('permission-item');
-                tr.innerHTML = `
-                    <td>
-                        <input type="radio" name="selectedPermission" class="form-input-radio permission-select" value="${p.id}" />
-                    </td>
-                    <td>${p.active}</td>
-                    <td>${p.name}</td>
-                `;
+                if (options && options.multiselect == true) {
+                    tr.innerHTML = `
+                        <td>
+                            <input type="checkbox" name="selectedPermission" class="form-input-radio permission-select" value="${p.id}" />
+                        </td>
+                        <td>${p.active}</td>
+                        <td>${p.name}</td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td>
+                            <input type="radio" name="selectedPermission" class="form-input-radio permission-select" value="${p.id}" />
+                        </td>
+                        <td>${p.active}</td>
+                        <td>${p.name}</td>
+                    `;
+                }
 
                 tbl.appendChild(tr);
 
@@ -47,6 +58,25 @@ class PermissionsTable extends HTMLElement {
                     }));
                 });
             });
+
+            if (options && options.allowAdd == true) {
+                const tr = document.createElement('tr');
+                tr.classList.add('permission-add');
+                tr.innerHTML = `
+                    <td colspan="3">
+                        <a id="permissionAdd" class="nav-link permission-add" title="Add Permission" href="#">Add</a>
+                    </td>
+                `;
+                tbl.appendChild(tr);
+
+                const lAdd = tr.querySelector('a#permissionAdd');
+                lAdd.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onaddpermission', {
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                });
+            }
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,
@@ -54,6 +84,12 @@ class PermissionsTable extends HTMLElement {
                 detail: "Expected an array of permissions"
             }));
         }
+    }
+
+    getSelected() {
+        const self = this;
+        const shadow = this.shadowRoot;
+        console.log(shadow.querySelector('input.permission-select'));
     }
 
     initTable(component, container) {
