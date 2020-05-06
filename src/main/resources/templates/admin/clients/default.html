@@ -46,6 +46,21 @@ Administer Clients
     </div><!-- #roleAddWrapper -->
 </modal-dialog>
 <permissions-table id="permissionsTbl"></permissions-table>
+<modal-dialog id="permissionDlg">
+    <div id="permissionAddWrapper">
+        <notification-list></notification-list>
+        <form class="form-permission-add">
+            <fieldset>
+                <legend>Permission</legend>
+                <div class="form-group">
+                    <permissions-table class="tbl-permissions"></permissions-table>
+                </div><!-- .form-group -->
+            </fieldset>
+            <button type="button" id="btnAddPermission" title="Add Permission">Add</button>
+            <button type="button" id="btnCancelPermission" title="Cancel">Cancel</button>
+        </form>
+    </div><!-- #permissionAddWrapper -->
+</modal-dialog>
 {% endblock %}
 
 {% block scripts %}
@@ -73,8 +88,15 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const rolesTbl = document.getElementById('rolesTbl');
     const permissionsTbl = document.getElementById('permissionsTbl');
 
-    // const dlg = document.getElementById('clientDlg');
-    // const udlg = document.getElementById('usersDlg');
+    const refreshRoles = function() {
+        AdminClients.roles(currentClientId, function(e) {
+            if (e.status == 'success') {
+                rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    }
 
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = document.getElementById('clientDlg');
@@ -105,13 +127,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             }
         });
 
-        AdminClients.roles(currentClientId, function(e) {
-            if (e.status == 'success') {
-                rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
-            } else {
-                notifications.add('error', e.message);
-            }
-        });
+        refreshRoles();
     });
 
     utbl.addEventListener('onadduser', function(e) {
@@ -159,7 +175,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         currentRoleId = e.detail.roleId;
         AdminClients.rolePermissions(currentClientId, currentRoleId, function(e) {
             if (e.status == 'success') {
-                permissionsTbl.setPermissions(JSON.parse(e.json));
+                permissionsTbl.setPermissions(JSON.parse(e.json), {
+                    allowAdd: true,
+                    multiselect: false
+                });
             } else {
                 notifications.add('error', e.message);
             }
@@ -174,10 +193,12 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             const role = dlg.querySelector('input#roleName');
             AdminClients.addRole(currentClientId, role.value, function(e) {
                 if (e.status == 'success') {
+                    notifications.add('success', e.message, 3000);
+                    refreshRoles();
                     modal.hide();
                 } else {
-                    const notifications = dlg.querySelector('notification-list');
-                    notifications.add('error', e.message);
+                    const n = dlg.querySelector('notification-list');
+                    n.add('error', e.message);
                 }
             });
         });
@@ -185,6 +206,33 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         const bCancel = dlg.querySelector('form.form-role-add button#btnCancelRole');
         bCancel.addEventListener('click', function(e) {
             modal.hide();
+        });
+    });
+
+    permissionsTbl.addEventListener('onaddpermission', function(e) {
+        AdminClients.permissions(function(e) {
+            if (e.status == 'success') {
+                const modal = document.getElementById('permissionDlg');
+                const dlg = modal.show();
+                const ptbl = dlg.querySelector('permissions-table');
+
+                ptbl.setPermissions(JSON.parse(e.json), {
+                    allowAdd: false,
+                    multiselect: true
+                });
+                
+                const bAdd = dlg.querySelector('button#btnAddPermission');
+                bAdd.addEventListener('click', function(e) {
+                    modal.hide();
+                });
+
+                const bCancel = dlg.querySelector('button#btnCancelPermission');
+                bCancel.addEventListener('click', function(e) {
+                    modal.hide();
+                });
+            } else {
+                notifications.add('error', e.message);
+            }
         });
     });
 })();

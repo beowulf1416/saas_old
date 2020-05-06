@@ -51,6 +51,7 @@ public class RestAdminClientController {
     @Autowired
     private AdminPermissionStore adminPermissionStore;
 
+
     @PostMapping("/all")
     @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult getAllClients(HttpServletResponse response) {
@@ -93,9 +94,32 @@ public class RestAdminClientController {
             );
         } catch(Exception e) {
             log.error(e);
-
             response.setStatus(HttpStatus.BAD_REQUEST.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
 
+    @PostMapping("/permissions")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult clientPermissions(HttpServletResponse response) {
+        try {
+            List<Permission> permissions = adminPermissionStore.getPermissions();
+
+            Gson gson = new Gson();
+
+            return new ApiResult(
+                "success", 
+                String.format("%d permissions", permissions.size()), 
+                gson.toJson(permissions)
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error",
                 e.getMessage(),
@@ -185,7 +209,8 @@ public class RestAdminClientController {
         }
     }
 
-    @PostMapping("/roles/permissions'")
+    @PostMapping("/roles/permissions")
+    @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult rolePermissions(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
