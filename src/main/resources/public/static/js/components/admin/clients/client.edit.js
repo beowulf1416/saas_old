@@ -68,7 +68,6 @@ class ClientEditor extends HTMLElement {
 
             const bCancel = shadow.querySelector('.bCancel');
             bCancel.addEventListener('click', function(e) {
-                console.log('client editor button cancel clicked');
                 component.dispatchEvent(new CustomEvent('cancel', {
                     bubbles: true,
                     cancelable: true
