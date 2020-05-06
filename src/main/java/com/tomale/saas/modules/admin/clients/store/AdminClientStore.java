@@ -29,6 +29,8 @@ public class AdminClientStore {
     private static final String SQL_CLIENT_REMOVE_USER = "{call iam.client_user_remove(?,?)}";
 
     private static final String SQL_CLIENT_ROLES = "{call iam.client_roles_all(?)}";
+    private static final String SQL_CLIENT_ROLE_ADD = "{call iam.role_add(?,?)}";
+
     private static final String SQL_CLIENT_USER_ROLES = "{call iam.client_user_roles(?,?)}";
     private static final String SQL_CLIENT_ROLE_ASSIGN_USER = "{call iam.role_assign_user(?,?,?)}";
     private static final String SQL_CLIENT_ROLE_REMOVE_USER = "{call iam.role_remove_user(?,?,?)}";
@@ -152,6 +154,20 @@ public class AdminClientStore {
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to retrieve all roles for client");
+        }
+    }
+
+    public void addRole(UUID clientId, String roleName) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ROLE_ADD);
+            stmt.setObject(1, clientId);
+            stmt.setObject(2, roleName);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to add role to client");
         }
     }
 

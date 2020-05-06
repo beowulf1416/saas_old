@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -142,6 +143,35 @@ public class RestAdminClientController {
                 "success", 
                 String.format("%d roles", roles.size()), 
                 gson.toJson(roles)
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/roles/add")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult addRole(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szClientId = params.get("clientId").toString();
+            String roleName = params.get("roleName").toString();
+
+            adminClientStore.addRole(
+                UUID.fromString(szClientId),
+                roleName
+            );
+
+            return new ApiResult(
+                "success",
+                "role added",
+                null
             );
         } catch(Exception e) {
             log.error(e);
