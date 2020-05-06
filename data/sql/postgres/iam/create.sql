@@ -22,6 +22,7 @@ set schema 'iam';
 /* users */
 \ir procs/users/user_add.sql
 \ir procs/users/user_add_google.sql
+\ir procs/users/user_set_active.sql
 
 \ir procs/users/user_email_exists.sql
 \ir procs/users/user_get_by_email.sql
@@ -33,14 +34,15 @@ set schema 'iam';
 \ir procs/users/client_user_add.sql
 \ir procs/users/client_user_remove.sql
 
-\ir procs/permissions_user_all.sql
-\ir procs/permissions/permissions_role.sql
-
 
 /* permissions */
 \ir procs/permissions/permissions_all.sql
+\ir procs/permissions/permissions_role.sql
 \ir procs/permissions/permissions_role_assign.sql
 \ir procs/permissions/permissions_role_revoke.sql
+\ir procs/permissions/permission_set_active.sql
+\ir procs/permissions/permissions_user_all.sql
+
 
 /* roles */
 \ir procs/roles/roles_all.sql
