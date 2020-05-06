@@ -30,7 +30,9 @@ class RolesTable extends HTMLElement {
                     <td>
                         <input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
                     </td>
-                    <td>${r.active}</td>
+                    <td>
+                        <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
+                    </td>
                     <td>${r.name}</td>
                 `;
 
@@ -43,6 +45,18 @@ class RolesTable extends HTMLElement {
                         cancelable: true,
                         detail: {
                             roleId: roleSelect.value
+                        }
+                    }));
+                });
+
+                const aActive = tr.querySelector('a.role-active');
+                aActive.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onupdateroleactive', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            roleId: aActive.dataset.id,
+                            active: aActive.dataset.active
                         }
                     }));
                 });

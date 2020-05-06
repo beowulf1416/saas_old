@@ -213,6 +213,20 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     });
 
+    rolesTbl.addEventListener('onupdateroleactive', function(e) {
+        const roleId = e.detail.roleId;
+        // toggle active value
+        let active = e.detail.active && e.detail.active == 'true' ? false : true;
+
+        AdminClients.roleSetActive(roleId, active, function(e) {
+            if (e.status == 'success') {
+                console.log(e);
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    });
+
     permissionsTbl.addEventListener('onaddpermission', function(e) {
         AdminClients.permissions(function(e) {
             if (e.status == 'success') {
