@@ -37,6 +37,7 @@ import com.tomale.saas.modules.admin.security.Permission;
 import com.tomale.saas.modules.admin.security.Role;
 import com.tomale.saas.modules.admin.security.store.AdminPermissionStore;
 import com.tomale.saas.modules.admin.security.store.AdminRoleStore;
+import com.tomale.saas.modules.admin.security.store.AdminUsersStore;
 import com.tomale.saas.base.store.UserStore;
 
 
@@ -51,6 +52,9 @@ public class RestAdminClientController {
 
     @Autowired
     private UserStore userStore;
+
+    @Autowired
+    private AdminUsersStore adminUserStore;
 
     @Autowired
     private AdminPermissionStore adminPermissionStore;
@@ -121,6 +125,35 @@ public class RestAdminClientController {
                 "success", 
                 String.format("%d permissions", permissions.size()), 
                 gson.toJson(permissions)
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/permissions/active")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult permissionSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szPermissionId = params.get("permissionId").toString();
+            String szActive = params.get("active").toString();
+
+            adminPermissionStore.permissionSetActive(
+                Integer.parseInt(szPermissionId),
+                Boolean.parseBoolean(szActive)
+            );
+            
+            return new ApiResult(
+                "success",
+                "user active status updated",
+                null
             );
         } catch(Exception e) {
             log.error(e);
@@ -215,7 +248,6 @@ public class RestAdminClientController {
     @PreAuthorize("hasAuthority('admin.clients')")
     public ApiResult roleSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
-            // String szClientId = params.get("clientId").toString();
             String szRoleId = params.get("roleId").toString();
             String szActive = params.get("active").toString();
 
@@ -372,6 +404,35 @@ public class RestAdminClientController {
             );
         } catch(Exception e) {
             log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/user/active")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult userSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            String szUserId = params.get("userId").toString();
+            String szActive = params.get("active").toString();
+
+            adminUserStore.userSetActive(
+                UUID.fromString(szUserId), 
+                Boolean.parseBoolean(szActive)
+            );
+            
+            return new ApiResult(
+                "success",
+                "user active status updated",
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error",
