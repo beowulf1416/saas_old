@@ -106,7 +106,7 @@ public class ClientController {
                     UUID.fromString(client)
                 );
 
-                Cookie cookie = sessionUtil.generateCookie(user, permissions, userClient, clients)
+                Cookie cookie = sessionUtil.generateCookie(user, permissions, userClient, clients);
 
                 response.addCookie(cookie);
 
