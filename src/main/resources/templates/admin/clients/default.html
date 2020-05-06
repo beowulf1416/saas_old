@@ -184,6 +184,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     });
 
+    utbl.addEventListener('onupdateuseractive', function(e) {
+        console.log(e);
+    });
+
     rolesTbl.addEventListener('onselectrole', function(e) {
         currentRoleId = e.detail.roleId;
         refreshPermissions(currentClientId, currentRoleId);
@@ -257,6 +261,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
                 notifications.add('error', e.message);
             }
         });
+    });
+
+    permissionsTbl.addEventListener('onupdatepermissionactive', function(e) {
+        console.log(e);
     });
 })();
 </script>
