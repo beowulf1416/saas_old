@@ -88,8 +88,8 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const rolesTbl = document.getElementById('rolesTbl');
     const permissionsTbl = document.getElementById('permissionsTbl');
 
-    const refreshRoles = function() {
-        AdminClients.roles(currentClientId, function(e) {
+    const refreshRoles = function(clientId) {
+        AdminClients.roles(clientId, function(e) {
             if (e.status == 'success') {
                 rolesTbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
@@ -97,6 +97,19 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             }
         });
     }
+
+    const refreshPermissions = function(clientId, roleId) {
+        AdminClients.rolePermissions(clientId, roleId, function(e) {
+            if (e.status == 'success') {
+                permissionsTbl.setPermissions(JSON.parse(e.json), {
+                    allowAdd: true,
+                    multiselect: false
+                });
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    };
 
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = document.getElementById('clientDlg');
@@ -127,7 +140,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             }
         });
 
-        refreshRoles();
+        refreshRoles(currentClientId);
     });
 
     utbl.addEventListener('onadduser', function(e) {
@@ -173,16 +186,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
     rolesTbl.addEventListener('onselectrole', function(e) {
         currentRoleId = e.detail.roleId;
-        AdminClients.rolePermissions(currentClientId, currentRoleId, function(e) {
-            if (e.status == 'success') {
-                permissionsTbl.setPermissions(JSON.parse(e.json), {
-                    allowAdd: true,
-                    multiselect: false
-                });
-            } else {
-                notifications.add('error', e.message);
-            }
-        });
+        refreshPermissions(currentClientId, currentRoleId);
     });
 
     rolesTbl.addEventListener('onaddrole', function(e) {
@@ -194,7 +198,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             AdminClients.addRole(currentClientId, role.value, function(e) {
                 if (e.status == 'success') {
                     notifications.add('success', e.message, 3000);
-                    refreshRoles();
+                    refreshRoles(currentClientId);
                     modal.hide();
                 } else {
                     const n = dlg.querySelector('notification-list');
@@ -223,6 +227,11 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
                 
                 const bAdd = dlg.querySelector('button#btnAddPermission');
                 bAdd.addEventListener('click', function(e) {
+                    const selected = ptbl.getSelected();
+                    AdminClients.rolePermissionsAdd(currentClientId, currentRoleId, selected, function(e) {
+                        refreshPermissions(currentClientId, currentRoleId);
+                        notifications.add(e.status, e.message);
+                    });
                     modal.hide();
                 });
 

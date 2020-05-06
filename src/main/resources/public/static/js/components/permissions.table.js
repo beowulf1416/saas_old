@@ -30,7 +30,7 @@ class PermissionsTable extends HTMLElement {
                 if (options && options.multiselect == true) {
                     tr.innerHTML = `
                         <td>
-                            <input type="checkbox" name="selectedPermission" class="form-input-radio permission-select" value="${p.id}" />
+                            <input type="checkbox" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
                         </td>
                         <td>${p.active}</td>
                         <td>${p.name}</td>
@@ -38,7 +38,7 @@ class PermissionsTable extends HTMLElement {
                 } else {
                     tr.innerHTML = `
                         <td>
-                            <input type="radio" name="selectedPermission" class="form-input-radio permission-select" value="${p.id}" />
+                            <input type="radio" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
                         </td>
                         <td>${p.active}</td>
                         <td>${p.name}</td>
@@ -89,7 +89,12 @@ class PermissionsTable extends HTMLElement {
     getSelected() {
         const self = this;
         const shadow = this.shadowRoot;
-        console.log(shadow.querySelector('input.permission-select'));
+        const permissions = [];
+        const nl = shadow.querySelectorAll('input.permission-select:checked');
+        nl.forEach(n => {
+            permissions.push(n.value);
+        });
+        return permissions;
     }
 
     initTable(component, container) {
