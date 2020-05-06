@@ -137,6 +137,38 @@ class AdminClients {
         .then((data) => func ? func(data) : console.log(data));
     }
 
+    static assignRoleToUser(roleId, userId, func) {
+        fetch('/api/admin/clients/users/roles/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                roleId: roleId,
+                userId: userId
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => func ? func(data) : console.log(data));
+    }
+
+    static removeRoleFromUser(roleId, userId, func) {
+        fetch('/api/admin/clients/users/roles/remove', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                roleId: roleId,
+                userId: userId
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => func ? func(data) : console.log(data));
+    }
+
     static permissions(func) {
         fetch('/api/admin/clients/permissions', {
             method: 'POST',
