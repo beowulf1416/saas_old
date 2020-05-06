@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.SessionUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,9 @@ public class ClientController {
 
     @Autowired
     private ClientStore clientStore;
+
+    @Autowired
+    private SessionUtil sessionUtil;
 
     @Value("${jwt.issuer}")
     private String jwtIssuer;
@@ -102,15 +106,7 @@ public class ClientController {
                     UUID.fromString(client)
                 );
 
-                JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-                String token = jwt.generateToken(user, permissions, userClient, clients);
-
-                Cookie cookie = new Cookie(cookieName, token);
-                cookie.setDomain(cookieDomain);
-                cookie.setSecure(cookieSecure);
-                cookie.setHttpOnly(true);
-                cookie.setPath("/");
-                cookie.setMaxAge(cookieMaxAge);
+                Cookie cookie = sessionUtil.generateCookie(user, permissions, userClient, clients)
 
                 response.addCookie(cookie);
 

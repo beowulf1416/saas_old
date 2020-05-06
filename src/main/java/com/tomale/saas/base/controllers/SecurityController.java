@@ -163,16 +163,6 @@ public class SecurityController {
                 if (permissions.size() == 0) {
                     permissions.add("user.authenticated");
                 }
-                
-                // JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-                // String token = jwt.generateToken(user, permissions, client, clients);
-
-                // Cookie cookie = new Cookie(cookieName, token);
-                // cookie.setDomain(cookieDomain);
-                // cookie.setSecure(cookieSecure);
-                // cookie.setHttpOnly(true);
-                // cookie.setPath("/");
-                // cookie.setMaxAge(cookieMaxAge);
 
                 Cookie cookie = sessionUtil.generateCookie(user, permissions, client, clients);
 
