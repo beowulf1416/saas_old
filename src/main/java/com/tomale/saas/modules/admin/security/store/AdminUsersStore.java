@@ -19,13 +19,25 @@ public class AdminUsersStore {
 
     private static final Logger log = LogManager.getLogger(AdminUsersStore.class);
 
+    private static final String SQL_USERS_SET_ACTIIVE = "{call iam.user_set_active(?,?)}";
+
     private JdbcTemplate jdbc;
 
     public AdminUsersStore(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
-    // public User getUserByEmail(String email) {
-    //     // TODO
-    // }
+    public void userSetActive(UUID userId, boolean active) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_USERS_SET_ACTIIVE);
+            stmt.setObject(1, userId);
+            stmt.setBoolean(2, active);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to update user status");
+        }
+    }
 }

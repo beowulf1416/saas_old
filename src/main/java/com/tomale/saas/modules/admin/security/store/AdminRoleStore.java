@@ -80,7 +80,7 @@ public class AdminRoleStore {
             stmt.execute();
         } catch(Exception e) {
             log.error(e);
-            throw new Exception("An error occured while trying to add a role");
+            throw new Exception("An error occured while trying to update role status");
         }
     }
 }

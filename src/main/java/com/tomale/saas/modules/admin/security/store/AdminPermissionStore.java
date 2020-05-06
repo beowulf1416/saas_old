@@ -23,6 +23,7 @@ public class AdminPermissionStore {
     private static final String SQL_PERMISSIONS_ROLE = "{call iam.permissions_role(?,?)}";
     private static final String SQL_PERMISSIONS_ROLE_ASSIGN = "{call iam.permissions_role_assign(?,?,?)}";
     private static final String SQL_PERMISSIONS_ROLE_REVOKE = "{call iam.permissions_role_revoke(?,?,?)}";
+    private static final String SQL_PERMISSIONS_SET_ACTIVE = "{call iam.permission_set_active(?,?)}";
 
     private JdbcTemplate jdbc;
 
@@ -108,6 +109,20 @@ public class AdminPermissionStore {
         } catch(SQLException e) {
             log.error(e);
             throw new Exception("An error occured while trying to assign permission to role");
+        }
+    }
+
+    public void permissionSetActive(int permissionId, boolean active) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_PERMISSIONS_ROLE_REVOKE);
+            stmt.setInt(1, permissionId);
+            stmt.setBoolean(2, active);
+            stmt.execute();
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to update permission status");
         }
     }
 }
