@@ -36,6 +36,7 @@ import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
 import com.tomale.saas.modules.admin.security.Permission;
 import com.tomale.saas.modules.admin.security.Role;
 import com.tomale.saas.modules.admin.security.store.AdminPermissionStore;
+import com.tomale.saas.modules.admin.security.store.AdminRoleStore;
 import com.tomale.saas.base.store.UserStore;
 
 
@@ -53,6 +54,9 @@ public class RestAdminClientController {
 
     @Autowired
     private AdminPermissionStore adminPermissionStore;
+
+    @Autowired
+    private AdminRoleStore adminRoleStore;
 
     private Gson gson = new Gson();
 
@@ -193,6 +197,36 @@ public class RestAdminClientController {
             return new ApiResult(
                 "success",
                 "role added",
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/roles/active")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult roleSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            // String szClientId = params.get("clientId").toString();
+            String szRoleId = params.get("roleId").toString();
+            String szActive = params.get("active").toString();
+
+            adminRoleStore.roleSetActive(
+                UUID.fromString(szRoleId),
+                Boolean.parseBoolean(szActive)
+            );
+
+            return new ApiResult(
+                "success", 
+                "Role updated",
                 null
             );
         } catch(Exception e) {

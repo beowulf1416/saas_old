@@ -20,6 +20,7 @@ public class AdminRoleStore {
 
     private static final String SQL_ROLES_ALL = "{call iam.roles_all(?)}";
     private static final String SQL_ROLE_ADD = "{? = call iam.role_add(?,?)}";
+    private static final String SQL_ROLE_ACTIVE = "{call iam.role_set_active(?,?)}";
 
     private JdbcTemplate jdbc;
 
@@ -63,6 +64,20 @@ public class AdminRoleStore {
 
             UUID roleId = (UUID) stmt.getObject(1);
             return roleId;
+        } catch(Exception e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to add a role");
+        }
+    }
+
+    public void roleSetActive(UUID roleId, boolean active) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_ROLE_ACTIVE);
+            stmt.setObject(1, roleId);
+            stmt.setBoolean(2, active);
+            stmt.execute();
         } catch(Exception e) {
             log.error(e);
             throw new Exception("An error occured while trying to add a role");
