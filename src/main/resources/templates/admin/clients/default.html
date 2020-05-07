@@ -121,6 +121,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     };
 
+    AdminClients.all((e) => {
+        if (e.status == 'success') {
+            ctbl.setClients(JSON.parse(e.json), { allowAdd: true });
+        } else {
+            notifications.add('error', e.message);
+        }
+    });
+
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = document.getElementById('clientDlg');
         const dlg = modal.show();
@@ -144,6 +152,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
         refreshUsers(currentClientId);
         refreshRoles(currentClientId);
+    });
+
+    ctbl.addEventListener('onupdateclientactive', function(e) {
+        console.log(e);
     });
 
     utbl.addEventListener('onadduser', function(e) {
