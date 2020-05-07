@@ -153,7 +153,7 @@ class AdminClients {
         .then((data) => func ? func(data) : console.log(data));
     }
 
-    static assignRoleToUser(roleId, userId, func) {
+    static assignRolesToUser(clientId, userId, roleIds, func) {
         fetch('/api/admin/clients/users/roles/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -161,8 +161,9 @@ class AdminClients {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                roleId: roleId,
-                userId: userId
+                clientId: clientId,
+                userId: userId,
+                roleIds: roleIds
             })
         })
         .then((response) => response.json())
