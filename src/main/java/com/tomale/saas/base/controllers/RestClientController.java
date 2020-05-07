@@ -26,6 +26,7 @@ import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.base.models.Client;
 import com.tomale.saas.base.models.SessionUtil;
 import com.tomale.saas.base.models.User;
+import com.tomale.saas.base.store.UserStore;
 import com.tomale.saas.base.store.ClientStore;
 import com.tomale.saas.base.store.PermissionStore;
 
@@ -35,6 +36,9 @@ import com.tomale.saas.base.store.PermissionStore;
 public class RestClientController {
 
     private static final Logger log = LogManager.getLogger(RestClientController.class);
+
+    @Autowired
+    private UserStore userStore;
 
     @Autowired
     private PermissionStore permissionStore;
@@ -74,41 +78,47 @@ public class RestClientController {
     @PostMapping("/select")
     @PreAuthorize("hasAuthority('user.authenticated')")
     public ApiResult select(@RequestBody Map<String, Object> data, HttpServletResponse response) {
-        Object oClientId = data.get("clientId");
-        if (oClientId == null) {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return new ApiResult(
-                "error", 
-                "Client Id is required", 
-                null
-            );
-        }
-
-        UUID clientId = UUID.fromString(oClientId.toString());
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object o = auth.getPrincipal();
-        if (o instanceof User) {
-            User user = (User) o;
-            List<Client> clients = user.getClients();
-            Client selectedClient = null;
-            for(Client c : clients) {
-                if (clientId.equals(c.getId())) {
-                    selectedClient = c;
-                }
-            }
-
-            if (selectedClient == null) {
-                response.setStatus(HttpStatus.CONFLICT.value());
+        try {
+            Object oClientId = data.get("clientId");
+            if (oClientId == null) {
+                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
                 return new ApiResult(
                     "error", 
-                    "Selected client not found",
+                    "Client Id is required", 
                     null
                 );
-            } else {
-                try {
+            }
+
+            UUID clientId = UUID.fromString(oClientId.toString());
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Object o = auth.getPrincipal();
+            if (o instanceof User) {
+                User user = (User) o;
+                
+                // user id is not populated, retrieve from store
+                User tUser = userStore.getUserByEmail(user.getEmail());
+                user.setId(tUser.getId());
+
+                List<Client> clients = user.getClients();
+                Client selectedClient = null;
+                for(Client c : clients) {
+                    if (clientId.equals(c.getId())) {
+                        selectedClient = c;
+                        break;
+                    }
+                }
+
+                if (selectedClient == null) {
+                    response.setStatus(HttpStatus.CONFLICT.value());
+                    return new ApiResult(
+                        "error", 
+                        "Selected client not found",
+                        null
+                    );
+                } else {
                     List<String> permissions = permissionStore.userPermissions(
-                        user.getId(), 
+                        user.getId(),
                         selectedClient.getId()
                     );
                     if (permissions.size() == 0) {
@@ -127,20 +137,21 @@ public class RestClientController {
                         String.format("%s selected", selectedClient.getName()), 
                         null
                     );
-                } catch(Exception e) {
-                    log.error(e);
-                    return new ApiResult(
-                        "error",
-                        e.getMessage(),
-                        null
-                    );
                 }
+            } else {
+                log.error("Unknown principal: %s", o.toString());
+                return new ApiResult(
+                    "error", 
+                    "An error occured while trying to process request", 
+                    null
+                );
             }
-        } else {
-            log.error("Unknown principal: %s", o.toString());
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ApiResult(
                 "error", 
-                "An error occured while trying to process request", 
+                e.getMessage(), 
                 null
             );
         }
