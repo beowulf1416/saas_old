@@ -8,11 +8,13 @@ import lombok.Data;
 public class Client {
 
     private UUID id;
+    private boolean active;
     private String name;
     private String address;
 
-    public Client(UUID id, String name, String address) {
+    public Client(UUID id, boolean active, String name, String address) {
         this.id = id;
+        this.active = active;
         this.name = name;
         this.address = address;
     }
