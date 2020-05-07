@@ -121,11 +121,11 @@ public class RestAdminClientController {
     public ApiResult setActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
-            String szActive = params.get("active").toString();
+            Boolean active = params.get("active").toString().toLowerCase() == "true" ? true : false;
 
             adminClientStore.setActive(
                 UUID.fromString(szClientId),
-                Boolean.parseBoolean(szActive)
+                active
             );
 
             return new ApiResult(
@@ -172,11 +172,11 @@ public class RestAdminClientController {
     public ApiResult permissionSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szPermissionId = params.get("permissionId").toString();
-            String szActive = params.get("active").toString();
+            Boolean active = params.get("active").toString().toLowerCase() == "true" ? true : false;
 
             adminPermissionStore.permissionSetActive(
                 Integer.parseInt(szPermissionId),
-                Boolean.parseBoolean(szActive)
+                active
             );
             
             return new ApiResult(
@@ -278,11 +278,11 @@ public class RestAdminClientController {
     public ApiResult roleSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szRoleId = params.get("roleId").toString();
-            String szActive = params.get("active").toString();
+            Boolean active = params.get("active").toString().toLowerCase() == "true" ? true : false;
 
             adminRoleStore.roleSetActive(
                 UUID.fromString(szRoleId),
-                Boolean.parseBoolean(szActive)
+                active
             );
 
             return new ApiResult(
@@ -447,11 +447,11 @@ public class RestAdminClientController {
     public ApiResult userSetActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szUserId = params.get("userId").toString();
-            String szActive = params.get("active").toString();
+            Boolean active = params.get("active").toString().toLowerCase() == "true" ? true : false;
 
             adminUserStore.userSetActive(
                 UUID.fromString(szUserId), 
-                Boolean.parseBoolean(szActive)
+                active
             );
             
             return new ApiResult(
