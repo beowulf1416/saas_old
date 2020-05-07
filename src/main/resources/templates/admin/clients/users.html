@@ -20,6 +20,19 @@ Client Users
         <roles-table></roles-table>
     </fieldset>
 </form>
+<modal-dialog>
+    <div class="form-wrapper">
+        <notifications-list></notifications-list>
+        <form class="roles">
+            <fieldset>
+                <legend>Roles</legend>
+                <roles-table id="selectRoles"></roles-table>
+            </fieldset>
+            <button type="button" class="btn btn-save">Save</button>
+            <button type="button" class="btn btn-cancel">Cancel</button>
+        </form>
+    </div><!-- .form-wrapper -->
+</modal-dialog>
 {% endblock content %}
 
 {% block scripts %}
@@ -54,7 +67,10 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const refreshRoles = function(clientId, userId) {
         AdminClients.userRoles(clientId, userId, function(e) {
             if (e.status == 'success') {
-                rtbl.setRoles(JSON.parse(e.json), { allowAdd: true });
+                rtbl.setRoles(JSON.parse(e.json), { 
+                    allowAdd: true,
+                    hideActiveColumn: true
+                });
             } else {
                 n.add('error', e.message);
             }
@@ -84,7 +100,40 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     rtbl.addEventListener('onaddrole', function(e) {
-        console.log(e);
+        const modal = document.querySelector('modal-dialog');
+        const dlg = modal.show();
+        const n = dlg.querySelector('notifications-list');
+        const frtbl = dlg.querySelector('roles-table');
+
+        AdminClients.roles(currentClientId, function(e) {
+            if (e.status == 'success') {
+                frtbl.setRoles(JSON.parse(e.json), { 
+                    multiselect: true, 
+                    allowAdd: false, 
+                    hideActiveColumn: true
+                });
+            } else {
+                n.add('error', e.message);
+            }
+        });
+
+        const btnSave = dlg.querySelector('button.btn-save');
+        btnSave.addEventListener('click', function(e) {
+            const roles = frtbl.getSelectedRoles();
+            AdminClients.assignRolesToUser(currentClientId, currentUserId, roles, function(e) {
+                if (e.status == 'success') {
+                    refreshRoles(currentClientId, currentUserId);
+                    modal.hide();
+                } else {
+                    n.add('error', e.message);
+                }
+            });
+        });
+
+        const btnCancel = dlg.querySelector('button.btn-cancel');
+        btnCancel.addEventListener('click', function(e) {
+            modal.hide();
+        });
     });
 })();
 
