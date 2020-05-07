@@ -121,13 +121,16 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     };
 
-    AdminClients.all((e) => {
-        if (e.status == 'success') {
-            ctbl.setClients(JSON.parse(e.json), { allowAdd: true });
-        } else {
-            notifications.add('error', e.message);
-        }
-    });
+    const refreshClients = function() {
+        AdminClients.all((e) => {
+            if (e.status == 'success') {
+                ctbl.setClients(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    };
+    refreshClients();
 
     ctbl.addEventListener('onaddclient', function(e) {
         const modal = document.getElementById('clientDlg');
@@ -155,7 +158,15 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     ctbl.addEventListener('onupdateclientactive', function(e) {
-        console.log(e);
+        const clientId = e.detail.clientId;
+        const active = e.detail.active == 'true' ? false : true;
+        AdminClients.setActive(clientId, active, function(e) {
+            if (e.status == 'success') {
+                refreshClients();
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
     });
 
     utbl.addEventListener('onadduser', function(e) {
