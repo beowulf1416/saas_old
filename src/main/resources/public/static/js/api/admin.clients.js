@@ -27,6 +27,22 @@ class AdminClients {
         .then((data) => func ? func(data) : console.log(data));
     }
 
+    static setActive(clientId, active, func) {
+        fetch('/api/admin/clients/active', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                active: active
+            })
+        })
+        .then((response) => response.json())
+        .then((data) => func ? func(data) : console.log(data));
+    }
+
     static users(clientId, func) {
         fetch('/api/admin/clients/users', {
             method: 'POST',
