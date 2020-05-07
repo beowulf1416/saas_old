@@ -44,7 +44,7 @@ public class ClientStore {
                 String name = rs.getString(3);
                 String address = rs.getString(4);
 
-                clients.add(new Client(id, name, address));
+                clients.add(new Client(id, active, name, address));
             }
             return clients;
         } catch(SQLException e) {
@@ -68,7 +68,7 @@ public class ClientStore {
                 String name = rs.getString(3);
                 String address = rs.getString(4);
 
-                return new Client(id, name, address);
+                return new Client(id, active, name, address);
             } else {
                 throw new Exception("Client Id not found");
             }
@@ -92,7 +92,7 @@ public class ClientStore {
                 String name = rs.getString(3);
                 String address = rs.getString(4);
 
-                return new Client(id, name, address);
+                return new Client(id, active, name, address);
             } else {
                 throw new Exception("Default Client not found");
             }

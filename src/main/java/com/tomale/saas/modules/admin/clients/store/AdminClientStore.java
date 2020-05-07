@@ -57,7 +57,7 @@ public class AdminClientStore {
                 String name = rs.getString(3);
                 String address = rs.getString(4);
 
-                clients.add(new Client(id, name, address));
+                clients.add(new Client(id, active, name, address));
             }
             return clients;
         } catch(SQLException e) {
@@ -92,12 +92,6 @@ public class AdminClientStore {
             stmt.setObject(1, clientId);
             stmt.setBoolean(2, active);
             stmt.execute();
-
-            return new ApiResult(
-                "success",
-                "client updated",
-                null
-            );
         } catch(Exception e) {
             log.error(e);
             throw new Exception("An error occured while trying to update client active status");

@@ -161,9 +161,11 @@ public class UserStore {
             ResultSet rs = stmt.getResultSet();
             while(rs.next()) {
                 UUID client_id = UUID.fromString(rs.getString(1));
-                String client_name = rs.getString(2);
+                boolean active = rs.getBoolean(2);
+                String name = rs.getString(3);
+                String address = rs.getString(4);
 
-                clients.add(new Client(client_id, client_name, ""));
+                clients.add(new Client(client_id, active, name, address));
             }
             return clients;
         } catch(SQLException e){

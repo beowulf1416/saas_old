@@ -67,7 +67,7 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 			JsonObject obj = (JsonObject) elem;
 			String id = obj.get("id").getAsString();
 			String clientName = obj.get("value").getAsString();
-			clients.add(new Client(UUID.fromString(id), clientName, ""));
+			clients.add(new Client(UUID.fromString(id), true, clientName, ""));
 		}
 
 		User user = new User(name, email);
