@@ -29,3 +29,12 @@
     </div><!-- .column-wrapper -->
 </div><!-- #pageContent -->
 {% endblock %}
+
+{% block basebodyscripts %}
+<!-- scripts -->
+<script type="module" src="/static/js/search.bar.js"></script>
+<script type="module" src="/static/js/client.selector.js"></script>
+{% block scripts %}
+{% endblock scripts %}
+
+{% endblock basebodyscripts %}

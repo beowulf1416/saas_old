@@ -1,0 +1,63 @@
+{% extends '/templates/default.html' %}
+
+{% block title -%}
+Client Users
+{%- endblock %}
+
+{% block content %}
+<notification-list id="notifications"></notification-list>
+<form>
+    <fieldset>
+        <legend>Clients</legend>
+        <clients-table></clients-table>
+    </fieldset>
+    <fieldset>
+        <legend>Users</legend>
+        <client-users-table></client-users-table>
+    </fieldset>
+</form>
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
+<script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
+<script type="module">
+"use strict";
+import { AdminClients } from '/static/js/api/admin.clients.js';
+
+(function(){
+    const n = document.querySelector('notifications-list');
+    const ctbl = document.querySelector('clients-table');
+    const utbl = document.querySelector('client-users-table');
+
+    const refreshUsers = function(clientId) {
+        AdminClients.users(clientId, function(e) {
+            if (e.status == 'success') {
+                utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                n.add('error', e.message);
+            }
+        });
+    };
+
+    AdminClients.all((e) => {
+        if (e.status == 'success') {
+            ctbl.setClients(JSON.parse(e.json), { allowAdd: false });
+        } else {
+            n.add('error', e.message);
+        }
+    });
+
+    ctbl.addEventListener("onselectclient", function(e) {
+        const id = e.detail.clientId;
+        refreshUsers(id);
+    });
+
+    utbl.addEventListener("onadduser", function(e) {
+        console.log(e);
+    });
+})();
+
+</script>
+{% endblock scripts %}
