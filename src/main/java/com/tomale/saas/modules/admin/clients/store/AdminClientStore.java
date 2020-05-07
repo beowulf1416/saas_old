@@ -70,7 +70,7 @@ public class AdminClientStore {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
-                .prepareCall(SQL_CLIENT_SET_ACTIVE);
+                .prepareCall(SQL_CLIENT_ADD);
             stmt.registerOutParameter(1, java.sql.Types.OTHER);
             stmt.setString(2, name);
             stmt.setString(3, address);
@@ -88,7 +88,7 @@ public class AdminClientStore {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
-                .prepareCall(SQL_CLIENT_ADD);
+                .prepareCall(SQL_CLIENT_SET_ACTIVE);
             stmt.setObject(1, clientId);
             stmt.setBoolean(2, active);
             stmt.execute();
