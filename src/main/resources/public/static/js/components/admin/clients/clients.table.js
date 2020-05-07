@@ -61,7 +61,9 @@ class AdminClientsTable extends HTMLElement {
                 const tr = document.createElement('tr');
                 tr.classList.add('client-row');
                 tr.innerHTML = `
-                    <td></td>
+                    <td>
+                        <input type="radio" name="clientSelect" title="Select Client" class="form-input-radio client-select" value="${client.id}" />
+                    </td>
                     <td>
                         <a title="Toggle Active" class="nav-link client-link-active" href="#active${id}" data-id="${client.id}" data-active="${client.active}">${client.active}</a>
                     </td>
@@ -85,6 +87,18 @@ class AdminClientsTable extends HTMLElement {
                     }));
                 });
 
+                const radio = tr.querySelector('input.client-select');
+                radio.addEventListener('change', function(e) {
+                    self.dispatchEvent(new CustomEvent('onselectclient', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            clientId: radio.value
+                        }
+                    }));
+                });
+
+                
                 const lActive = tr.querySelector('a.client-link-active');
                 lActive.addEventListener('click', function(e) {
                     self.dispatchEvent(new CustomEvent('onupdateclientactive', {
@@ -96,6 +110,9 @@ class AdminClientsTable extends HTMLElement {
                         }
                     }));
                 });
+
+                
+                
             });
 
             if (options && options.allowAdd == true) {
