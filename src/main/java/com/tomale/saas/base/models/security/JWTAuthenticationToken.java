@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -29,10 +30,13 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 	private static final String ELEM_CLIENTS = "clients";
 
 	private JsonObject json;
+	private User user;
+
 
     public JWTAuthenticationToken(JsonObject json) {
 		super(populateAuthorities(json));
 		this.json = json;
+		this.user = parseUser(json);
 	}
 	
 	private static Collection<GrantedAuthority> populateAuthorities(JsonObject json) {
@@ -44,15 +48,7 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 		return permissions;
 	}
 
-	@Override
-	public Object getCredentials() {
-		log.debug("JWTAuthenticationToken::getCredentials()");
-		return null;
-	}
-
-	@Override
-	public Object getPrincipal() {
-		// log.debug("JWTAuthenticationToken::getPrincipal()");
+	private User parseUser(JsonObject json) {
 		String name = "";
 		String email = json.get(ELEM_EMAIL).getAsString();
 		JsonArray ja = json.get(ELEM_PERMISSIONS).getAsJsonArray();
@@ -74,6 +70,17 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 		user.setPermissions(permissions);
 		user.setClients(clients);
 
+		return user;
+
+	}
+
+	@Override
+	public Object getCredentials() {
+		return user;
+	}
+
+	@Override
+	public Object getPrincipal() {
 		return user;
 	}
 }
