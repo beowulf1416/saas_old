@@ -118,9 +118,21 @@ public class RestAdminClientController {
 
     @PostMapping("/active")
     @PreAuthorize("hasAuthority('admin.clients')")
-    public ApiResult setActive(@ResponseBody Map<String, Object> params, HttpServletResponse response) {
+    public ApiResult setActive(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
+            String szClientId = params.get("clientId").toString();
+            String szActive = params.get("active").toString();
 
+            adminClientStore.setActive(
+                UUID.fromString(szClientId),
+                Boolean.parseBoolean(szActive)
+            );
+
+            return new ApiResult(
+                "success",
+                "client updated",
+                null
+            );
         } catch(Exception e) {
             log.error(e);
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
