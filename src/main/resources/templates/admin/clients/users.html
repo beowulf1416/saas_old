@@ -15,6 +15,10 @@ Client Users
         <legend>Users</legend>
         <client-users-table></client-users-table>
     </fieldset>
+    <fieldset>
+        <legend>Roles</legend>
+        <roles-table></roles-table>
+    </fieldset>
 </form>
 {% endblock content %}
 
@@ -22,6 +26,8 @@ Client Users
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
+<script type="module" src="/static/js/components/roles.table.js"></script>
+<script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
 "use strict";
 import { AdminClients } from '/static/js/api/admin.clients.js';
@@ -30,11 +36,25 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const n = document.querySelector('notifications-list');
     const ctbl = document.querySelector('clients-table');
     const utbl = document.querySelector('client-users-table');
+    const rtbl = document.querySelector('roles-table');
+
+    let currentClientId = '';
+    let currentUserId = '';
 
     const refreshUsers = function(clientId) {
         AdminClients.users(clientId, function(e) {
             if (e.status == 'success') {
                 utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                n.add('error', e.message);
+            }
+        });
+    };
+
+    const refreshRoles = function(clientId, userId) {
+        AdminClients.userRoles(clientId, userId, function(e) {
+            if (e.status == 'success') {
+                rtbl.setRoles(JSON.parse(e.json), { allowAdd: true });
             } else {
                 n.add('error', e.message);
             }
@@ -49,12 +69,21 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         }
     });
 
-    ctbl.addEventListener("onselectclient", function(e) {
-        const id = e.detail.clientId;
-        refreshUsers(id);
+    ctbl.addEventListener('onselectclient', function(e) {
+        currentClientId = e.detail.clientId;
+        refreshUsers(currentClientId);
     });
 
-    utbl.addEventListener("onadduser", function(e) {
+    utbl.addEventListener('onadduser', function(e) {
+        console.log(e);
+    });
+
+    utbl.addEventListener('onselectuser', function(e) {
+        currentUserId = e.detail.userId;
+        refreshRoles(currentClientId, currentUserId);
+    });
+
+    rtbl.addEventListener('onaddrole', function(e) {
         console.log(e);
     });
 })();

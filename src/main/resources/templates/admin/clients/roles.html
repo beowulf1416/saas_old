@@ -16,12 +16,24 @@ Client Roles
         <roles-table></roles-table>
     </fieldset>
 </form>
+<modal-dialog>
+    <div class="form-wrapper">
+        <notification-list></notification-list>
+        <form class="form-role">
+            <fieldset>
+                <legend>Roles</legend>
+                <roles-table></roles-table>
+            </fieldset>
+        </form>
+    </div><!-- .form-wrapper -->
+</modal-dialog>
 {% endblock content %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/roles.table.js"></script>
+<script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
 "use strict";
 import { AdminClients } from '/static/js/api/admin.clients.js';
@@ -31,12 +43,31 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const ctbl = document.querySelector('clients-table');
     const rtbl = document.querySelector('roles-table');
 
+    const refreshRoles = function(clientId) {
+        AdminClients.roles(clientId, function(e) {
+            if (e.status == 'success') {
+                rtbl.setRoles(JSON.parse(e.json), { allowAdd: true });
+            } else {
+                notifications.add('error', e.message);
+            }
+        });
+    };
+
     AdminClients.all((e) => {
         if (e.status == 'success') {
             ctbl.setClients(JSON.parse(e.json), { allowAdd: false });
         } else {
             n.add('error', e.message);
         }
+    });
+
+    ctbl.addEventListener('onselectclient', function(e) {
+        const id = e.detail.clientId;
+        refreshRoles(id);
+    });
+
+    rtbl.addEventListener('onaddrole', function(e) {
+        console.log(e);
     });
 })();
 </script>
