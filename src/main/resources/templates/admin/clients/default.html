@@ -11,56 +11,69 @@ Administer Clients
 <modal-dialog id="clientDlg">
     <client-editor id="clientEditor"></client-editor>
 </modal-dialog>
-<client-users-table id="clientUsersTbl"></client-users-table>
-<modal-dialog id="usersDlg">
-    <div id="userAddWrapper">
-        <form class="form-user-add">
-            <fieldset>
-                <legend>User</legend>
-                <notification-list id="formNotifications"></notification-list>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-input-email" title="Email address" />
-                </div><!-- .form-group -->
-            </fieldset>
-            <button type="button" id="btnAdd" title="Add User">Add</button>
-            <button type="button" id="btnCancel" title="Cancel">Cancel</button>
-        </form>
-    </div><!-- #userAddWrapper -->
-</modal-dialog>
-<roles-table id="rolesTbl"></roles-table>
-<modal-dialog id="roleDlg">
-    <div id="roleAddWrapper">
-        <notification-list></notification-list>
-        <form class="form-role-add">
-            <fieldset>
-                <legend>Role</legend>
-                <div class="form-group">
-                    <label for="roleName">Name</label>
-                    <input type="text" id="roleName" name="roleName" class="form-input text" title="Role Name" />
-                </div><!-- .form-group -->
-            </fieldset>
-            <button type="button" id="btnAddRole" title="Add Role">Add</button>
-            <button type="button" id="btnCancelRole" title="Cancel">Cancel</button>
-        </form>
-    </div><!-- #roleAddWrapper -->
-</modal-dialog>
-<permissions-table id="permissionsTbl"></permissions-table>
-<modal-dialog id="permissionDlg">
-    <div id="permissionAddWrapper">
-        <notification-list></notification-list>
-        <form class="form-permission-add">
-            <fieldset>
-                <legend>Permission</legend>
-                <div class="form-group">
-                    <permissions-table class="tbl-permissions"></permissions-table>
-                </div><!-- .form-group -->
-            </fieldset>
-            <button type="button" id="btnAddPermission" title="Add Permission">Add</button>
-            <button type="button" id="btnCancelPermission" title="Cancel">Cancel</button>
-        </form>
-    </div><!-- #permissionAddWrapper -->
-</modal-dialog>
+<div class="client-users-wrapper">
+    <h4>Client Users</h4>
+    <client-users-table id="clientUsersTbl"></client-users-table>
+    <modal-dialog id="usersDlg">
+        <div id="userAddWrapper">
+            <form class="form-user-add">
+                <fieldset>
+                    <legend>User</legend>
+                    <notification-list id="formNotifications"></notification-list>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-input-email" title="Email address" />
+                    </div><!-- .form-group -->
+                </fieldset>
+                <button type="button" id="btnAdd" title="Add User">Add</button>
+                <button type="button" id="btnCancel" title="Cancel">Cancel</button>
+            </form>
+        </div><!-- #userAddWrapper -->
+    </modal-dialog>
+    <div class="user-roles-wrapper">
+        <h4>User Roles</h4>
+        <roles-table id="userRolesTbl"></roles-table>
+    </div><!-- .user-roles-wrapper -->
+</div><!-- .client-users-wrapper -->
+<div class="client-roles-wrapper">
+    <h4>Client Roles</h4>
+    <roles-table id="rolesTbl"></roles-table>
+    <modal-dialog id="roleDlg">
+        <div id="roleAddWrapper">
+            <notification-list></notification-list>
+            <form class="form-role-add">
+                <fieldset>
+                    <legend>Role</legend>
+                    <div class="form-group">
+                        <label for="roleName">Name</label>
+                        <input type="text" id="roleName" name="roleName" class="form-input text" title="Role Name" />
+                    </div><!-- .form-group -->
+                </fieldset>
+                <button type="button" id="btnAddRole" title="Add Role">Add</button>
+                <button type="button" id="btnCancelRole" title="Cancel">Cancel</button>
+            </form>
+        </div><!-- #roleAddWrapper -->
+    </modal-dialog>
+    <div class="role-permissions-wrapper">
+        <h4>Role Permissions</h4>
+        <permissions-table id="permissionsTbl"></permissions-table>
+        <modal-dialog id="permissionDlg">
+            <div id="permissionAddWrapper">
+                <notification-list></notification-list>
+                <form class="form-permission-add">
+                    <fieldset>
+                        <legend>Permission</legend>
+                        <div class="form-group">
+                            <permissions-table class="tbl-permissions"></permissions-table>
+                        </div><!-- .form-group -->
+                    </fieldset>
+                    <button type="button" id="btnAddPermission" title="Add Permission">Add</button>
+                    <button type="button" id="btnCancelPermission" title="Cancel">Cancel</button>
+                </form>
+            </div><!-- #permissionAddWrapper -->
+        </modal-dialog>
+    </div><!-- .role-permissions-wrapper -->
+</div><!-- .client-roles-wrapper -->
 {% endblock %}
 
 {% block scripts %}
