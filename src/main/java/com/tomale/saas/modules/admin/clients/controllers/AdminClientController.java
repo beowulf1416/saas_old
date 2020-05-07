@@ -44,4 +44,16 @@ public class AdminClientController {
             throw new RuntimeException("An error occured while processing this request");
         }
     }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ModelAndView viewClientUsers() {
+        return new ModelAndView("admin/clients/users");
+    }
+
+    @GetMapping("/roles")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ModelAndView viewClientRoles() {
+        return new ModelAndView("admin/clients/roles");
+    }
 }
