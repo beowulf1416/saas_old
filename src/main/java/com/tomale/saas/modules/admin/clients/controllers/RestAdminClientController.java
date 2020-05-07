@@ -501,23 +501,40 @@ public class RestAdminClientController {
 
     @PostMapping("/users/roles/add")
     @PreAuthorize("hasAuthority('admin.clients')")
-    public ApiResult assignRoleToUser(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+    public ApiResult assignRolesToUser(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             String szClientId = params.get("clientId").toString();
-            String szRoleId = params.get("roleId").toString();
             String szUserId = params.get("userId").toString();
-            
-            adminClientStore.assignRoleToUser(
-                UUID.fromString(szClientId), 
-                UUID.fromString(szRoleId),
-                UUID.fromString(szUserId)
-            );
+            Object oRoleIds = params.get("roleIds");
 
-            return new ApiResult(
-                "success",
-                "user assigned to role",
-                null
-            );
+            JsonElement elem = gson.toJsonTree(oRoleIds);
+            if (elem instanceof JsonArray) {
+                UUID clientId = UUID.fromString(szClientId);
+                UUID userId = UUID.fromString(szUserId);
+
+                int count = 0;
+                for(JsonElement element : elem.getAsJsonArray()) {
+                    UUID roleId = UUID.fromString(element.getAsString());
+
+                    adminClientStore.assignRoleToUser(
+                        clientId, 
+                        roleId,
+                        userId
+                    );
+                }
+
+                return new ApiResult(
+                    "success",
+                    String.format("%d roles added", count),
+                    null
+                );
+            } else {
+                return new ApiResult(
+                    "error",
+                    "incorrect roles",
+                    null
+                );
+            }
         } catch(Exception e) {
             log.error(e);
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
