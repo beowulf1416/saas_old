@@ -145,10 +145,11 @@ public class SecurityController {
             User user = userStore.getUserByEmail(email);
             if (user == null) {
                 user = new User(name, email);
-                userStore.addUser(
+                UUID userId = userStore.addUser(
                     user, 
                     data
                 );
+                user.setId(userId);
             }
 
             if (user.isActive()) {
