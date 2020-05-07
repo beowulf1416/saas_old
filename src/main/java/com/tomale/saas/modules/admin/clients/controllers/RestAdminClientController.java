@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -104,6 +105,22 @@ public class RestAdminClientController {
                 "Client added",
                 json.toString()
             );
+        } catch(Exception e) {
+            log.error(e);
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/active")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ApiResult setActive(@ResponseBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+
         } catch(Exception e) {
             log.error(e);
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());

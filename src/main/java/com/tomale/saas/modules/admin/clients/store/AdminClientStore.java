@@ -23,6 +23,7 @@ public class AdminClientStore {
 
     private static final String SQL_CLIENTS_ALL = "{call clients.clients_all()}";
     private static final String SQL_CLIENT_ADD = "{? = call clients.client_add(?,?)}";
+    private static final String SQL_CLIENT_SET_ACTIVE = "{call clients.client_set_active(?,?)}";
 
     private static final String SQL_CLIENT_USERS = "{call iam.client_users_all(?)}";
     private static final String SQL_CLIENT_ADD_USER = "{call iam.client_user_add(?,?)}";
@@ -69,7 +70,7 @@ public class AdminClientStore {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
-                .prepareCall(SQL_CLIENT_ADD);
+                .prepareCall(SQL_CLIENT_SET_ACTIVE);
             stmt.registerOutParameter(1, java.sql.Types.OTHER);
             stmt.setString(2, name);
             stmt.setString(3, address);
@@ -80,6 +81,26 @@ public class AdminClientStore {
         } catch(Exception e) {
             log.error(e);
             throw new Exception("An error occured while trying to add client");
+        }
+    }
+
+    public void setActive(UUID clientId, boolean active) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+                .getConnection()
+                .prepareCall(SQL_CLIENT_ADD);
+            stmt.setObject(1, clientId);
+            stmt.setBoolean(2, active);
+            stmt.execute();
+
+            return new ApiResult(
+                "success",
+                "client updated",
+                null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            throw new Exception("An error occured while trying to update client active status");
         }
     }
 
