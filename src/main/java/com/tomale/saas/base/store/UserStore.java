@@ -39,7 +39,7 @@ public class UserStore {
         this.jdbc = jdbc;
     }
 
-    public void addUser(User user, JsonObject data) throws Exception {
+    public UUID addUser(User user, JsonObject data) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
                 .getConnection()
@@ -55,9 +55,11 @@ public class UserStore {
             } else {
                 if (o instanceof UUID) {
                     UUID uuid = (UUID) o;
-                    log.debug(String.format("New user created: %s", uuid.toString()));
+                    return uuid;
+                    // log.debug(String.format("New user created: %s", uuid.toString()));
                 } else {
-                    log.warn(String.format("An error occured during user registration: %s", o));
+                    // log.warn(String.format("An error occured during user registration: %s", o));
+                    throw new Exception(String.format("An error occured during user registration: %s", o));
                 }
             }
         } catch(SQLException e) {
