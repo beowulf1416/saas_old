@@ -1,0 +1,4 @@
+roles-table table.hide-active th.col-active,
+roles-table table.hide-active td.col-active {
+    display: none;
+}

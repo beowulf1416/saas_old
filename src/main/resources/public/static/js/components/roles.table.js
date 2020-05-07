@@ -5,38 +5,72 @@ class RolesTable extends HTMLElement {
     constructor() {
         self = super();
 
+        const style = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/roles.table.css');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
 
         this.initTable(self, div);
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(style);
         shadow.appendChild(div);
 
+        this.getSelectedRoles = this.getSelectedRoles.bind(this);
         this.setRoles = this.setRoles.bind(this);
+    }
+
+    getSelectedRoles() {
+        const self = this;
+        const shadow = this.shadowRoot;
+        const roles = [];
+        const nl = shadow.querySelectorAll('input.role-select:checked');
+        nl.forEach(n => {
+            roles.push(n.value);
+        });
+        return roles;
     }
 
     setRoles(roles, options) {
         const self = this;
         if (Array.isArray(roles)) {
-            const tbl = this.shadowRoot.querySelector('table.tbl-roles tbody');
-            while(tbl.firstChild) {
-                tbl.removeChild(tbl.lastChild);
+            const tbl = this.shadowRoot.querySelector('table.tbl-roles');
+            if (options && options.hideActiveColumn == true) {
+                tbl.classList.add('hide-active');
+            }
+
+            const tbody = tbl.querySelector('tbody');
+            while(tbody.firstChild) {
+                tbody.removeChild(tbody.lastChild);
             }
             roles.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.classList.add('role-item');
-                tr.innerHTML = `
-                    <td>
-                        <input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
-                    </td>
-                    <td>
-                        <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
-                    </td>
-                    <td>${r.name}</td>
-                `;
+                if (options && options.multiselect == true) {
+                    tr.innerHTML = `
+                        <td class="col-select">
+                            <input type="checkbox" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
+                        </td>
+                        <td class="col-active">
+                            <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
+                        </td>
+                        <td class="col-name">${r.name}</td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="col-select">
+                            <input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
+                        </td>
+                        <td class="col-active">
+                            <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
+                        </td>
+                        <td class="col-name">${r.name}</td>
+                    `;
+                }
 
-                tbl.appendChild(tr);
+                tbody.appendChild(tr);
 
                 const roleSelect = tr.querySelector('input.role-select');
                 roleSelect.addEventListener('change', function(e) {
@@ -70,7 +104,7 @@ class RolesTable extends HTMLElement {
                         <a title="Add Role" id="roleAdd" class="nav-link role-item-add" href="#">Add</a>
                     </td>
                 `;
-                tbl.appendChild(tr);
+                tbody.appendChild(tr);
 
                 const roleAdd = tbl.querySelector('a.role-item-add');
                 roleAdd.addEventListener('click', function(e) {
@@ -98,9 +132,9 @@ class RolesTable extends HTMLElement {
                     <caption>Roles</caption>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Active</th>
-                            <th>Name</th>
+                            <th class="col-select"></th>
+                            <th class="col-active">Active</th>
+                            <th class="col-name">Name</th>
                         </tr>
                     </thead>
                     <tbody>
