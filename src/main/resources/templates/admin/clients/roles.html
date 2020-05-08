@@ -15,15 +15,37 @@ Client Roles
         <legend>Roles</legend>
         <roles-table></roles-table>
     </fieldset>
+    <fieldset>
+        <legend>Permissions</legend>
+        <permissions-table></permissions-table>
+    </fieldset>
 </form>
-<modal-dialog>
+<modal-dialog id="rolesDlg">
     <div class="form-wrapper">
         <notification-list></notification-list>
         <form class="form-role">
             <fieldset>
                 <legend>Roles</legend>
-                <roles-table></roles-table>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" title="Role Name" class="form-input-text form-input-name" />
+                </div><!-- .form-group -->
             </fieldset>
+            <button type="button" class="btn btn-save">Save</button>
+            <button type="button" class="btn btn-cancel">Cancel</button>
+        </form>
+    </div><!-- .form-wrapper -->
+</modal-dialog>
+<modal-dialog id="permissionsDlg">
+    <div class="form-wrapper">
+        <notification-list></notification-list>
+        <form class="form-permissions">
+            <fieldset>
+                <legend>Permissions</legend>
+                <permissions-table></permissions-table>
+            </fieldset>
+            <button type="button" class="btn btn-save">Save</button>
+            <button type="button" class="btn btn-cancel">Cancel</button>
         </form>
     </div><!-- .form-wrapper -->
 </modal-dialog>
@@ -33,6 +55,7 @@ Client Roles
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
 <script type="module" src="/static/js/components/roles.table.js"></script>
+<script type="module" src="/static/js/components/permissions.table.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
 "use strict";
@@ -42,13 +65,33 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const n = document.querySelector('notifications-list');
     const ctbl = document.querySelector('clients-table');
     const rtbl = document.querySelector('roles-table');
+    const ptbl = document.querySelector('permissions-table');
+
+    let currentClientId = '';
+    let currentRoleId = '';
 
     const refreshRoles = function(clientId) {
         AdminClients.roles(clientId, function(e) {
             if (e.status == 'success') {
-                rtbl.setRoles(JSON.parse(e.json), { allowAdd: true });
+                rtbl.setRoles(JSON.parse(e.json), { 
+                    allowAdd: true,
+                    multiselect: false,
+                    hideActiveColumn: true 
+                });
             } else {
                 notifications.add('error', e.message);
+            }
+        });
+    };
+
+    const refreshPermissions = function(clientId, roleId) {
+        AdminClients.rolePermissions(currentClientId, currentRoleId, function(e) {
+            if (e.status == 'success') {
+                ptbl.setPermissions(JSON.parse(e.json), {
+                    allowAdd: true,
+                    multiselect: false,
+                    hideActiveColumn: true
+                });
             }
         });
     };
@@ -62,12 +105,53 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     ctbl.addEventListener('onselectclient', function(e) {
-        const id = e.detail.clientId;
-        refreshRoles(id);
+        currentClientId = e.detail.clientId;
+        refreshRoles(currentClientId);
+    });
+
+    rtbl.addEventListener('onselectrole', function(e) {
+        currentRoleId = e.detail.roleId;
+        refreshPermissions(currentClientId, currentRoleId);
     });
 
     rtbl.addEventListener('onaddrole', function(e) {
-        console.log(e);
+        const modal = document.querySelector('modal-dialog#rolesDlg');
+        const dlg = modal.show();
+        const n = dlg.querySelector('notifications-list');
+
+        const btnAdd = dlg.querySelector('button.btn-save');
+        btnAdd.addEventListener('click', function(e) {
+            const tName = dlg.querySelector('input#name');
+            AdminClients.addRole(currentClientId, tName.value, function(e) {
+                if (e.status == 'success') {
+                    modal.hide();
+                } else {
+                    n.add('error', e.message);
+                }
+            });
+        });
+
+        const btnCancel = dlg.querySelector('button.btn-cancel');
+        btnCancel.addEventListener('click', function(e) {
+            modal.hide();
+        });
+    });
+
+    ptbl.addEventListener('onaddpermission', function(e) {
+        const modal = document.querySelector('modal-dialog#permissionsDlg');
+        const dlg = modal.show();
+        const n = dlg.querySelector('notifications-list');
+
+        const btnAdd = dlg.querySelector('button.btn-save');
+        btnAdd.addEventListener('click', function(e) {
+            console.log(e);
+            modal.hide();
+        });
+
+        const btnCancel = dlg.querySelector('button.btn-cancel');
+        btnCancel.addEventListener('click', function(e) {
+            modal.hide();
+        });
     });
 })();
 </script>
