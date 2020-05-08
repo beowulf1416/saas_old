@@ -8,6 +8,8 @@ class ItemsTable extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
 
+        this.initTable(self, div);
+
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(div);
 
@@ -20,10 +22,11 @@ class ItemsTable extends HTMLElement {
         div.innerHTML = `
             <form class="form-items">
                 <table class="tbl-items">
+                    <caption>Items</caption>
                     <thead>
                         <tr>
                             <th class="col-select"></th>
-                            <th class="col-name"></th>
+                            <th class="col-name">Name</th>
                         </tr>
                         <tr class="row-filter">
                             <th class="col-select">
@@ -37,7 +40,14 @@ class ItemsTable extends HTMLElement {
             </form>
         `;
 
-        conatainer.appendChild(div);
+        container.appendChild(div);
+
+        const tSearch = div.querySelector('input#nameFilter');
+        tSearch.addEventListener('input', new CustomEvent('onfilteritems', {
+            bubbles: true,
+            cancelable: true,
+            detail: tSearch.value
+        }));
     }
 
     setItems(items, options) {
@@ -48,7 +58,7 @@ class ItemsTable extends HTMLElement {
             self.dispatchEvent(new CustomEvent('error', {
                 bubbles: true,
                 cancelable: true,
-                detail: "Expecting an array of items";
+                detail: "Expecting an array of items"
             }));
         }
     }
