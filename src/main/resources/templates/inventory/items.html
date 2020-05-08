@@ -20,7 +20,7 @@ Inventory Items
 import { Inventory } from '/static/js/api/inventory.js';
 
 (function(){
-    const { fromEvent, of } = rxjs;
+    const { fromEvent, from, of } = rxjs;
     const {
         debounceTime,
         filter,
@@ -34,8 +34,11 @@ import { Inventory } from '/static/js/api/inventory.js';
     const itbl = document.querySelector('items-table');
 
     const fetchItems = (query) => {
-        Inventory.items('test', query);
+        return Inventory.items('test', query);
     };
+
+    const test = from(fetchItems('test'));
+    test.subscribe();
 
     fromEvent(itbl, 'onfilteritems')
         .pipe(
@@ -43,7 +46,7 @@ import { Inventory } from '/static/js/api/inventory.js';
             debounceTime(250),
             filter(query => query.length > 3),
             distinctUntilChanged(),
-            switchMap(query => fetchItems(query)),
+            // switchMap(query => from(fetchItems(query))),
             tap(e => console.log(e))
         )
         .subscribe();
