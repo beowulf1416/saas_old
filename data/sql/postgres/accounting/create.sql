@@ -6,6 +6,7 @@ set schema 'accounting';
 
 
 /** tables **/
+\ir tables/account_types.sql
 \ir tables/accounts.sql
 
 
