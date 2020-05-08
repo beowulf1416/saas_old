@@ -1,0 +1,20 @@
+{% extends '/templates/default.html' %}
+
+{% block title %}
+Inventory Items
+{% endblock %}
+
+{% block content %}
+<h1>Inventory default</h1>
+<items-table></items-table>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/inventory/items.table.js"></script>
+<script type="module">
+'use strict';
+(function(){
+    
+})();
+</script>
+{% endblock scripts %}
