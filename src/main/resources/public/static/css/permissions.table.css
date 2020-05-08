@@ -1,0 +1,4 @@
+table.tbl-permissions.hide-active th.col-active,
+table.tbl-permissions.hide-active td.col-active {
+    display: none;
+}
