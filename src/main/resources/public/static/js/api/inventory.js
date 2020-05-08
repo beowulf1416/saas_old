@@ -34,3 +34,4 @@ class Inventory {
         .then((data) => func ? func(data) : console.data(data));
     }
 }
+export { Inventory };
