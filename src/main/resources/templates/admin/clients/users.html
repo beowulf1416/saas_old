@@ -13,14 +13,24 @@ Client Users
     </fieldset>
     <fieldset>
         <legend>Users</legend>
-        <client-users-table></client-users-table>
+        <users-table></users-table>
     </fieldset>
     <fieldset>
         <legend>Roles</legend>
         <roles-table></roles-table>
     </fieldset>
 </form>
-<modal-dialog>
+<modal-dialog id="modalUsers">
+    <div class="form-wrapper">
+        <notifications-list></notifications-list>
+        <form class="users">
+            <fieldset>
+                <legend>Users</legend>
+            </fieldset>
+        </form>
+    </div><!-- .form-wrapper -->
+</modal-dialog>
+<modal-dialog id="modalRoles">
     <div class="form-wrapper">
         <notifications-list></notifications-list>
         <form class="roles">
@@ -38,7 +48,7 @@ Client Users
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
-<script type="module" src="/static/js/components/admin/clients/client.users.table.js"></script>
+<script type="module" src="/static/js/components/users.table.js"></script>
 <script type="module" src="/static/js/components/roles.table.js"></script>
 <script type="module" src="/static/js/modal.dialog.js"></script>
 <script type="module">
@@ -48,7 +58,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 (function(){
     const n = document.querySelector('notifications-list');
     const ctbl = document.querySelector('clients-table');
-    const utbl = document.querySelector('client-users-table');
+    const utbl = document.querySelector('users-table');
     const rtbl = document.querySelector('roles-table');
 
     let currentClientId = '';
@@ -57,7 +67,11 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const refreshUsers = function(clientId) {
         AdminClients.users(clientId, function(e) {
             if (e.status == 'success') {
-                utbl.setUsers(JSON.parse(e.json), { allowAdd: true });
+                utbl.setUsers(JSON.parse(e.json), { 
+                    allowAdd: true,
+                    multiselect: false,
+                    hideActiveColumn: true
+                });
             } else {
                 n.add('error', e.message);
             }
@@ -69,6 +83,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             if (e.status == 'success') {
                 rtbl.setRoles(JSON.parse(e.json), { 
                     allowAdd: true,
+                    multiselect: false,
                     hideActiveColumn: true
                 });
             } else {
@@ -91,7 +106,9 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     utbl.addEventListener('onadduser', function(e) {
-        console.log(e);
+        const modal = document.querySelector('modal-dialog#modalRoles');
+        const dlg = modal.show();
+        const n = dlg.querySelector('notifications-list');
     });
 
     utbl.addEventListener('onselectuser', function(e) {
@@ -100,7 +117,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     rtbl.addEventListener('onaddrole', function(e) {
-        const modal = document.querySelector('modal-dialog');
+        const modal = document.querySelector('modal-dialog#modalRoles');
         const dlg = modal.show();
         const n = dlg.querySelector('notifications-list');
         const frtbl = dlg.querySelector('roles-table');
