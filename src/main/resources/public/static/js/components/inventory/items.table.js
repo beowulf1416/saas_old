@@ -43,11 +43,13 @@ class ItemsTable extends HTMLElement {
         container.appendChild(div);
 
         const tSearch = div.querySelector('input#nameFilter');
-        tSearch.addEventListener('input', new CustomEvent('onfilteritems', {
-            bubbles: true,
-            cancelable: true,
-            detail: tSearch.value
-        }));
+        tSearch.addEventListener('input', function(e) {
+            self.dispatchEvent(new CustomEvent('onfilteritems', {
+                bubbles: true,
+                cancelable: true,
+                detail: tSearch.value
+            }));
+        });
     }
 
     setItems(items, options) {
