@@ -6,15 +6,47 @@ Inventory Items
 
 {% block content %}
 <h1>Inventory default</h1>
+<notification-list></notification-list>
 <items-table></items-table>
 {% endblock %}
 
 {% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/inventory/items.table.js"></script>
+<script type="module" src="/static/js/api/inventory.js"></script>
+<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
 <script type="module">
 'use strict';
+import { Inventory } from '/static/js/api/inventory.js';
+
 (function(){
-    
+    const { fromEvent, of } = rxjs;
+    const {
+        debounceTime,
+        filter,
+        distinctUntilChanged,
+        map,
+        switchMap,
+        tap
+    } = rxjs.operators;
+
+    const n = document.querySelector('notification-list');
+    const itbl = document.querySelector('items-table');
+
+    const fetchItems = (query) => {
+        Inventory.items('test', query);
+    };
+
+    fromEvent(itbl, 'onfilteritems')
+        .pipe(
+            map(e => e.detail),
+            debounceTime(250),
+            filter(query => query.length > 3),
+            distinctUntilChanged(),
+            switchMap(query => fetchItems(query)),
+            tap(e => console.log(e))
+        )
+        .subscribe();
 })();
 </script>
 {% endblock scripts %}
