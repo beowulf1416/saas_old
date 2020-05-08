@@ -141,11 +141,31 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         const modal = document.querySelector('modal-dialog#permissionsDlg');
         const dlg = modal.show();
         const n = dlg.querySelector('notifications-list');
+        const fptbl = dlg.querySelector('permissions-table');
+
+        AdminClients.permissions(function(e) {
+            if (e.status == 'success') {
+                fptbl.setPermissions(JSON.parse(e.json), {
+                    allowAdd: false,
+                    multiselect: true,
+                    hideActiveColumn: true
+                });
+            } else {
+                n.add('error', e.message);
+            }
+        });
 
         const btnAdd = dlg.querySelector('button.btn-save');
         btnAdd.addEventListener('click', function(e) {
-            console.log(e);
-            modal.hide();
+            const permissions = fptbl.getSelected();
+            AdminClients.rolePermissionsAdd(currentClientId, currentRoleId, permissions, function(e) {
+                if (e.status == 'success') {
+                    refreshPermissions(currentClientId, currentRoleId);
+                    modal.hide();
+                } else {
+                    n.add('error', e.message);
+                }
+            });
         });
 
         const btnCancel = dlg.querySelector('button.btn-cancel');
