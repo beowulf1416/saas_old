@@ -92,7 +92,6 @@ public class ClientController {
         HttpServletResponse response,
         @RequestParam String client
     ) {
-        log.debug(client);
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth instanceof JWTAuthenticationToken) {
