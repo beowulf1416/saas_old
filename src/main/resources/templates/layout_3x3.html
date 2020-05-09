@@ -14,6 +14,9 @@
             </div>
             <div class="col col-1">2</div>
             <div class="col col-2 col-end">
+                {% if user is defined %}
+                    <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
+                {% endif %}
                 <client-selector id="clientSelector"></client-selector>
             </div>
         </div>
