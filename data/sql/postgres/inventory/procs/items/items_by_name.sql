@@ -54,6 +54,7 @@ begin
         a.hazardous
     from inventory.items a
     where a.client_id = p_client_id
-        and a.name like tmp_filter;
+        and a.name like tmp_filter
+    order by a.name;
 end
 $$ language plpgsql;
