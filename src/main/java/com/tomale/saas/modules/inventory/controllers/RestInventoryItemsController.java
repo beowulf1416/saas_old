@@ -23,6 +23,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.modules.inventory.models.InventoryItem;
 import com.tomale.saas.modules.inventory.store.InventoryItemStore;
@@ -165,6 +166,49 @@ public class RestInventoryItemsController {
                 String.format("%d items", items.size()),
                 gson.toJson(items)
             );
+        } catch(Exception e) {
+            log.error(e);
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/items/add")
+    @PreAuthorize("hasAuthority('inventory.items')")
+    public ApiResult itemAdd(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            Object o = params.get("clientId");
+            if (o == null) {
+                throw new Exception("Client Id is required");
+            }
+            UUID clientId = UUID.fromString(o.toString());
+
+            o = params.get("item");
+            if (o == null) {
+                throw new Exception("Item is required");
+            }
+            log.debug(o.toString());
+            // JsonObject json = (JsonObject) gson.toJsonTree(o.toString());
+
+            // UUID itemId = invStore.add(clientId,
+            //     name,
+            //     description,
+            //     make,
+            //     brand,
+            //     model,
+            //     version,
+            //     sku,
+            //     upc,
+            //     length,
+            //     width,
+            //     height,
+            //     weight,
+            //     perishable,
+            //     hazardous
+            // );
         } catch(Exception e) {
             log.error(e);
             return new ApiResult(
