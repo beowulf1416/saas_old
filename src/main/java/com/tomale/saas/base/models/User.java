@@ -17,6 +17,7 @@ public class User {
 
     private List<String> permissions;
     private List<Client> clients;
+    private Client currentClient;
 
     public User(@NonNull UUID id, @NonNull String name, @NonNull String email, boolean active) {
         this.id = id;
