@@ -2,6 +2,21 @@
 
 class Inventory {
 
+    static itemAdd(clientId, item) {
+        return fetch('/api/inventory/items/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                item: item
+            })
+        })
+        .then((response) => response.json());
+    }
+
     static items(clientId, filter) {
         return fetch('/api/inventory/items', {
             method: 'POST',
