@@ -1,9 +1,6 @@
 package com.tomale.saas.modules.inventory.controllers;
 
 import org.apache.logging.log4j.Logger;
-
-import com.tomale.saas.base.models.ModelAndViewFactory;
-
 import org.apache.logging.log4j.LogManager;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,12 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tomale.saas.base.models.ModelAndViewFactory;
+
 
 @Controller
 @RequestMapping("/inventory")
 public class InventoryController {
 
-    public final static Logger log = LogManager.getLogger(InventoryController.class);
+    private final static Logger log = LogManager.getLogger(InventoryController.class);
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('inventory.dashboard')")
