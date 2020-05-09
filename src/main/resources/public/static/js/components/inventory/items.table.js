@@ -32,7 +32,7 @@ class ItemsTable extends HTMLElement {
                             <th class="col-select">
                             </th>
                             <th class="col-name">
-                                <input type="search" id="nameFilter" name="nameFilter" class="form-input-search form-name" title="Filter Item Name" />
+                                <input type="search" id="nameFilter" name="nameFilter" class="form-input-search form-name" title="Filter Item Name" placeholder="Item Name"/>
                             </th>
                         </tr>
                     </thead>
@@ -54,8 +54,57 @@ class ItemsTable extends HTMLElement {
 
     setItems(items, options) {
         const self = this;
+        const shadow = this.shadowRoot;
         if (Array.isArray(items)) {
+            const tbl = shadow.querySelector('table.tbl-items');
+            const tbody = tbl.querySelector('tbody');
+            while(tbody.firstChild) {
+                tbody.removeChild(tbody.lastChild);
+            }
 
+            items.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.classList.add('item-row');
+                if (options && options.multiselect == true) {
+                    tr.innerHTML = `
+                        <td class="col-select">
+                            <input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
+                        </td>
+                        <td class="col-name">
+                            ${item.name}
+                        </td>
+                    `;
+                } else {
+                    tr.innerHTML = `
+                        <td class="col-select">
+                            <input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
+                        </td>
+                        <td class="col-name">
+                            ${item.name}
+                        </td>
+                    `;
+                }
+                tbody.appendChild(tr);
+            });
+
+            if (options && options.allowAdd == true) {
+                const tr = document.createElement('tr');
+                tr.classList.add('item-add');
+                tr.innerHTML = `
+                    <td>
+                        <a id="itemAdd" class="nav-link item-add-link" title="Add Item" href="#">Add</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                const itemAdd = tr.querySelector('a#itemAdd');
+                itemAdd.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onadditem', {
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                });
+            }
         } else {
             self.dispatchEvent(new CustomEvent('error', {
                 bubbles: true,

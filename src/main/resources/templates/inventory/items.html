@@ -8,12 +8,19 @@ Inventory Items
 <h1>Inventory default</h1>
 <notification-list></notification-list>
 <items-table></items-table>
+<modal-dialog id="itemEditor">
+    <div class="wrapper">
+        <item-editor></item-editor>
+    </div><!-- .wrapper -->
+</modal-dialog>
 {% endblock %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/inventory/items.table.js"></script>
+<script type="module" src="/static/js/components/inventory/items.editor.js"></script>
 <script type="module" src="/static/js/api/inventory.js"></script>
+<script type="module" src="/static/js/modal.dialog.js"></script>
 <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
 <script type="module">
 'use strict';
@@ -37,19 +44,26 @@ import { Inventory } from '/static/js/api/inventory.js';
         return Inventory.items('test', query);
     };
 
-    const test = from(fetchItems('test'));
-    test.subscribe();
-
     fromEvent(itbl, 'onfilteritems')
         .pipe(
             map(e => e.detail),
             debounceTime(250),
             filter(query => query.length > 3),
             distinctUntilChanged(),
-            // switchMap(query => from(fetchItems(query))),
+            switchMap(query => from(fetchItems(query))),
             tap(e => console.log(e))
         )
         .subscribe();
+
+    itbl.setItems([], {
+        allowAdd: true,
+        multiselect: false
+    });
+    
+    itbl.addEventListener('onadditem', function(e) {
+        const modal = document.querySelector('modal-dialog#itemEditor');
+        const dlg = modal.show();
+    });
 })();
 </script>
 {% endblock scripts %}
