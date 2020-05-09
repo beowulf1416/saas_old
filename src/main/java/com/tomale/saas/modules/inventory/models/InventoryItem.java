@@ -8,6 +8,7 @@ import lombok.Data;
 public class InventoryItem {
 
     private UUID id;
+    private boolean active;
     private String name;
     private String description;
     private String make;
@@ -26,6 +27,7 @@ public class InventoryItem {
 
     public InventoryItem(
         UUID id, 
+        Boolean active,
         String name,
         String description,
         String make,
@@ -42,6 +44,7 @@ public class InventoryItem {
         boolean hazardous
     ) {
         this.id = id;
+        this.active = active;
         this.name = name;
         this.description = description;
         this.brand = brand;
