@@ -5,6 +5,7 @@
 {%- endblock %}
 
 {% block page_content %}
+{{ app }}
 <div id="pageContent">
     <div class="column-wrapper">
         <div class="row row-0 row-start row-wrapper">
@@ -15,7 +16,11 @@
             <div class="col col-1">2</div>
             <div class="col col-2 col-end">
                 {% if user is defined %}
-                    <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
+                    {% if request_uri is defined %}
+                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client?destination={{ request_uri }}">{{ user.currentClient.name }}</a>
+                    {% else %}
+                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
+                    {% endif %}
                 {% endif %}
                 <client-selector id="clientSelector"></client-selector>
             </div>
