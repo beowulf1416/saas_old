@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.tomale.saas.base.models.ApiResult;
@@ -33,6 +36,9 @@ public class RestInventoryItemsController {
 
     @Autowired
     private InventoryItemStore invStore;
+
+    Gson gson = new Gson();
+
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('inventory.admin')")
@@ -65,17 +71,13 @@ public class RestInventoryItemsController {
         }
     }
 
-    @PostMapping("/add")
+    @PostMapping("/update")
     @PreAuthorize("hasAuthority('inventory.admin')")
     public ApiResult add(@RequestBody Map<String, Object> data) {
         try {
             Object o = data.get("clientId");
             if (o == null) {
-                return new ApiResult(
-                    "error",
-                    "Client Id is required",
-                    null
-                );
+                throw new Exception("Client Id is required");
             }
             String clientId = o.toString();
 
@@ -127,6 +129,41 @@ public class RestInventoryItemsController {
                 "success",
                 String.format("Item %s update", itemId),
                 null
+            );
+        } catch(Exception e) {
+            log.error(e);
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
+
+    @PostMapping("/items")
+    @PreAuthorize("hasAuthority('inventory.items')")
+    public ApiResult viewItems(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            Object o = params.get("clientId");
+            if (o == null) {
+                throw new Exception("Client Id is required");
+            }
+            UUID clientId = UUID.fromString(o.toString());
+
+            o = params.get("filter");
+            String filter = o == null ? "" : o.toString();
+            
+            List<InventoryItem> items = new ArrayList<InventoryItem>();
+            if (filter == "") {
+                items = invStore.all(clientId);
+            } else {
+                items = invStore.itemsByName(clientId, filter);
+            }
+
+            return new ApiResult(
+                "success",
+                String.format("%d items", items.size()),
+                gson.toJson(items)
             );
         } catch(Exception e) {
             log.error(e);

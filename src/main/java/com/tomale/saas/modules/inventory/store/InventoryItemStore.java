@@ -24,6 +24,7 @@ public class InventoryItemStore {
     private static final String SQL_INV_ITEM_ADD = "{? = call inventory.item_add(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String SQL_INV_ITEM_UPDATE = "{call inventory.item_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all(?)}";
+    private static final String SQL_INV_ITEMS_BY_NAME = "{call inventory.items_by_name(?,?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -123,6 +124,46 @@ public class InventoryItemStore {
         }
     }
 
+    private InventoryItem parseResultSet(ResultSet rs) throws SQLException {
+        UUID id = UUID.fromString(rs.getString(1));
+        boolean active = rs.getBoolean(2);
+        Timestamp created_ts = rs.getTimestamp(3);
+        UUID clientId2 = UUID.fromString(rs.getString(4));
+        String name = rs.getString(5);
+        String description = rs.getString(6);
+        String make = rs.getString(7);
+        String brand = rs.getString(8);
+        String model = rs.getString(9);
+        String version = rs.getString(10);
+        String sku = rs.getString(11);
+        String upc = rs.getString(12);
+        float length = rs.getFloat(13);
+        float width = rs.getFloat(14);
+        float height = rs.getFloat(15);
+        float weight = rs.getFloat(16);
+        boolean perishable = rs.getBoolean(17);
+        boolean hazardous = rs.getBoolean(18);
+
+        return new InventoryItem(
+            id, 
+            active,
+            name,
+            description,
+            make,
+            brand,
+            model,
+            version,
+            sku,
+            upc,
+            length,
+            width,
+            height,
+            weight,
+            perishable,
+            hazardous
+        );
+    }
+
     public List<InventoryItem> all(UUID clientId) throws Exception {
         try {
             CallableStatement stmt = jdbc.getDataSource()
@@ -134,47 +175,35 @@ public class InventoryItemStore {
             ResultSet rs = stmt.getResultSet();
             ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
             while(rs.next()) {
-                UUID id = UUID.fromString(rs.getString(1));
-                boolean active = rs.getBoolean(2);
-                Timestamp created_ts = rs.getTimestamp(3);
-                UUID clientId2 = UUID.fromString(rs.getString(4));
-                String name = rs.getString(5);
-                String description = rs.getString(6);
-                String make = rs.getString(7);
-                String brand = rs.getString(8);
-                String model = rs.getString(9);
-                String version = rs.getString(10);
-                String sku = rs.getString(11);
-                String upc = rs.getString(12);
-                float length = rs.getFloat(13);
-                float width = rs.getFloat(14);
-                float height = rs.getFloat(15);
-                float weight = rs.getFloat(16);
-                boolean perishable = rs.getBoolean(17);
-                boolean hazardous = rs.getBoolean(18);
-
-                items.add(new InventoryItem(
-                    id, 
-                    name,
-                    description,
-                    make,
-                    brand,
-                    model,
-                    version,
-                    sku,
-                    upc,
-                    length,
-                    width,
-                    height,
-                    weight,
-                    perishable,
-                    hazardous
-                ));
+                InventoryItem item = parseResultSet(rs);
+                items.add(item);
             }
             return items;
         } catch(SQLException e) {
             log.error(e.getMessage());
             throw new Exception("An error occured while trying to retrieve all inventory items");
+        }
+    }
+
+    public List<InventoryItem> itemsByName(UUID clientId, String filter) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+            .getConnection()
+            .prepareCall(SQL_INV_ITEMS_BY_NAME);
+            stmt.setObject(1, clientId);
+            stmt.setString(2, filter);
+            stmt.execute();
+
+            ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+            ResultSet rs = stmt.getResultSet();
+            while(rs.next()) {
+                InventoryItem item = parseResultSet(rs);
+                items.add(item);
+            }
+            return items;
+        } catch(SQLException e) {
+            log.error(e.getMessage());
+            throw new Exception("An error occured while trying to retrieve inventory items by name", e);
         }
     }
 }
