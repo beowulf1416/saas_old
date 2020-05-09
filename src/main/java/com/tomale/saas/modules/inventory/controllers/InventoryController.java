@@ -1,6 +1,9 @@
 package com.tomale.saas.modules.inventory.controllers;
 
 import org.apache.logging.log4j.Logger;
+
+import com.tomale.saas.base.models.ModelAndViewFactory;
+
 import org.apache.logging.log4j.LogManager;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +36,7 @@ public class InventoryController {
     @GetMapping("/items")
     @PreAuthorize("hasAuthority('inventory.items')")
     public ModelAndView viewItems() {
-        return new ModelAndView("inventory/items");
+        ModelAndView mv = ModelAndViewFactory.get("inventory/items");
+        return mv;
     }
 }
