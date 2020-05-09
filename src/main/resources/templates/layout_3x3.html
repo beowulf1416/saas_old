@@ -39,7 +39,18 @@
 {% block basebodyscripts %}
 <!-- scripts -->
 <script type="module" src="/static/js/search.bar.js"></script>
-<script type="module" src="/static/js/client.selector.js"></script>
+{% if user is defined %}
+<script type="module">
+(function(){
+    window.variables = {
+        currentClient: {
+            id: '{{ user.currentClient.id }}',
+            name: '{{ user.currentClient.name }}'
+        }
+    };
+})();
+{% endif %}
+</script>
 {% block scripts %}
 {% endblock scripts %}
 

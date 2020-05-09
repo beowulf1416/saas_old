@@ -64,8 +64,11 @@ import { Inventory } from '/static/js/api/inventory.js';
         const dlg = modal.show();
         
         dlg.addEventListener('onsaveitem', function(e) {
-            const formData = e.detail;
-            console.log(Array.from(formData));
+            const item = e.detail;
+            Inventory.itemAdd(window.variables.currentClient.id, item)
+                .then((data) => {
+                    console.log(data);
+                });
             modal.hide();
         });
     });
