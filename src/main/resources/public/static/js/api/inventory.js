@@ -18,7 +18,7 @@ class Inventory {
     }
 
     static items(clientId, filter) {
-        return fetch('/api/inventory/items', {
+        return fetch('/api/inventory/items/filter', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
