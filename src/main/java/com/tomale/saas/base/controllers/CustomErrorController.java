@@ -123,6 +123,10 @@ public class CustomErrorController implements ErrorController {
                 msg = "You are not permitted to see the results of this request";
                 break;
             }
+            case NOT_FOUND: {
+                msg = "Endpoint not found";
+                break;
+            }
             default: {
                 log.warn(String.format("Unknown error status code: %s", status.toString()));
                 msg = String.format("An unknown error has occured (%s)", value.toString());
