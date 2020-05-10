@@ -37,6 +37,8 @@ import { Inventory } from '/static/js/api/inventory.js';
         tap
     } = rxjs.operators;
 
+    const currentClientId = window.variables.currentClient.id;
+
     const n = document.querySelector('notification-list');
     const itbl = document.querySelector('items-table');
     itbl.setOptions({
@@ -44,9 +46,11 @@ import { Inventory } from '/static/js/api/inventory.js';
         multiselect: false
     });
 
-    const fetchItems = (query) => {
-        return Inventory.items('test', query);
+    const fetchItems = (clientId, query) => {
+        return Inventory.items(clientId, query);
     };
+
+    itbl.setItems(fetchItems(currentClientId, '').then((data) => data));
 
     fromEvent(itbl, 'onfilteritems')
         .pipe(
@@ -54,7 +58,7 @@ import { Inventory } from '/static/js/api/inventory.js';
             debounceTime(250),
             filter(query => query.length > 3),
             distinctUntilChanged(),
-            switchMap(query => from(fetchItems(query))),
+            switchMap(query => from(fetchItems(currentClientId, query))),
             tap(e => console.log(e))
         )
         .subscribe();
@@ -67,9 +71,17 @@ import { Inventory } from '/static/js/api/inventory.js';
             const item = e.detail;
             Inventory.itemAdd(window.variables.currentClient.id, item)
                 .then((data) => {
-                    console.log(data);
+                    if (data.status == 'success') {
+                        fetchItems(currentClientId, '');
+                    } else {
+                        n.add('error', data.message);
+                    }
                 });
             modal.hide();
+        });
+
+        dlg.addEventListener('oncancelitem', function(e) {
+            
         });
     });
 })();
