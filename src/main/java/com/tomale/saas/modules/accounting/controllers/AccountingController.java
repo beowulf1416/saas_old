@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AccountingController {
     
     @GetMapping("")
-    @PreAuthorize("hasAuthority('accounting.default)")
+    @PreAuthorize("hasAuthority('accounting.default')")
     public ModelAndView viewDefault() {
         return ModelAndViewFactory.get("accounting/default");
     }
