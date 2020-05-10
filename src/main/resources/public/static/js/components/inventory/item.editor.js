@@ -102,6 +102,7 @@ class ItemEditor extends HTMLElement {
             const make = form.querySelector('input#make');
             const brand = form.querySelector('input#brand');
             const model = form.querySelector('input#model');
+            const version = form.querySelector('input#version');
             const sku = form.querySelector('input#sku');
             const upc = form.querySelector('input#upc');
 

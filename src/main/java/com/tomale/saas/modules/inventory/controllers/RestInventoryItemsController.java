@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.tomale.saas.base.models.ApiResult;
 import com.tomale.saas.modules.inventory.models.InventoryItem;
@@ -141,7 +143,7 @@ public class RestInventoryItemsController {
         }
     }
 
-    @PostMapping("/items")
+    @PostMapping("/filter")
     @PreAuthorize("hasAuthority('inventory.items')")
     public ApiResult viewItems(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
@@ -176,7 +178,7 @@ public class RestInventoryItemsController {
         }
     }
 
-    @PostMapping("/items/add")
+    @PostMapping("/add")
     @PreAuthorize("hasAuthority('inventory.items')")
     public ApiResult itemAdd(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
@@ -190,42 +192,56 @@ public class RestInventoryItemsController {
             if (o == null) {
                 throw new Exception("Item is required");
             }
-            log.debug(o.toString());
-            JsonObject json = (JsonObject) gson.toJsonTree(o.toString());
 
-            String name = json.get("name").getAsString();
-            String description = json.get("description").getAsString();
-            String make = json.get("make").getAsString();
-            String brand = json.get("brand").getAsString();
-            String model = json.get("model").getAsString();
-            String version = json.get("version").getAsString();
-            String sku = json.get("sku").getAsString();
-            String upc = json.get("upc").getAsString();
+            if (o instanceof HashMap<?, ?>) {
+                HashMap<String, String> item = (HashMap<String, String>) o;
 
-            float length = Float.parseFloat(json.get("length").getAsString());
-            float width = Float.parseFloat(json.get("width").getAsString());
-            float height = Float.parseFloat(json.get("height").getAsString());
-            float weight = Float.parseFloat(json.get("weight").getAsString());
+                String name = item.get("name");
+                String description = item.get("description");
+                String make = item.get("make");
+                String brand = item.get("brand");
+                String model = item.get("model");
+                String version = item.get("version");
+                String sku = item.get("sku");
+                String upc = item.get("sku");
 
-            boolean perishable = json.get("perishable").getAsBoolean();
-            boolean hazardous = json.get("hazardous").getAsBoolean();
+                float length = Float.parseFloat(item.get("length"));
+                float width = Float.parseFloat(item.get("width"));
+                float height = Float.parseFloat(item.get("height"));
+                float weight = Float.parseFloat(item.get("weight"));
 
-            UUID itemId = invStore.add(clientId,
-                name,
-                description,
-                make,
-                brand,
-                model,
-                version,
-                sku,
-                upc,
-                length,
-                width,
-                height,
-                weight,
-                perishable,
-                hazardous
-            );
+                boolean perishable = Boolean.parseBoolean(item.get("perishable"));
+                boolean hazardous = Boolean.parseBoolean(item.get("hazardous"));
+
+                UUID itemId = invStore.add(clientId,
+                    name,
+                    description,
+                    make,
+                    brand,
+                    model,
+                    version,
+                    sku,
+                    upc,
+                    length,
+                    width,
+                    height,
+                    weight,
+                    perishable,
+                    hazardous
+                );
+
+                return new ApiResult(
+                    "success",
+                    "New item added",
+                    null
+                );
+            } else {
+                return new ApiResult(
+                    "error",
+                    "item argument is incorrect",
+                    null
+                );
+            }
         } catch(Exception e) {
             log.error(e);
             return new ApiResult(
