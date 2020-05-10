@@ -191,24 +191,41 @@ public class RestInventoryItemsController {
                 throw new Exception("Item is required");
             }
             log.debug(o.toString());
-            // JsonObject json = (JsonObject) gson.toJsonTree(o.toString());
+            JsonObject json = (JsonObject) gson.toJsonTree(o.toString());
 
-            // UUID itemId = invStore.add(clientId,
-            //     name,
-            //     description,
-            //     make,
-            //     brand,
-            //     model,
-            //     version,
-            //     sku,
-            //     upc,
-            //     length,
-            //     width,
-            //     height,
-            //     weight,
-            //     perishable,
-            //     hazardous
-            // );
+            String name = json.get("name").getAsString();
+            String description = json.get("description").getAsString();
+            String make = json.get("make").getAsString();
+            String brand = json.get("brand").getAsString();
+            String model = json.get("model").getAsString();
+            String version = json.get("version").getAsString();
+            String sku = json.get("sku").getAsString();
+            String upc = json.get("upc").getAsString();
+
+            float length = Float.parseFloat(json.get("length").getAsString());
+            float width = Float.parseFloat(json.get("width").getAsString());
+            float height = Float.parseFloat(json.get("height").getAsString());
+            float weight = Float.parseFloat(json.get("weight").getAsString());
+
+            boolean perishable = json.get("perishable").getAsBoolean();
+            boolean hazardous = json.get("hazardous").getAsBoolean();
+
+            UUID itemId = invStore.add(clientId,
+                name,
+                description,
+                make,
+                brand,
+                model,
+                version,
+                sku,
+                upc,
+                length,
+                width,
+                height,
+                weight,
+                perishable,
+                hazardous
+            );
         } catch(Exception e) {
             log.error(e);
             return new ApiResult(
