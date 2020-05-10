@@ -194,6 +194,7 @@ public class RestInventoryItemsController {
             }
 
             if (o instanceof HashMap<?, ?>) {
+                // TODO: unchecked cast from object to hashmap
                 HashMap<String, String> item = (HashMap<String, String>) o;
 
                 String name = item.get("name");

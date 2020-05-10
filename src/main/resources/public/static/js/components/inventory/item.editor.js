@@ -59,19 +59,19 @@ class ItemEditor extends HTMLElement {
                     <legend>Packing Details</legend>
                     <div class="form-group">
                         <label for="length">Length</label>
-                        <input type="number" placeholder="Length" id="length" name="length" class="form-input-number form-length" />
+                        <input type="number" placeholder="Length" id="length" name="length" class="form-input-number form-length" min="0" />
                     </div><!-- .form-group -->
                     <div class="form-group">
                         <label for="width">Width</label>
-                        <input type="number" placeholder="Width" id="width" name="width" class="form-input-number form-width" />
+                        <input type="number" placeholder="Width" id="width" name="width" class="form-input-number form-width" min="0" />
                     </div><!-- .form-group -->
                     <div class="form-group">
                         <label for="height">Height</label>
-                        <input type="number" placeholder="Height" id="height" name="height" class="form-input-number form-height" />
+                        <input type="number" placeholder="Height" id="height" name="height" class="form-input-number form-height" min="0" />
                     </div><!-- .form-group -->
                     <div class="form-group">
                         <label for="weight">Weight</label>
-                        <input type="number" placeholder="Weight" id="weight" name="weight" class="form-input-number form-weight" />
+                        <input type="number" placeholder="Weight" id="weight" name="weight" class="form-input-number form-weight" min="0" />
                     </div><!-- .form-group -->
                 </fieldset>
                 <fieldset>
