@@ -1,8 +1,10 @@
 {% extends '/templates/base.html' %}
 
-{% block links -%}
+{% block baselinks -%}
 <link rel="stylesheet" href="/static/css/layout.css">
-{%- endblock links %}
+{% block links -%}
+{%- endblock links -%}
+{%- endblock baselinks %}
 
 {% block page_content %}
 <div id="pageContent">
@@ -21,6 +23,22 @@
                         <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
                     {% endif %}
                 {% endif %}
+                <nav class="navbar">
+                    <ul class="navbar-nav">
+                        <li class="dropdown">
+                            <div class="nav-item">
+                                <div class="nav-item-text">menu item 1</div>
+                                <nav class="menu">
+                                    <ul class="menu-nav">
+                                        <li>sub menu 1</li>
+                                        <li>sub menu 2</li>
+                                        <li>sub menu 3</li>
+                                    </ul>
+                                </nav>    
+                            </div><!-- .nav-item -->
+                        </li>
+                    </ul><!-- .navbar-nav -->
+                </nav>
             </div>
         </div>
         <div class="row row-1 row-wrapper">
