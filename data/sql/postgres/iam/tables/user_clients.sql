@@ -4,7 +4,7 @@
 create table if not exists user_clients (
     user_id uuid not null,
     client_id uuid not null,
-    created_ts timestamp with time zone not null default(now() at time zone 'utc'),
+    created_ts timestamp without time zone not null default(now() at time zone 'utc'),
     constraint pk_user_clients primary key (client_id, user_id),
     constraint fk_user_clients_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
