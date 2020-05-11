@@ -20,6 +20,7 @@ public class InventoryConfiguration {
         return new InventoryItemStore(jdbc);
     }
 
+    @Bean
     public InventoryTransactionStore inventoryTransactionStore() {
         return new InventoryTransactionStore(jdbc);
     }
