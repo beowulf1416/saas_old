@@ -52,7 +52,8 @@ import { Inventory } from '/static/js/api/inventory.js';
 
     fetchItems(currentClientId, '').then((data) => {
         if (data.status == 'success') {
-            itbl.setItems(JSON.parse(data.json));
+            const o = JSON.parse(data.json);
+            itbl.setItems(o.items, o.filter);
         } else {
             n.add('error', data.message);
         }
@@ -65,7 +66,14 @@ import { Inventory } from '/static/js/api/inventory.js';
             filter(query => query.length > 3),
             distinctUntilChanged(),
             switchMap(query => from(fetchItems(currentClientId, query))),
-            tap(e => console.log(e))
+            tap(e => {
+                if (e.status == 'success') {
+                    const o = JSON.parse(e.json);
+                    itbl.setItems(o.items, o.filter);
+                } else {
+                    n.add('error', e.message, 3000);
+                }
+            })
         )
         .subscribe();
     
@@ -80,7 +88,8 @@ import { Inventory } from '/static/js/api/inventory.js';
                     if (data.status == 'success') {
                         fetchItems(currentClientId, '').then((data) => {
                             if (data.status == 'success') {
-                                itbl.setItems(JSON.parse(data.json));
+                                const o = JSON.parse(data.json);
+                                itbl.setItems(o.items, o.filter);
                             } else {
                                 n.add('error', data.message);
                             }
