@@ -47,7 +47,7 @@ class ItemsTable extends HTMLElement {
 
         const tSearch = div.querySelector('input#nameFilter');
         tSearch.addEventListener('input', function(e) {
-            self.dispatchEvent(new CustomEvent('onfilteritems', {
+            component.dispatchEvent(new CustomEvent('onfilteritems', {
                 bubbles: true,
                 cancelable: true,
                 detail: tSearch.value
@@ -82,7 +82,7 @@ class ItemsTable extends HTMLElement {
         }
     }
 
-    setItems(items) {
+    setItems(items, filter) {
         const self = this;
         const options = this.options;
         const shadow = this.shadowRoot;
@@ -91,17 +91,24 @@ class ItemsTable extends HTMLElement {
             const tbody = tbl.querySelector('tbody');
             while(tbody.firstChild) {
                 tbody.removeChild(tbody.lastChild);
-            }
+            } 
 
             items.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.classList.add('item-row');
+
+
+                let item_name = item.name;
+                if (filter != '') {
+                    item_name = item_name.replace(filter, `<strong>${filter}</strong>`);
+                }
+
                 if (options && options.multiselect == true) {
                     tr.innerHTML = `
                         <td class="col-select">
                             <input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
                         </td>
-                        <td class="col-name">${item.name}</td>
+                        <td class="col-name">${item_name}</td>
                         <td class="col-description">${item.description}</td>
                     `;
                 } else {
@@ -109,7 +116,7 @@ class ItemsTable extends HTMLElement {
                         <td class="col-select">
                             <input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
                         </td>
-                        <td class="col-name">${item.name}</td>
+                        <td class="col-name">${item_name}</td>
                         <td class="col-description">${item.description}</td>
                     `;
                 }
