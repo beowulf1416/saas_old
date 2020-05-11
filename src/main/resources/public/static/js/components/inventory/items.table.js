@@ -28,10 +28,11 @@ class ItemsTable extends HTMLElement {
                         <tr>
                             <th class="col-select"></th>
                             <th class="col-name">Name</th>
+                            <th class="col-description">Description</th>
                         </tr>
                         <tr class="row-filter">
                             <th class="col-select"></th>
-                            <th class="col-name">
+                            <th class="col-name" colspan="2">
                                 <input type="search" id="nameFilter" name="nameFilter" class="form-input-search form-name" title="Filter Item Name" placeholder="Item Name"/>
                             </th>
                         </tr>
@@ -100,18 +101,16 @@ class ItemsTable extends HTMLElement {
                         <td class="col-select">
                             <input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
                         </td>
-                        <td class="col-name">
-                            ${item.name}
-                        </td>
+                        <td class="col-name">${item.name}</td>
+                        <td class="col-description">${item.description}</td>
                     `;
                 } else {
                     tr.innerHTML = `
                         <td class="col-select">
                             <input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
                         </td>
-                        <td class="col-name">
-                            ${item.name}
-                        </td>
+                        <td class="col-name">${item.name}</td>
+                        <td class="col-description">${item.description}</td>
                     `;
                 }
                 tbody.appendChild(tr);
@@ -121,7 +120,7 @@ class ItemsTable extends HTMLElement {
                 const tr = document.createElement('tr');
                 tr.classList.add('item-add');
                 tr.innerHTML = `
-                    <td>
+                    <td colspan="3">
                         <a id="itemAdd" class="nav-link item-add-link" title="Add Item" href="#">Add</a>
                     </td>
                 `;

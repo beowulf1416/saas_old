@@ -50,7 +50,13 @@ import { Inventory } from '/static/js/api/inventory.js';
         return Inventory.items(clientId, query);
     };
 
-    itbl.setItems(fetchItems(currentClientId, '').then((data) => data));
+    fetchItems(currentClientId, '').then((data) => {
+        if (data.status == 'success') {
+            itbl.setItems(JSON.parse(data.json));
+        } else {
+            n.add('error', data.message);
+        }
+    });
 
     fromEvent(itbl, 'onfilteritems')
         .pipe(
@@ -72,7 +78,13 @@ import { Inventory } from '/static/js/api/inventory.js';
             Inventory.itemAdd(window.variables.currentClient.id, item)
                 .then((data) => {
                     if (data.status == 'success') {
-                        fetchItems(currentClientId, '');
+                        fetchItems(currentClientId, '').then((data) => {
+                            if (data.status == 'success') {
+                                itbl.setItems(JSON.parse(data.json));
+                            } else {
+                                n.add('error', data.message);
+                            }
+                        });
                     } else {
                         n.add('error', data.message);
                     }
@@ -81,7 +93,7 @@ import { Inventory } from '/static/js/api/inventory.js';
         });
 
         dlg.addEventListener('oncancelitem', function(e) {
-            
+
         });
     });
 })();
