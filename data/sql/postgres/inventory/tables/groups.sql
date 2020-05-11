@@ -4,7 +4,7 @@
 create table if not exists groups (
     id uuid not null default public.gen_random_uuid(),
     active boolean not null default false,
-    created_ts timestamp with time zone not null default(now() at time zone 'utc'),
+    created_ts timestamp without time zone not null default(now() at time zone 'utc'),
     client_id uuid not null,
     name varchar(200) not null,
     constraint pk_groups primary key (id),

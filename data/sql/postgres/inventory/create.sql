@@ -19,6 +19,9 @@ set schema 'inventory';
 \ir tables/item_uom.sql
 \ir tables/item_locations.sql
 
+\ir tables/item_transaction_types.sql
+\ir tables/item_transaction_meta.sql
+\ir tables/item_transaction_details.sql
 
 
 /** functions **/

@@ -13,4 +13,5 @@ insert into account_types (id, name) values
 (2,'liabilities'),
 (3,'equity'),
 (4,'income'),
-(5,'expense');
+(5,'expense')
+on conflict do nothing;
