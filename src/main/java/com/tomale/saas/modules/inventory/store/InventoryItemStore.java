@@ -202,7 +202,7 @@ public class InventoryItemStore {
             }
             return items;
         } catch(SQLException e) {
-            log.error(e.getMessage());
+            log.error(e);
             throw new Exception("An error occured while trying to retrieve inventory items by name", e);
         }
     }
