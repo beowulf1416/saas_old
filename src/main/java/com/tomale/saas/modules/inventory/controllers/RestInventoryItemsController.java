@@ -163,10 +163,14 @@ public class RestInventoryItemsController {
                 items = invStore.itemsByName(clientId, filter);
             }
 
+            HashMap<String, Object> results = new HashMap<String, Object>();
+            results.put("items", items);
+            results.put("filter", filter);
+
             return new ApiResult(
                 "success",
                 String.format("%d items", items.size()),
-                gson.toJson(items)
+                gson.toJson(results)
             );
         } catch(Exception e) {
             log.error(e);
