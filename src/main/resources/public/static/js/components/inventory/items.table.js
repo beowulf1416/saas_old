@@ -69,44 +69,11 @@ class ItemsTable extends HTMLElement {
         });
     }
 
-    setOptions(options) {
-        const self = this;
-        const shadow = this.shadowRoot;
-        this.options = options;
-
-        const tbl = shadow.querySelector('table.tbl-items');
-        if (options && options.hideQuantityColumn == true) {
-            tbl.classList.add('hide-quantity');
-        }
-
-        const tbody = shadow.querySelector('table.tbl-items tbody');
-        let aAdd = tbody.querySelector("a#itemAdd");
-        if (aAdd == null) {
-            const tr = document.createElement('tr');
-            tr.classList.add('item-add');
-            tr.innerHTML = `
-                <td colspan="2">
-                    <a id="itemAdd" class="nav-link item-add-link" title="Add Item" href="#">Add</a>
-                </td>
-            `;
-            tbody.appendChild(tr);
-
-            aAdd = tbody.querySelector('a#itemAdd');
-            aAdd.addEventListener('click', function(e) {
-                self.dispatchEvent(new CustomEvent('onadditem', {
-                    bubbles: true,
-                    cancelable: true
-                }));
-            });
-        }
-    }
-
     setItems(items, filter) {
         const self = this;
         const options = this.options;
         const shadow = this.shadowRoot;
         if (Array.isArray(items)) {
-            const showAdd = this.hasAttribute('show-add');
             const multiselect = this.hasAttribute('multiselect');
             const classSKU = this.hasAttribute('hide-sku') ? 'col-sku col-hidden' : 'col-sku';
             const classUPC = this.hasAttribute('hide-sku') ? 'col-upc col-hidden' : 'col-upc';
@@ -149,6 +116,7 @@ class ItemsTable extends HTMLElement {
                 tbody.appendChild(tr);
             });
 
+            const showAdd = this.hasAttribute('show-add');
             if (showAdd) {
                 const tr = document.createElement('tr');
                 tr.classList.add('item-add');
