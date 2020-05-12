@@ -103,23 +103,22 @@ class ItemsTable extends HTMLElement {
                     item_name = item_name.replace(filter, `<strong>${filter}</strong>`);
                 }
 
+                let tds = [];
+
                 if (options && options.multiselect == true) {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
-                        </td>
-                        <td class="col-name">${item_name}</td>
-                        <td class="col-description">${item.description}</td>
-                    `;
+                    tds.push(`<td class="col-select"><input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" /></td>`);
                 } else {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" />
-                        </td>
-                        <td class="col-name">${item_name}</td>
-                        <td class="col-description">${item.description}</td>
-                    `;
+                    tds.push(`<td class="col-select"><input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" /></td>`);
                 }
+
+                tds.push(`<td class="col-name">${item_name}</td>`);
+                tds.push(`<td class="col-description">${item.description}</td>`);
+                tds.push(`<td class="col-sku">${item.sku}</td>`);
+                tds.push(`<td class="col-upc">${item.upc}</td>`);
+                tds.push(`<td class="col-qty"></td>`);
+
+                tr.innerHTML = tds.join('');
+                
                 tbody.appendChild(tr);
             });
 
