@@ -8,6 +8,7 @@ import com.tomale.saas.base.models.security.JWTAuthenticationToken;
 import com.tomale.saas.base.models.security.JWTUtil;
 import com.tomale.saas.base.store.ClientStore;
 import com.tomale.saas.base.store.PermissionStore;
+import com.tomale.saas.base.store.UserStore;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,6 +49,9 @@ public class ClientController {
 
     @Autowired
     private SessionUtil sessionUtil;
+
+    @Autowired
+    private UserStore userStore;
 
     @Value("${jwt.issuer}")
     private String jwtIssuer;
@@ -98,6 +102,10 @@ public class ClientController {
             User user = (User) auth.getPrincipal();
 
             try {
+                // user id is not populated, retrieve from store
+                User tUser = userStore.getUserByEmail(user.getEmail());
+                user.setId(tUser.getId());
+
                 Client userClient = clientStore.get(UUID.fromString(client));
                 List<Client> clients = user.getClients();
                 List<String> permissions = permissionStore.userPermissions(
