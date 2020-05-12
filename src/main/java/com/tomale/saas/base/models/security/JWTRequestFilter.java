@@ -58,40 +58,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         } catch(AuthenticationException e) {
             log.error(e);
         }
-        
-        // Cookie[] cookies = request.getCookies();
-        // if (cookies != null) {
-        //     for (Cookie cookie : cookies) {
-        //         // log.debug(cookie.getName());
-        //         if (cookie.getName().equalsIgnoreCase(cookieName)) {
-        //             if (SecurityContextHolder.getContext().getAuthentication() == null) {
-        //                 String value = cookie.getValue();
-        //                 JWTUtil jwt = new JWTUtil(jwtIssuer, jwtSecret, cipherKey);
-        //                 if (jwt.verify(value)) {
-        //                     try {
-        //                         JsonObject json = jwt.toJSON(value);
-        //                         // log.debug(json);
-
-        //                         JWTAuthenticationToken preauth = new JWTAuthenticationToken(json);
-        //                         // auth.setAuthenticated(true);
-        //                         try {
-        //                             Authentication postauth = authMgr.authenticate(preauth);
-        //                             SecurityContextHolder.getContext().setAuthentication(postauth);
-        //                         } catch(AuthenticationException e) {
-        //                             log.error(e);
-        //                         }
-        //                     } catch(Exception e) {
-        //                         log.error("JWTRequestFilter::doFilterInternal()");
-        //                         log.error(e);
-        //                     }
-        //                 } else {
-        //                     log.warn("Invalid value for cookie '%s'", cookieName);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        
 
         filterChain.doFilter(request, response);
     }
