@@ -13,32 +13,48 @@
     <div class="column-wrapper">
         <div class="row row-0 row-start row-wrapper">
             <div class="col col-0 col-start">
-                {% block block1x1 %}
-                {% endblock block1x1 %}
+                <nav class="navbar is-transparent">
+                    <div class="navbar-brand">
+                        <a title="Home" class="navbar-item" href="#">
+                            <img src="/static/img/favicon.ico" alt="Software As A Service">
+                        </a>
+                    </div><!-- .navbar-brand -->
+                    <div class="navbar-menu">
+                        <a title="Home" class="navbar-item" href="#">SAAS</a>
+                    </div><!-- .navbar-menu -->
+                </nav><!-- .navbar -->
             </div>
-            <div class="col col-1">2</div>
+            <div class="col col-1">
+                <search-bar></search-bar>
+            </div><!-- .col-1 -->
             <div class="col col-2 col-end">
                 <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
                     <div id="topRightMenu" class="navbar-menu">
                         <div class="navbar-end">
-                            <div class="navbar-item">
-                                {% if user is defined %}
+                            {% if user is defined %}
+                                <div class="navbar-item">
                                     {% if request_uri is defined %}
                                         <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client?destination={{ request_uri }}">{{ user.currentClient.name }}</a>
                                     {% else %}
                                         <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
                                     {% endif %}
-                                {% endif %}
-                            </div><!-- .navbar-item -->
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link">Menu</a>
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item">Item 1</a>
-                                    <a class="navbar-item">Item 2</a>
-                                    <hr class="navbar-divider" />
-                                    <a class="navbar-item">Item 3</a>
-                                </div>
-                            </div><!-- .navbar-item -->
+                                </div><!-- .navbar-item -->
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">{{ user.email }}</a>
+                                    <div class="navbar-dropdown">
+                                        <a title="Profile" class="navbar-item" href="/user/profile">Profile</a>
+                                        <hr class="navbar-divider" />
+                                        <a title="Sign Out" class="navbar-item" href="/security/signin">Sign Out</a>
+                                    </div>
+                                </div><!-- .navbar-item -->
+                            {% else %}
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">Menu</a>
+                                    <div class="navbar-dropdown">" />
+                                        <a title="Sign In" class="navbar-item" href="/security/signin">Sign In</a>
+                                    </div>
+                                </div><!-- .navbar-item -->
+                            {% endif %}
                         </div><!-- .navbar-start -->
                     </div><!-- #topRightMenu -->
                 </nav>
