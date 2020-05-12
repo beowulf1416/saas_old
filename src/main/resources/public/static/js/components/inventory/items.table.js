@@ -89,7 +89,6 @@ class ItemsTable extends HTMLElement {
                 const tr = document.createElement('tr');
                 tr.classList.add('item-row');
 
-
                 let item_name = item.name;
                 if (filter != '') {
                     item_name = item_name.replace(filter, `<strong>${filter}</strong>`);
