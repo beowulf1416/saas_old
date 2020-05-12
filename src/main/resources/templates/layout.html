@@ -1,8 +1,9 @@
 {% extends '/templates/base.html' %}
 
 {% block baselinks -%}
-<!-- links -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
 <link rel="stylesheet" href="/static/css/layout.css">
+<link rel="stylesheet" href="/static/css/colors.css">
 {%- endblock baselinks %}
 
 {% block page_content %}
@@ -15,7 +16,38 @@
             <div class="col col-1">
                 <search-bar id="mainSearch"></search-bar>
             </div>
-            <div class="col col-2 col-end">3</div>
+            <div class="col col-2 col-end">
+                <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
+                    <div id="topRightMenu" class="navbar-menu">
+                        <div class="navbar-end">
+                            {% if user is defined %}
+                                <div class="navbar-item">
+                                    {% if request_uri is defined %}
+                                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client?destination={{ request_uri }}">{{ user.currentClient.name }}</a>
+                                    {% else %}
+                                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
+                                    {% endif %}
+                                </div><!-- .navbar-item -->
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">{{ user.email }}</a>
+                                    <div class="navbar-dropdown">
+                                        <a title="Profile" class="navbar-item" href="/user/profile">Profile</a>
+                                        <hr class="navbar-divider" />
+                                        <a title="Sign Out" class="navbar-item" href="/security/signin">Sign Out</a>
+                                    </div>
+                                </div><!-- .navbar-item -->
+                            {% else %}
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">Menu</a>
+                                    <div class="navbar-dropdown">
+                                        <a title="Sign In" class="navbar-item" href="/security/signin">Sign In</a>
+                                    </div><!-- .navbar-dropdown -->
+                                </div><!-- .navbar-item -->
+                            {% endif %}
+                        </div><!-- .navbar-start -->
+                    </div><!-- #topRightMenu -->
+                </nav>
+            </div>
         </div><!-- .row-wrapper -->
         <div class="row row-1">
             {% block content %}
@@ -32,6 +64,17 @@
 <!-- scripts -->
 <script type="module" src="/static/js/search.bar.js"></script>
 <script type="module" src="/static/js/client.selector.js"></script>
+{% if user is defined %}
+<script type="module">
+(function(){
+    window.variables = {
+        currentClient: {
+            id: '{{ user.currentClient.id }}',
+            name: '{{ user.currentClient.name }}'
+        }
+    };
+})();
+{% endif %}
 {% block scripts %}
 {% endblock scripts %}
 
