@@ -4,3 +4,8 @@
 table.tbl-items.hide-quantity td.qty {
     display: none;
 }
+
+table.tbl-items th.col-hidden
+table.tbl-items td.col-hidden {
+    display: none;
+}
