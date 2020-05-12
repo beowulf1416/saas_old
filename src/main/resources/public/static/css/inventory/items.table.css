@@ -1,0 +1,6 @@
+/**
+ * inventory items table styles
+ */
+table.tbl-items.hide-quantity td.qty {
+    display: none;
+}

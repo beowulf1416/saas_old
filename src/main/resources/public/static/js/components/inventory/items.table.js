@@ -5,12 +5,17 @@ class ItemsTable extends HTMLElement {
     constructor() {
         self = super();
 
+        const style = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/inventory/items.table.css');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
 
         this.initTable(self, div);
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(style);
         shadow.appendChild(div);
 
         this.setOptions = this.setOptions.bind(this);
@@ -59,6 +64,11 @@ class ItemsTable extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
         this.options = options;
+
+        const tbl = shadow.querySelector('table.tbl-items');
+        if (options && options.hideQuantityColumn == true) {
+            tbl.classList.add('hide-quantity');
+        }
 
         const tbody = shadow.querySelector('table.tbl-items tbody');
         let aAdd = tbody.querySelector("a#itemAdd");
@@ -126,7 +136,7 @@ class ItemsTable extends HTMLElement {
                 const tr = document.createElement('tr');
                 tr.classList.add('item-add');
                 tr.innerHTML = `
-                    <td colspan="3">
+                    <td colspan="6">
                         <a id="itemAdd" class="nav-link item-add-link" title="Add Item" href="#">Add</a>
                     </td>
                 `;
