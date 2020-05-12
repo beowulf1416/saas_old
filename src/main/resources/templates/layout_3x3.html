@@ -3,6 +3,7 @@
 {% block baselinks -%}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
 <link rel="stylesheet" href="/static/css/layout.css">
+<link rel="stylesheet" href="/static/css/colors.css">
 {% block links -%}
 {%- endblock links -%}
 {%- endblock baselinks %}
@@ -17,16 +18,18 @@
             </div>
             <div class="col col-1">2</div>
             <div class="col col-2 col-end">
-                {% if user is defined %}
-                    {% if request_uri is defined %}
-                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client?destination={{ request_uri }}">{{ user.currentClient.name }}</a>
-                    {% else %}
-                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
-                    {% endif %}
-                {% endif %}
-                <nav class="navbar" role="navigation" aria-label="navigation">
+                <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
                     <div id="topRightMenu" class="navbar-menu">
-                        <div class="navbar-start">
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                {% if user is defined %}
+                                    {% if request_uri is defined %}
+                                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client?destination={{ request_uri }}">{{ user.currentClient.name }}</a>
+                                    {% else %}
+                                        <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div><!-- .navbar-item -->
                             <div class="navbar-item has-dropdown is-hoverable">
                                 <a class="navbar-link">Menu</a>
                                 <div class="navbar-dropdown">
