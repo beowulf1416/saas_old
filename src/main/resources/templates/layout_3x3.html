@@ -1,6 +1,7 @@
 {% extends '/templates/base.html' %}
 
 {% block baselinks -%}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
 <link rel="stylesheet" href="/static/css/layout.css">
 {% block links -%}
 {%- endblock links -%}
@@ -23,21 +24,20 @@
                         <a id="selectClient" class="nav-link client-select-link" title="Select Client" href="/client">{{ user.currentClient.name }}</a>
                     {% endif %}
                 {% endif %}
-                <nav class="navbar">
-                    <ul class="navbar-nav">
-                        <li class="dropdown">
-                            <div class="nav-item">
-                                <div class="nav-item-text">menu item 1</div>
-                                <nav class="menu">
-                                    <ul class="menu-nav">
-                                        <li>sub menu 1</li>
-                                        <li>sub menu 2</li>
-                                        <li>sub menu 3</li>
-                                    </ul>
-                                </nav>    
-                            </div><!-- .nav-item -->
-                        </li>
-                    </ul><!-- .navbar-nav -->
+                <nav class="navbar" role="navigation" aria-label="navigation">
+                    <div id="topRightMenu" class="navbar-menu">
+                        <div class="navbar-start">
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">Menu</a>
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item">Item 1</a>
+                                    <a class="navbar-item">Item 2</a>
+                                    <hr class="navbar-divider" />
+                                    <a class="navbar-item">Item 3</a>
+                                </div>
+                            </div><!-- .navbar-item -->
+                        </div><!-- .navbar-start -->
+                    </div><!-- #topRightMenu -->
                 </nav>
             </div>
         </div>
