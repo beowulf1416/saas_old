@@ -18,7 +18,6 @@ class ItemsTable extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(div);
 
-        this.setOptions = this.setOptions.bind(this);
         this.setItems = this.setItems.bind(this);
     }
 
