@@ -14,6 +14,8 @@ class ModalDialog extends HTMLElement {
 
         // this.shadowQuerySelector = this.shadowQuerySelector.bind(this);
         this.show = this.show.bind(this);
+
+        console.log('not this one');
     }
 
     connectedCallback() {

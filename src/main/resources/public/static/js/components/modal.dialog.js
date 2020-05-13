@@ -5,9 +5,13 @@ class ModalDialog extends HTMLElement {
     constructor() {
         self = super();
 
+        const bulma = document.createElement("link");
+        bulma.setAttribute('rel', 'stylesheet');
+        bulma.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css');
+
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css');
+        style.setAttribute('href', '/static/css/modal.dialog.css');
 
         const div = document.createElement('div');
         div.classList.add('modal');
@@ -21,6 +25,7 @@ class ModalDialog extends HTMLElement {
         `;
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(bulma);
         shadow.appendChild(style);
         shadow.appendChild(div);
 
@@ -30,6 +35,7 @@ class ModalDialog extends HTMLElement {
         });
 
         this.show = this.show.bind(this);
+        this.hide = this.hide.bind(this);
     }
 
     connectedCallback() {
@@ -40,15 +46,18 @@ class ModalDialog extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
         const modal = shadow.querySelector('div.modal');
-        modal.classList.toggle('is-active');
+        modal.classList.add('is-active');
 
         return modal;
     }
 
     hide() {
-        const body = document.querySelector('body');
-        const wrapper = document.querySelector('div.modal-wrapper');
-        body.removeChild(wrapper);
+        const self = this;
+        const shadow = this.shadowRoot;
+        const modal = shadow.querySelector('div.modal');
+        modal.classList.remove('is-active');
+
+        return modal;
     }
 }
 
