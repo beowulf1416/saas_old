@@ -18,13 +18,12 @@ class AdminClients {
         .then((data) => func ? func(data) : console.log(data));
     }
 
-    static all(func) {
-        fetch('/api/admin/clients/all', {
+    static all() {
+        return fetch('/api/admin/clients/all', {
             method: 'POST',
             credentials: 'same-origin'
         })
         .then((response) => response.json())
-        .then((data) => func ? func(data) : console.log(data));
     }
 
     static setActive(clientId, active, func) {

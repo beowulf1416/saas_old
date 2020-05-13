@@ -12,4 +12,21 @@ Administer Clients
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
+<script type="module">
+'use strict';
+import { AdminClients } from '/static/js/api/admin.clients.js';
+
+(function(){
+    const n = document.querySelector('notification-list');
+    const ctbl = document.querySelector('clients-table');
+
+    AdminClients.all().then((e) => {
+        if (e.status == 'success') {
+            ctbl.setClients(JSON.parse(e.json));
+        } else {
+            n.add('error', e.message);
+        }
+    });
+})();
+</script>
 {% endblock scripts %}

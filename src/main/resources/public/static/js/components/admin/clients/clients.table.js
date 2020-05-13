@@ -71,7 +71,7 @@ class AdminClientsTable extends HTMLElement {
                 }));
             });
 
-            const tbl = container.querySelector('table.tbl-clients');
+            const tbl = container.querySelector('table.tbl-clients tbody');
             tbl.appendChild(tr);
         }
     }
@@ -87,6 +87,7 @@ class AdminClientsTable extends HTMLElement {
 
         if (Array.isArray(clients)) {
             const shadow = self.shadowRoot;
+
             const tbl = shadow.querySelector('table.tbl-clients tbody');
             while(tbl.firstChild) {
                 tbl.removeChild(tbl.lastChild);
@@ -105,8 +106,8 @@ class AdminClientsTable extends HTMLElement {
                     tds.push(`<td class="col-select"><input type="radio" name="clientSelect" title="Select Client" class="form-input-radio client-select" value="${client.id}" /></td>`);
                 }
 
-                tds.push(`<td class="${classActive}><a title="Toggle Active" class="nav-link client-link-active" href="#active${id}" data-id="${client.id}" data-active="${client.active}">${client.active}</a></td>`);
-                tds.push(`<td class="${className}><a class="nav-link client-row-link" title="${client.name}" href="#select${id}" data-id="${client.id}">${client.name}</a></td>`)
+                tds.push(`<td class="${classActive}"><a title="Toggle Active" class="nav-link client-link-active" href="#active${id}" data-id="${client.id}" data-active="${client.active}">${client.active}</a></td>`);
+                tds.push(`<td class="${className}"><a title="${client.name}" class="nav-link client-row-link" title="${client.name}" href="#select${id}" data-id="${client.id}">${client.name}</a></td>`)
 
                 tr.innerHTML = tds.join('');
                 tbl.appendChild(tr);
