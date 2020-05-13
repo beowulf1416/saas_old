@@ -9,11 +9,11 @@ Client Roles
 <form>
     <fieldset>
         <legend>Clients</legend>
-        <clients-table></clients-table>
+        <clients-table hide-active="true"></clients-table>
     </fieldset>
     <fieldset>
         <legend>Roles</legend>
-        <roles-table></roles-table>
+        <roles-table show-add></roles-table>
     </fieldset>
     <fieldset>
         <legend>Permissions</legend>
@@ -62,7 +62,7 @@ Client Roles
 import { AdminClients } from '/static/js/api/admin.clients.js';
 
 (function(){
-    const n = document.querySelector('notifications-list');
+    const notifier = document.querySelector('notifications-list');
     const ctbl = document.querySelector('clients-table');
     const rtbl = document.querySelector('roles-table');
     const ptbl = document.querySelector('permissions-table');
@@ -96,13 +96,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     };
 
-    AdminClients.all((e) => {
-        if (e.status == 'success') {
-            ctbl.setClients(JSON.parse(e.json), { allowAdd: false });
-        } else {
-            n.add('error', e.message);
-        }
-    });
+    AdminClients.clients()
+        .then((e) => {
+            if (e.status == 'success') {
+                ctbl.setClients(JSON.parse(e.json));
+            } else {
+                n.add('error', e.message);
+            }
+        });
 
     ctbl.addEventListener('onselectclient', function(e) {
         currentClientId = e.detail.clientId;

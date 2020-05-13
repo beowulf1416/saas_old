@@ -76,7 +76,7 @@ class AdminClientsTable extends HTMLElement {
         }
     }
 
-    setClients(clients, options) {
+    setClients(clients) {
         const self = this;
 
         const multiselect = this.hasAttribute('multiselect');
