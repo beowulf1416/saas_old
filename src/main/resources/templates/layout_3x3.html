@@ -20,7 +20,15 @@
                         </a>
                     </div><!-- .navbar-brand -->
                     <div class="navbar-menu">
-                        <a title="Home" class="navbar-item" href="#">SAAS</a>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">SAAS</a>
+                            <div class="navbar-dropdown">
+                                <a title="Accounting" class="nav-link navbar-item" href="/accounting">Accounting</a>
+                                <a title="Inventory" class="nav-link navbar-item" href="/inventory">Inventory</a>
+                                <hr class="navbar-divider">
+                                <a title="Administer Clients" class="nav-link navbar-item" href="/admin/clients">Administer Clients</a>
+                            </ul><!-- .navbar-dropdown -->
+                        </div><!-- .navbar-item -->
                     </div><!-- .navbar-menu -->
                 </nav><!-- .navbar -->
             </div>
