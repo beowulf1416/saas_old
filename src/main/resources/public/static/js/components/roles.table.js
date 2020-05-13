@@ -124,6 +124,9 @@ class RolesTable extends HTMLElement {
     }
 
     initTable(component, container) {
+        const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
+        const showAdd = this.hasAttribute('show-add');
+
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
@@ -133,7 +136,7 @@ class RolesTable extends HTMLElement {
                     <thead>
                         <tr>
                             <th class="col-select"></th>
-                            <th class="col-active">Active</th>
+                            <th class="${classActive}>Active</th>
                             <th class="col-name">Name</th>
                         </tr>
                     </thead>
@@ -144,6 +147,26 @@ class RolesTable extends HTMLElement {
         `;
 
         container.appendChild(div);
+
+        if (showAdd) {
+            const tr = document.createElement('tr');
+            tr.classList.add('row-role-add');
+            tr.innerHTML = `
+                <td colspan="3">
+                    <a id="roleAdd" class="nav-link link-add" title="Add Role" href="#roleAdd">Add</a>
+                </td>
+            `;
+            const tbody = div.querySelector('table.tbl-roles tbody');
+            tbody.appendChild(tr);
+
+            const add = tr.querySelector('#roleAdd');
+            add.addEventListener('click', function(e) {
+                self.dispatchEvent(new CustomEvent('onaddrole', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            });
+        }
     }
 }
 
