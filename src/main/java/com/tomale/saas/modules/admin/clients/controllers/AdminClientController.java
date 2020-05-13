@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 import com.tomale.saas.base.models.Client;
+import com.tomale.saas.base.models.ModelAndViewFactory;
 import com.tomale.saas.modules.admin.clients.store.AdminClientStore;
 
 
@@ -45,15 +46,21 @@ public class AdminClientController {
         }
     }
 
+    @GetMapping("/clients")
+    @PreAuthorize("hasAuthority('admin.clients')")
+    public ModelAndView viewClients() {
+        return ModelAndViewFactory.get("admin/clients/clients");
+    }
+
     @GetMapping("/users")
     @PreAuthorize("hasAuthority('admin.clients')")
     public ModelAndView viewClientUsers() {
-        return new ModelAndView("admin/clients/users");
+        return ModelAndViewFactory.get("admin/clients/users");
     }
 
     @GetMapping("/roles")
     @PreAuthorize("hasAuthority('admin.clients')")
     public ModelAndView viewClientRoles() {
-        return new ModelAndView("admin/clients/roles");
+        return ModelAndViewFactory.get("admin/clients/roles");
     }
 }

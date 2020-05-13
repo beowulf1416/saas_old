@@ -8,12 +8,17 @@ class AdminClientsTable extends HTMLElement {
     constructor() {
         self = super();
 
+        const style = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/clients/clients.table.css');
+
         const container = document.createElement('div');
         container.classList.add('client-list-container');
 
         this.initTable(self, container);
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(style);
         shadow.appendChild(container);
 
         this.setClients = this.setClients.bind(this);
@@ -27,16 +32,19 @@ class AdminClientsTable extends HTMLElement {
     }
 
     initTable(component, container) {
+        const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
+        const showAdd = this.hasAttribute('show-add');
+
         const div = document.createElement('div');
         div.classList.add('tbl-wrapper');
         div.innerHTML = `
-            <table class="clients">
+            <table class="tbl-clients">
                 <caption>Clients</caption>
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Active</th>
-                        <th>Name</th>
+                        <th class="col-select"></th>
+                        <th class="${classActive}">Active</th>
+                        <th class="col-name">Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,13 +53,41 @@ class AdminClientsTable extends HTMLElement {
         `;
 
         container.append(div);
+
+        if (showAdd) {
+            const tr = document.createElement('tr');
+            tr.classList.add('client-add');
+            tr.innerHTML = `
+                <td>
+                    <a  id="lAdd" class="nav-link client-row-add" title="Add Client" href="#">Add</a>
+                </td>
+            `;
+
+            const lAdd = tr.querySelector('a#lAdd');
+            lAdd.addEventListener('click', function(e) {
+                self.dispatchEvent(new CustomEvent('onaddclient', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            });
+
+            const tbl = container.querySelector('table.tbl-clients');
+            tbl.appendChild(tr);
+        }
     }
 
     setClients(clients, options) {
         const self = this;
+
+        const multiselect = this.hasAttribute('multiselect');
+        const showAdd = this.hasAttribute('show-add');
+
+        const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
+        const className = "col-name";
+
         if (Array.isArray(clients)) {
             const shadow = self.shadowRoot;
-            const tbl = shadow.querySelector('table.clients tbody');
+            const tbl = shadow.querySelector('table.tbl-clients tbody');
             while(tbl.firstChild) {
                 tbl.removeChild(tbl.lastChild);
             }
@@ -60,20 +96,19 @@ class AdminClientsTable extends HTMLElement {
                 let id = Util.generateId();
                 const tr = document.createElement('tr');
                 tr.classList.add('client-row');
-                tr.innerHTML = `
-                    <td>
-                        <input type="radio" name="clientSelect" title="Select Client" class="form-input-radio client-select" value="${client.id}" />
-                    </td>
-                    <td>
-                        <a title="Toggle Active" class="nav-link client-link-active" href="#active${id}" data-id="${client.id}" data-active="${client.active}">${client.active}</a>
-                    </td>
-                    <td>
-                        <a class="nav-link client-row-link" title="${client.name}" href="#select${id}" data-id="${client.id}">
-                            ${client.name}
-                        </a>
-                    </td>
-                `;
 
+                let tds = [];
+
+                if (multiselect) {
+                    tds.push(`<td class="col-select"><input type="checkbox" name="clientSelect" title="Select Client" class="form-input-check client-select" value="${client.id}" /></td>`);
+                } else {
+                    tds.push(`<td class="col-select"><input type="radio" name="clientSelect" title="Select Client" class="form-input-radio client-select" value="${client.id}" /></td>`);
+                }
+
+                tds.push(`<td class="${classActive}><a title="Toggle Active" class="nav-link client-link-active" href="#active${id}" data-id="${client.id}" data-active="${client.active}">${client.active}</a></td>`);
+                tds.push(`<td class="${className}><a class="nav-link client-row-link" title="${client.name}" href="#select${id}" data-id="${client.id}">${client.name}</a></td>`)
+
+                tr.innerHTML = tds.join('');
                 tbl.appendChild(tr);
 
                 const lClient = tr.querySelector('a.client-row-link');
@@ -115,7 +150,7 @@ class AdminClientsTable extends HTMLElement {
                 
             });
 
-            if (options && options.allowAdd == true) {
+            if (showAdd) {
                 const tr = document.createElement('tr');
                 tr.classList.add('client-add');
                 tr.innerHTML = `

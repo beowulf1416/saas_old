@@ -1,0 +1,15 @@
+{% extends '/templates/admin/clients/default.html' %}
+
+{% block title -%}
+Administer Clients
+{%- endblock %}
+
+{% block content %}
+<notification-list id="notifications"></notification-list>
+<clients-table show-add></clients-table>
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/admin/clients/clients.table.js"></script>
+{% endblock scripts %}
