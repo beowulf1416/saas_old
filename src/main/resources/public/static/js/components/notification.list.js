@@ -7,10 +7,7 @@ class NotificationList extends HTMLElement {
 
         const style = document.createElement('link');
         style.rel = "stylesheet";
-        style.href = "/static/css/modal.dialog.css";
-
-        const head = document.querySelector('head');
-        head.appendChild(style);
+        style.href = "/static/css/notification.list.css";
 
         const ul = document.createElement('ul');
         ul.classList.add('notification-list');
@@ -20,6 +17,7 @@ class NotificationList extends HTMLElement {
         div.appendChild(ul);
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(style);
         shadow.appendChild(div);
 
         this.add = this.add.bind(this);
