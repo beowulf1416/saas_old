@@ -61,12 +61,17 @@
             </div>
         </div>
         <div class="row row-1 row-wrapper">
-            <div class="col col-0 col-start"></div>
+            <div class="col col-0 col-start">
+            {% block content_left %}
+            {% endblock content_left %}
+            </div>
             <div class="col col-1">
             {% block content %}
             {% endblock content %}
         </div>
         <div class="col col-2 col-end"></div>
+            {% block content_right %}
+            {% endblock content_right %}
         </div>
         <div class="row row-2 row-end">3</div>
     </div><!-- .column-wrapper -->
