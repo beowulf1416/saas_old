@@ -8,7 +8,8 @@ create table if not exists clients (
     name varchar(200) not null,
     address text,
     constraint pk_clients primary key (id),
-    constraint u_clients_1 unique (name)
+    constraint u_clients_1 unique (name),
+    constraint u_clients_2 check (name <> '')
 );
 
 /** add default client **/
