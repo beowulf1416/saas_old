@@ -146,9 +146,6 @@ class AdminClientsTable extends HTMLElement {
                         }
                     }));
                 });
-
-                
-                
             });
 
             if (showAdd) {
