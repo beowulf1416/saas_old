@@ -1,4 +1,4 @@
-{% extends '/templates/default.html' %}
+{% extends '/templates/inventory/default.html' %}
 
 {% block links -%}
 <link rel="stylesheet" href="/static/css/nav.css">
@@ -8,8 +8,7 @@
 Inventory Items
 {% endblock %}
 
-{% block content %}
-<h1>Inventory default</h1>
+{% block content_inventory %}
 <notification-list></notification-list>
 <items-table show-add hide-sku="true" hide-upc="true"></items-table>
 <modal-dialog id="itemEditor">
@@ -17,7 +16,7 @@ Inventory Items
         <item-editor></item-editor>
     </div><!-- .wrapper -->
 </modal-dialog>
-{% endblock %}
+{% endblock content_inventory %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
