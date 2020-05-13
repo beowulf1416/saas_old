@@ -38,7 +38,7 @@ Administer Clients
 import { AdminClients } from '/static/js/api/admin.clients.js';
 
 (function(){
-    const n = document.querySelector('notification-list');
+    const notifier = document.querySelector('notification-list');
     const ctbl = document.querySelector('clients-table');
 
     const refreshClients = function() {
@@ -65,6 +65,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
             AdminClients.add(name.value, address.value)
                 .then((e) => {
                     if (e.status == 'success') {
+                        refreshClients();
                         n.add('success', e.message);
                         md.hide();
                     } else {
@@ -84,11 +85,22 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     });
 
     ctbl.addEventListener('onupdateclientactive', function(e) {
-        console.log('onupdateclientactive');
+        const clientId = e.detail.clientId;
+        const active = e.detail.active == 'true' ? false : true;
+
+        AdminClients.setActive(clientId, active)
+            .then((e) => {
+                if (e.status == 'success') {
+                    refreshClients();
+                } else {
+                    notifier.add('error', e.message);
+                }
+            });
     });
 
     ctbl.addEventListener('onerror', function(e) {
-        console.log('onerror');
+        console.error(e);
+        notifier.add('error', e);
     });
 })();
 </script>
