@@ -4,15 +4,24 @@
 Inventory
 {% endblock %}
 
+{% block content_left %}
+<section class="sidebar menu">
+    <div class="menu-label">General</div>
+    <ul class="menu-list">
+        <li><a title="Dashboard" class="nav-link" href="/inventory/dashboard">Dashboard</a></li>
+        <li><a title="Dashboard" class="nav-link" href="/inventory/items">Items</a></li>
+    </ul><!-- .menu-list -->
+    <div class="menu-label">Transactions</div>
+    <ul class="menu-list">
+        <li><a title="Receiving" class="nav-link" href="/inventory/receiving">Receiving</a></li>
+    </ul><!-- .menu-list -->
+</section>
+{% endblock content_left %}
+
 {% block content %}
-<h1>Inventory default</h1>
-<nav class="navbar">
-    <ul class="navbar-nav">
-        <li>Menu Item 1</li>
-        <li>Menu Item 2</li>
-        <li>Menu Item 2</li>
-    </ul><!--! .navbar-nav -->
-</nav>
+{% block content_inventory %}
+<h1>Inventory Default</h1>
+{% endblock content_inventory %}
 {% endblock %}
 
 {% block scripts %}
