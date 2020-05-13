@@ -2,8 +2,8 @@
 
 class AdminClients {
 
-    static add(name, address, func) {
-        fetch('/api/admin/clients/add', {
+    static add(name, address) {
+        return fetch('/api/admin/clients/add', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -14,8 +14,7 @@ class AdminClients {
                 address: address
             })
         })
-        .then((response) => response.json())
-        .then((data) => func ? func(data) : console.log(data));
+        .then((response) => response.json());
     }
 
     static all() {
