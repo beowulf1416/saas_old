@@ -19,14 +19,28 @@ class ItemsTable extends HTMLElement {
         shadow.appendChild(div);
 
         this.setItems = this.setItems.bind(this);
+        this.getSelectedItems = this.getSelectedItems.bind(this);
     }
 
     initTable(component, container) {
         const showAdd = component.hasAttribute('show-add');
+        const hideFilter = component.hasAttribute('hide-filter');
         const classSKU = component.hasAttribute('hide-sku') ? 'col-sku col-hidden' : 'col-sku';
         const classUPC = component.hasAttribute('hide-upc') ? 'col-upc col-hidden' : 'col-upc';
         const classQTY = component.hasAttribute('hide-qty') ? 'col-qty col-hidden' : 'col-qty';
         const classOUM = component.hasAttribute('hide-uom') ? 'col-uom col-hidden' : 'col-uom';
+
+        let rowFilter = '';
+        if (!hideFilter) {
+            rowFilter = `
+                <tr class="row-filter">
+                    <th class="col-select"></th>
+                    <th class="col-name" colspan="2">
+                        <input type="search" id="nameFilter" name="nameFilter" class="form-input-search form-name" title="Filter Item Name" placeholder="Item Name"/>
+                    </th>
+                </tr>
+            `;
+        }
 
         const div = document.createElement('div');
         div.classList.add('tbl-wrapper');
@@ -44,12 +58,7 @@ class ItemsTable extends HTMLElement {
                             <th class="${classQTY}">Quantity</th>
                             <th class="${classOUM}">Unit</th>
                         </tr>
-                        <tr class="row-filter">
-                            <th class="col-select"></th>
-                            <th class="col-name" colspan="2">
-                                <input type="search" id="nameFilter" name="nameFilter" class="form-input-search form-name" title="Filter Item Name" placeholder="Item Name"/>
-                            </th>
-                        </tr>
+                        ${rowFilter}
                     </thead>
                     <tbody>
                     </tbody>
@@ -61,14 +70,16 @@ class ItemsTable extends HTMLElement {
 
         container.appendChild(div);
 
-        const tSearch = div.querySelector('input#nameFilter');
-        tSearch.addEventListener('input', function(e) {
-            component.dispatchEvent(new CustomEvent('onfilteritems', {
-                bubbles: true,
-                cancelable: true,
-                detail: tSearch.value
-            }));
-        });
+        if (!hideFilter) {
+            const tSearch = div.querySelector('input#nameFilter');
+            tSearch.addEventListener('input', function(e) {
+                component.dispatchEvent(new CustomEvent('onfilteritems', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: tSearch.value
+                }));
+            });
+        }
 
         if (showAdd) {
             const tr = document.createElement('tr');
@@ -138,12 +149,23 @@ class ItemsTable extends HTMLElement {
                 tbody.appendChild(tr);
             });
         } else {
-            self.dispatchEvent(new CustomEvent('error', {
+            self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,
                 cancelable: true,
                 detail: "Expecting an array of items"
             }));
         }
+    }
+
+    getSelectedItems() {
+        const self = this;
+        const shadow = this.shadowRoot;
+        const items = [];
+        const nl = shadow.querySelectorAll('table.tbl-items tbody input.form-item:checked');
+        nl.forEach(n => {
+            items.push(n.value);
+        });
+        return items;
     }
 }
 customElements.define('items-table', ItemsTable);
