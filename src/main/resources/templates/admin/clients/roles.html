@@ -42,7 +42,7 @@ Client Roles
         <form class="form-permissions">
             <fieldset>
                 <legend>Permissions</legend>
-                <permissions-table></permissions-table>
+                <permissions-table hide-active multiselect></permissions-table>
             </fieldset>
             <button type="button" class="btn btn-save">Save</button>
             <button type="button" class="btn btn-cancel">Cancel</button>
@@ -121,7 +121,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         } else {
             const modal = document.querySelector('modal-dialog#rolesDlg');
             const dlg = modal.show();
-            const n = dlg.querySelector('notifications-list');
+            const n = dlg.querySelector('notification-list');
 
             const btnAdd = dlg.querySelector('button.btn-save');
             btnAdd.addEventListener('click', function(e) {
@@ -148,16 +148,12 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         } else {
             const modal = document.querySelector('modal-dialog#permissionsDlg');
             const dlg = modal.show();
-            const n = dlg.querySelector('notifications-list');
+            const n = dlg.querySelector('notification-list');
             const fptbl = dlg.querySelector('permissions-table');
 
             AdminClients.permissions(function(e) {
                 if (e.status == 'success') {
-                    fptbl.setPermissions(JSON.parse(e.json), {
-                        allowAdd: false,
-                        multiselect: true,
-                        hideActiveColumn: true
-                    });
+                    fptbl.setPermissions(JSON.parse(e.json));
                 } else {
                     n.add('error', e.message);
                 }
