@@ -22,14 +22,14 @@ class PermissionsTable extends HTMLElement {
         this.getSelected = this.getSelected.bind(this);
     }
 
-    setPermissions(permissions, options) {
+    setPermissions(permissions) {
+        const showAdd = this.hasAttribute('show-add');
+        const multiselect = this.hasAttribute('multiselect');
+        const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
+
         const self = this;
         if (Array.isArray(permissions)) {
             const tbl = this.shadowRoot.querySelector('table.tbl-permissions');
-            if (options && options.hideActiveColumn == true) {
-                tbl.classList.add('hide-active');
-            }
-
             const tbody = this.shadowRoot.querySelector('table.tbl-permissions tbody');
             while(tbody.firstChild) {
                 tbody.removeChild(tbody.lastChild);
@@ -38,27 +38,18 @@ class PermissionsTable extends HTMLElement {
             permissions.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.classList.add('permission-item');
-                if (options && options.multiselect == true) {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="checkbox" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
-                        </td>
-                        <td class="col-active">
-                            <a title="Toggle Active" class="nav-link permission-active" href="#" data-id="${p.id}" data-active="${p.active}">${p.active}</a>
-                        </td>
-                        <td class="col-name">${p.name}</td>
-                    `;
+                let tds = [];
+
+                if (multiselect) {
+                    tds.push(`<td class="col-select"><input type="checkbox" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" /></td>`);
                 } else {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="radio" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" />
-                        </td>
-                        <td class="col-active">
-                            <a title="Toggle Active" class="nav-link permission-active" href="#" data-id="${p.id}" data-active="${p.active}">${p.active}</a>
-                        </td>
-                        <td class="col-name">${p.name}</td>
-                    `;
+                    tds.push(`<td class="col-select"><input type="radio" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" /></td>`);
                 }
+
+                tds.push(`<td class="${classActive}"><a title="Toggle Active" class="nav-link permission-active" href="#" data-id="${p.id}" data-active="${p.active}">${p.active}</a></td>`)
+                tds.push(`<td class="col-name">${p.name}</td>`);
+
+                tr.innerHTML = tds.join('');
 
                 tbody.appendChild(tr);
 
@@ -86,7 +77,7 @@ class PermissionsTable extends HTMLElement {
                 });
             });
 
-            if (options && options.allowAdd == true) {
+            if (showAdd) {
                 const tr = document.createElement('tr');
                 tr.classList.add('permission-add');
                 tr.innerHTML = `
@@ -125,6 +116,9 @@ class PermissionsTable extends HTMLElement {
     }
 
     initTable(component, container) {
+        const showAdd = this.hasAttribute('show-add');
+        const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
+
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
@@ -134,7 +128,7 @@ class PermissionsTable extends HTMLElement {
                     <thead>
                         <tr>
                             <th class="col-select"><th>
-                            <th class="col-active">Active</th>
+                            <th class="${classActive}">Active</th>
                             <th class="col-name">Name</th>
                         </tr>
                     </thead>
@@ -145,6 +139,26 @@ class PermissionsTable extends HTMLElement {
         `;
 
         container.appendChild(div);
+
+        const tr = document.createElement('tr');
+        tr.classList.add('row-permission-add');
+        tr.innerHTML = `
+            <td class="col-select">
+                <a title="Add Permission" id="permissionAdd" class="nav-link link-add" href="#permissionAdd">Add</a>
+            </td>
+        `;
+
+        const tbody = div.querySelector('table.tbl-permissions tbody');
+        tbody.appendChild(tr);
+
+        const permissionAdd = tr.querySelector('#permissionAdd');
+        permissionAdd.addEventListener('click', function(e) {
+            component.dispatchEvent(new CustomEvent('onaddpermission', {
+                bubbles: true,
+                cancelable: true
+            }));
+        });
+
     }
 }
 
