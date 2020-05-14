@@ -142,15 +142,15 @@ public class SecurityController {
             String email = profile.get("email").getAsString();
             String name = profile.get("name").getAsString();
 
-            User user = userStore.getUserByEmail(email);
-            if (user == null) {
-                user = new User(name, email);
+            User user = new User(name, email);
+            if (!userStore.userEmailExists(email)) {
                 UUID userId = userStore.addUser(
                     user, 
                     data
                 );
                 user.setId(userId);
             }
+            user = userStore.getUserByEmail(email);
 
             if (user.isActive()) {
                 UUID user_id = user.getId();
