@@ -256,4 +256,30 @@ public class RestInventoryItemsController {
             );
         }
     }
+
+    @PostMapping("/get")
+    @PreAuthorize("hasAuthority('inventory.items)")
+    public ApiResult itemById(@RequestBody Map<String, Object> params, HttpServletResponse response) {
+        try {
+            Object o = params.get("itemId");
+            if (o == null) {
+                throw new Exception("Item Id is required");
+            }
+            UUID itemId = UUID.fromString(o.toString());
+
+            InventoryItem item = invStore.itemById(itemId);
+            return ApiResult(
+                "success",
+                "inventory item found",
+                gson.toJson(item)
+            );
+        } catch(Exception e) {
+            log.error(e);
+            return new ApiResult(
+                "error",
+                e.getMessage(),
+                null
+            );
+        }
+    }
 }

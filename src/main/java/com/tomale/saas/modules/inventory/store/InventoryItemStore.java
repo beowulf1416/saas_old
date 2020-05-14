@@ -25,6 +25,7 @@ public class InventoryItemStore {
     private static final String SQL_INV_ITEM_UPDATE = "{call inventory.item_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
     private static final String SQL_INV_ITEMS_ALL = "{call inventory.items_all(?)}";
     private static final String SQL_INV_ITEMS_BY_NAME = "{call inventory.items_by_name(?,?)}";
+    private static final String SQL_INV_ITEM_BY_ID = "{call inventory.item_by_id(?)}";
 
     private final JdbcTemplate jdbc;
 
@@ -162,6 +163,27 @@ public class InventoryItemStore {
             perishable,
             hazardous
         );
+    }
+
+    public InventoryItem itemById(UUID itemId) throws Exception {
+        try {
+            CallableStatement stmt = jdbc.getDataSource()
+            .getConnection()
+            .prepareCall(SQL_INV_ITEM_BY_ID);
+            stmt.setObject(1, itemId);
+            stmt.execute();
+
+            ResultSet rs = stmt.getResultSet();
+            if (rs.next()) {
+                InventoryItem item = parseResultSet(rs);
+                return item;
+            } else {
+                throw new Exception("An error occured while retrieving item by id (1)");
+            }
+        } catch(SQLException e) {
+            log.error(e);
+            throw new Exception("An error occured while retrieving inventory item by id (2)");
+        }
     }
 
     public List<InventoryItem> all(UUID clientId) throws Exception {
