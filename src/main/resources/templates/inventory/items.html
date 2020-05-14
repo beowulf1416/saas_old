@@ -22,8 +22,8 @@ Inventory Items
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/inventory/items.table.js"></script>
 <script type="module" src="/static/js/components/inventory/item.editor.js"></script>
+<script type="module" src="/static/js/components/modal.dialog.js"></script>
 <script type="module" src="/static/js/api/inventory.js"></script>
-<script type="module" src="/static/js/modal.dialog.js"></script>
 <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
 <script type="module">
 'use strict';
@@ -101,7 +101,7 @@ import { Inventory } from '/static/js/api/inventory.js';
         });
 
         dlg.addEventListener('oncancelitem', function(e) {
-
+            modal.hide();
         });
     });
 })();
