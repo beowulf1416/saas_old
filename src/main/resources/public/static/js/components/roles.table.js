@@ -55,7 +55,7 @@ class RolesTable extends HTMLElement {
                     tds.push(`<td class="col-select"><input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" /></td>`);
                 }
 
-                tds.push(`<td class="${classActive}"><a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a></td>`);
+                tds.push(`<td class="${classActive}"><a title="Toggle Active" id="active${r.id}" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#active${r.id}">${r.active}</a></td>`);
                 tds.push(`<td class="col-name">${r.name}</td>`);
 
                 tr.innerHTML = tds.join('');
