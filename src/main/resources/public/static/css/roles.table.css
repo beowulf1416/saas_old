@@ -1,4 +1,4 @@
-table.tbl-roles.hide-active th.col-active,
-table.tbl-roles.hide-active td.col-active {
+table.tbl-roles th.col-hidden,
+table.tbl-roles td.col-hidden {
     display: none;
 }

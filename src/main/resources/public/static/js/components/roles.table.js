@@ -95,25 +95,6 @@ class RolesTable extends HTMLElement {
                     }));
                 });
             });
-
-            if (options && options.allowAdd == true) {
-                const tr = document.createElement('tr');
-                tr.classList.add('role-add');
-                tr.innerHTML = `
-                    <td colspan="3">
-                        <a title="Add Role" id="roleAdd" class="nav-link role-item-add" href="#">Add</a>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const roleAdd = tbl.querySelector('a.role-item-add');
-                roleAdd.addEventListener('click', function(e) {
-                    self.dispatchEvent(new CustomEvent('onaddrole', {
-                        bubbles: true,
-                        cancelable: true
-                    }));
-                });
-            }
         } else {
             self.dispatchEvent(new CustomEvent('onerror', {
                 bubbles: true,
@@ -142,6 +123,8 @@ class RolesTable extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                    </tfoot>
                 </table><!-- .tbl-roles -->
             </form>
         `;
@@ -152,12 +135,12 @@ class RolesTable extends HTMLElement {
             const tr = document.createElement('tr');
             tr.classList.add('row-role-add');
             tr.innerHTML = `
-                <td colspan="3">
+                <th colspan="3">
                     <a id="roleAdd" class="nav-link link-add" title="Add Role" href="#roleAdd">Add</a>
-                </td>
+                </th>
             `;
-            const tbody = div.querySelector('table.tbl-roles tbody');
-            tbody.appendChild(tr);
+            const tfoot = div.querySelector('table.tbl-roles tfoot');
+            tfoot.appendChild(tr);
 
             const add = tr.querySelector('#roleAdd');
             add.addEventListener('click', function(e) {
