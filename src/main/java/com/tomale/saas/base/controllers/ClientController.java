@@ -112,6 +112,9 @@ public class ClientController {
                     user.getId(), 
                     UUID.fromString(client)
                 );
+                if (permissions.size() == 0) {
+                    permissions.add("user.authenticated");
+                }
 
                 Cookie cookie = sessionUtil.generateCookie(user, permissions, userClient, clients);
 
