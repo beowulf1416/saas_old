@@ -161,7 +161,7 @@ class RolesTable extends HTMLElement {
 
             const add = tr.querySelector('#roleAdd');
             add.addEventListener('click', function(e) {
-                self.dispatchEvent(new CustomEvent('onaddrole', {
+                component.dispatchEvent(new CustomEvent('onaddrole', {
                     bubbles: true,
                     cancelable: true
                 }));
