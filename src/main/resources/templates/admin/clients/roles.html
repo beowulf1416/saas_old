@@ -71,7 +71,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     let currentRoleId = '';
 
     const refreshRoles = function(clientId) {
-        AdminClients.roles(clientId, function(e) {
+        AdminClients.roles(clientId).then((e) => {
             if (e.status == 'success') {
                 rtbl.setRoles(JSON.parse(e.json), { 
                     allowAdd: true,
@@ -85,7 +85,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     };
 
     const refreshPermissions = function(clientId, roleId) {
-        AdminClients.rolePermissions(currentClientId, currentRoleId, function(e) {
+        AdminClients.rolePermissions(currentClientId, currentRoleId).then((e) => {
             if (e.status == 'success') {
                 ptbl.setPermissions(JSON.parse(e.json), {
                     allowAdd: true,
@@ -96,8 +96,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
         });
     };
 
-    AdminClients.clients()
-        .then((e) => {
+    AdminClients.clients().then((e) => {
             if (e.status == 'success') {
                 ctbl.setClients(JSON.parse(e.json));
             } else {
@@ -140,6 +139,14 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
                 modal.hide();
             });
         }
+    });
+
+    rtbl.addEventListener('onupdateroleactive', function(e) {
+        const roleId = e.detail.roleId;
+        const active = e.detail.active ? false : true;
+        AdminClients.roleSetActive(roleId, active).then((e) => {
+            notifier.add(e.status, e.message, 3000);
+        });
     });
 
     ptbl.addEventListener('onaddpermission', function(e) {
