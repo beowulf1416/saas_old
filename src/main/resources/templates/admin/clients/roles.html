@@ -143,8 +143,9 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
 
     rtbl.addEventListener('onupdateroleactive', function(e) {
         const roleId = e.detail.roleId;
-        const active = e.detail.active ? false : true;
+        const active = e.detail.active == 'true' ? false : true;
         AdminClients.roleSetActive(roleId, active).then((e) => {
+            refreshRoles(currentClientId);
             notifier.add(e.status, e.message, 3000);
         });
     });
