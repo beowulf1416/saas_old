@@ -1,4 +1,4 @@
-table.tbl-users.hide-active th.col-active,
-table.tbl-users.hide-active td.col-active {
+table.tbl-users th.col-hidden,
+table.tbl-users td.col-hidden {
     display: none;
 }
