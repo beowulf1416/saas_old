@@ -22,6 +22,7 @@ class ItemsTable extends HTMLElement {
     }
 
     initTable(component, container) {
+        const showAdd = component.hasAttribute('show-add');
         const classSKU = component.hasAttribute('hide-sku') ? 'col-sku col-hidden' : 'col-sku';
         const classUPC = component.hasAttribute('hide-upc') ? 'col-upc col-hidden' : 'col-upc';
         const classQTY = component.hasAttribute('hide-qty') ? 'col-qty col-hidden' : 'col-qty';
@@ -52,6 +53,8 @@ class ItemsTable extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </form>
         `;
@@ -66,6 +69,27 @@ class ItemsTable extends HTMLElement {
                 detail: tSearch.value
             }));
         });
+
+        if (showAdd) {
+            const tr = document.createElement('tr');
+            tr.classList.add('row-item-add');
+            tr.innerHTML = `
+                <th colspan="6">
+                    <a title="Add Item" id="addItem" class="nav-link link-item-add" href="#addItem">Add</a>
+                </th>
+            `;
+
+            const tfoot = div.querySelector('table.tbl-items tfoot');
+            tfoot.appendChild(tr);
+
+            const addItem = tr.querySelector('#addItem');
+            addItem.addEventListener('click', function(e) {
+                component.dispatchEvent(new CustomEvent('onadditem', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            });
+        }
     }
 
     setItems(items, filter) {
@@ -113,26 +137,6 @@ class ItemsTable extends HTMLElement {
                 
                 tbody.appendChild(tr);
             });
-
-            const showAdd = this.hasAttribute('show-add');
-            if (showAdd) {
-                const tr = document.createElement('tr');
-                tr.classList.add('item-add');
-                tr.innerHTML = `
-                    <td colspan="6">
-                        <a id="itemAdd" class="nav-link item-add-link" title="Add Item" href="#">Add</a>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                const itemAdd = tr.querySelector('a#itemAdd');
-                itemAdd.addEventListener('click', function(e) {
-                    self.dispatchEvent(new CustomEvent('onadditem', {
-                        bubbles: true,
-                        cancelable: true
-                    }));
-                });
-            }
         } else {
             self.dispatchEvent(new CustomEvent('error', {
                 bubbles: true,
