@@ -17,7 +17,7 @@ class AdminClients {
         .then((response) => response.json());
     }
 
-    static all() {
+    static clients() {
         return fetch('/api/admin/clients/all', {
             method: 'POST',
             credentials: 'same-origin'
