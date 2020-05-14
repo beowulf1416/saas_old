@@ -38,8 +38,9 @@ class RolesTable extends HTMLElement {
         const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
 
         const self = this;
+        const shadow = this.shadowRoot;
         if (Array.isArray(roles)) {
-            const tbody = tbl.querySelector('table.tbl-roles tbody');
+            const tbody = shadow.querySelector('table.tbl-roles tbody');
             while(tbody.firstChild) {
                 tbody.removeChild(tbody.lastChild);
             }
