@@ -42,7 +42,7 @@ import { AdminClients } from '/static/js/api/admin.clients.js';
     const ctbl = document.querySelector('clients-table');
 
     const refreshClients = function() {
-        AdminClients.all().then((e) => {
+        AdminClients.clients().then((e) => {
             if (e.status == 'success') {
                 ctbl.setClients(JSON.parse(e.json));
             } else {
