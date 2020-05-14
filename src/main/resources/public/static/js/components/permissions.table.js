@@ -117,7 +117,7 @@ class PermissionsTable extends HTMLElement {
 
     initTable(component, container) {
         const showAdd = this.hasAttribute('show-add');
-        const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
+        const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
 
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
@@ -127,7 +127,7 @@ class PermissionsTable extends HTMLElement {
                     <caption>Permissions</caption>
                     <thead>
                         <tr>
-                            <th class="col-select"><th>
+                            <th class="col-select"></th>
                             <th class="${classActive}">Active</th>
                             <th class="col-name">Name</th>
                         </tr>
