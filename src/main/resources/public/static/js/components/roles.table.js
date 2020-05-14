@@ -33,43 +33,31 @@ class RolesTable extends HTMLElement {
         return roles;
     }
 
-    setRoles(roles, options) {
+    setRoles(roles) {
+        const multiselect = this.hasAttribute('multiselect');
+        const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
+
         const self = this;
         if (Array.isArray(roles)) {
-            const tbl = this.shadowRoot.querySelector('table.tbl-roles');
-            if (options && options.hideActiveColumn == true) {
-                tbl.classList.add('hide-active');
-            }
-
-            const tbody = tbl.querySelector('tbody');
+            const tbody = tbl.querySelector('table.tbl-roles tbody');
             while(tbody.firstChild) {
                 tbody.removeChild(tbody.lastChild);
             }
             roles.forEach(r => {
                 const tr = document.createElement('tr');
                 tr.classList.add('role-item');
-                if (options && options.multiselect == true) {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="checkbox" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
-                        </td>
-                        <td class="col-active">
-                            <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
-                        </td>
-                        <td class="col-name">${r.name}</td>
-                    `;
+                const tds = [];
+
+                if (multiselect) {
+                    tds.push(`<td class="col-select"><input type="checkbox" name="selectedRole" class="form-input-check role-select" value="${r.id}" /></td>`);
                 } else {
-                    tr.innerHTML = `
-                        <td class="col-select">
-                            <input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" />
-                        </td>
-                        <td class="col-active">
-                            <a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a>
-                        </td>
-                        <td class="col-name">${r.name}</td>
-                    `;
+                    tds.push(`<td class="col-select"><input type="radio" name="selectedRole" class="form-input-radio role-select" value="${r.id}" /></td>`);
                 }
 
+                tds.push(`<td class="${classActive}"><a title="Toggle Active" class="nav-link role-active" data-id="${r.id}" data-active="${r.active}" href="#">${r.active}</a></td>`);
+                tds.push(`<td class="col-name">${r.name}</td>`);
+
+                tr.innerHTML = tds.join('');
                 tbody.appendChild(tr);
 
                 const roleSelect = tr.querySelector('input.role-select');
