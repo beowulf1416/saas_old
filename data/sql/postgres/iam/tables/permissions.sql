@@ -21,5 +21,6 @@ insert into permissions (name) values
 ('inventory.admin'),
 ('inventory.dashboard'),
 ('inventory.items'),
+('inventory.transactions.receiving'),
 ('inventory.transactions.receiving.add')
 on conflict do nothing;
