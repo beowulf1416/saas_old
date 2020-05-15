@@ -31,16 +31,25 @@ Inventory Item
         </fieldset><!-- #fsGeneral -->
         <fieldset id="fsSubstitutes" class="panel-blocks">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name1" name="name" class="form-input-text form-input-name" placeholder="Name" />
+                <items-table id="itblSubstitutes" show-add hide-filter hide-active></items-table>
             </div><!-- .form-group -->
         </fieldset><!-- #fsSubstitutes -->
+        <fieldset id="fsComponents" class="panel-blocks">
+            <div class="form-group">
+                <items-table id="itblComponents" show-add hide-filter hide-active></items-table>
+            </div><!-- .form-group -->
+        </fieldset><!-- #fsComponents -->
+        <fieldset id="fsPrices" class="panel-blocks">
+            <div class="form-group">
+            </div><!-- .form-group -->
+        </fieldset><!-- #fsPrices -->
     </form>
 </div><!-- .form-wrapper -->
 {% endblock content_inventory %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/inventory/items.table.js"></script>
 <script type="module">
 'use strict';
 (function(){
