@@ -8,6 +8,14 @@
     flex-flow: row;
 }
 
-.row-wrapper .col {
+.row-1 {
+    padding: 1em;
+}
+
+.row-wrapper .col-1 {
     flex: 1;
+}
+
+.row-wrapper .col-sidebar {
+    width: 12%;
 }
