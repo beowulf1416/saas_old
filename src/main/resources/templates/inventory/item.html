@@ -1,0 +1,62 @@
+{% extends '/templates/inventory/default.html' %}
+
+{% block links -%}
+<link rel="stylesheet" href="/static/css/nav.css">
+{%- endblock %}
+
+{% block title %}
+Inventory Item
+{% endblock %}
+
+{% block content_inventory %}
+<div class="form-wrapper">
+    <div class="tabs is-boxed is-toggle">
+        <ul>
+            <li class="is-active"><a id="tabGeneral" class="tab-item">General</a></li>
+            <li><a id="tabSubstitutes" class="tab-item">Substitutes</a></li>
+            <li><a id="tabComponents" class="tab-item">Components</a></li>
+            <li><a id="tabPrices" class="tab-item">Prices</a></li>
+        </ul>
+    </div><!-- .tabs -->
+    <form class="form-item panel">
+        <fieldset class="panel-blocks">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" class="form-input-text form-input-name" placeholder="Name" />
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" class="form-input-text form-input-description" placeholder="Description" />
+            </div><!-- .form-group -->
+        </fieldset>
+        <fieldset class="panel-blocks">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name1" name="name" class="form-input-text form-input-name" placeholder="Name" />
+            </div><!-- .form-group -->
+        </fieldset>
+    </form>
+</div><!-- .form-wrapper -->
+{% endblock content_inventory %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module">
+'use strict';
+(function(){
+    const nl = document.querySelectorAll('.tab-item');
+    nl.forEach(n => {
+        n.addEventListener('click', function(e) {
+            const lis = document.querySelectorAll('.tabs ul > li');
+            lis.forEach(li => {
+                li.classList.remove('is-active');
+            });
+
+            const tabSelected = e.target;
+            const parentLi = tabSelected.parentElement;
+            parentLi.classList.add('is-active');
+        });
+    });
+})();
+</script>
+{% endblock scripts %}
