@@ -7,11 +7,85 @@ Inventory Items Receiving
 {% block content %}
 <h1>Inventory default</h1>
 <notification-list></notification-list>
-<receiving-editor></receiving-editor>
+<div class="form-wrapper">
+    <form class="form-receiving">
+        <fieldset>
+            <legend>Items</legend>
+            <items-table show-add hide-filter hide-active></items-table>
+        </fieldset>
+    </form>
+</div><!-- .form-wrapper -->
+<modal-dialog id="itemSelect">
+    <div class="form-wrapper">
+        <form class="form-items">
+            <fieldset>
+                <legend>Items</legend>
+                <items-table id="itemsTblSelect" hide-active multiselect></items-table>
+            </fieldset>
+            <button type="button" id="btnSelect" class="btn btn-primary">Select</button>
+            <button type="button" id="btnCancel" class="btn">Cancel</button>
+        </form><!-- .form-items -->
+    </div><!-- .form-wrapper -->
+</modal-dialog>
 {% endblock %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/modal.dialog.js"></script>
 <script type="module" src="/static/js/components/inventory/receiving.editor.js"></script>
 <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
+<script type="module" src="/static/js/api/inventory.js"></script>
+<script type="module">
+'use strict';
+import { Inventory } from '/static/js/api/inventory.js';
+(function(){
+    const { fromEvent, from, of } = rxjs;
+    const {
+        debounceTime,
+        filter,
+        distinctUntilChanged,
+        map,
+        switchMap,
+        tap
+    } = rxjs.operators;
+
+    const notifier = document.querySelector('notification-list');
+    const itbl = document.querySelector('items-table');
+
+    itbl.addEventListener('onadditem', function(e) {
+        const md = document.querySelector('modal-dialog#itemSelect');
+        const dlg = md.show();
+
+        const itemsSelect = dlg.querySelector('items-table#itemsTblSelect');
+        fromEvent(itemsSelect, 'onfilteritems')
+            .pipe(
+                map(e => e.detail),
+                debounceTime(250),
+                filter(query => query.length > 3),
+                distinctUntilChanged(),
+                switchMap(query => from(Inventory.items(window.variables.currentClient.id, query))),
+                tap(e => {
+                    if (e.status == 'success') {
+                        const result = JSON.parse(e.json);
+                        itemsSelect.setItems(result.items, result.filter);
+                    } else {
+                        n.error('error', e.message);
+                    }
+                })
+            )
+            .subscribe();
+
+        const bcancel = dlg.querySelector('#btnCancel');
+        bcancel.addEventListener('click', function(e) {
+            md.hide();
+        });
+
+        const bselect = dlg.querySelector('#btnSelect');
+        bselect.addEventListener('click', function(e) {
+            console.log(itemsSelect.getSelectedItems());
+            md.hide();
+        });
+    });
+})();
+</script>
 {% endblock scripts %}
