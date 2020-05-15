@@ -32,8 +32,8 @@ class Inventory {
         .then((response) => response.json());
     }
 
-    static criticalItems(clientId, filter, func) {
-        fetch('/api/inventory/items', {
+    static criticalItems(clientId, filter) {
+        return fetch('/api/inventory/items', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -45,8 +45,21 @@ class Inventory {
                 critical: true
             })
         })
-        .then((response) => response.json())
-        .then((data) => func ? func(data) : console.data(data));
+        .then((response) => response.json());
+    }
+
+    static itemById(itemId) {
+        return fetch('/api/inventory/items/get', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                itemId: itemId
+            })
+        })
+        .then((response) => response.json());
     }
 }
 export { Inventory };
