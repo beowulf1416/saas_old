@@ -258,7 +258,7 @@ public class RestInventoryItemsController {
     }
 
     @PostMapping("/get")
-    @PreAuthorize("hasAuthority('inventory.items)")
+    @PreAuthorize("hasAuthority('inventory.items')")
     public ApiResult itemById(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         try {
             Object o = params.get("itemId");
@@ -268,7 +268,7 @@ public class RestInventoryItemsController {
             UUID itemId = UUID.fromString(o.toString());
 
             InventoryItem item = invStore.itemById(itemId);
-            return ApiResult(
+            return new ApiResult(
                 "success",
                 "inventory item found",
                 gson.toJson(item)
