@@ -20,6 +20,7 @@ class ItemsTable extends HTMLElement {
 
         this.setItems = this.setItems.bind(this);
         this.getSelectedItems = this.getSelectedItems.bind(this);
+        this.addItem = this.addItem.bind(this);
     }
 
     initTable(component, container) {
@@ -105,7 +106,7 @@ class ItemsTable extends HTMLElement {
 
     setItems(items, filter) {
         const self = this;
-        const options = this.options;
+        // const options = this.options;
         const shadow = this.shadowRoot;
         if (Array.isArray(items)) {
             const multiselect = this.hasAttribute('multiselect');
@@ -166,6 +167,46 @@ class ItemsTable extends HTMLElement {
             items.push(n.value);
         });
         return items;
+    }
+
+    addItem(item) {
+        const self = this;
+        const shadow = this.shadowRoot;
+        if (item == null) {
+            self.dispatchEvent(new CustomEvent('onerror', {
+                bubbles: true,
+                cancelable: true,
+                detail: 'Item should not be null'
+            }));
+        } else {
+            const multiselect = this.hasAttribute('multiselect');
+            const classSKU = this.hasAttribute('hide-sku') ? 'col-sku col-hidden' : 'col-sku';
+            const classUPC = this.hasAttribute('hide-sku') ? 'col-upc col-hidden' : 'col-upc';
+            const classQTY = this.hasAttribute('hide-qty') ? 'col-qty col-hidden' : 'col-qty';
+            const classUOM = this.hasAttribute('hide-uom') ? 'col-uom col-hidden' : 'col-uom';
+
+            const tr = document.createElement('tr');
+            tr.classList.add('item-row');
+            const tds = [];
+
+            if (multiselect) {
+                tds.push(`<td class="col-select"><input type="checkbox" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" /></td>`);
+            } else {
+                tds.push(`<td class="col-select"><input type="radio" name="selectItem" title="Select Item" class="form-input-check form-item" value="${item.id}" /></td>`);
+            }
+
+            tds.push(`<td class="col-name">${item_name}</td>`);
+            tds.push(`<td class="col-description">${item.description}</td>`);
+            tds.push(`<td class="${classSKU}">${item.sku}</td>`);
+            tds.push(`<td class="${classUPC}">${item.upc}</td>`);
+            tds.push(`<td class="${classQTY}"></td>`);
+            tds.push(`<td class="${classUOM}"></td>`);
+
+            tr.innerHTML = tds.join('');
+
+            const tbody = shadow.querySelector('table.tbl-items tbody');
+            tbody.appendChild(tr);
+        }
     }
 }
 customElements.define('items-table', ItemsTable);
