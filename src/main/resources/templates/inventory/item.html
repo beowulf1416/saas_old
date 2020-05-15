@@ -1,7 +1,7 @@
 {% extends '/templates/inventory/default.html' %}
 
 {% block links -%}
-<link rel="stylesheet" href="/static/css/nav.css">
+<link rel="stylesheet" href="/static/css/inventory/item.css">
 {%- endblock %}
 
 {% block title %}
@@ -12,14 +12,14 @@ Inventory Item
 <div class="form-wrapper">
     <div class="tabs is-boxed is-toggle">
         <ul>
-            <li class="is-active"><a id="tabGeneral" class="tab-item">General</a></li>
-            <li><a id="tabSubstitutes" class="tab-item">Substitutes</a></li>
-            <li><a id="tabComponents" class="tab-item">Components</a></li>
-            <li><a id="tabPrices" class="tab-item">Prices</a></li>
+            <li class="is-active"><a id="tabGeneral" class="tab-item"  href="#fsGeneral">General</a></li>
+            <li><a id="tabSubstitutes" class="tab-item" href="#fsSubstitutes">Substitutes</a></li>
+            <li><a id="tabComponents" class="tab-item" href="#fsComponents">Components</a></li>
+            <li><a id="tabPrices" class="tab-item" href="#fsPrices">Prices</a></li>
         </ul>
     </div><!-- .tabs -->
     <form class="form-item panel">
-        <fieldset class="panel-blocks">
+        <fieldset id="fsGeneral" class="panel-blocks is-active">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name" class="form-input-text form-input-name" placeholder="Name" />
@@ -28,13 +28,13 @@ Inventory Item
                 <label for="description">Description</label>
                 <input type="text" id="description" name="description" class="form-input-text form-input-description" placeholder="Description" />
             </div><!-- .form-group -->
-        </fieldset>
-        <fieldset class="panel-blocks">
+        </fieldset><!-- #fsGeneral -->
+        <fieldset id="fsSubstitutes" class="panel-blocks">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name1" name="name" class="form-input-text form-input-name" placeholder="Name" />
             </div><!-- .form-group -->
-        </fieldset>
+        </fieldset><!-- #fsSubstitutes -->
     </form>
 </div><!-- .form-wrapper -->
 {% endblock content_inventory %}
@@ -53,8 +53,18 @@ Inventory Item
             });
 
             const tabSelected = e.target;
+            const href = tabSelected.getAttribute('href');
+
             const parentLi = tabSelected.parentElement;
             parentLi.classList.add('is-active');
+
+            const nlfs = document.querySelectorAll('fieldset.panel-blocks');
+            nlfs.forEach(fs => {
+                fs.classList.remove('is-active');
+            });
+
+            const fs = document.querySelector(href);
+            fs.classList.add('is-active');
         });
     });
 })();
