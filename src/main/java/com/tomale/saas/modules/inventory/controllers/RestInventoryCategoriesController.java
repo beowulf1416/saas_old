@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestInventoryCategoriesController {
     
     @PostMapping("/all")
-    @PreAuthorize("hasAuthority('inventory.categories')")
+    @PreAuthorize("hasAuthority('inventory.items')")
     public ApiResult getAll(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         return new ApiResult(
             "success",
