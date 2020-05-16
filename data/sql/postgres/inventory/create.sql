@@ -25,6 +25,7 @@ set schema 'inventory';
 
 
 /** functions **/
+\ir procs/categories/categories_all.sql
 \ir procs/categories/category_add.sql
 
 \ir procs/items/item_add.sql
