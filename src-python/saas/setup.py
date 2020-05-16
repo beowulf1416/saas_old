@@ -13,7 +13,8 @@ requires = [
     'pyramid',
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
-    'waitress',
+    'waitress',,
+    'google-api-python-client'
 ]
 
 tests_require = [
