@@ -1,5 +1,6 @@
 package com.tomale.saas.modules.inventory;
 
+import com.tomale.saas.modules.inventory.store.InventoryCategoryStore;
 import com.tomale.saas.modules.inventory.store.InventoryItemStore;
 import com.tomale.saas.modules.inventory.store.InventoryTransactionStore;
 
@@ -23,5 +24,10 @@ public class InventoryConfiguration {
     @Bean
     public InventoryTransactionStore inventoryTransactionStore() {
         return new InventoryTransactionStore(jdbc);
+    }
+
+    @Bean
+    public InventoryCategoryStore inventoryCategoryStore() {
+        return new InventoryCategoryStore(jdbc);
     }
 }
