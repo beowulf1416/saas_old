@@ -21,16 +21,14 @@ public class InventoryController {
 
     @GetMapping("")
     @PreAuthorize("hasAuthority('inventory.dashboard')")
-    public String viewDefault() {
-        log.debug("VIEW: inventory.default");
-        return "inventory/default";
+    public ModelAndView viewDefault() {
+        return ModelAndViewFactory.get("inventory/default");
     }
 
     @GetMapping("/dashboard")
     @PreAuthorize("hasAuthority('inventory.dashboard')")
-    public String viewDashboard() {
-        log.debug("VIEW: inventory.dashboard");
-        return "inventory/default";
+    public ModelAndView viewDashboard() {
+        return ModelAndViewFactory.get("inventory/default");
     }
 
     @GetMapping("/items")
