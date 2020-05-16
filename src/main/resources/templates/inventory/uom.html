@@ -1,0 +1,23 @@
+{% extends '/templates/inventory/default.html' %}
+
+{% block links -%}
+<link rel="stylesheet" href="/static/css/inventory/default.css">
+{%- endblock %}
+
+{% block title %}
+Inventory Units of Measure
+{% endblock %}
+
+{% block content_inventory %}
+<h1>Units of Measure</h1>
+{% endblock content_inventory %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module">
+'use strict';
+(function(){
+    
+})();
+</script>
+{% endblock scripts %}

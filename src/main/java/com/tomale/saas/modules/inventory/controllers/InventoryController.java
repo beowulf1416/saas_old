@@ -47,4 +47,17 @@ public class InventoryController {
         mv.addObject("id", id);
         return mv;
     }
+
+    @GetMapping("/categories")
+    @PreAuthorize("hasAuthority('inventory.items')")
+    public ModelAndView viewCategories() {
+        return ModelAndViewFactory.get("inventory/categories");
+    }
+
+
+    @GetMapping("/uom")
+    @PreAuthorize("hasAuthority('inventory.items')")
+    public ModelAndView viewUOM() {
+        return ModelAndViewFactory.get("inventory/uom");
+    }
 }

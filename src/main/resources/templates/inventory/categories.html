@@ -1,0 +1,65 @@
+{% extends '/templates/inventory/default.html' %}
+
+{% block links -%}
+<link rel="stylesheet" href="/static/css/inventory/default.css">
+{%- endblock %}
+
+{% block title %}
+Inventory Categories
+{% endblock %}
+
+{% block content_inventory %}
+<h1>Categories</h1>
+<table id="tbl-categories">
+    <thead>
+        <tr>
+            <th class="col-select"></th>
+            <th class="col-active">Active</th>
+            <th class="col-name">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">
+                <a title="Add Category" id="addCategory" class="nav-link link-add-category" href="#addCategory">Add</a>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+{% endblock content_inventory %}
+
+{% block scripts %}
+<script type="module" src="/static/js/util.js"></script>
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/api/inventory.categories.js"></script>
+<script type="module">
+'use strict';
+import { InventoryCategories } from '/static/js/inventory.categories.js';
+import { Util } from '/static/js/util.js';
+(function(){
+    const notifier = document.querySelector('notification-list');
+    const refreshCategories = function(categories) {
+        if (Array.isArray(categories)) {
+            const tbody = document.querySelect('tabl.tbl-categories tbody');
+            while(tbody.firstChild) {
+                tbody.removeChild(tbody.lastChild);
+            }
+            categories.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.classList.add('row-item', 'row-item-category');
+                tr.innerHTML = `
+                    <td class="col-select">
+                        <input type="radio" name="selectCategory" title="Select Category" value="${c.id}" />
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            notifier.add('error', 'Expecting an array of categories');
+        }
+    };
+})();
+</script>
+{% endblock scripts %}
