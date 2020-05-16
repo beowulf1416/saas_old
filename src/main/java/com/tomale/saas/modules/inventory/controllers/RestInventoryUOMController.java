@@ -12,23 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
-@RequestMapping("/api/inventory/categories")
-public class RestInventoryCategoriesController {
+@RequestMapping("/api/inventory/uom")
+public class RestInventoryUOMController {
     
     @PostMapping("/all")
     @PreAuthorize("hasAuthority('inventory.items')")
     public ApiResult getAll(@RequestBody Map<String, Object> params, HttpServletResponse response) {
-        return new ApiResult(
-            "success",
-            "//todo",
-            null
-        );
-    }
-
-    @PostMapping("/add")
-    @PreAuthorize("hasAuthority('inventory.items')")
-    public ApiResult addCategory(@RequestBody Map<String, Object> params, HttpServletResponse response) {
         return new ApiResult(
             "success",
             "//todo",
