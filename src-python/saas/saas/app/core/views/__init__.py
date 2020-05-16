@@ -7,3 +7,8 @@ def includeme(config):
         'security.supported.signins',
         '/security/signin'
     )
+
+    config.add_route(
+        'security.oauth.redirect.google',
+        '/security/signin/google/oauth/redirect'
+    )
