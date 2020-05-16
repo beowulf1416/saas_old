@@ -7,3 +7,5 @@ gradle/
 
 # vscode
 .settings/
+
+*/env/**
