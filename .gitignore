@@ -9,3 +9,4 @@ gradle/
 .settings/
 
 */env/**
+/etc/client_secret.json
