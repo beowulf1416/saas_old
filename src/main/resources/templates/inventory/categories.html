@@ -10,7 +10,8 @@ Inventory Categories
 
 {% block content_inventory %}
 <h1>Categories</h1>
-<table id="tbl-categories">
+<notification-list></notification-list>
+<table id="tblCategories">
     <thead>
         <tr>
             <th class="col-select"></th>
@@ -28,21 +29,38 @@ Inventory Categories
         </tr>
     </tfoot>
 </table>
+<modal-dialog id="category">
+    <div class="form-wrapper">
+        <notification-list></notification-list>
+        <form class="form-category">
+            <fieldset>
+                <legend>Category</legend>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" title="Category Name" placeholder="Name" />
+                </div><!-- .form-group -->
+                <button type="button" id="btnSave" class="btn btn-primary">Save</button>
+                <button type="button" id="btnCancel" class="btn">Cancel</button>
+            </fieldset>
+        </form>
+    </div><!-- .form-wrapper -->
+</modal-dialog>
 {% endblock content_inventory %}
 
 {% block scripts %}
 <script type="module" src="/static/js/util.js"></script>
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/modal.dialog.js"></script>
 <script type="module" src="/static/js/api/inventory.categories.js"></script>
 <script type="module">
 'use strict';
-import { InventoryCategories } from '/static/js/inventory.categories.js';
+import { InventoryCategories } from '/static/js/api/inventory.categories.js';
 import { Util } from '/static/js/util.js';
 (function(){
     const notifier = document.querySelector('notification-list');
     const refreshCategories = function(categories) {
         if (Array.isArray(categories)) {
-            const tbody = document.querySelect('tabl.tbl-categories tbody');
+            const tbody = document.querySelect('table#tblCategories tbody');
             while(tbody.firstChild) {
                 tbody.removeChild(tbody.lastChild);
             }
@@ -60,6 +78,42 @@ import { Util } from '/static/js/util.js';
             notifier.add('error', 'Expecting an array of categories');
         }
     };
+
+    const addCategory = document.querySelector('a#addCategory');
+    addCategory.addEventListener('click', function(e) {
+        const md = document.querySelector('modal-dialog#category');
+        const dlg = md.show();
+
+        const n = dlg.querySelector('notification-list');
+
+        const btnSave = dlg.querySelector('button#btnSave:not(.processed)');
+        if (btnSave != null) {
+            btnSave.classList.add('processed');
+            btnSave.addEventListener('click', function(e) {
+                const name = dlg.querySelector('input#name');
+                if (name.value == '') {
+                    n.add('error', 'Please enter a category name');
+                } else {
+                    InventoryCategories.add(window.variables.currentClient.id, name.value)
+                        .then((e) => {
+                            if (e.status == 'success') {
+                                md.hide();
+                            } else {
+                                n.add('error', e.message);
+                            }
+                        });
+                }
+            });
+        }
+
+        const btnCancel = dlg.querySelector('button#btnCancel:not(.processed)');
+        if (btnCancel != null) {
+            btnCancel.classList.add('processed');
+            btnCancel.addEventListener('click', function(e) {
+                md.hide();
+            });
+        }
+    });
 })();
 </script>
 {% endblock scripts %}

@@ -15,4 +15,20 @@ class InventoryCategories {
         })
         .then((r) => r.json());
     }
+
+    static add(clientId, name) {
+        return fetch('/api/inventory/categories/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                name: name
+            })
+        })
+        .then((r) => r.json());       
+    }
 }
+export { InventoryCategories };
