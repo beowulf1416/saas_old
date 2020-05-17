@@ -12,3 +12,8 @@ def includeme(config):
         'security.oauth.redirect.google',
         '/security/signin/google/oauth/redirect'
     )
+
+    config.add_route(
+        'user.dashboard',
+        '/dashboard'
+    )
