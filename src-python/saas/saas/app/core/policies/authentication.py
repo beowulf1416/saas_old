@@ -6,22 +6,22 @@ from pyramid.interfaces import IAuthenticationPolicy
 
 @implementer(IAuthenticationPolicy)
 class AuthenticationPolicy(object):
-    def authenticated_userid(request):
+    def authenticated_userid(self, request):
         log.debug('//todo AuthenticationPolicy::authenticated_userid()')
         return None
 
-    def unauthenticated_userid(request):
+    def unauthenticated_userid(self, request):
         log.debug('//todo AuthenticationPolicy::unauthenticated_userid()')
         return None
 
-    def effective_principals(request):
+    def effective_principals(self, request):
         log.debug('//todo AuthenticationPolicy::effective_principals()')
         return None
 
-    def remember(request, userid, **kw):
+    def remember(self, request, userid, **kw):
         log.debug('//todo AuthenticationPolicy::remember()')
         return None
 
-    def forget(request):
+    def forget(self, request):
         log.debug('//todo AuthenticationPolicy::forget()')
         return None

@@ -7,10 +7,10 @@ from pyramid.interfaces import IAuthorizationPolicy
 
 @implementer(IAuthorizationPolicy)
 class AuthorizationPolicy(object):
-    def permits(context, principals, permission):
-        log.debug('AuthorizationPolicy::permits()')
+    def permits(self, context, principals, permission):
+        log.debug('//todo AuthorizationPolicy::permits()')
         return None
 
-    def principals_allowed_by_permission(context, permission):
-        log.debug('AuthorizationPolicy::principals_allowed_by_permission()')
+    def principals_allowed_by_permission(self, context, permission):
+        log.debug('//todo AuthorizationPolicy::principals_allowed_by_permission()')
         return None
