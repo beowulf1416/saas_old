@@ -7,9 +7,6 @@ import pyramid.httpexceptions as exception
 from pyramid.view import view_config
 
 
-
-
-
 @view_config(
     route_name='security.supported.signins',
     renderer='saas.app.core:templates/security/signin.html',
@@ -17,6 +14,8 @@ from pyramid.view import view_config
 )
 def view_supported_signins(request):
     log.info('VIEW: security:view_supported_signins')
+
+    destination = request.params['destination'] if 'destination' in request.params else ''
 
     google_credentials_file = request.registry.settings['google.credentials.file']
     client_id = ''
@@ -47,21 +46,14 @@ def view_supported_signins(request):
     ).format(
         client_id = client_id,
         redirect_url = request.route_url('security.oauth.redirect.google'),
-        # 'http://localhost:6543/security/signin',
         scopes = google_scopes
     )
+
+    if len(destination) > 0:
+        google_oauth_url = '{0}&dest={1}'.format(google_oauth_url, destination)
+
     return {
         'google_oauth_url': google_oauth_url
     }
 
 
-@view_config(
-    route_name='security.oauth.redirect.google',
-    request_method='GET',
-    request_param='code'
-)
-def view_google_oauth_redirect(request):
-    log.debug('VIEW: security:view_google_oauth_redirect')
-    code = request.params['code']
-    log.debug(code)
-    return {}
