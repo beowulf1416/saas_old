@@ -11,7 +11,6 @@ def includeme(config):
 
     settings = config.get_settings()
     secret = settings['cookie.secret']
-    log.info(secret)
 
     config.set_session_factory(SignedCookieSessionFactory(secret))
     config.set_authentication_policy(AuthenticationPolicy())
