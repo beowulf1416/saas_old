@@ -20,6 +20,12 @@ class AuthenticationPolicy(object):
 
     def remember(self, request, userid, **kw):
         log.debug('//todo AuthenticationPolicy::remember()')
+        try: 
+            session = request.session
+            session['email'] = userid
+        except Exception as e:
+            log.error(e)
+            raise e
         return None
 
     def forget(self, request):
