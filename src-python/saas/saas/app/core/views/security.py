@@ -43,10 +43,12 @@ def view_supported_signins(request):
         '&redirect_uri={redirect_url}'
         '&response_type=code'
         '&scope={scopes}'
+        '&state={state}'
     ).format(
         client_id = client_id,
         redirect_url = request.route_url('security.oauth.redirect.google'),
-        scopes = google_scopes
+        scopes = google_scopes,
+        state = 'test_state'
     )
 
     if len(destination) > 0:
