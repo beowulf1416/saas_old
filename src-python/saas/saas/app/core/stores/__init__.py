@@ -13,4 +13,4 @@ def includeme(config):
     connection = mgr['default']
 
     userStore = UserStore(connection)
-    mgr['store.user'] = userStore
+    services['store.user'] = userStore
