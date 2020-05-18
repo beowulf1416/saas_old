@@ -8,10 +8,9 @@ from saas.app.core.stores.user import UserStore
 def includeme(config):
     log.info('including: saas.app.core.stores')
 
-    mgr = get_service(None, 'connection.manager')
+    services = get_service(None)
+    mgr = services['connection.manager']
     connection = mgr['default']
-
-    log.debug(connection)
 
     userStore = UserStore(connection)
     mgr['store.user'] = userStore
