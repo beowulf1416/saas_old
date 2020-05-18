@@ -14,11 +14,11 @@ import jwt
 
 @implementer(ISessionFactory)
 def SessionFactory(
+    cookie_name: str,
     secret: str,
     max_age: float,
     timeout: float,
-    algorithm: str = 'HMAC256',
-    cookie_name: str ='session'
+    algorithm: str = 'HMAC256'
 ):
     @implementer(ISession)
     class SessionCookie(dict):
