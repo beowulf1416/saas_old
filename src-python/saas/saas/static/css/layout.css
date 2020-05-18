@@ -1,0 +1,22 @@
+.row-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#rowheader #colheader .col {
+    flex: auto;
+}
+
+#rowheader #colheader #hdrleft {
+    flex: none;
+}
+
+#bodywrapper #rowcontent .col-wrapper {
+    display: flex;
+    flex: 1;
+}
