@@ -38,7 +38,7 @@ def SessionFactory(
 
             # time base flags
             now = time.time()
-            created = renewed = now
+            created = renewed = accessed = now
 
             cookie_value = request.cookies.get(self._cookie_name)
             
@@ -48,27 +48,24 @@ def SessionFactory(
             if cookie_value is not None:
                 try:
                     jwt_key = self.request.registry.settings['jwt.secret']
-                    decoded = jwt.decode(
+                    value = jwt.decode(
                         cookie_value,
                         key=jwt_key,
                         algorithms=['HS256'],
                         verify=True
                     )
-                    log.debug(decoded)
-                    value = json.loads(cookie_value)
                 except ValueError as e:
                     log.error(e)
                     value = None
-
-            log.debug(value)
             
             if value is not None:
                 try:
-                    renewed_value, created_value, state_value = value
-                    renewed = float(renewed_value)
-                    created_value = float(created_value)
-                    state = state_value
+                    created = value['iat'] if 'iat' in value else now
+                    renewed = now
+                    accessed = value['updated_at'] if 'updated_at' in value else now
+
                     new = False
+                    state = value
                 except (TypeError, ValueError) as e:
                     log.error(e)
                     state = {}
@@ -79,7 +76,7 @@ def SessionFactory(
                 state = {}
 
             self.created = created
-            self.accessed = created
+            self.accessed = accessed
             self.renewed = renewed
             self.new = new
             dict.__init__(self, state)
@@ -97,6 +94,7 @@ def SessionFactory(
 
             copy = dict(self)
             copy['iat'] = self.created
+            copy['updated_at'] = self.renewed
             cookie_value = jwt.encode(
                 copy,
                 key=jwt_key,
@@ -112,7 +110,7 @@ def SessionFactory(
                 max_age = max_age,
                 path = '/',
                 # domain = 
-                secure = True,
+                secure = False, # set to true when using https
                 httponly = True,
                 samesite = 'Strict'
             )
