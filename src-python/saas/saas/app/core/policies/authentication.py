@@ -33,6 +33,9 @@ class AuthenticationPolicy(object):
         try: 
             session = request.session
             session['email'] = userid
+            for k, v in kw.items():
+                if k != 'email':
+                    session[k] = v
         except Exception as e:
             log.error(e)
             raise e

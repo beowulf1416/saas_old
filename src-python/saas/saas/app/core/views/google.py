@@ -85,14 +85,17 @@ def view_google_oauth_redirect(request):
         issued_at = decoded['iat']
         expires = decoded['exp']
 
-        # check if email is already registered
         services = request.services()
         userStore = services['store.user']
+        clientStore = services['store.client']
+
+        # check if email is already registered
         if not userStore.emailExists(email):
             userStore.userAdd(email, name)
 
         user = userStore.userByEmail(email)
-        remember(request, email)
+        (client_id, active, name, address) = clientStore.getDefaultClient()
+        remember(request, email, client=client_id)
 
         raise exception.HTTPFound(request.route_url('user.dashboard'))
     else:
