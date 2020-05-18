@@ -7,14 +7,14 @@ from saas.app.core.services.connection import ConnectionManager
 __services = ServiceManager()
 
 def includeme(config):
+    log.debug('including: saas.app.core.services')
     settings = config.get_settings()
     connections = ConnectionManager(settings)
     __services['connection.manager'] = connections
 
     config.add_request_method(
         get_service,
-        name = 'services',
-        reify = True
+        name = 'services'
     )
 
 def get_service(request):

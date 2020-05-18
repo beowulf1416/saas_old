@@ -47,14 +47,6 @@ def view_google_oauth_redirect(request):
     client_id = credentials['web']['client_id']
     client_secret = credentials['web']['client_secret']
     token_url = credentials['web']['token_uri']
-
-    log.debug(urlencode({
-            'code': code,
-            'client_id': client_id,
-            'client_secret': client_secret,
-            'redirect_uri': request.route_url('security.oauth.redirect.google'),
-            'grant_type': 'authorization_code'
-        }))
     
     # ref: https://developers.google.com/identity/protocols/oauth2/openid-connect#exchangecode
     # exchange code for access token
@@ -94,7 +86,8 @@ def view_google_oauth_redirect(request):
         expires = decoded['exp']
 
         # check if email is already registered
-        userStore = request.services['store.user']
+        services = request.services()
+        userStore = services['store.user']
         if not userStore.emailExists(email):
             userStore.userAdd(email, name)
 
