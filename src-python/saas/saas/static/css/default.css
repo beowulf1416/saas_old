@@ -1,0 +1,14 @@
+.row-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.col-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+#bodywrapper #rowcontent .col-wrapper {
+    display: flex;
+    flex: 1;
+}
