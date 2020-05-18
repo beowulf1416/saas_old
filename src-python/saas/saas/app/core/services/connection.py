@@ -5,8 +5,7 @@ import json
 
 
 class ConnectionManager(dict):
-    def __init__(self, config):
-        settings = config.get_settings()
+    def __init__(self, settings):
         config_location = settings['app.config']
         with open('{0}/databases.json'.format(config_location), 'r') as f:
             data = json.loads(f.read())

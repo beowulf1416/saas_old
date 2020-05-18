@@ -4,12 +4,11 @@ log = logging.getLogger(__name__)
 from saas.app.core.services.manager import ServiceManager
 from saas.app.core.services.connection import ConnectionManager
 
-__services = None
+__services = ServiceManager()
 
 def includeme(config):
-    global __services
-    _services = ServiceManager()
-    connections = ConnectionManager(config)
+    settings = config.get_settings()
+    connections = ConnectionManager(settings)
     __services['connection.manager'] = connections
 
     config.add_request_method(
