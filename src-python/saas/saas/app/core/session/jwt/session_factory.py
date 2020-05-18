@@ -5,6 +5,7 @@ log = logging.getLogger(__name__)
 from zope.interface import implementer
 from pyramid.interfaces import ISession, ISessionFactory
 from pyramid.session import manage_accessed, manage_changed
+import pyramid.httpexceptions as exception
 
 import time
 import json
@@ -88,7 +89,9 @@ def SessionFactory(
         def _set_cookie(self, response):
             # do not set cookie on exception
             if self.request.exception is not None:
-                return False
+                if not isinstance(self.request.exception, exception.HTTPFound):
+                    log.debug(self.request.exception)
+                    return False
 
             jwt_key = self.request.registry.settings['jwt.secret']
 
