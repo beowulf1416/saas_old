@@ -19,7 +19,7 @@ def view_default(request):
     route_name='user.dashboard',
     renderer='saas.app:templates/dashboard.html',
     request_method='GET',
-    # permission='user.authenticated'
+    permission='user.authenticated'
 )
 def view_dashboard(request):
     return {}

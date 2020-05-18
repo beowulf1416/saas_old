@@ -6,6 +6,7 @@ import json
 from saas.app.core.session.jwt.session_factory import SessionFactory
 from saas.app.core.policies.authentication import AuthenticationPolicy
 from saas.app.core.policies.authorization import AuthorizationPolicy
+from saas.app.core.services import get_service
 
 
 def includeme(config):
@@ -32,4 +33,7 @@ def includeme(config):
         float(cookie_timeout)
     ))
     config.set_authentication_policy(AuthenticationPolicy())
-    config.set_authorization_policy(AuthorizationPolicy())
+
+    services = get_service(None)
+    userStore = services['store.user']
+    config.set_authorization_policy(AuthorizationPolicy(userStore))
