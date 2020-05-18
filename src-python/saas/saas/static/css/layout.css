@@ -16,6 +16,18 @@
     flex: none;
 }
 
+#rowcontent #sidebarleft {
+    flex: none;
+}
+
+#rowcontent #content {
+    flex: 1;
+}
+
+#rowcontent #siderbarright {
+    flex: none;
+}
+
 #bodywrapper #rowcontent .col-wrapper {
     display: flex;
     flex: 1;
