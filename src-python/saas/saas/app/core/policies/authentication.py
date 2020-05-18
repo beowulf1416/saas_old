@@ -3,20 +3,30 @@ log = logging.getLogger(__name__)
 
 from zope.interface import implementer
 from pyramid.interfaces import IAuthenticationPolicy
+from pyramid.security import Everyone, Authenticated
 
 @implementer(IAuthenticationPolicy)
 class AuthenticationPolicy(object):
     def authenticated_userid(self, request):
         log.debug('//todo AuthenticationPolicy::authenticated_userid()')
-        return None
+        session = request.session
+        email = session['email'] if 'email' in session else None
+        # log.debug(email)
+        return email
 
     def unauthenticated_userid(self, request):
         log.debug('//todo AuthenticationPolicy::unauthenticated_userid()')
-        return None
+        session = request.session
+        email = session['email'] if 'email' in session else None
+        # log.debug(email)
+        return email
 
     def effective_principals(self, request):
         log.debug('//todo AuthenticationPolicy::effective_principals()')
-        return None
+        session = request.session
+        email = session['email'] if 'email' in session else None
+        # log.debug(email)
+        return [Everyone, Authenticated, email]
 
     def remember(self, request, userid, **kw):
         log.debug('//todo AuthenticationPolicy::remember()')
