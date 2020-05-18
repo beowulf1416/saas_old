@@ -20,13 +20,13 @@ def includeme(config):
         for db in databases:
             dbtype = db['type']
 
-
-
+    cookie_name = settings['cookie.name']
     cookie_secret = settings['cookie.secret']
     cookie_max_age = settings['cookie.max_age']
     cookie_timeout = settings['cookie.timeout']
 
     config.set_session_factory(SessionFactory(
+        cookie_name,
         cookie_secret, 
         cookie_max_age,
         float(cookie_timeout)
