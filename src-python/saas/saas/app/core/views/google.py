@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 
 import pyramid.httpexceptions as exception
 from pyramid.view import view_config
+from pyramid.security import remember
 
 import httplib2
 
@@ -93,7 +94,12 @@ def view_google_oauth_redirect(request):
         expires = decoded['exp']
 
         # check if email is already registered
+        userStore = request.services['store.user']
+        if not userStore.emailExists(email):
+            userStore.userAdd(email, name)
 
+        user = userStore.userByEmail(email)
+        remember(request, email)
 
 
     return {
