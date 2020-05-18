@@ -29,7 +29,7 @@ def includeme(config):
     config.set_session_factory(SessionFactory(
         cookie_secret, 
         cookie_max_age,
-        cookie_timeout
+        float(cookie_timeout)
     ))
     config.set_authentication_policy(AuthenticationPolicy())
     config.set_authorization_policy(AuthorizationPolicy())

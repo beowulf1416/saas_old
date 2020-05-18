@@ -12,16 +12,18 @@ import json
 
 @implementer(ISessionFactory)
 def SessionFactory(
-    secret,
-    max_age,
-    timeout,
-    algorithm = 'HMAC256',
-    cookie_name='session'
+    secret: str,
+    max_age: float,
+    timeout: float,
+    algorithm: str = 'HMAC256',
+    cookie_name: str ='session'
 ):
     @implementer(ISession)
     class SessionCookie(dict):
 
         _cookie_name = 'session'
+        _reissue_time = 0
+
         # dirty flag
         _dirty = False
 
@@ -48,7 +50,8 @@ def SessionFactory(
                     log.error(e)
                     value = None
 
-            log.debug('value', value)
+            log.debug(value)
+            
             if value is not None:
                 try:
                     renewed_value, created_value, state_value = value
@@ -82,7 +85,7 @@ def SessionFactory(
                 'iat': self.created,
                 'state': dict(self)
             })
-            if len(cookie_value > 4064):
+            if len(cookie_value) > 4064:
                 raise ValueError('Cookie value is too long to store (%s bytes)') % len(cookie_value)
 
             response.set_cookie(
