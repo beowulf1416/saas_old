@@ -8,6 +8,7 @@ from pyramid.session import manage_accessed, manage_changed
 
 import time
 import json
+import jwt
 
 
 @implementer(ISessionFactory)
@@ -45,6 +46,14 @@ def SessionFactory(
 
             if cookie_value is not None:
                 try:
+                    jwt_key = self.request.registry.settings['jwt.secret']
+                    decoded = jwt.decode(
+                        cookie_value,
+                        key=jwt_key,
+                        algorithms=['HS256'],
+                        verify=True
+                    )
+                    log.debug(decoded)
                     value = json.loads(cookie_value)
                 except ValueError as e:
                     log.error(e)
@@ -81,10 +90,16 @@ def SessionFactory(
             if self.request.exception is not None:
                 return False
 
-            cookie_value = json.dumps({
-                'iat': self.created,
-                'state': dict(self)
-            })
+            jwt_key = self.request.registry.settings['jwt.secret']
+
+            copy = dict(self)
+            copy['iat'] = self.created
+            cookie_value = jwt.encode(
+                copy,
+                key=jwt_key,
+                algorithm='HS256'
+            )
+
             if len(cookie_value) > 4064:
                 raise ValueError('Cookie value is too long to store (%s bytes)') % len(cookie_value)
 
