@@ -94,11 +94,12 @@ def view_google_oauth_redirect(request):
         user = userStore.userByEmail(email)
         remember(request, email)
 
-
-    return {
-        'error': error
-    }
-
+        raise exception.HTTPFound(request.route_url('user.dashboard'))
+    else:
+        raise exception.HttpInternalServerError(
+            detail = 'OAUTH request failed'
+        )
+        
 
 # https://stackoverflow.com/questions/16923931/python-google-ouath-authentication-decode-and-verify-id-token
 def parse_id_token(token: str) -> dict:
