@@ -5,13 +5,25 @@ from pyramid import testing
 
 class TestUserStore(unittest.TestCase):
 
-    def test_email_exists(self):
+    # mgr = None
+    # userStore = None
+
+    def setUp(self):
+        self.config = testing.setUp()
+
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.user import UserStore
 
-        mgr = ConnectionManager({
+        self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
-        userStore = UserStore(mgr['default'])
-        [(result, ), ] = userStore.emailExists('beowulf1416@gmail.com')
+        self.userStore = UserStore(self.mgr['default'])
+
+
+    def test_email_exists(self):
+        [(result, ), ] = self.userStore.emailExists('beowulf1416@gmail.com')
         self.assertEqual(True, result, '{0}'.format(result))
+
+    def test_user_add(self):
+        result = self.userStore.userAdd('test2@test2.com', 'test2')
+        self.assertNotEqual(None, result)
