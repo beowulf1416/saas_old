@@ -13,8 +13,9 @@ def includeme(config):
 
     config.add_request_method(
         get_service,
-        'services'
+        name = 'services',
+        reify = True
     )
 
-def get_service(request, name):
-    return __services[name]
+def get_service(request):
+    return __services
