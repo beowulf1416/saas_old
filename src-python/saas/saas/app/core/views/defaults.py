@@ -4,7 +4,7 @@ log = logging.getLogger(__name__)
 import json
 
 import pyramid.httpexceptions as exception
-from pyramid.view import view_config
+from pyramid.view import view_config, notfound_view_config, forbidden_view_config, exception_view_config
 
 
 @view_config(
