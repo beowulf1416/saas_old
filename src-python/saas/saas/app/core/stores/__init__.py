@@ -3,6 +3,7 @@ log = logging.getLogger(__name__)
 
 from saas.app.core.services import get_service
 from saas.app.core.stores.user import UserStore
+from saas.app.core.stores.client import ClientStore
 
 
 def includeme(config):
@@ -14,3 +15,6 @@ def includeme(config):
 
     userStore = UserStore(connection)
     services['store.user'] = userStore
+
+    clientStore = ClientStore(connection)
+    services['store.client'] = clientStore
