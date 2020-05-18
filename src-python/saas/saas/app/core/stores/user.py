@@ -10,7 +10,8 @@ class UserStore(object):
         try:
             c = self._connection.cursor()
             c.callproc('iam.user_email_exists', [email, ])
-            return c.fetchall()
+            [(result, ), ] = c.fetchall()
+            return result
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while checking if email exists')
@@ -25,3 +26,12 @@ class UserStore(object):
             log.error(e)
             raise Exception('An error occured while adding user')
         
+
+    def userByEmail(self, email: str):
+        try:
+            c = self._connection.cursor()
+            c.callproc('iam.user_get_by_email', [email, ])
+            return c.fetchall()
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving user info')
