@@ -5,9 +5,6 @@ from pyramid import testing
 
 class TestUserStore(unittest.TestCase):
 
-    # mgr = None
-    # userStore = None
-
     def setUp(self):
         self.config = testing.setUp()
 
