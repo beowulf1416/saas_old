@@ -1,0 +1,16 @@
+{% extends "saas.app:templates/default.html" %}
+
+{% block title %}
+Select Client
+{% endblock title %}
+
+{% block content %}
+<h1>Client List</h1>
+<div class="list-wrapper">
+    <ul id="clients">
+    {% for c in clients %}
+        <li class="list-item client-item"><a class="nav-link link-client" title="Select {{ c[2] }}" href="/client/select/{{ c[0] }}">{{ c[2] }}</a></li>
+    {% endfor %}
+    </ul><!-- #clients -->
+</div><!-- .list-wrapper -->
+{% endblock content %}

@@ -24,6 +24,16 @@ def includeme(config):
     )
 
     config.add_route(
+        'client.select',
+        '/client/select'
+    )
+
+    config.add_route(
+        'client.list',
+        '/client/list'
+    )
+
+    config.add_route(
         'user.dashboard',
         '/dashboard'
     )
