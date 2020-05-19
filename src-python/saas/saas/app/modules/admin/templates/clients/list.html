@@ -1,0 +1,26 @@
+{% extends "saas.app.modules.admin:templates/default.html" %}
+
+{% block title %}
+Administrater Clients
+{% endblock title %}
+
+{% block content %}
+<h1>Administer Clients</h1>
+<div class="clients-wrapper">
+    <clients-table show-add></clients-table>
+</div><!-- .clients-wrapper -->
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/clients/clients.table.js"></script>
+<script type="module" src="/static/js/helpers/clients.js"></script>
+<script type="module">
+'use strict';
+import { Clients } from '/static/js/helpers/clients.js';
+(function(){
+    Clients.getAll().then((d) => {
+        console.log(d);
+    });
+})();
+</script>
+{% endblock %}

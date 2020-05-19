@@ -9,6 +9,14 @@ from pyramid.view import view_config
     request_method='GET',
     renderer='saas.app.modules.admin:templates/clients/default.html'
 )
-def view_clients(request):
-    log.debug('view: view_clients')
+def view_clients_default(request):
+    log.debug('view: view_clients_default')
+    return {}
+
+@view_config(
+    route_name='admin.clients.list',
+    request_method='GET',
+    renderer='saas.app.modules.admin:templates/clients/list.html'
+)
+def view_clients_list(request):
     return {}
