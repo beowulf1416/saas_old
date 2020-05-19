@@ -9,7 +9,11 @@ Select Client
 <div class="list-wrapper">
     <ul id="clients">
     {% for c in clients %}
+        {% if destination == '' %}
         <li class="list-item client-item"><a class="nav-link link-client" title="Select {{ c[2] }}" href="/client/select/{{ c[0] }}">{{ c[2] }}</a></li>
+        {% else %}
+        <li class="list-item client-item"><a class="nav-link link-client" title="Select {{ c[2] }}" href="/client/select/{{ c[0] }}?destination={{ destination }}">{{ c[2] }}</a></li>
+        {% endif %}
     {% endfor %}
     </ul><!-- #clients -->
 </div><!-- .list-wrapper -->

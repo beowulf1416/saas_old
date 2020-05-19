@@ -37,9 +37,9 @@
         <div class="navbar-end">
             <div class="navbar-item">
             {% if client_name is defined %}
-                <a class="navbar-link client-select-link" title="Select Client" href="/client/list">{{ client_name }}</a>
+                <a class="navbar-link client-select-link" title="Select Client" href="/client/list?destination={{ current_path }}">{{ client_name }}</a>
             {% else %}
-                <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list">Default</a>
+                <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list?destination={{ current_path }}">Default</a>
             {% endif %}
             </div><!-- .navbar-item -->
             <div class="navbar-item has-dropdown is-hoverable">
