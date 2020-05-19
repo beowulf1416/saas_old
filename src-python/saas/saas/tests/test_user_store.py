@@ -10,11 +10,13 @@ class TestUserStore(unittest.TestCase):
 
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.user import UserStore
+        from saas.app.core.stores.client import ClientStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
         self.userStore = UserStore(self.mgr['default'])
+        self.clientStore = ClientStore(self.mgr['default'])
 
 
     def test_email_exists(self):
@@ -34,3 +36,13 @@ class TestUserStore(unittest.TestCase):
         user_id = user[0]
         result = self.userStore.userClients(user_id)
         self.assertNotEqual(0, len(result), '{0}'.format(result))
+
+    def test_user_has_permission(self):
+        user = self.userStore.userByEmail('beowulf1416@gmail.com')
+        user_id = user[0]
+        
+        client = self.clientStore.getDefaultClient()
+        client_id = client[0]
+
+        result = self.userStore.userHasPermission(user_id, client_id, 'user.authenticated')
+        self.assertEqual(True, result, '{0}'.format(result))

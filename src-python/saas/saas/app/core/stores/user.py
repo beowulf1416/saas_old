@@ -46,3 +46,14 @@ class UserStore(object):
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving user clients')
+
+
+    def userHasPermission(self, user_id: str, client_id: str, permission: str):
+        try:
+            c = self._connection.cursor()
+            c.callproc('iam.user_has_permission', [user_id, client_id, permission])
+            [(result, )] = c.fetchall()
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while checking if user has permission')
