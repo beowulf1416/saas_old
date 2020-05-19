@@ -7,6 +7,11 @@ from pyramid.events import BeforeRender
 @subscriber(BeforeRender)
 def add_renderer_globals(event):
     request = event['request']
+
+    current_route_path = request.path
+    event['current_path'] = current_route_path
+
+
     services = request.services()
     session = request.session
 
