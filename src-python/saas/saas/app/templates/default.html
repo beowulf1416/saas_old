@@ -21,7 +21,7 @@
                 <a title="Inventory" class="nav-link navbar-item" href="/inventory">Inventory</a>
                 <hr class="navbar-divider">
                 <a title="Administion" class="nav-link navbar-item" href="/admin">Administration</a>
-            </ul><!-- .navbar-dropdown -->
+            </div><!-- .navbar-dropdown -->
         </div><!-- .navbar-item -->
     </div><!-- .navbar-menu -->
 </nav><!-- .navbar -->
@@ -71,3 +71,8 @@
 {% block sidebar_right %}
 <h2>sidebar right</h2>
 {% endblock sidebar_right %}
+
+{% block base_body_scripts %}
+{% block scripts %}
+{% endblock scripts %}
+{% endblock base_body_scripts %}
