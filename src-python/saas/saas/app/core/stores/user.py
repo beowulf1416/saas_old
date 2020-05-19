@@ -23,6 +23,7 @@ class UserStore(object):
             self._connection.commit()
             return c.fetchall()
         except Exception as e:
+            self._connection.rollback()
             log.error(e)
             raise Exception('An error occured while adding user')
         
@@ -31,7 +32,17 @@ class UserStore(object):
         try:
             c = self._connection.cursor()
             c.callproc('iam.user_get_by_email', [email, ])
-            return c.fetchall()
+            [result, ] = c.fetchall()
+            return result
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving user info')
+
+    def userClients(self, user_id: str):
+        try:
+            c = self._connection.cursor()
+            c.callproc('iam.user_clients_all', [user_id, ])
+            return c.fetchall()
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving user clients')
