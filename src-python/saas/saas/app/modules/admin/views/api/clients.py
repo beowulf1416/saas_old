@@ -15,10 +15,11 @@ def api_clients_all(request):
     try:
         clientsStore = services['store.admin.clients']
         clients = clientsStore.getAll()
+        result = [{ 'id': c[0], 'name': c[1], 'active': c[2]} for c in clients]
         return {
             'status': 'success',
             'message': '{0} clients'.format(len(clients)),
-            'json': json.dumps(clients)
+            'json': json.dumps(result)
         }
     except Exception as e:
         log.error(e)
