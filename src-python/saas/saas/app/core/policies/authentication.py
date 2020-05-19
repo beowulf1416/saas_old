@@ -18,14 +18,12 @@ class AuthenticationPolicy(object):
         log.debug('//todo AuthenticationPolicy::unauthenticated_userid()')
         session = request.session
         email = session['email'] if 'email' in session else None
-        # log.debug(email)
         return email
 
     def effective_principals(self, request):
         log.debug('//todo AuthenticationPolicy::effective_principals()')
         session = request.session
         email = session['email'] if 'email' in session else None
-        # log.debug(email)
         return [Everyone, Authenticated, email]
 
     def remember(self, request, userid, **kw):
