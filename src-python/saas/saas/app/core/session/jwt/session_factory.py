@@ -96,6 +96,7 @@ def SessionFactory(
             copy = dict(self)
             copy['iat'] = self.created
             copy['updated_at'] = self.renewed
+
             cookie_value = jwt.encode(
                 copy,
                 key=jwt_key,
