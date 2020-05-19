@@ -37,3 +37,5 @@ def includeme(config):
     userStore = services['store.user']
     config.set_authentication_policy(AuthenticationPolicy(userStore))
     config.set_authorization_policy(AuthorizationPolicy(userStore))
+
+    config.include('saas.app.modules.admin')
