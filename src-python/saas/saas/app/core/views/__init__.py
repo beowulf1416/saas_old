@@ -14,7 +14,7 @@ def includeme(config):
     )
 
     config.add_route(
-        'security.supported.signins',
+        'security.signin',
         '/security/signin'
     )
 
@@ -25,7 +25,7 @@ def includeme(config):
 
     config.add_route(
         'client.select',
-        '/client/select'
+        '/client/select/{client_id}'
     )
 
     config.add_route(

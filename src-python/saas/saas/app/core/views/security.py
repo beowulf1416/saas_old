@@ -8,7 +8,7 @@ from pyramid.view import view_config
 
 
 @view_config(
-    route_name='security.supported.signins',
+    route_name='security.signin',
     renderer='saas.app.core:templates/security/signin.html',
     request_method='GET'
 )
