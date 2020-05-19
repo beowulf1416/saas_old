@@ -17,10 +17,17 @@ class AuthorizationPolicy(object):
         log.debug(principals)
         log.debug(permission)
 
+        # remove system principals
         effective_principals = [x for x in principals if x not in [Everyone, Authenticated]]
-        log.debug(effective_principals)
+        for p in effective_principals:
+            if isinstance(p, dict):
+                client_id = p['client_id'] if 'client_id' in p else None
+                user_id = p['user_id'] if 'user_id' in p else None
+                result = self.userStore.userHasPermission(user_id, client_id, permission)
+                if (result):
+                    return True
 
-        return None
+        return False
 
     def principals_allowed_by_permission(self, context, permission):
         log.debug('//todo AuthorizationPolicy::principals_allowed_by_permission()')

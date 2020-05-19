@@ -32,8 +32,8 @@ def includeme(config):
         cookie_max_age,
         float(cookie_timeout)
     ))
-    config.set_authentication_policy(AuthenticationPolicy())
 
     services = get_service(None)
     userStore = services['store.user']
+    config.set_authentication_policy(AuthenticationPolicy(userStore))
     config.set_authorization_policy(AuthorizationPolicy(userStore))
