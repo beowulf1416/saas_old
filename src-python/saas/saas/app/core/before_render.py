@@ -11,5 +11,3 @@ def add_renderer_globals(event):
 
     if 'email' in session:
         event['email'] = session['email']
-
-    log.debug(event)

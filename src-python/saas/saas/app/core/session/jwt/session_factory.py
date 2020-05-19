@@ -54,6 +54,8 @@ def SessionFactory(
                         algorithms=['HS256'],
                         verify=True
                     )
+                    log.debug('value')
+                    log.debug(value)
                 except ValueError as e:
                     log.error(e)
                     value = None
@@ -112,7 +114,9 @@ def SessionFactory(
                 # domain = 
                 secure = False, # set to true when using https
                 httponly = True,
-                samesite = 'Strict'
+                # ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+                # samesite = 'Strict'
+                samesite = 'Lax'
             )
             return True
 
