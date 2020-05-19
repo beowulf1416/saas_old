@@ -54,8 +54,6 @@ def SessionFactory(
                         algorithms=['HS256'],
                         verify=True
                     )
-                    log.debug('value')
-                    log.debug(value)
                 except ValueError as e:
                     log.error(e)
                     value = None
@@ -75,6 +73,7 @@ def SessionFactory(
             # check if session timed out
             if now - renewed > timeout:
                 # session has timed out, expire the session
+                log.debug('session expired')
                 state = {}
 
             self.created = created
