@@ -20,6 +20,19 @@ class TestAdminClientStore(unittest.TestCase):
         result = self.clientStore.getAll()
         self.assertNotEqual(0, len(result), '{0}'.format(result))
 
-    def test_add_client(self):
-        result = self.clientStore.add('test1', 'test1')
-        self.assertNotEqual(True, result, '{0}'.format(result))
+    def test_add_client_not_unique(self):
+        self.assertRaises(
+            Exception,
+            self.clientStore.add,
+            'test1',
+            'test1'
+        )
+
+    def test_set_active(self):
+        clients = self.clientStore.getAll()
+        num_clients = len(clients)
+        client_id = clients[num_clients - 1][0]
+        try:
+            self.clientStore.setActive(client_id, False)
+        except Exception as e:
+            self.fail(e)
