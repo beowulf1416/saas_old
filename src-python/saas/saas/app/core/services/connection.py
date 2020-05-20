@@ -59,7 +59,7 @@ class ConnectionManager(dict):
         pool = self[name]
 
         import psycopg2.pool
-        if isinstance(connection, psycopg2.pool.ThreadedConnectionPool):
+        if isinstance(pool, psycopg2.pool.ThreadedConnectionPool):
             pool.putconn(connection)
 
 
