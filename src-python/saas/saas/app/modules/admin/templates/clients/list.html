@@ -43,7 +43,8 @@ import { Clients } from '/static/js/helpers/clients.js';
         const client_id = e.detail.clientId;
         Clients.get(client_id).then((r) => {
             if (r.status == 'success') {
-                console.log(r);
+                const url_name = r.json.client.url_name;
+                window.location = `/admin/clients/${url_name}`;
             } else {
                 notifier.add('error', r.message);
             }
