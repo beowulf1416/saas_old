@@ -17,6 +17,7 @@ Administer Clients - Old Client
         <fieldset>
             <legend>Required</legend>
             {{ forms.input('text', 'name', 'name', 'Name' ) }}
+            {{ forms.input('textarea', 'address', 'address', 'Address') }}
         </fieldset>
         <fieldset>
             {{ forms.input('text', 'urlname', 'urlname', 'URL Name' ) }}
@@ -24,3 +25,13 @@ Administer Clients - Old Client
     </form><!-- .form-client -->
 </div><!-- .form-wrapper -->
 {% endblock content %}
+
+{% block sidebar_left %}
+<div class="menu">
+    <div class="menu-label">Clients</div>
+    <ul class="menu-list">
+        <li><a class="nav-link link-admin-clients" title="Administer Client Roles" href="/admin/clients/{{ client.url_name }}/roles">Roles</a></li>
+        <li><a class="nav-link link-admin-clients" title="Administer Client Users" href="/admin/clients/{{ client.url_name }}/users">Users</a></li>
+    </ul><!-- .menu-list -->
+</div><!-- .menu -->
+{% endblock sidebar_left %}

@@ -1,0 +1,43 @@
+{% extends "saas.app:templates/base.html" %}
+
+{% block base_links -%}
+<link rel="stylesheet" href="/static/css/layout.css">
+{% block links %}
+{% endblock links %}
+{%- endblock base_links %}
+
+{% block base_body %}
+<div id="bodywrapper" class="row-wrapper">
+    <div id="rowheader" class="row row-start row-1">
+        <div id="colheader" class="col-wrapper">
+            <div id="hdrleft" class="col col-start col-1">
+                {% block header_left %}
+                <h2>header left</h2>
+                {% endblock header_left %}
+            </div><!-- .col -->
+            <div class="col col-2">
+                {% block header_center %}
+                <h2>header center</h2>
+                {% endblock header_center %}
+            </div><!-- .col -->
+            <div id="hdrright" class="col col-end col-3">
+                {% block header_right %}
+                <h2>header right</h2>
+                {% endblock header_right %}
+            </div><!-- .col -->
+        </div><!-- .col-wrapper -->
+    </div><!-- .row -->
+    <div id="rowcontent" class="row row-2">
+        <div class="col-wrapper">
+            <div id="content" class="col col-0 col-start">
+                {% block content %}
+                <h1>Default</h1>
+                {% endblock content %}
+            </div><!-- .col -->
+        </div><!-- .col-wrapper -->
+    </div><!-- .row -->
+    <div id="rowfooter" class="row row-end row-3">
+        &copy; application_name
+    </div><!-- .row -->
+</div><!-- #wrapper -->
+{% endblock base_body %}

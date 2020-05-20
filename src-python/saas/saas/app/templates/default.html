@@ -1,4 +1,12 @@
-{% extends "saas.app:templates/layout.html" %}
+{% if sidebars is defined %}
+    {% if sidebars %}
+        {% extends "saas.app:templates/layout.html" %}
+    {% else %}
+        {% extends "saas.app:templates/layout_no_sidebars.html" %}
+    {% endif %}
+{% else %}
+    {% extends "saas.app:templates/layout.html" %}
+{% endif %}
 
 {% block links -%}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">

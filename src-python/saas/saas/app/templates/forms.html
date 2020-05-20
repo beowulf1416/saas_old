@@ -1,6 +1,10 @@
 {% macro input(type, id, name, title) %}
     <div class="form-group form-group-{{ name }}">
         <label for="{{ name }}">{{ title }}</label>
+    {% if type == 'textarea' %}
+        <textarea id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }}"></textarea>
+    {% else %}
         <input type="{{ type }}" id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }}" />
-    </div><!-- .form-group -->
+    {% endif %}
+</div><!-- .form-group -->
 {% endmacro %}

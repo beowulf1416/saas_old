@@ -61,7 +61,15 @@ def view_forbidden_json(request):
 def view_exception_html_error(request):
     exception = request.exception
     log.error(exception)
-    return {}
+    log.error(exception.code)
+    request.response.status_int = exception.code
+    return {
+        'code': exception.code,
+        'code_title': exception.title,
+        'detail': exception.detail,
+        'explanation': exception.explanation,
+        'sidebars': False
+    }
 
 @exception_view_config(
     exception.HTTPInternalServerError,
