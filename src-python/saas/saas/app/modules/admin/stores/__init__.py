@@ -6,7 +6,6 @@ from saas.app.modules.admin.stores.clients import ClientsStore
 def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
-    connection = mgr['default']
 
-    clientsStore = ClientsStore(connection)
+    clientsStore = ClientsStore(mgr)
     services['store.admin.clients'] = clientsStore

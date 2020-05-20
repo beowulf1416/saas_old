@@ -11,10 +11,10 @@ def includeme(config):
 
     services = get_service(None)
     mgr = services['connection.manager']
-    connection = mgr['default']
+    # connection = mgr['default']
 
-    userStore = UserStore(connection)
+    userStore = UserStore(mgr)
     services['store.user'] = userStore
 
-    clientStore = ClientStore(connection)
+    clientStore = ClientStore(mgr)
     services['store.client'] = clientStore

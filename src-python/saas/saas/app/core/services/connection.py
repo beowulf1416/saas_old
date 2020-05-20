@@ -25,15 +25,25 @@ class ConnectionManager(dict):
     def _create_connection(self, type: str, db: dict):
         if type == 'postgresql':
             log.debug('attempting to create postgresql connection')
-            import psycopg2
+            import psycopg2.pool
             try:
-                return psycopg2.connect(
+                # return psycopg2.connect(
+                #     "host='{0}' port='{1}' dbname='{2}' user='{3}' password='{4}'".format(
+                #         db['host'],
+                #         db['port'],
+                #         db['dbname'],
+                #         db['dbuser'],
+                #         db['dbpassword']
+                #     )
+                # )
+
+                return psycopg2.pool.ThreadedConnectionPool(2, 5, 
                     "host='{0}' port='{1}' dbname='{2}' user='{3}' password='{4}'".format(
-                        db['host'],
-                        db['port'],
-                        db['dbname'],
-                        db['dbuser'],
-                        db['dbpassword']
+                            db['host'],
+                            db['port'],
+                            db['dbname'],
+                            db['dbuser'],
+                            db['dbpassword']
                     )
                 )
             except KeyError as e:
@@ -44,3 +54,22 @@ class ConnectionManager(dict):
                 raise e
         else:
             log.error('unknown connection type %s', type)
+
+    def getConnection(self, name: str):
+        connection = self[name]
+
+        import psycopg2
+        if isinstance(connection, psycopg2.pool.ThreadedConnectionPool):
+            pool = connection
+            return pool.getconn()
+        else:
+            return connection
+
+    def returnConnection(self, name: str, connection: any):
+        pool = self[name]
+
+        import psycopg2.pool
+        if isinstance(connection, psycopg2.pool.ThreadedConnectionPool):
+            pool.putconn(connection)
+
+
