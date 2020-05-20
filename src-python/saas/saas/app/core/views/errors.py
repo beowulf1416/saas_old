@@ -82,8 +82,6 @@ def view_exception_json_error(request):
     renderer='json',
 )
 def view_exception_json_success(request):
-    log.debug('view_exception_json_success')
-    log.debug(request.exception.body)
     exception = request.exception
     return {
         'status': 'success',
