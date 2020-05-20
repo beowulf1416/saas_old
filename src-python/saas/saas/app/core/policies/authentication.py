@@ -29,16 +29,21 @@ class AuthenticationPolicy(object):
     def effective_principals(self, request):
         session = request.session
         email = session['email'] if 'email' in session else None
-        user = self.userStore.userByEmail(email)
-        user_id = user[0]
         client_id = session['client'] if 'client' in session else None
 
-        principal = {
-            'client_id': client_id,
-            'user_id': user_id
-        }
+        if email is not None and self.userStore.emailExists(email):
+            user = self.userStore.userByEmail(email)
+            user_id = user[0]
 
-        return [Everyone, Authenticated, principal]
+            principal = {
+                'client_id': client_id,
+                'user_id': user_id
+            }
+
+            return [Everyone, Authenticated, principal]
+        else:
+            return None
+
 
     def remember(self, request, userid, **kw):
         log.debug('//todo AuthenticationPolicy::remember()')
