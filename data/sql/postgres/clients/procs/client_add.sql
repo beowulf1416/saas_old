@@ -4,7 +4,7 @@
 create or replace function client_add (
     p_name clients.clients.name%type,
     p_addr clients.clients.address%type,
-    p_url clients.clients.url_name%type,
+    p_url clients.clients.url_name%type
 )
 returns clients.clients.id%type
 as $$
