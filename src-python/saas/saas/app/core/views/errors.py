@@ -55,6 +55,16 @@ def view_forbidden_json(request):
 
 @exception_view_config(
     exception.HTTPInternalServerError,
+    accept='text/html',
+    renderer='saas.app:templates/errors/error.html'
+)
+def view_exception_html_error(request):
+    exception = request.exception
+    log.error(exception)
+    return {}
+
+@exception_view_config(
+    exception.HTTPInternalServerError,
     accept='application/json',
     renderer='json',
 )
