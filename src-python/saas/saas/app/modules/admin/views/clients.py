@@ -20,3 +20,12 @@ def view_clients_default(request):
 )
 def view_clients_list(request):
     return {}
+
+
+@view_config(
+    route_name='admin.clients.add',
+    request_method='GET',
+    renderer='saas.app.modules.admin:templates/clients/add.html'
+)
+def view_client_add(request):
+    return {}

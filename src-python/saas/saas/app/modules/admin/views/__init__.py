@@ -13,3 +13,8 @@ def includeme(config):
         'admin.clients.list',
         '/admin/clients/list'
     )
+
+    config.add_route(
+        'admin.clients.add',
+        '/admin/clients/add'
+    )
