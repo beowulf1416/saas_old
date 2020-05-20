@@ -30,7 +30,7 @@ def SessionFactory(
         _dirty = False
 
         def __init__(self, request):
-            log.debug('SessionCookie::__init__()')
+            # log.debug('SessionCookie::__init__()')
             self._request = request
 
             # flags
