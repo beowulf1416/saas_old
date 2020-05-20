@@ -27,17 +27,7 @@ class ConnectionManager(dict):
             log.debug('attempting to create postgresql connection')
             import psycopg2.pool
             try:
-                # return psycopg2.connect(
-                #     "host='{0}' port='{1}' dbname='{2}' user='{3}' password='{4}'".format(
-                #         db['host'],
-                #         db['port'],
-                #         db['dbname'],
-                #         db['dbuser'],
-                #         db['dbpassword']
-                #     )
-                # )
-
-                return psycopg2.pool.ThreadedConnectionPool(2, 5, 
+                return psycopg2.pool.ThreadedConnectionPool(2, 10, 
                     "host='{0}' port='{1}' dbname='{2}' user='{3}' password='{4}'".format(
                             db['host'],
                             db['port'],
