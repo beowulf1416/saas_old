@@ -21,5 +21,8 @@ def add_renderer_globals(event):
     if 'client' in session:
         client_id = session['client']
         clientStore = services['store.client']
-        client = clientStore.getClient(client_id)
-        event['client_name'] = client[2]
+        try:
+            client = clientStore.getClient(client_id)
+            event['client_name'] = client[2]
+        except Exception as e:
+            log.error(e)

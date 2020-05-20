@@ -31,7 +31,7 @@ def SessionFactory(
 
         def __init__(self, request):
             log.debug('SessionCookie::__init__()')
-            self.request = request
+            self._request = request
 
             # flags
             new = True # assume that this is a new session
@@ -40,14 +40,14 @@ def SessionFactory(
             now = time.time()
             created = renewed = accessed = now
 
-            cookie_value = request.cookies.get(self._cookie_name)
+            cookie_value = self._request.cookies.get(self._cookie_name)
             
             state = {}
             value = None
 
             if cookie_value is not None:
                 try:
-                    jwt_key = self.request.registry.settings['jwt.secret']
+                    jwt_key = self._request.registry.settings['jwt.secret']
                     value = jwt.decode(
                         cookie_value,
                         key=jwt_key,
@@ -86,12 +86,11 @@ def SessionFactory(
         # actually set the cookie
         def _set_cookie(self, response):
             # do not set cookie on exception
-            if self.request.exception is not None:
-                if not isinstance(self.request.exception, exception.HTTPFound):
-                    log.debug(self.request.exception)
+            if self._request.exception is not None:
+                if not isinstance(self._request.exception, exception.HTTPFound):
                     return False
 
-            jwt_key = self.request.registry.settings['jwt.secret']
+            jwt_key = self._request.registry.settings['jwt.secret']
 
             copy = dict(self)
             copy['iat'] = self.created
@@ -127,9 +126,28 @@ def SessionFactory(
 
                 def set_cookie_callback(request, response):
                     self._set_cookie(response)
-                    self.request = None  # explicitly break cycle for gc
+                    self._request = None  # explicitly break cycle for gc
 
-                self.request.add_response_callback(set_cookie_callback)
+                self._request.add_response_callback(set_cookie_callback)
+
+        def invalidate(self):
+            self.clear()
+            def set_cookie_clear_callback(request, response):
+                response.set_cookie(
+                    self._cookie_name,
+                    value = '',
+                    max_age = 0,
+                    path = '/',
+                    secure = False, # set to true when using https
+                    httponly = True,
+                    # ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+                    # samesite = 'Strict'
+                    samesite = 'Lax'
+                )
+                self._request = None
+                return True
+            self._request.add_response_callback(set_cookie_clear_callback)
+
 
         # non-modifying dictionary methods
         get = manage_accessed(dict.get)
