@@ -25,7 +25,8 @@ class UserStore(object):
             c = cn.cursor()
             c.callproc('iam.user_add', [email, name])
             cn.commit()
-            return c.fetchall()
+            [(user_id, )] = c.fetchall()
+            return user_id
         except Exception as e:
             cn.rollback()
             log.error(e)
