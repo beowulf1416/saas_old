@@ -1,7 +1,7 @@
 {% extends "saas.app.modules.admin:templates/default.html" %}
 
 {% block title %}
-Administrater Clients - New Client
+Administer Clients - New Client
 {% endblock title %}
 
 {% block content %}
@@ -19,6 +19,13 @@ Administrater Clients - New Client
             <div class="form-group">
                 <label for="address">Address</label>
                 <textarea id="address" name="address" class="form-input-textarea form-input-address" title="Client Address" placeholder="Address"></textarea>
+            </div><!-- .form-group -->
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                <label for="url">URL Friendly Name</label>
+                <input type="text" id="url" name="url" class="form-input-text form-input-url" title="URL Friendly Name" placeholder="URL Friendly Name" pattern="^[a-z0-9._+-]+$"/>
+                <div class="text-help">Only lowercase letters and numbers are allowed. No spaces and symbols.</div>
             </div><!-- .form-group -->
         </fieldset>
         <button type="button" id="save" class="btn btn-primary" title="Save">Save</button>
@@ -39,7 +46,8 @@ import { Clients } from '/static/js/helpers/clients.js';
     btnSave.addEventListener('click', function(e) {
         const txtName = document.querySelector('input#name');
         const txtAddr = document.querySelector('textarea#address');
-        Clients.add(txtName.value, txtAddr.value).then((r) => {
+        const txtUrl = document.querySelector('input#url');
+        Clients.add(txtName.value, txtAddr.value, txtUrl.value).then((r) => {
             if (r.status == 'success') {
                 window.location = '/admin/clients/list';
             } else {

@@ -39,6 +39,17 @@ import { Clients } from '/static/js/helpers/clients.js';
         window.location = '/admin/clients/add';
     });
 
+    ctbl.addEventListener('onselectclient', function(e) {
+        const client_id = e.detail.clientId;
+        Clients.get(client_id).then((r) => {
+            if (r.status == 'success') {
+                console.log(r);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    });
+
     ctbl.addEventListener('onupdateclientactive', function(e) {
         const clientId = e.detail.clientId;
         const active = e.detail.active == 'true' ? false : true;
