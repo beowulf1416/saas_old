@@ -6,6 +6,9 @@ Administrater Clients - New Client
 
 {% block content %}
 <h1>New Client</h1>
+<div class="notifications-wrapper">
+    <notification-list></notification-list>
+</div><!-- .notifications-wrapper -->
 <div class="client-wrapper">
     <form class="form-client">
         <fieldset>
@@ -15,7 +18,7 @@ Administrater Clients - New Client
             </div><!-- .form-group -->
             <div class="form-group">
                 <label for="address">Address</label>
-                <textarea id="address" name="address" class="form-input-textarea form-input-address" title="Client Address"></textarea>
+                <textarea id="address" name="address" class="form-input-textarea form-input-address" title="Client Address" placeholder="Address"></textarea>
             </div><!-- .form-group -->
         </fieldset>
         <button type="button" id="save" class="btn btn-primary" title="Save">Save</button>
@@ -31,7 +34,24 @@ Administrater Clients - New Client
 'use strict';
 import { Clients } from '/static/js/helpers/clients.js';
 (function(){
-    
+    const notifier = document.querySelector('notification-list');
+    const btnSave = document.querySelector('button#save');
+    btnSave.addEventListener('click', function(e) {
+        const txtName = document.querySelector('input#name');
+        const txtAddr = document.querySelector('textarea#address');
+        Clients.add(txtName.value, txtAddr.value).then((r) => {
+            if (r.status == 'success') {
+                window.location = '/admin/clients/list';
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    });
+
+    const btnCancel = document.querySelector('button#cancel');
+    btnCancel.addEventListener('click', function(e) {
+        window.location = '/admin/clients/list';
+    });
 })();
 </script>
 {% endblock scripts %}
