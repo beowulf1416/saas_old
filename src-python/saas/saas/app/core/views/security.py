@@ -8,6 +8,16 @@ from pyramid.view import view_config
 
 
 @view_config(
+    route_name='security.signout',
+    request_method='GET',
+    renderer='saas.app.core:templates/security/signout.html'
+)
+def view_signout(request):
+    session = request.session
+    session.invalidate()
+    return {}
+
+@view_config(
     route_name='security.signin',
     renderer='saas.app.core:templates/security/signin.html',
     request_method='GET'
