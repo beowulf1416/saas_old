@@ -62,6 +62,7 @@ declare
     default_client_id clients.clients.id%type;
     tmp_rid iam.roles.id%type;
 begin
+    -- get default client
     select
         a.id into default_client_id
     from clients.clients a
@@ -89,5 +90,38 @@ end
 $$
 language plpgsql;
 
+
+-- create default role for default client
+do $$
+declare
+    default_client_id clients.clients.id%type;
+    tmp_rid iam.roles.id%type;
+    tmp_pid iam.permissions.id%type;
+begin
+    -- get default client
+    select
+        a.id into default_client_id
+    from clients.clients a
+    where a.name = 'default';
+
+    --create everyone role
+    insert into iam.roles (client_id, name, active) values
+    (default_client_id, 'everyone', true)
+    on conflict do nothing
+    returning id into tmp_rid;
+
+    -- retrieve user.authenticated permission id
+    select
+        a.id into tmp_pid
+    from iam.permissions a
+    where a.name = 'user.authenticated';
+
+    -- assign permission to everyone role
+    insert into iam.role_permissions (client_id, role_id, permission_id)
+    values (default_client_id, tmp_rid, tmp_pid)
+    on conflict do nothing;
+end
+$$
+language plpgsql;
 
 set schema 'public';
