@@ -24,10 +24,10 @@ class UserStore(object):
         try:
             c = cn.cursor()
             c.callproc('iam.user_add', [email, name])
-            self._connection.commit()
+            cn.commit()
             return c.fetchall()
         except Exception as e:
-            self._connection.rollback()
+            cn.rollback()
             log.error(e)
             raise Exception('An error occured while adding user')
         finally:

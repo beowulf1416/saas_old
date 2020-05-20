@@ -2,6 +2,9 @@ import unittest
 
 from pyramid import testing
 
+import string
+import random
+
 
 class TestUserStore(unittest.TestCase):
 
@@ -15,21 +18,43 @@ class TestUserStore(unittest.TestCase):
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
-        self.userStore = UserStore(self.mgr['default'])
-        self.clientStore = ClientStore(self.mgr['default'])
+        self.userStore = UserStore(self.mgr)
+        self.clientStore = ClientStore(self.mgr)
 
-
-    def test_email_exists(self):
-        result = self.userStore.emailExists('beowulf1416@gmail.com')
-        self.assertEqual(True, result, '{0}'.format(result))
+    def generate_random_str(self, length: int):
+        allowed = string.ascii_lowercase + string.digits
+        return ''.join(random.choice(allowed) for i in range(length))
 
     def test_user_add(self):
-        result = self.userStore.userAdd('test2@test2.com', 'test2')
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        result = self.userStore.userAdd(email, random_name)
         self.assertNotEqual(None, result)
 
+    def test_user_add_duplicate(self):
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        result = self.userStore.userAdd(email, random_name)
+        self.assertRaises(
+            Exception,
+            self.userStore.userAdd,
+            email,
+            random_name
+        )
+
+    def test_email_exists(self):
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        result = self.userStore.userAdd(email, random_name)
+        result = self.userStore.emailExists(email)
+        self.assertEqual(True, result, '{0}'.format(result))
+
     def test_user_by_email(self):
-        result = self.userStore.userByEmail('test1@test1.com')
-        self.assertEqual('test1@test1.com', result[3], '{0}'.format(result))
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        result = self.userStore.userAdd(email, random_name)
+        result = self.userStore.userByEmail(email)
+        self.assertEqual(email, result[3], '{0}'.format(result))
 
     def test_user_clients(self):
         user = self.userStore.userByEmail('beowulf1416@gmail.com')
