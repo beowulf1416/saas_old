@@ -3,16 +3,6 @@ log = logging.getLogger(__name__)
 
 
 def includeme(config):
-    config.add_notfound_view(
-        view_not_found,
-        renderer = 'saas.app:templates/errors/404.html'
-    )
-
-    config.add_forbidden_view(
-        view_forbidden,
-        renderer = 'saas.app:templates/errors/403.html'
-    )
-
     config.add_route(
         'home',
         '/'
