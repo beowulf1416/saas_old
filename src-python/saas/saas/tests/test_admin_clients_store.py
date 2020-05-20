@@ -47,9 +47,8 @@ class TestAdminClientStore(unittest.TestCase):
         
 
     def test_set_active(self):
-        clients = self.clientStore.getAll()
-        num_clients = len(clients)
-        client_id = clients[num_clients - 1][0]
+        random_name = self.generate_random_str(10)
+        client_id = self.clientStore.add(random_name, random_name, random_name)
         try:
             self.clientStore.setActive(client_id, False)
         except Exception as e:

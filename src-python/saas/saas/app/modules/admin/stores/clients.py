@@ -25,8 +25,8 @@ class ClientsStore(object):
             c = cn.cursor()
             c.callproc('clients.client_add', [name, address, url])
             cn.commit()
-            result = c.fetchall()
-            return result
+            [(client_id, )] = c.fetchall()
+            return client_id
         except Exception as e:
             cn.rollback()
             log.error(e)
@@ -43,7 +43,6 @@ class ClientsStore(object):
         except Exception as e:
             cn.rollback()
             log.error(e)
-            self._connection.rollback()
             raise Exception('An error occured while setting client active status')
         finally:
             self._mgr.returnConnection('default', cn)
