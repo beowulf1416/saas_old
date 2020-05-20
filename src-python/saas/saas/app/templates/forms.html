@@ -1,0 +1,6 @@
+{% macro input(type, id, name, title) %}
+    <div class="form-group form-group-{{ name }}">
+        <label for="{{ name }}">{{ title }}</label>
+        <input type="{{ type }}" id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }}" />
+    </div><!-- .form-group -->
+{% endmacro %}

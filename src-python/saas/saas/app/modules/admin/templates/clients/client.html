@@ -5,5 +5,22 @@ Administer Clients - Old Client
 {% endblock title %}
 
 {% block content %}
+{% import 'saas.app:templates/forms.html' as forms %}
 <h1>Old Client</h1>
+<div class="form-wrapper">
+    <form class="form-client">
+        <fieldset class="actions">
+            <div class="navbar navbar-icons">
+                <a id="asave" class="nav-link" href="#asave" title="Save">Save</a>
+            </div><!-- .navbar -->
+        </fieldset>
+        <fieldset>
+            <legend>Required</legend>
+            {{ forms.input('text', 'name', 'name', 'Name' ) }}
+        </fieldset>
+        <fieldset>
+            {{ forms.input('text', 'urlname', 'urlname', 'URL Name' ) }}
+        </fieldset>
+    </form><!-- .form-client -->
+</div><!-- .form-wrapper -->
 {% endblock content %}
