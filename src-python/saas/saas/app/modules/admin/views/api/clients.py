@@ -9,8 +9,7 @@ import json
 
 @view_config(
     route_name='api.clients.all',
-    request_method='POST',
-    renderer='json'
+    request_method='POST'
 )
 def api_clients_all(request):
     clients = []
@@ -19,31 +18,50 @@ def api_clients_all(request):
         clientsStore = services['store.admin.clients']
         result = clientsStore.getAll()
         clients = [{ 'id': c[0], 'active': c[1], 'name': c[2]} for c in result]
-        # return {
-        #     'status': 'success',
-        #     'message': '{0} clients'.format(len(clients)),
-        #     'json': json.dumps(result)
-        # }
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
             detail=e,
             explanation=e
         )
-        # return {
-        #     'status': 'error',
-        #     'message': 'An error occured while retrieving clients',
-        #     'json': None
-        # }
     raise exception.HTTPOk(
         detail='{0} clients'.format(len(clients)),
         body={ 'clients': clients }
     )
 
 @view_config(
+    route_name='api.clients.add',
+    request_method='POST'
+)
+def view_clients_add(request):
+    params = request.json_body
+    name = params['name'] if 'name' in params else None
+    address = params['address'] if 'address' in params else None
+
+    if name is None or address is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client name and address is required'
+        )
+
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        result = clientsStore.add(name, address)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+    raise exception.HTTPOk(
+        detail='Client added',
+        body={'message': 'Client added'}
+    )
+    
+
+@view_config(
     route_name='api.clients.setactive',
-    request_method='POST',
-    # renderer='json'
+    request_method='POST'
 )
 def view_client_set_active(request):
     params = request.json_body
