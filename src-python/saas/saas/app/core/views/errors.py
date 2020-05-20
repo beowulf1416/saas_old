@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 import json
 
 from pyramid.view import notfound_view_config, forbidden_view_config, exception_view_config
+import pyramid.httpexceptions as exception
 
 
 @notfound_view_config(
@@ -49,4 +50,43 @@ def view_forbidden_json(request):
         'json': {
             'error': 'forbidden'
         }
+    }
+
+
+@exception_view_config(
+    exception.HTTPInternalServerError,
+    accept='application/json',
+    renderer='json',
+)
+@exception_view_config(
+    exception.HTTPBadRequest,
+    accept='application/json',
+    renderer='json',
+)
+def view_exception_json_error(request):
+    exception = request.exception
+    return {
+        'status': 'error',
+        'message': exception.detail,
+        'json': {
+            'code': exception.code,
+            'title': exception.title,
+            'explanation': exception.explanation
+        }
+    }
+
+
+@exception_view_config(
+    exception.HTTPOk,
+    accept='application/json',
+    renderer='json',
+)
+def view_exception_json_success(request):
+    log.debug('view_exception_json_success')
+    log.debug(request.exception.body)
+    exception = request.exception
+    return {
+        'status': 'success',
+        'message': exception.detail,
+        'json': exception.body
     }
