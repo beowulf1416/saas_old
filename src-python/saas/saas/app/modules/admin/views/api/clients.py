@@ -9,7 +9,8 @@ import json
 
 @view_config(
     route_name='api.clients.all',
-    request_method='POST'
+    request_method='POST',
+    permission='admin.clients'
 )
 def api_clients_all(request):
     clients = []
@@ -17,7 +18,10 @@ def api_clients_all(request):
     try:
         clientsStore = services['store.admin.clients']
         result = clientsStore.getAll()
-        clients = [{ 'id': c[0], 'active': c[1], 'name': c[2]} for c in result]
+        clients = [
+            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3], 'url_name': c[4] } 
+            for c in result
+        ]
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
@@ -31,23 +35,25 @@ def api_clients_all(request):
 
 @view_config(
     route_name='api.clients.add',
-    request_method='POST'
+    request_method='POST',
+    permission='admin.clients'
 )
 def view_clients_add(request):
     params = request.json_body
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
+    url = params['url'] if 'url' in params else None
 
-    if name is None or address is None:
+    if name is None or address is None or url is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client name and address is required'
+            explanation='Client name, address and URL friendly name is required'
         )
 
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        result = clientsStore.add(name, address)
+        result = clientsStore.add(name, address, url)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=e,
@@ -60,8 +66,53 @@ def view_clients_add(request):
     
 
 @view_config(
+    route_name='api.clients.get',
+    request_method='POST',
+    permission='admin.clients'
+)
+def view_clients_get(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id is required'
+        )
+    
+    services = request.services()
+    client = None
+    try:
+        clientsStore = services['store.admin.clients']
+        client = clientsStore.get(client_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    if client is None:
+        raise exception.HTTPInternalServerError(
+            detail='Client not found',
+            explanation='Client not found'
+        )
+    else:
+        raise exception.HTTPOk(
+            detail='client',
+            body={'client': { 
+                'id': client[0],
+                'active': client[1],
+                'name': client[2],
+                'address': client[3],
+                'url_name': client[4]
+            }}
+        )
+
+
+@view_config(
     route_name='api.clients.setactive',
-    request_method='POST'
+    request_method='POST',
+    permission='admin.clients'
 )
 def view_client_set_active(request):
     params = request.json_body

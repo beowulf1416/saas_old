@@ -7,5 +7,5 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    clientsStore = ClientsStore(mgr)
+    clientsStore = ClientsStore(mgr, 'default')
     services['store.admin.clients'] = clientsStore

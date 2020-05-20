@@ -10,6 +10,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.get',
+        '/api/clients/get'
+    )
+
+    config.add_route(
         'api.clients.setactive',
         '/api/clients/active'
     )

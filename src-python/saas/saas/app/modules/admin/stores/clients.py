@@ -3,11 +3,12 @@ log = logging.getLogger(__name__)
 
 class ClientsStore(object):
 
-    def __init__(self, manager):
+    def __init__(self, manager, name):
         self._mgr = manager
+        self._name = name
 
     def getAll(self):
-        cn = self._mgr.getConnection('default')
+        cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
             c.callproc('clients.clients_all')
@@ -17,10 +18,10 @@ class ClientsStore(object):
             log.error(e)
             raise Exception('An error occured while retrieving all clients')
         finally:
-            self._mgr.returnConnection('default', cn)
+            self._mgr.returnConnection(self._name, cn)
 
     def add(self, name: str, address: str, url: str):
-        cn = self._mgr.getConnection('default')
+        cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
             c.callproc('clients.client_add', [name, address, url])
@@ -32,10 +33,23 @@ class ClientsStore(object):
             log.error(e)
             raise Exception('An error occured while adding a client')
         finally:
-            self._mgr.returnConnection('default', cn)
+            self._mgr.returnConnection(self._name, cn)
+
+    def get(self, client_id: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('clients.clients_get', [client_id, ])
+            (client, ) = c.fetchall()
+            return client
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
 
     def setActive(self, clientId: str, active: bool):
-        cn = self._mgr.getConnection('default')
+        cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
             c.callproc('clients.client_set_active', [clientId, active])
@@ -45,4 +59,4 @@ class ClientsStore(object):
             log.error(e)
             raise Exception('An error occured while setting client active status')
         finally:
-            self._mgr.returnConnection('default', cn)
+            self._mgr.returnConnection(self._name, cn)
