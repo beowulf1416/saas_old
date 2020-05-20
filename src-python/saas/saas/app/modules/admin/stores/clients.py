@@ -19,14 +19,16 @@ class ClientsStore(object):
         finally:
             self._mgr.returnConnection('default', cn)
 
-    def add(self, name: str, address: str):
+    def add(self, name: str, address: str, url: str):
         cn = self._mgr.getConnection('default')
         try:
             c = cn.cursor()
-            c.callproc('clients.client_add', [name, address])
+            c.callproc('clients.client_add', [name, address, url])
+            cn.commit()
             result = c.fetchall()
             return result
         except Exception as e:
+            cn.rollback()
             log.error(e)
             raise Exception('An error occured while adding a client')
         finally:
@@ -37,8 +39,9 @@ class ClientsStore(object):
         try:
             c = cn.cursor()
             c.callproc('clients.client_set_active', [clientId, active])
-            self._connection.commit()
+            cn.commit()
         except Exception as e:
+            cn.rollback()
             log.error(e)
             self._connection.rollback()
             raise Exception('An error occured while setting client active status')
