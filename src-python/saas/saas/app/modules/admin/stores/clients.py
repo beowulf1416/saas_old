@@ -48,6 +48,19 @@ class ClientsStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
+    def getByUrlName(self, url_name: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('clients.client_by_url_name', [url_name, ])
+            [client, ] = c.fetchall()
+            return client
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client by url name')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
     def setActive(self, clientId: str, active: bool):
         cn = self._mgr.getConnection(self._name)
         try:
