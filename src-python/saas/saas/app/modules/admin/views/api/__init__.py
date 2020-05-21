@@ -35,6 +35,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.roles.active',
+        '/api/clients/roles/active'
+    )
+
+    config.add_route(
         'api.clients.users.all',
         '/api/clients/users/all'
     )

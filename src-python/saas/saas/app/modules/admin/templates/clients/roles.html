@@ -99,6 +99,18 @@ import { Roles } from '/static/js/helpers/roles.js';
             });
         }
     });
+
+    rtbl.addEventListener('onupdateroleactive', function(e) {
+        const roleId = e.detail.roleId;
+        const active = e.detail.active == 'true' ? false : true;
+        Roles.setActive(roleId, active).then((r) => {
+            if (r.status == 'success') {
+                refreshRoles();
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    });
 })();
 </script>
 {% endblock scripts %}

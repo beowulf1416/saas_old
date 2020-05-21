@@ -219,6 +219,39 @@ def view_clients_roles_add(request):
     )
 
 @view_config(
+    route_name='api.clients.roles.active',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_role_active(request):
+    params = request.json_body
+    role_id = params['roleId'] if 'roleId' in params else None
+    active = params['active'] if 'active' in params else None
+
+    if role_id is None or active is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Role Id and Active status is required'
+        )
+
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        clientsStore.roleSetActive(role_id, active)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    raise exception.HTTPOk(
+        detail='Client Role active status updated',
+        body={'message': 'Client Role active status updated'}
+    )
+
+@view_config(
     route_name='api.clients.users.all',
     request_method='POST',
     accept='application/json',

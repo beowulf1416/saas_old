@@ -105,6 +105,19 @@ class ClientsStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
+    def roleSetActive(self, roleId: str, active: bool):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.role_set_active', [roleId, active])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while setting client role active status')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
     def allUsers(self, clientId: str):
         cn = self._mgr.getConnection(self._name)
         try:
