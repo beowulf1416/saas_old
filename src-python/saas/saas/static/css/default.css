@@ -1,0 +1,8 @@
+/** common styles **/
+body {
+    background-color: #fefefe;
+}
+
+.hide {
+    display: none;
+}
