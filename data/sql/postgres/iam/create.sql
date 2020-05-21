@@ -76,7 +76,8 @@ begin
     select 
         a.id into tmp_rid
     from iam.roles a
-    where a.client_id = default_client_id;
+    where a.client_id = default_client_id
+        and a.name = 'system administrator';
 
     -- give all permissions to sysad role
     insert into iam.role_permissions (role_id, permission_id, client_id)
