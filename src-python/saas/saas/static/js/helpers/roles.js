@@ -31,5 +31,21 @@ class Roles {
         })
         .then((r) => r.json());
     }
+
+    static setActive(roleId, active) {
+        return fetch('/api/clients/roles/active', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                roleId: roleId,
+                active: active
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Roles };
