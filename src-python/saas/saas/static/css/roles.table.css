@@ -1,0 +1,4 @@
+table.tbl-roles th.col-hidden,
+table.tbl-roles td.col-hidden {
+    display: none;
+}
