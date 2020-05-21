@@ -1,5 +1,89 @@
 {% extends "saas.app.modules.admin:templates/default.html" %}
 
+{% import "saas.app:templates/forms.html" as forms %}
+
 {% block title %}
-Client Users
+Client {{ client.name }} - Users
 {% endblock title %}
+
+{% block content %}
+<notification-list></notification-list>
+<div class="users-wrapper">
+    <users-table show-add></users-table>
+</div><!-- .users-wrapper -->
+<div class="modal-wrapper">
+    <modal-dialog>
+        <div class="form-wrapper">
+            <div class="form-header">Add User</div>
+            <div class="form-body">
+                <notification-list></notification-list>
+                <form class="form-user">
+                    <fieldset>
+                        {{ forms.input('email', 'email', 'email', 'Email') }}
+                    </fieldset>
+                    <button type="button" id="save" class="btn btn-primary">Save</button>
+                    <button type="button" id="cancel" class="btn">Cancel</button> 
+                </form>
+            </div><!-- .form-body -->
+        </div><!-- .form-wrapper -->
+    </modal-dialog>
+</div>
+{% endblock content %}
+
+{% block sidebar_left %}
+<div class="menu">
+    <div class="menu-label">Clients</div>
+    <ul class="menu-list">
+        <li><a class="nav-link link-admin-clients" title="Administer Client Roles" href="{{ request.route_path('admin.clients.roles', client=client.url_name) }}">Roles</a></li>
+        <li><a class="nav-link link-admin-clients" title="Administer Client Users" href="{{ request.route_path('admin.clients.users', client=client.url_name) }}">Users</a></li>
+    </ul><!-- .menu-list -->
+</div><!-- .menu -->
+{% endblock sidebar_left %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/users.table.js"></script>
+<script type="module" src="/static/js/components/modal.dialog.js"></script>
+<script type="module">
+'use strict';
+import { Users } from '/static/js/helpers/users.js';
+(function(){
+    const notifier = document.querySelector('notification-list')
+    const utbl = document.querySelector('users-table');
+
+    const refreshUsers = function() {
+        Users.all('{{ client.id }}').then((r) => {
+            if (r.status == 'success') {
+                utbl.setUsers(r.json.users);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    };
+
+    utbl.addEventListener('onerror', function(e) {
+        notifier.add('error', e);
+    });
+
+    utbl.addEventListener('onadduser', function(e) {
+        const md = document.querySelector('modal-dialog');
+        const dlg = md.show();
+
+        const save = dlg.querySelector('button#save:not(.processed)');
+        if (save != null) {
+            save.classList.add('processed');
+            save.addEventListener('click', function(e) {
+                console.log('//todo');
+            });
+        }
+
+        const cancel = dlg.querySelector('button#cancel:not(.processed)');
+        if (cancel != null) {
+            cancel.classList.add('processed');
+            cancel.addEventListener('click', function(e) {
+                md.hide();
+            });
+        }
+    });
+})();
+</script>

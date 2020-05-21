@@ -1,0 +1,4 @@
+table.tbl-users th.col-hidden,
+table.tbl-users td.col-hidden {
+    display: none;
+}

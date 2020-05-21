@@ -33,3 +33,8 @@ def includeme(config):
         'api.clients.roles.add',
         '/api/clients/roles/add'
     )
+
+    config.add_route(
+        'api.clients.users.all',
+        '/api/clients/users/all'
+    )

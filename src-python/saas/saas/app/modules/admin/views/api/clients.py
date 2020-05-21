@@ -216,3 +216,29 @@ def view_clients_roles_add(request):
         detail='Client Role added',
         body={'message': 'Client Role added'}
     )
+
+@view_config(
+    route_name='api.clients.users.all',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_users_all(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    users = []
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
