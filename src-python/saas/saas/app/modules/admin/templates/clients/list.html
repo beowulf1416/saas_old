@@ -36,7 +36,7 @@ import { Clients } from '/static/js/helpers/clients.js';
     refreshClients();
 
     ctbl.addEventListener('onaddclient', function(e) {
-        window.location = '/admin/clients/add';
+        window.location = '{{ request.route_path('admin.clients.add') }}';
     });
 
     ctbl.addEventListener('onselectclient', function(e) {
