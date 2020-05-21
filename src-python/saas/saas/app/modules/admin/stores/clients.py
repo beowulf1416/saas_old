@@ -73,3 +73,30 @@ class ClientsStore(object):
             raise Exception('An error occured while setting client active status')
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+
+    def allRoles(self, clientId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('clients.client_roles_all', [clientId, ])
+            result = c.fetchall()
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+
+    def addRole(self, clientId: str, name: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('clients.role_add', [clientId, name])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while adding client role')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
