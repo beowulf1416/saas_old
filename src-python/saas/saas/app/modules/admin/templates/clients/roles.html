@@ -11,6 +11,9 @@ Client {{ client.name }} - Roles
 <div class="roles-wrapper">
     <roles-table show-add></roles-table>
 </div><!-- .roles-wrapper -->
+<div class="permissions-wrapper hide">
+    <permissions-table show-add hide-active></permissions-table>
+</div>
 <div class="modal-wrapper">
     <modal-dialog>
         <div class="form-wrapper">
@@ -43,6 +46,7 @@ Client {{ client.name }} - Roles
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/roles.table.js"></script>
+<script type="module" src="/static/js/components/permissions.table.js"></script>
 <script type="module" src="/static/js/components/modal.dialog.js"></script>
 <script type="module">
 'use strict';
@@ -50,6 +54,7 @@ import { Roles } from '/static/js/helpers/roles.js';
 (function(){
     const notifier = document.querySelector('notification-list')
     const rtbl = document.querySelector('roles-table')
+    const ptbl = document.querySelector('permissions-table');
 
     const refreshRoles = function() {
         Roles.all('{{ client.id }}').then((r) => {
@@ -60,6 +65,19 @@ import { Roles } from '/static/js/helpers/roles.js';
             }
         });
     };
+
+    const refreshPermissions = function(roleId) {
+        const wrapper = document.querySelector('div.permissions-wrapper');
+        wrapper.classList.remove('hide');
+        Roles.getPermissions('{{ client.id }}', roleId).then((r) => {
+            if (r.status == 'success') {
+                ptbl.setPermissions(r.json.permissions);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    };
+
     refreshRoles();
 
     rtbl.addEventListener('onerror', function(e) {
@@ -110,6 +128,11 @@ import { Roles } from '/static/js/helpers/roles.js';
                 notifier.add('error', r.message);
             }
         });
+    });
+
+    rtbl.addEventListener('onselectrole', function(e) {
+        const roleId = e.detail.roleId;
+        refreshPermissions(roleId);
     });
 })();
 </script>

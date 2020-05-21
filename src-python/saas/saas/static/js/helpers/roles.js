@@ -48,7 +48,7 @@ class Roles {
         .then((r) => r.json());
     }
 
-    static getPermissions(roleId) {
+    static getPermissions(clientId, roleId) {
         return fetch('/api/clients/roles/permissions', {
             method: 'POST',
             credentials: 'same-origin',
@@ -57,6 +57,7 @@ class Roles {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                clientId: clientId,
                 roleId: roleId
             })
         })

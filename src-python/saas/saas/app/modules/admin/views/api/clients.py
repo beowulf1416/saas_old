@@ -259,19 +259,20 @@ def view_clients_role_active(request):
 )
 def view_clients_roles_permissions(request):
     params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
     role_id = params['roleId'] if 'roleId' in params else None
 
-    if role_id is None:
+    if client_id is None or role_id is None:
         raise exception.HTTPBadRequest(
-            detail='Missing required parameter',
-            explanation='Role Id is required'
+            detail='Missing required parameters',
+            explanation='Client Id and Role Id is required'
         )
 
     permissions = []
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        result = clientsStore.rolePermissions(role_id)
+        result = clientsStore.rolePermissions(client_id, role_id)
         permissions = [{
             'id': r[0],
             'active': r[1],
