@@ -14,7 +14,6 @@ returns table (
 as $$
 begin
     return query
-    return query
     select
         a.id,
         a.active,

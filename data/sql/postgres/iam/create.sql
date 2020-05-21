@@ -107,8 +107,12 @@ begin
     --create everyone role
     insert into iam.roles (client_id, name, active) values
     (default_client_id, 'everyone', true)
-    on conflict do nothing
-    returning id into tmp_rid;
+    on conflict do nothing;
+
+    select 
+        a.id into tmp_rid
+    from iam.roles a
+    where a.name = 'everyone';
 
     -- retrieve user.authenticated permission id
     select
