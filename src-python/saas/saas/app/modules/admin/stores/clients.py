@@ -1,9 +1,12 @@
 import logging
 log = logging.getLogger(__name__)
 
+from saas.app.core.services.connection import ConnectionManager
+
+
 class ClientsStore(object):
 
-    def __init__(self, manager, name):
+    def __init__(self, manager: ConnectionManager, name: str):
         self._mgr = manager
         self._name = name
 
