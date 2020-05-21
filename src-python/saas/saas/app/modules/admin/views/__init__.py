@@ -1,4 +1,9 @@
+import logging
+log = logging.getLogger(__name__)
+
 def includeme(config):
+    log.info('including: saas.app.modules.admin.views')
+
     config.add_route(
         'admin.dashboard',
         '/admin'
