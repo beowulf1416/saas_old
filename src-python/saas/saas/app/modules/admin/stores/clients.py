@@ -104,3 +104,29 @@ class ClientsStore(object):
             raise Exception('An error occured while adding client role')
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+    def allUsers(self, clientId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            result = c.callproc('iam.client_users_all', [clientId, ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client users')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+    def addUser(self, clientId: str, userId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.client_user_add', [clientId, userId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while adding client user')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+        

@@ -88,3 +88,10 @@ class TestAdminClientStore(unittest.TestCase):
             roles = self.clientStore.allRoles(client_id)
         except Exception as e:
             self.fail(e)
+
+    def test_client_get_users(self):
+        try:
+            (client_id, active, name, address, url_name) = self.cStore.getDefaultClient()
+            roles = self.clientStore.allUsers(client_id)
+        except Exception as e:
+            self.fail(e)
