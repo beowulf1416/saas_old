@@ -3,3 +3,25 @@
 {% block title %}
 Client Roles
 {% endblock title %}
+
+{% block content %}
+<notification-list></notification-list>
+<div class="roles-wrapper">
+    <roles-table show-add></roles-table>
+</div><!-- .roles-wrapper -->
+{% endblock content %}
+
+{% block sidebar_left %}
+<div class="menu">
+    <div class="menu-label">Clients</div>
+    <ul class="menu-list">
+        <li><a class="nav-link link-admin-clients" title="Administer Client Roles" href="{{ request.route_path('admin.clients.roles', client=client.url_name) }}">Roles</a></li>
+        <li><a class="nav-link link-admin-clients" title="Administer Client Users" href="{{ request.route_path('admin.clients.users', client=client.url_name) }}">Users</a></li>
+    </ul><!-- .menu-list -->
+</div><!-- .menu -->
+{% endblock sidebar_left %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/roles.table.js"></script>
+{% endblock scripts %}

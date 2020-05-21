@@ -1,4 +1,18 @@
-{% extends '/templates/layout.html' %}
+{% extends '/templates/default.html' %}
+
+{% block links -%}
+<link rel="stylesheet" href="/static/css/clients/clients.css">
+{%- endblock links -%}
+
+{% block content_left %}
+<div class="sidebar menu">
+    <div class="menu-label">General</div>
+    <ul class="menu-list">
+        <li><a title="Roles" class="nav-link" href="/admin/clients/roles">Roles</a></li>
+        <li><a title="Users" class="nav-link" href="/admin/clients/users">Users</a></li>
+    </ul><!-- .menu-list -->
+</div><!-- .sidebar -->
+{% endblock content_left %}
 
 {% block content %}
 <h1>Clients Admin</h1>

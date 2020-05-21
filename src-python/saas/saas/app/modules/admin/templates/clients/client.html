@@ -30,8 +30,8 @@ Administer Clients - Old Client
 <div class="menu">
     <div class="menu-label">Clients</div>
     <ul class="menu-list">
-        <li><a class="nav-link link-admin-clients" title="Administer Client Roles" href="/admin/clients/{{ client.url_name }}/roles">Roles</a></li>
-        <li><a class="nav-link link-admin-clients" title="Administer Client Users" href="/admin/clients/{{ client.url_name }}/users">Users</a></li>
+        <li><a class="nav-link link-admin-clients" title="Administer Client Roles" href="{{ request.route_path('admin.clients.roles', client=client.url_name) }}">Roles</a></li>
+        <li><a class="nav-link link-admin-clients" title="Administer Client Users" href="{{ request.route_path('admin.clients.users', client=client.url_name) }}">Users</a></li>
     </ul><!-- .menu-list -->
 </div><!-- .menu -->
 {% endblock sidebar_left %}
