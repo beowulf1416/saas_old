@@ -13,11 +13,13 @@ class TestAdminClientStore(unittest.TestCase):
 
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.modules.admin.stores.clients import ClientsStore
+        from saas.app.core.stores.client import ClientStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
         self.clientStore = ClientsStore(self.mgr)
+        self.cStore = ClientStore(self.mgr)
 
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
@@ -68,5 +70,21 @@ class TestAdminClientStore(unittest.TestCase):
         client_id = self.clientStore.add(random_name, random_name, random_name)
         try:
             self.clientStore.setActive(client_id, False)
+        except Exception as e:
+            self.fail(e)
+
+
+    def test_client_add_role(self):
+        try:
+            (client_id, active, name, address) = self.cStore.getDefaultClient()
+            random_name = self.generate_random_str(10)
+            self.clientsStore.addRole(client_id, random_name)
+        except Exception as e:
+            self.fail(e)
+
+    def test_client_get_roles(self):
+        try:
+            (client_id, active, name, address) = self.cStore.getDefaultClient()
+            roles = self.clientsStore.allRoles(client_id)
         except Exception as e:
             self.fail(e)
