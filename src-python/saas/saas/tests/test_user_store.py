@@ -18,8 +18,8 @@ class TestUserStore(unittest.TestCase):
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
-        self.userStore = UserStore(self.mgr)
-        self.clientStore = ClientStore(self.mgr)
+        self.userStore = UserStore(self.mgr, 'default')
+        self.clientStore = ClientStore(self.mgr, 'default')
 
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
