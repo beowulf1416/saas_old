@@ -51,8 +51,7 @@ import { Roles } from '/static/js/helpers/roles.js';
     const refreshRoles = function() {
         Roles.all('{{ client.id }}').then((r) => {
             if (r.status == 'success') {
-                roles = r.json.roles;
-                rtbl.setRoles(roles);
+                rtbl.setRoles(r.json.roles);
             } else {
                 notifier.add('error', r.message);
             }

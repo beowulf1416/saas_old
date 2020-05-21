@@ -166,7 +166,11 @@ def view_clients_roles_all(request):
     try:
         clientsStore = services['store.admin.clients']
         result = clientsStore.allRoles(client_id)
-        roles = result
+        roles = [{
+            'id': r[0],
+            'active': r[1],
+            'name': r[2]
+        } for r in result]
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=e,

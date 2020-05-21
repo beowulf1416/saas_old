@@ -84,6 +84,7 @@ class ClientsStore(object):
             c = cn.cursor()
             c.callproc('iam.client_roles_all', [clientId, ])
             result = c.fetchall()
+            return result
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving client roles')
