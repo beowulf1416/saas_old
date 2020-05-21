@@ -139,3 +139,69 @@ def view_client_set_active(request):
         detail='Client active state changed',
         body={'message': 'Client active state changed'}
     )
+
+@view_config(
+    route_name='api.clients.roles.all',
+    request_method='POST',
+    permission='admin.clients'
+)
+def view_clients_roles_all(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    roles = []
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        result = clientsStore.allRoles(client_id)
+        roles = result
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} client roles found'.format(len(roles)),
+        body={
+            'roles': roles
+        }
+    )
+
+
+@view_config(
+    route_name='api.clients.roles.add',
+    request_method='POST',
+    permission='admin.clients'
+)
+def view_clients_roles_all(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    name = params['name'] if 'name' in params else None
+
+    if client_id is None or name is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Role Name is required'
+        )
+
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        clientsStore.addRole(client_id, name)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    raise exception.HTTPOk(
+        detail='Client Role added',
+        body={'message': 'Client Role added'}
+    )
