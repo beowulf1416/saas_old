@@ -12,7 +12,9 @@ import pyramid.httpexceptions as exception
     renderer='saas.app:templates/errors/404.html'
 )
 def view_not_found_default(request):
-    request.response.status_int = 404
+    exception = request.exception
+    log.error(exception)
+    request.response.status_int = exception.code
     return {}
 
 @notfound_view_config(
@@ -20,7 +22,9 @@ def view_not_found_default(request):
     renderer='json'
 )
 def view_not_found_json(request):
-    request.response.status_int = 404
+    exception = request.exception
+    log.error(exception)
+    request.response.status_int = exception.code
     return {
         'status': 'error',
         'message': 'endpoint not found',
@@ -34,7 +38,9 @@ def view_not_found_json(request):
     renderer='saas.app:templates/errors/403.html'
 )
 def view_forbidden_default(request):
-    request.response.status_int = 403
+    exception = request.exception
+    log.error(exception)
+    request.response.status_int = exception.code
     return {}
 
 
@@ -43,7 +49,9 @@ def view_forbidden_default(request):
     renderer='json'
 )
 def view_forbidden_json(request):
-    request.response.status_int = 403
+    exception = request.exception
+    log.error(exception)
+    request.response.status_int = exception.code
     return {
         'status': 'error',
         'message': 'forbidden',
@@ -61,7 +69,6 @@ def view_forbidden_json(request):
 def view_exception_html_error(request):
     exception = request.exception
     log.error(exception)
-    log.error(exception.code)
     request.response.status_int = exception.code
     return {
         'code': exception.code,
@@ -83,6 +90,7 @@ def view_exception_html_error(request):
 )
 def view_exception_json_error(request):
     exception = request.exception
+    log.error(exception)
     return {
         'status': 'error',
         'message': exception.detail,
