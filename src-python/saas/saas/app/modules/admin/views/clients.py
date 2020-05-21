@@ -104,4 +104,26 @@ def view_client_roles(request):
     permission='admin.clients'
 )
 def view_client_users(request):
-    return {}
+    client_url_name = request.matchdict['client']
+
+    services = request.services()
+    clientsStore = services['store.admin.clients']
+    try:
+        client = clientsStore.getByUrlName(client_url_name)
+        json = {
+            'id': client[0],
+            'active': client[1],
+            'name': client[2],
+            'address': client[3],
+            'url_name': client[4]
+        }
+
+        return {
+            'client': json
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail='An error occured while trying to retrieve client by url name',
+            explanation='Unable to retrieve client by url name'
+        )

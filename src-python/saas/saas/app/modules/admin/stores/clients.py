@@ -109,7 +109,8 @@ class ClientsStore(object):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
-            result = c.callproc('iam.client_users_all', [clientId, ])
+            c.callproc('iam.client_users_all', [clientId, ])
+            result = c.fetchall()
             return result
         except Exception as e:
             log.error(e)

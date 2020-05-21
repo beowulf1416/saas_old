@@ -9,7 +9,7 @@ Client {{ client.name }} - Users
 {% block content %}
 <notification-list></notification-list>
 <div class="users-wrapper">
-    <users-table show-add></users-table>
+    <users-table show-add hide-active></users-table>
 </div><!-- .users-wrapper -->
 <div class="modal-wrapper">
     <modal-dialog>
@@ -60,6 +60,7 @@ import { Users } from '/static/js/helpers/users.js';
             }
         });
     };
+    refreshUsers();
 
     utbl.addEventListener('onerror', function(e) {
         notifier.add('error', e);
@@ -73,7 +74,21 @@ import { Users } from '/static/js/helpers/users.js';
         if (save != null) {
             save.classList.add('processed');
             save.addEventListener('click', function(e) {
-                console.log('//todo');
+                const email = dlg.querySelector('input#email');
+                const n = dlg.querySelector('notification-list');
+                if (email.value == '') {
+                    n.add('error', 'Please enter an email address');
+                } else {
+                    Users.addUserToClient('{{ client.id }}', email.value).then((r) => {
+                        if (r.status == 'success') {
+                            notifier.add('success', r.message);
+                            refreshUsers();
+                            md.hide();
+                        } else {
+                            n.error('error', r.message);
+                        }
+                    });
+                }
             });
         }
 
@@ -87,3 +102,4 @@ import { Users } from '/static/js/helpers/users.js';
     });
 })();
 </script>
+{% endblock scripts %}

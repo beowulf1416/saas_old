@@ -239,7 +239,13 @@ def view_clients_users_all(request):
     try:
         clientsStore = services['store.admin.clients']
         result = clientsStore.allUsers(client_id)
-        users = result
+        users = [{
+            'id': r[0],
+            'active': r[1],
+            'email': r[2],
+            'name': r[3]
+        } 
+        for r in result]
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=e,
