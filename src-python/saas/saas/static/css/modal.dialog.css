@@ -1,0 +1,11 @@
+/* modal dialog styles */
+modal-dialog {
+    display: none;
+}
+
+.modal-content {
+    background: #fefefe;
+    border-radius: 10px;
+    padding: 2em;
+    margin: 2em;
+}
