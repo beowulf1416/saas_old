@@ -207,6 +207,7 @@ def view_clients_roles_add(request):
         clientsStore = services['store.admin.clients']
         clientsStore.addRole(client_id, name)
     except Exception as e:
+        log.error(e)
         raise exception.HTTPInternalServerError(
             detail=e,
             explanation=e
@@ -237,8 +238,54 @@ def view_clients_users_all(request):
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
+        result = clientsStore.allUsers(client_id)
+        users = result
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=e,
             explanation=e
         )
+
+    raise exception.HTTPOk(
+        detail='{0} client users found'.format(len(users)),
+        body={
+            'users': users
+        }
+    )
+
+@view_config(
+    route_name='api.clients.users.add',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_user_add(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    email = params['email'] if 'email' in params else None
+
+    if client_id is None or email is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    try:
+        userStore = services['store.user']
+        user = userStore.userByEmail(email)
+        user_id = user[0]
+
+        clientsStore = services['store.admin.clients']
+        clientsStore.addUser(client_id, user_id)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    raise exception.HTTPOk(
+        detail='Client User added',
+        body={'message': 'Client User added'}
+    )

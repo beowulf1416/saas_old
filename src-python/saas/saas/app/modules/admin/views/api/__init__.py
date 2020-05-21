@@ -38,3 +38,8 @@ def includeme(config):
         'api.clients.users.all',
         '/api/clients/users/all'
     )
+
+    config.add_route(
+        'api.clients.users.add',
+        '/api/clients/users/add'
+    )
