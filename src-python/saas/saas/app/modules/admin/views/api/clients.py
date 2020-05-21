@@ -10,6 +10,7 @@ import json
 @view_config(
     route_name='api.clients.all',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
 def api_clients_all(request):
@@ -36,6 +37,7 @@ def api_clients_all(request):
 @view_config(
     route_name='api.clients.add',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
 def view_clients_add(request):
@@ -68,6 +70,7 @@ def view_clients_add(request):
 @view_config(
     route_name='api.clients.get',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
 def view_clients_get(request):
@@ -112,6 +115,7 @@ def view_clients_get(request):
 @view_config(
     route_name='api.clients.setactive',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
 def view_client_set_active(request):
@@ -143,9 +147,11 @@ def view_client_set_active(request):
 @view_config(
     route_name='api.clients.roles.all',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
 def view_clients_roles_all(request):
+    log.debug('view_clients_roles_all')
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
 
@@ -178,9 +184,10 @@ def view_clients_roles_all(request):
 @view_config(
     route_name='api.clients.roles.add',
     request_method='POST',
+    accept='application/json',
     permission='admin.clients'
 )
-def view_clients_roles_all(request):
+def view_clients_roles_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
     name = params['name'] if 'name' in params else None
