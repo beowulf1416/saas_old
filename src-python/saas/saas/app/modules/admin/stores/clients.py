@@ -82,7 +82,7 @@ class ClientsStore(object):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
-            c.callproc('clients.client_roles_all', [clientId, ])
+            c.callproc('iam.client_roles_all', [clientId, ])
             result = c.fetchall()
         except Exception as e:
             log.error(e)
@@ -95,7 +95,7 @@ class ClientsStore(object):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
-            c.callproc('clients.role_add', [clientId, name])
+            c.callproc('iam.role_add', [clientId, name])
             cn.commit()
         except Exception as e:
             cn.rollback()
