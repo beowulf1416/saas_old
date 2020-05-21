@@ -13,8 +13,8 @@ def includeme(config):
     mgr = services['connection.manager']
     # connection = mgr['default']
 
-    userStore = UserStore(mgr)
+    userStore = UserStore(mgr, 'default')
     services['store.user'] = userStore
 
-    clientStore = ClientStore(mgr)
+    clientStore = ClientStore(mgr, 'default')
     services['store.client'] = clientStore
