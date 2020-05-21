@@ -73,7 +73,6 @@ class TestAdminClientStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
-
     def test_client_add_role(self):
         try:
             (client_id, active, name, address, url_name) = self.cStore.getDefaultClient()
@@ -88,6 +87,10 @@ class TestAdminClientStore(unittest.TestCase):
             roles = self.clientStore.allRoles(client_id)
         except Exception as e:
             self.fail(e)
+
+    # todo test roleSetActive method
+    # def test_client_role_set_active(self):
+        # self.clientStore.roleSetActive(role_id)
 
     def test_client_get_users(self):
         try:
