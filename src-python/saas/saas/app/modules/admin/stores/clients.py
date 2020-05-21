@@ -118,6 +118,20 @@ class ClientsStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
+    def rolePermissions(self, clientId: str, roleId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.permissions_role', [clientId, roleId])
+            result = c.fetchall()
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+
     def allUsers(self, clientId: str):
         cn = self._mgr.getConnection(self._name)
         try:

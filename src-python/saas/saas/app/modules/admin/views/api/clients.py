@@ -151,7 +151,6 @@ def view_client_set_active(request):
     permission='admin.clients'
 )
 def view_clients_roles_all(request):
-    log.debug('view_clients_roles_all')
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
 
@@ -249,6 +248,46 @@ def view_clients_role_active(request):
     raise exception.HTTPOk(
         detail='Client Role active status updated',
         body={'message': 'Client Role active status updated'}
+    )
+
+
+@view_config(
+    route_name='api.clients.roles.permissions',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_roles_permissions(request):
+    params = request.json_body
+    role_id = params['roleId'] if 'roleId' in params else None
+
+    if role_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Role Id is required'
+        )
+
+    permissions = []
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        result = clientsStore.rolePermissions(role_id)
+        permissions = [{
+            'id': r[0],
+            'active': r[1],
+            'name': r[2]
+        } for r in result]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=e,
+            explanation=e
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} client roles found'.format(len(permissions)),
+        body={
+            'permissions': permissions
+        }
     )
 
 @view_config(
