@@ -51,7 +51,7 @@ class RolesStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
-    def rolePermissions(self, clientId: str, roleId: str):
+    def permissions(self, clientId: str, roleId: str):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
@@ -61,5 +61,20 @@ class RolesStore(object):
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving client roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+
+    def assignPermissions(self, clientId: str, roleId: str, permissionIds: list):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            for permissionId in permissionIds:
+                c.callproc('iam.permissions_role_assign', [clientId, roleId, permissionId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while retrieving assigning permissions to client roles')
         finally:
             self._mgr.returnConnection(self._name, cn)
