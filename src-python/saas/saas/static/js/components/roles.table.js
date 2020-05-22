@@ -18,7 +18,7 @@ class RolesTable extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(div);
 
-        this.getSelectedRoles = this.getSelectedRoles.bind(this);
+        this.getSelected = this.getSelected.bind(this);
         this.setRoles = this.setRoles.bind(this);
     }
 
@@ -34,6 +34,7 @@ class RolesTable extends HTMLElement {
     }
 
     setRoles(roles) {
+        const showRemove = this.hasAttribute('show-remove');
         const multiselect = this.hasAttribute('multiselect');
         const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
 
@@ -49,6 +50,10 @@ class RolesTable extends HTMLElement {
                 tr.classList.add('role-item');
                 const tds = [];
 
+                if (showRemove) {
+                    tds.push(`<td class="col-action"><a class="nav-link link-remove-role" title="Remove Role" href="#" data-roleid="${r.id}">&minus;</a></td>`);
+                }
+
                 if (multiselect) {
                     tds.push(`<td class="col-select"><input type="checkbox" name="selectedRole" class="form-input-check role-select" value="${r.id}" /></td>`);
                 } else {
@@ -60,6 +65,19 @@ class RolesTable extends HTMLElement {
 
                 tr.innerHTML = tds.join('');
                 tbody.appendChild(tr);
+
+                if (showRemove) {
+                    const remove = tr.querySelector('a.link-remove-role');
+                    remove.addEventListener('click', function(e) {
+                        self.dispatchEvent(new CustomEvent('onremoverole', {
+                            bubbles: true,
+                            cancelable: true,
+                            detail: {
+                                roleId: remove.dataset.roleid
+                            }
+                        }));
+                    });
+                }
 
                 const roleSelect = tr.querySelector('input.role-select');
                 roleSelect.addEventListener('change', function(e) {
@@ -96,6 +114,16 @@ class RolesTable extends HTMLElement {
     initTable(component, container) {
         const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
         const showAdd = this.hasAttribute('show-add');
+        const showRemove = this.hasAttribute('show-remove');
+
+        const tds = [];
+        if (showRemove) {
+            tds.push(`<th class="col-action"></th>`);
+        }
+        tds.push('<th class="col-select"></th>');
+        tds.push(`<th class="${classActive}">Active</th>`);
+        tds.push('<th class="col-name">Name</th>');
+        const thall = tds.join('');
 
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
@@ -105,9 +133,7 @@ class RolesTable extends HTMLElement {
                     <caption>Roles</caption>
                     <thead>
                         <tr>
-                            <th class="col-select"></th>
-                            <th class="${classActive}">Active</th>
-                            <th class="col-name">Name</th>
+                            ${thall}
                         </tr>
                     </thead>
                     <tbody>
@@ -124,8 +150,8 @@ class RolesTable extends HTMLElement {
             const tr = document.createElement('tr');
             tr.classList.add('row-role-add');
             tr.innerHTML = `
-                <th colspan="3">
-                    <a id="roleAdd" class="nav-link link-add" title="Add Role" href="#roleAdd">Add</a>
+                <th class="col-action">
+                    <a id="roleAdd" class="nav-link link-add" title="Add Role" href="#roleAdd">&plus;</a>
                 </th>
             `;
             const tfoot = div.querySelector('table.tbl-roles tfoot');

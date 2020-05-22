@@ -196,8 +196,14 @@ import { Roles } from '/static/js/helpers/roles.js';
     });
 
     rtbl.addEventListener('onremoverole', function(e) {
-        console.log('onremoverole');
-        console.log(e);
+        const roleId = e.detail.roleId;
+        Users.removeRole('{{ client.id }}', currentUserId, roleId).then((r) => {
+            if (r.status == 'success') {
+                refreshRoles(currentUserId);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
     });
 })();
 </script>
