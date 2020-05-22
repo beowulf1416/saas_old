@@ -62,3 +62,31 @@ class UsersStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
+    def addClientUserRoles(self, clientId: str, userId: str, roleIds: list):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            for roleId in roleIds:
+                c.callproc('iam.role_assign_user', [clientId, roleId, userId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while assigning client user roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+    def removeClientUserRole(self, clientId: str, userId: str, roleId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.role_remove_user', [clientId, roleId, userId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while assigning client user roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+

@@ -64,5 +64,39 @@ class Users {
         })
         .then((r) => r.json());
     }
+
+    static addRoles(clientId, userId, roleIds) {
+        return fetch('/api/clients/users/roles/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                userId: userId,
+                roleIds: roleIds
+            })
+        })
+        .then((r) => r.json());
+    }
+
+    static removeRole(clientId, userId, roleId) {
+        return fetch('/api/clients/users/roles/remove', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                userId: userId,
+                roleId: roleId
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Users };

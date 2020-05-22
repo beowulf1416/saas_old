@@ -22,7 +22,7 @@ class RolesTable extends HTMLElement {
         this.setRoles = this.setRoles.bind(this);
     }
 
-    getSelectedRoles() {
+    getSelected() {
         const self = this;
         const shadow = this.shadowRoot;
         const roles = [];

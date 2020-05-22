@@ -157,3 +157,73 @@ def view_client_user_roles_all(request):
             'roles': roles
         }
     )
+
+@view_config(
+    route_name='api.clients.users.roles.add',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_client_user_roles_add(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    user_id = params['userId'] if 'userId' in params else None
+    role_ids = params['roleIds'] if 'roleIds' in params else None
+
+    if client_id is None or user_id is None or role_ids is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, User Id and Role Ids are required'
+        )
+
+    services = request.services()
+    try:
+        usersStore = services['store.admin.users']
+        usersStore.addClientUserRoles(client_id, user_id, role_ids)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Client User Roles added',
+        body={
+            'message': 'Client User Roles added'
+        }
+    )
+
+@view_config(
+    route_name='api.clients.users.roles.remove',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_client_user_roles_remove(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    user_id = params['userId'] if 'userId' in params else None
+    role_id = params['roleId'] if 'roleId' in params else None
+
+    if client_id is None or user_id is None or role_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, User Id and Role Id is required'
+        )
+
+    services = request.services()
+    try:
+        usersStore = services['store.admin.users']
+        usersStore.removeClientUserRole(client_id, user_id, role_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Client User Roles removed',
+        body={
+            'message': 'Client User Roles removed'
+        }
+    )

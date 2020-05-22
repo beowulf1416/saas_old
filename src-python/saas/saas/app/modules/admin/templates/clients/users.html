@@ -15,7 +15,7 @@ Client {{ client.name }} - Users
     <roles-table show-add show-remove hide-active></roles-table>
 </div><!-- .roles-wrapper -->
 <div class="modal-wrapper">
-    <modal-dialog>
+    <modal-dialog id="users">
         <div class="form-wrapper">
             <div class="form-header">Add User</div>
             <div class="form-body">
@@ -26,6 +26,21 @@ Client {{ client.name }} - Users
                     </fieldset>
                     <button type="button" id="save" class="btn btn-primary">Save</button>
                     <button type="button" id="cancel" class="btn">Cancel</button> 
+                </form>
+            </div><!-- .form-body -->
+        </div><!-- .form-wrapper -->
+    </modal-dialog>
+    <modal-dialog id="roles">
+        <div class="form-wrapper">
+            <div class="form-header">Add Role</div>
+            <div class="form-body">
+                <notification-list></notification-list>
+                <form class="form-role">
+                    <fieldset>
+                        <roles-table show-remove hide-active multiselect></roles-table>
+                    </fieldset>
+                    <button type="button" id="btnadd" class="btn btn-primary">Add</button>
+                    <button type="button" id="btncancel" class="btn">Cancel</button>
                 </form>
             </div><!-- .form-body -->
         </div><!-- .form-wrapper -->
@@ -51,10 +66,13 @@ Client {{ client.name }} - Users
 <script type="module">
 'use strict';
 import { Users } from '/static/js/helpers/users.js';
+import { Roles } from '/static/js/helpers/roles.js';
 (function(){
     const notifier = document.querySelector('notification-list')
     const utbl = document.querySelector('users-table');
     const rtbl = document.querySelector('roles-table');
+
+    let currentUserId = '';
 
     const refreshUsers = function() {
         Users.all('{{ client.id }}').then((r) => {
@@ -97,7 +115,7 @@ import { Users } from '/static/js/helpers/users.js';
     });
 
     utbl.addEventListener('onadduser', function(e) {
-        const md = document.querySelector('modal-dialog');
+        const md = document.querySelector('modal-dialog#users');
         const dlg = md.show();
 
         const save = dlg.querySelector('button#save:not(.processed)');
@@ -133,7 +151,53 @@ import { Users } from '/static/js/helpers/users.js';
 
     utbl.addEventListener('onselectuser', function(e) {
         const userId = e.detail.userId;
+        currentUserId = userId;
         refreshRoles(userId);
+    });
+
+    rtbl.addEventListener('onaddrole', function(e) {
+        const md = document.querySelector('modal-dialog#roles');
+        const dlg = md.show();
+        const n = dlg.querySelector('notification-list');
+        const artbl = dlg.querySelector('roles-table');
+
+        Roles.all('{{ client.id }}').then((r) => {
+            if (r.status == 'success') {
+                artbl.setRoles(r.json.roles);
+            } else {
+                n.add('error', r.message);
+            }
+        });
+
+        const add = dlg.querySelector('button#btnadd:not(.processed)');
+        if (add != null) {
+            add.classList.add('processed');
+            add.addEventListener('click', function(e) {
+                const roleIds = artbl.getSelected();
+                Users.addRoles('{{ client.id }}', currentUserId, roleIds).then((r) => {
+                    if (r.status == 'success') {
+                        notifier.add('success', 'Roles added');
+                        refreshRoles(currentUserId);
+                        md.hide();
+                    } else {
+                        n.add('error', r.message);
+                    }
+                });
+            });
+        }
+
+        const cancel = dlg.querySelector('button#btncancel:not(.processed)');
+        if (cancel != null) {
+            cancel.classList.add('processed');
+            cancel.addEventListener('click', function(e) {
+                md.hide();
+            });
+        }
+    });
+
+    rtbl.addEventListener('onremoverole', function(e) {
+        console.log('onremoverole');
+        console.log(e);
     });
 })();
 </script>
