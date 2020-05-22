@@ -35,3 +35,16 @@ class UsersStore(object):
             raise Exception('An error occured while adding client user')
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+    def removeClientUser(self, clientId: str, userId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.client_user_remove', [clientId, userId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while removing client user')
+        finally:
+            self._mgr.returnConnection(self._name, cn)

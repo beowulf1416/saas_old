@@ -65,6 +65,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.users.remove',
+        '/api/clients/users/remove'
+    )
+
+    config.add_route(
         'api.clients.permissions.all',
         '/api/clients/permissions/all'
     )

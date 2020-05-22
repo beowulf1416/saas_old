@@ -19,7 +19,7 @@ def view_clients_user_add(request):
     if client_id is None or email is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameter',
-            explanation='Client Id is required'
+            explanation='Client Id and Email is required'
         )
 
     services = request.services()
@@ -41,6 +41,41 @@ def view_clients_user_add(request):
     raise exception.HTTPOk(
         detail='Client User added',
         body={'message': 'Client User added'}
+    )
+
+
+@view_config(
+    route_name='api.clients.users.remove',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_user_remove(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    user_id = params['userId'] if 'userId' in params else None
+
+    if client_id is None or user_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and User Id is required'
+        )
+
+    services = request.services()
+    try:
+        usersStore = services['store.admin.users']
+        usersStore.removeClientUser(client_id, user_id)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+            
+        )
+
+    raise exception.HTTPOk(
+        detail='Client User removed',
+        body={'message': 'Client User removed'}
     )
 
 @view_config(

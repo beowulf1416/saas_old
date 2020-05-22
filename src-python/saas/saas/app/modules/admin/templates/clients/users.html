@@ -67,8 +67,14 @@ import { Users } from '/static/js/helpers/users.js';
     });
 
     utbl.addEventListener('onremoveuser', function(e) {
-        console.log('onremoveuser');
-        console.log(e);
+        const userId = e.detail.userId;
+        Users.removeUserFromClient('{{ client.id }}', userId).then((r) => {
+            if (r.status == 'success') {
+                refreshUsers();
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
     });
 
     utbl.addEventListener('onadduser', function(e) {
