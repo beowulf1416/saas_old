@@ -26,8 +26,8 @@ def api_clients_all(request):
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
     raise exception.HTTPOk(
         detail='{0} clients'.format(len(clients)),
@@ -90,8 +90,8 @@ def view_clients_get(request):
         client = clientsStore.get(client_id)
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     if client is None:
@@ -135,8 +135,8 @@ def view_client_set_active(request):
         clientsStore.setActive(client_id, active)
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -172,8 +172,8 @@ def view_clients_roles_all(request):
         } for r in result]
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -208,8 +208,8 @@ def view_clients_roles_add(request):
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -241,8 +241,8 @@ def view_clients_role_active(request):
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -280,8 +280,8 @@ def view_clients_roles_permissions(request):
         } for r in result]
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -321,8 +321,8 @@ def view_clients_users_all(request):
         for r in result]
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
 
     raise exception.HTTPOk(
@@ -360,8 +360,9 @@ def view_clients_user_add(request):
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
+            
         )
 
     raise exception.HTTPOk(
