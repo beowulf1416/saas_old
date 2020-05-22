@@ -40,8 +40,13 @@ def includeme(config):
     )
 
     config.add_route(
-        'api.clients.roles.permissions',
-        '/api/clients/roles/permissions'
+        'api.clients.roles.permissions.all',
+        '/api/clients/roles/permissions/all'
+    )
+
+    config.add_route(
+        'api.clients.roles.permissions.add',
+        '/api/clients/roles/permissions/add'
     )
 
     config.add_route(
@@ -52,4 +57,9 @@ def includeme(config):
     config.add_route(
         'api.clients.users.add',
         '/api/clients/users/add'
+    )
+
+    config.add_route(
+        'api.clients.permissions.all',
+        '/api/clients/permissions/all'
     )

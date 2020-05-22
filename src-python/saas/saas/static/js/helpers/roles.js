@@ -49,7 +49,7 @@ class Roles {
     }
 
     static getPermissions(clientId, roleId) {
-        return fetch('/api/clients/roles/permissions', {
+        return fetch('/api/clients/roles/permissions/all', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -59,6 +59,23 @@ class Roles {
             body: JSON.stringify({
                 clientId: clientId,
                 roleId: roleId
+            })
+        })
+        .then((r) => r.json());
+    }
+
+    static addPermissions(clientId, roleId, permissionIds) {
+        return fetch('/api/clients/roles/permissions/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                roleId: roleId,
+                permissionIds: permissionIds
             })
         })
         .then((r) => r.json());

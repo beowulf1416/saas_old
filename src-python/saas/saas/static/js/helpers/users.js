@@ -18,7 +18,7 @@ class Users {
     }
 
     static addUserToClient(clientId, email) {
-        return fetch('/api/clients/user/add', {
+        return fetch('/api/clients/users/add', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {

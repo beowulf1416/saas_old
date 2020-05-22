@@ -15,7 +15,7 @@ Client {{ client.name }} - Roles
     <permissions-table show-add hide-active></permissions-table>
 </div>
 <div class="modal-wrapper">
-    <modal-dialog>
+    <modal-dialog id="roles">
         <div class="form-wrapper">
             <div class="form-header">Add Role</div>
             <div class="form-body">
@@ -25,7 +25,22 @@ Client {{ client.name }} - Roles
                         {{ forms.input('text', 'name', 'name', 'Name' )}}
                     </fieldset>
                     <button type="button" id="save" class="btn btn-primary">Save</button>
-                    <button type="button" id="cancel" class="btn">Cancel</button> 
+                    <button type="button" id="cancel" class="btn">Cancel</button>
+                </form>
+            </div><!-- .form-body -->
+        </div><!-- .form-wrapper -->
+    </modal-dialog>
+    <modal-dialog id="permissions">
+        <div class="form-wrapper">
+            <div class="form-header">Add Permission</div>
+            <div class="form-body">
+                <notification-list></notification-list>
+                <form class="form-permissions">
+                    <fieldset>
+                        <permissions-table multiselect hide-active></permissions-table>
+                    </fieldset>
+                    <button type="button" id="btnadd" class="btn btn-primary">Add</button>
+                    <button type="button" id="btncancel" class="btn">Cancel</button>
                 </form>
             </div><!-- .form-body -->
         </div><!-- .form-wrapper -->
@@ -51,15 +66,19 @@ Client {{ client.name }} - Roles
 <script type="module">
 'use strict';
 import { Roles } from '/static/js/helpers/roles.js';
+import { Permissions } from '/static/js/helpers/permissions.js';
 (function(){
     const notifier = document.querySelector('notification-list')
     const rtbl = document.querySelector('roles-table')
     const ptbl = document.querySelector('permissions-table');
 
+    let currentRoleId = '';
+
     const refreshRoles = function() {
         Roles.all('{{ client.id }}').then((r) => {
             if (r.status == 'success') {
                 rtbl.setRoles(r.json.roles);
+                currentRoleId = '';
             } else {
                 notifier.add('error', r.message);
             }
@@ -85,7 +104,7 @@ import { Roles } from '/static/js/helpers/roles.js';
     });
 
     rtbl.addEventListener('onaddrole', function(e) {
-        const md = document.querySelector('modal-dialog');
+        const md = document.querySelector('modal-dialog#roles');
         const dlg = md.show();
 
         const save = dlg.querySelector('button#save:not(.processed)');
@@ -132,7 +151,58 @@ import { Roles } from '/static/js/helpers/roles.js';
 
     rtbl.addEventListener('onselectrole', function(e) {
         const roleId = e.detail.roleId;
+        currentRoleId = roleId;
         refreshPermissions(roleId);
+    });
+
+    ptbl.addEventListener('onerror', function(e) {
+        notifier.add('error', e);
+    });
+
+    ptbl.addEventListener('onaddpermission', function(e) {
+        if (currentRoleId == '') {
+            notifier.add('error', 'Please select a role', 3000);
+        } else {
+            const md = document.querySelector('modal-dialog#permissions');
+            const dlg = md.show();
+            const n = dlg.querySelector('notification-list');
+
+            const aptbl = dlg.querySelector('permissions-table:not(.processed)');
+            if (aptbl != null) {
+                aptbl.classList.add('processed');
+                Permissions.all().then((r) => {
+                    if (r.status == 'success') {
+                        aptbl.setPermissions(r.json.permissions);
+                    } else {
+                        n.add('error', r.message);
+                    }
+                });
+            }
+
+            const add = dlg.querySelector('button#btnadd:not(.processed)');
+            if (add != null) {
+                add.classList.add('processed');
+                add.addEventListener('click', function(e) {
+                    const pids = aptbl.getSelected();
+                    Roles.addPermissions('{{ client.id }}', currentRoleId, pids).then((r) => {
+                        if (r.status == 'success') {
+                            refreshPermissions(currentRoleId);
+                            md.hide();
+                        } else {
+                            n.add('error', r.message);
+                        }
+                    });
+                });
+            }
+
+            const cancel = dlg.querySelector('button#btncancel:not(.processed)');
+            if (cancel != null) {
+                cancel.classList.add('processed');
+                cancel.addEventListener('click', function(e) {
+                    md.hide();
+                });
+            }
+        }
     });
 })();
 </script>
