@@ -29,7 +29,18 @@ class UsersTable extends HTMLElement {
 
     initTable(component, container) {
         const showAdd = this.hasAttribute('show-add');
+        const showRemove = this.hasAttribute('show-remove');
         const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
+
+        const ths = [];
+        if (showRemove) {
+            ths.push('<th class="col-action"></th>');
+        }
+        ths.push('<th class="col-select"></th>');
+        ths.push(`<th class="${classActive}>Active</th>`);
+        ths.push('<th class="col-name">Name</th>');
+        ths.push('<th class="col-email">Email</th>');
+        const thall = ths.join('');
 
         const div = document.createElement('div');
         div.classList.add('tbl-wrapper');
@@ -39,10 +50,7 @@ class UsersTable extends HTMLElement {
                     <caption>Users</caption>
                     <thead>
                         <tr>
-                            <th class="col-select"></th>
-                            <th class="${classActive}">Active</th>
-                            <th class="col-name">Name</th>
-                            <th class="col-email">Email</th>
+                            ${thall}
                         </tr>
                     </thead>
                     <tbody>
@@ -59,8 +67,8 @@ class UsersTable extends HTMLElement {
             const tr = document.createElement('tr');
             tr.classList.add('row-user-add');
             tr.innerHTML = `
-                <th colspan="4">
-                    <a title="Add User" id="addUser" class="nav-link link-add-user" href="#addUser">Add</a>
+                <th class="col-action">
+                    <a title="Add User" id="addUser" class="nav-link link-add-user" href="#addUser">&plus;</a>
                 </th>
             `;
             const tfooter = div.querySelector('table.tbl-users tfoot');
@@ -77,6 +85,7 @@ class UsersTable extends HTMLElement {
     }
 
     setUsers(users) {
+        const showRemove = this.hasAttribute('show-remove');
         const multiselect = this.hasAttribute('multiselect');
         const classActive = this.hasAttribute('hide-active') ? 'col-active col-hidden' : 'col-active';
 
@@ -94,10 +103,14 @@ class UsersTable extends HTMLElement {
 
                 const tds = [];
 
+                if (showRemove) {
+                    tds.push(`<td class="col-action"><a class="nav-link link-remove-user" title="Remove User" href="#" data-userid="${u.id}">&minus;</a></td>`);
+                }
+
                 if (multiselect) {
-                    tds.push(`<td class="col-select"><input type="checkbox" name="selectedUser" class="form-input-check user-select" title="Select" value="${u.id}" /></td>`);
+                    tds.push(`<td class="col-select"><input type="checkbox" name="selectedUser" class="form-input-check user-select" title="Select User" value="${u.id}" /></td>`);
                 } else {
-                    tds.push(`<td class="col-select"><input type="radio" name="selectedUser" class="form-input-radio user-select" title="Select" value="${u.id}" /></td>`);
+                    tds.push(`<td class="col-select"><input type="radio" name="selectedUser" class="form-input-radio user-select" title="Select User" value="${u.id}" /></td>`);
                 }
 
                 tds.push(`<td class="${classActive}"><a title="Toggle Active" class="nav-link user-active" href="#" data-id="${u.id}" data-active="${u.active}">${u.active}</a></td>`);
@@ -106,6 +119,19 @@ class UsersTable extends HTMLElement {
 
                 tr.innerHTML = tds.join('');
                 tbody.appendChild(tr);
+
+                if (showRemove) {
+                    const remove = tr.querySelector('a.link-remove-user');
+                    remove.addEventListener('click', function(e) {
+                        self.dispatchEvent(new CustomEvent('onremoveuser', {
+                            bubbles: true,
+                            cancelable: true,
+                            detail: {
+                                userId: remove.dataset.userid
+                            }
+                        }));
+                    });
+                }
 
                 const userSelect = tr.querySelector('input.user-select');
                 userSelect.addEventListener('change', function(e) {

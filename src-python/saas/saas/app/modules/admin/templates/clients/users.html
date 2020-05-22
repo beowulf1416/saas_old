@@ -9,7 +9,7 @@ Client {{ client.name }} - Users
 {% block content %}
 <notification-list></notification-list>
 <div class="users-wrapper">
-    <users-table show-add hide-active></users-table>
+    <users-table show-add show-remove hide-active></users-table>
 </div><!-- .users-wrapper -->
 <div class="modal-wrapper">
     <modal-dialog>
@@ -64,6 +64,11 @@ import { Users } from '/static/js/helpers/users.js';
 
     utbl.addEventListener('onerror', function(e) {
         notifier.add('error', e);
+    });
+
+    utbl.addEventListener('onremoveuser', function(e) {
+        console.log('onremoveuser');
+        console.log(e);
     });
 
     utbl.addEventListener('onadduser', function(e) {
