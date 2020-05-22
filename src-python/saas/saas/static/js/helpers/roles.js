@@ -80,5 +80,22 @@ class Roles {
         })
         .then((r) => r.json());
     }
+
+    static removePermission(clientId, roleId, permissionId) {
+        return fetch('/api/clients/roles/permissions/remove', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                roleId: roleId,
+                permissionId: permissionId
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Roles };

@@ -183,3 +183,36 @@ def view_client_role_permission_assign(request):
         detail='client role permissions assigned',
         body={ 'message': 'Client Role permissions assigned' }
     )
+
+@view_config(
+    route_name='api.clients.roles.permissions.remove',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_client_roles_permission_remove(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    role_id = params['roleId'] if 'roleId' in params else None
+    permission_id = params['permissionId'] if 'permissionId' in params else None
+
+    if client_id is None or role_id is None or permission_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, Role Id and Permission Id is required'
+        )
+
+    services = request.services()
+    try:
+        rolesStore = services['store.admin.roles']
+        rolesStore.removePermission(client_id, role_id, permission_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='client role permission removed',
+        body={ 'message': 'Client Role permission removed' }
+    )

@@ -75,6 +75,19 @@ class RolesStore(object):
         except Exception as e:
             cn.rollback()
             log.error(e)
-            raise Exception('An error occured while retrieving assigning permissions to client roles')
+            raise Exception('An error occured while retrieving assigning permissions to client role')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+    def removePermission(self, clientId: str, roleId: str, permissionId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.permissions_role_revoke', [clientId, roleId, permissionId])
+            cn.commit()
+        except Exception as e:
+            cn.rollback()
+            log.error(e)
+            raise Exception('An error occured while retrieving removing permission from client role')
         finally:
             self._mgr.returnConnection(self._name, cn)

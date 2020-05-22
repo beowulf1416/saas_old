@@ -206,7 +206,14 @@ import { Permissions } from '/static/js/helpers/permissions.js';
     });
 
     ptbl.addEventListener('onremovepermission', function(e) {
-        console.log('onremovepermission');
+        const permissionId = e.detail.permissionId;
+        Roles.removePermission('{{ client.id }}', currentRoleId, permissionId).then((r) => {
+            if (r.status == 'success') {
+                refreshPermissions(currentRoleId);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
     });
 })();
 </script>
