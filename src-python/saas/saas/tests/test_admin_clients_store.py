@@ -72,29 +72,3 @@ class TestAdminClientStore(unittest.TestCase):
             self.clientStore.setActive(client_id, False)
         except Exception as e:
             self.fail(e)
-
-    def test_client_add_role(self):
-        try:
-            (client_id, active, name, address, url_name) = self.cStore.getDefaultClient()
-            random_name = self.generate_random_str(10)
-            self.clientStore.addRole(client_id, random_name)
-        except Exception as e:
-            self.fail(e)
-
-    def test_client_get_roles(self):
-        try:
-            (client_id, active, name, address, url_name) = self.cStore.getDefaultClient()
-            roles = self.clientStore.allRoles(client_id)
-        except Exception as e:
-            self.fail(e)
-
-    # todo test roleSetActive method
-    # def test_client_role_set_active(self):
-        # self.clientStore.roleSetActive(role_id)
-
-    def test_client_get_users(self):
-        try:
-            (client_id, active, name, address, url_name) = self.cStore.getDefaultClient()
-            roles = self.clientStore.allUsers(client_id)
-        except Exception as e:
-            self.fail(e)
