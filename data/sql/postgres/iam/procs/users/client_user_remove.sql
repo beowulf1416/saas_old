@@ -11,6 +11,10 @@ begin
     delete from iam.user_clients
     where client_id = p_client_id
         and user_id = p_user_id;
+
+    delete from iam.role_users
+    where client_id = p_client_id
+        and user_id = p_user_id;
 end
 $$
 language plpgsql;
