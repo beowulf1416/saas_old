@@ -14,7 +14,7 @@ class TestClientStore(unittest.TestCase):
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
-        self.clientStore = ClientStore(self.mgr['default'])
+        self.clientStore = ClientStore(self.mgr, 'default')
 
     def test_get_default_client(self):
         (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()

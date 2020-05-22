@@ -57,14 +57,16 @@ class TestUserStore(unittest.TestCase):
         self.assertEqual(email, result[3], '{0}'.format(result))
 
     def test_user_clients(self):
-        user = self.userStore.userByEmail('beowulf1416@gmail.com')
-        user_id = user[0]
-        result = self.userStore.userClients(user_id)
-        self.assertNotEqual(0, len(result), '{0}'.format(result))
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        user_id = self.userStore.userAdd(email, random_name)
+        clients = self.userStore.userClients(user_id)
+        self.assertNotEqual(0, len(clients), '{0}'.format(clients))
 
     def test_user_has_permission(self):
-        user = self.userStore.userByEmail('beowulf1416@gmail.com')
-        user_id = user[0]
+        random_name = self.generate_random_str(10)
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        user_id = self.userStore.userAdd(email, random_name)
         
         client = self.clientStore.getDefaultClient()
         client_id = client[0]
