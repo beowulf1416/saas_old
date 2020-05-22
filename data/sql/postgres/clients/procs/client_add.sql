@@ -22,6 +22,10 @@ begin
     )
     returning id into tmp_id;
 
+    insert into iam.roles (client_id, name) values (
+        tmp_id, 'everyone'
+    );
+
     return tmp_id;
 end
 $$

@@ -9,8 +9,5 @@ set schema 'common';
 \ir tables/uom.sql
 
 
-/** functions **/
-
-
 
 set schema 'public';

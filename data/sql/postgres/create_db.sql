@@ -31,11 +31,20 @@ create domain slug
   );
 
 
+-- create schema and tables
 \ir clients/create.sql
 \ir common/create.sql
 \ir iam/create.sql
 \ir accounting/create.sql
 \ir hr/create.sql
 \ir inventory/create.sql
+
+-- create functions and procedures
+\ir clients/sp.sql
+\ir common/sp.sql
+\ir iam/sp.sql
+\ir accounting/sp.sql
+\ir hr/sp.sql
+\ir inventory/sp.sql
 
 set schema 'public';
