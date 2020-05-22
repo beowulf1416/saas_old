@@ -2,3 +2,7 @@ table.tbl-roles th.col-hidden,
 table.tbl-roles td.col-hidden {
     display: none;
 }
+
+table.tbl-roles .col-action a {
+    text-decoration: none;
+}

@@ -2,3 +2,7 @@ table.tbl-permissions th.col-hidden,
 table.tbl-permissions td.col-hidden {
     display: none;
 }
+
+table.tbl-permissions .col-action a {
+    text-decoration: none;
+}
