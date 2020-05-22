@@ -9,12 +9,20 @@ set schema 'common';
 \ir tables/uom.sql
 
 -- https://www.postgresql.org/docs/12/app-psql.html
-\copy common.countries (@exclude, @exclude, name, code) \
+\copy common.countries (id, name) \
 from '../csv/countries.csv' 
 with option \
 format csv \
 header true \
-quote '"' \
+quote '"'
+
+
+\copy common.currencies (id, name) \
+from '../csv/currencies.csv' \
+with option \
+format csv \
+header \
+quote '"'
 
 
 
