@@ -36,6 +36,7 @@ create domain slug
 \ir common/create.sql
 \ir iam/create.sql
 \ir accounting/create.sql
+\ir crm/create.sql
 \ir hr/create.sql
 \ir inventory/create.sql
 
@@ -44,6 +45,7 @@ create domain slug
 \ir common/sp.sql
 \ir iam/sp.sql
 \ir accounting/sp.sql
+\ir crm/sp.sql
 \ir hr/sp.sql
 \ir inventory/sp.sql
 
