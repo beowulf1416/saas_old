@@ -91,6 +91,7 @@ def view_exception_html_error(request):
 def view_exception_json_error(request):
     exception = request.exception
     log.error(exception)
+    request.response.status_int = exception.code
     return {
         'status': 'error',
         'message': exception.detail,
