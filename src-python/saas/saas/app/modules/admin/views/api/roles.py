@@ -64,7 +64,7 @@ def view_clients_roles_add(request):
     services = request.services()
     try:
         rolesStore = services['store.admin.roles']
-        rolesStore.addRole(client_id, name)
+        rolesStore.add(client_id, name)
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
