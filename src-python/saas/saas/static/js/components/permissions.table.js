@@ -23,6 +23,7 @@ class PermissionsTable extends HTMLElement {
     }
 
     setPermissions(permissions) {
+        const showRemove = this.hasAttribute('show-remove');
         const multiselect = this.hasAttribute('multiselect');
         const classActive = this.hasAttribute('hide-active') ? "col-active col-hidden" : "col-active";
 
@@ -39,6 +40,10 @@ class PermissionsTable extends HTMLElement {
                 tr.classList.add('permission-item');
                 let tds = [];
 
+                if (showRemove) {
+                    tds.push(`<td class="col-action"><button type="button" class="btn btn-remove" title="Remove Permission" data-id="${p.id}">&minus;</button></td>`);
+                }
+
                 if (multiselect) {
                     tds.push(`<td class="col-select"><input type="checkbox" name="selectedPermission" title="Select" class="form-input-radio permission-select" value="${p.id}" /></td>`);
                 } else {
@@ -51,6 +56,19 @@ class PermissionsTable extends HTMLElement {
                 tr.innerHTML = tds.join('');
 
                 tbody.appendChild(tr);
+
+                if (showRemove) {
+                    const btnremove = tr.querySelector('button.btn-remove');
+                    btnremove.addEventListener('click', function(e) {
+                        self.dispatchEvent(new CustomEvent('onremovepermission', {
+                            bubbles: true,
+                            cancelable: true,
+                            detail: {
+                                permissionId: btnremove.dataset.id
+                            }
+                        }));
+                    });
+                }
 
                 const permSelect = tr.querySelector('input.permission-select');
                 permSelect.addEventListener('change', function(e) {
@@ -125,17 +143,32 @@ class PermissionsTable extends HTMLElement {
         if (showAdd) {
             const tr = document.createElement('tr');
             tr.classList.add('row-permission-add');
+            // tr.innerHTML = `
+            //     <th colspan="3">
+            //         <a title="Add Permission" id="permissionAdd" class="nav-link link-add" href="#permissionAdd">Add</a>
+            //     </th>
+            // `;
+    
+            // const tfoot = div.querySelector('table.tbl-permissions tfoot');
+            // tfoot.appendChild(tr);
+    
+            // const permissionAdd = tr.querySelector('#permissionAdd');
+            // permissionAdd.addEventListener('click', function(e) {
+            //     component.dispatchEvent(new CustomEvent('onaddpermission', {
+            //         bubbles: true,
+            //         cancelable: true
+            //     }));
+            // });
             tr.innerHTML = `
-                <th colspan="3">
-                    <a title="Add Permission" id="permissionAdd" class="nav-link link-add" href="#permissionAdd">Add</a>
+                <th class="col-action">
+                    <button type="button" class="btn btn-add" title="Add Permission">&plus;</button>
                 </th>
             `;
-    
             const tfoot = div.querySelector('table.tbl-permissions tfoot');
             tfoot.appendChild(tr);
-    
-            const permissionAdd = tr.querySelector('#permissionAdd');
-            permissionAdd.addEventListener('click', function(e) {
+
+            const btnadd = tr.querySelector('button.btn-add');
+            btnadd.addEventListener('click', function(e) {
                 component.dispatchEvent(new CustomEvent('onaddpermission', {
                     bubbles: true,
                     cancelable: true

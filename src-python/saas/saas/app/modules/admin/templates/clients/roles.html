@@ -12,7 +12,7 @@ Client {{ client.name }} - Roles
     <roles-table show-add></roles-table>
 </div><!-- .roles-wrapper -->
 <div class="permissions-wrapper hide">
-    <permissions-table show-add hide-active></permissions-table>
+    <permissions-table show-add show-remove hide-active></permissions-table>
 </div>
 <div class="modal-wrapper">
     <modal-dialog id="roles">
@@ -203,6 +203,10 @@ import { Permissions } from '/static/js/helpers/permissions.js';
                 });
             }
         }
+    });
+
+    ptbl.addEventListener('onremovepermission', function(e) {
+        console.log('onremovepermission');
     });
 })();
 </script>
