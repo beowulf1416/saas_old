@@ -46,6 +46,9 @@ class UserStore(object):
             c.callproc('iam.user_get_by_email', [email, ])
             [result, ] = c.fetchall()
             return result
+        except ValueError as e:
+            log.error(e)
+            raise Exception("User with email '{0}' not found".format(email))
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving user info')

@@ -85,7 +85,7 @@ import { Users } from '/static/js/helpers/users.js';
                             refreshUsers();
                             md.hide();
                         } else {
-                            n.error('error', r.message);
+                            n.add('error', r.message);
                         }
                     });
                 }
