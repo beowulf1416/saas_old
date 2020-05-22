@@ -48,3 +48,17 @@ class UsersStore(object):
             raise Exception('An error occured while removing client user')
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+    def clientRoles(self, clientId: str, userId: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.callproc('iam.client_user_roles', [clientId, userId])
+            result = c.fetchall()
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving client user roles')
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+

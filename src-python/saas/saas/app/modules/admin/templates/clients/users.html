@@ -11,6 +11,9 @@ Client {{ client.name }} - Users
 <div class="users-wrapper">
     <users-table show-add show-remove hide-active></users-table>
 </div><!-- .users-wrapper -->
+<div class="roles-wrapper hide">
+    <roles-table show-add show-remove hide-active></roles-table>
+</div><!-- .roles-wrapper -->
 <div class="modal-wrapper">
     <modal-dialog>
         <div class="form-wrapper">
@@ -43,6 +46,7 @@ Client {{ client.name }} - Users
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/users.table.js"></script>
+<script type="module" src="/static/js/components/roles.table.js"></script>
 <script type="module" src="/static/js/components/modal.dialog.js"></script>
 <script type="module">
 'use strict';
@@ -50,6 +54,7 @@ import { Users } from '/static/js/helpers/users.js';
 (function(){
     const notifier = document.querySelector('notification-list')
     const utbl = document.querySelector('users-table');
+    const rtbl = document.querySelector('roles-table');
 
     const refreshUsers = function() {
         Users.all('{{ client.id }}').then((r) => {
@@ -60,6 +65,20 @@ import { Users } from '/static/js/helpers/users.js';
             }
         });
     };
+
+    const refreshRoles = function(userId) {
+        const wrapper = document.querySelector('div.roles-wrapper');
+        wrapper.classList.remove('hide');
+
+        Users.getRoles('{{ client.id }}', userId).then((r) => {
+            if (r.status == 'success') {
+                rtbl.setRoles(r.json.roles);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+    };
+
     refreshUsers();
 
     utbl.addEventListener('onerror', function(e) {
@@ -110,6 +129,11 @@ import { Users } from '/static/js/helpers/users.js';
                 md.hide();
             });
         }
+    });
+
+    utbl.addEventListener('onselectuser', function(e) {
+        const userId = e.detail.userId;
+        refreshRoles(userId);
     });
 })();
 </script>

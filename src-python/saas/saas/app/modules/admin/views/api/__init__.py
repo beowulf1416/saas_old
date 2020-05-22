@@ -70,6 +70,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.users.roles.all',
+        '/api/clients/users/roles/all'
+    )
+
+    config.add_route(
         'api.clients.permissions.all',
         '/api/clients/permissions/all'
     )

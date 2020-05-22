@@ -48,5 +48,21 @@ class Users {
         })
         .then((r) => r.json());
     }
+
+    static getRoles(clientId, userId) {
+        return fetch('/api/clients/users/roles/all', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                userId: userId
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Users };

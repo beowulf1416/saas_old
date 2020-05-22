@@ -118,3 +118,42 @@ def view_clients_users_all(request):
             'users': users
         }
     )
+
+@view_config(
+    route_name='api.clients.users.roles.all',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_client_user_roles_all(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    user_id = params['userId'] if 'userId' in params else None
+
+    if client_id is None or user_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and User Id is required'
+        )
+
+    roles = []
+    services = request.services()
+    try:
+        usersStore = services['store.admin.users']
+        result = usersStore.clientRoles(client_id, user_id)
+        roles = [
+            { 'id': r[0], 'active': r[1], 'name': r[2] }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} client roles found'.format(len(roles)),
+        body={
+            'roles': roles
+        }
+    )
