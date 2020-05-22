@@ -5,3 +5,15 @@ create table if not exists countries (
     constraint pk_countries primary key (id),
     constraint u_countries unique (name)
 );
+
+do $$
+begin
+    -- https://www.postgresql.org/docs/9.2/sql-copy.html
+    copy countries 
+    from '../csv/countries.csv'
+    option 
+        format csv
+        header true;
+end
+$$
+language plpgsql;
