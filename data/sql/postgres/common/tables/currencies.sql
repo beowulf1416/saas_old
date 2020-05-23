@@ -2,15 +2,12 @@
  * currencies table
  */
 create table if not exists currencies (
-    id smallint not null,
-    name varchar(20) not null,
-    iso_3166_alpha_3 varchar(5) not null,
-    iso_3166_numeric int not null,
-    minor_unit smallint not null,
+    id serial not null,
+    name varchar(100) not null,
+    currency varchar(10),
+    symbol varchar(5),
     constraint pk_currencies primary key (id),
     constraint u_currencies_1 unique (name)
 );
 
-insert into currencies (id, name) values 
-(1, 'peso')
-on conflict do nothing;
+\copy common.currencies (currency, name, symbol) from '../../csv/currencies.csv' with delimiter ',' csv header quote '"'; 
