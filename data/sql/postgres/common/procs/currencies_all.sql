@@ -3,7 +3,7 @@ returns table (
     id int,
     name varchar(100),
     currency varchar(10),
-    symbol varchar(5),
+    symbol varchar(5)
 )
 as $$
 begin

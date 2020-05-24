@@ -7,7 +7,7 @@ returns table (
     active boolean,
     created_ts timestamp without time zone,
     type_id smallint,
-    name varchar(200),
+    name varchar(200)
 )
 as $$
 begin
