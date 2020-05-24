@@ -9,3 +9,13 @@ def includeme(config):
         'accounting.default',
         '/accounting'
     )
+
+    config.add_route(
+        'accounting.accounts.all',
+        '/accounting/accounts/all'
+    )
+
+    config.add_route(
+        'accounting.accounts.add',
+        '/accounting/accounts/add'
+    )
