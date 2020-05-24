@@ -1,0 +1,17 @@
+{% extends "saas.app.modules.accounting:templates/default.html" %}
+
+{% import "saas.app:templates/forms.html" as forms %}
+
+{% block title %}
+Accounting - Add Account
+{% endblock title %}
+
+{% block content %}
+<div class="form-wrapper">
+    <form class="form-account">
+        <fieldset>
+            {{ forms.input('text', 'name', 'name', 'Account Name' )}}
+        </fieldset>
+    </form>
+</div><!-- .form-wrapper -->
+{% endblock content %}

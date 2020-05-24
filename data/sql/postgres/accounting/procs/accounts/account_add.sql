@@ -4,7 +4,8 @@
 create or replace function account_add (
     p_client_id clients.clients.id%type,
     p_type_id accounting.account_types.id%type,
-    p_name accounting.accounts.name%type
+    p_name accounting.accounts.name%type,
+    p_desc accounting.accounts.description%type
 )
 returns accounting.accounts.id%type
 as $$
@@ -14,11 +15,13 @@ begin
     insert into accounting.accounts (
         client_id,
         type_id,
-        name
+        name,
+        description
     ) values (
         p_client_id,
         p_type_id,
-        p_name
+        p_name,
+        p_desc
     )
     returning id into t_acct_id;
 

@@ -14,7 +14,7 @@ def view_accounting_accounts_all(request):
 @view_config(
     route_name='accounting.accounts.add',
     request_method='GET',
-    renderer='saas.app.modules.accounting:templates/default.html'
+    renderer='saas.app.modules.accounting:templates/accounts/add.html'
 )
 def view_accounting_accounts_add(request):
     return {}

@@ -8,6 +8,7 @@ create table if not exists accounts (
     client_id uuid not null,
     type_id smallint not null,
     name varchar(200) not null,
+    description text,
     constraint pk_accounts primary key (id),
     constraint u_accounts_1 unique (client_id, name),
     constraint fk_accounts_1 foreign key (client_id)
