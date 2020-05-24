@@ -2,36 +2,30 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
+from saas.app.core.stores.base import BaseStore
 
 
-class ClientStore(object):
+class ClientStore(BaseStore):
 
     def __init__(self, manager: ConnectionManager, name: str):
-        self._mgr = manager
-        self._name = name
+        super(ClientStore, self).__init__(manager, name)
 
     def getDefaultClient(self):
-        cn = self._mgr.getConnection(self._name)
+        '''returns a tuple containing (client_id, active, name, address, url_name)
+        '''
         try:
-            c = cn.cursor()
-            c.callproc('clients.client_default')
-            [client, ] = c.fetchall()
+            [client, ] = super(ClientStore, self).runProc('clients.client_default', [])
             return client
         except Exception as e:
             log.error(e)
-            raise e
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve default client')
 
     def getClient(self, client_id: str):
-        cn = self._mgr.getConnection(self._name)
+        '''returns a tuple containing (client_id, active, name, address, url_name)
+        '''
         try:
-            c = cn.cursor()
-            c.callproc('clients.clients_get', [client_id, ])
-            [client, ] = c.fetchall()
+            [client, ] = super(ClientStore, self).runProc('clients.clients_get', [client_id, ])
             return client
         except Exception as e:
             log.error(e)
-            raise e
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve client')
