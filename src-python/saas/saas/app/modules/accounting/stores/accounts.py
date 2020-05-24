@@ -17,15 +17,23 @@ class AccountsStore(BaseStore):
         '''add an account record for a specified client
         '''
         try:
-            # result = super(AccountsStore, self).runProcTransactional('accounting.account_add', [clientId, typeId, name])
-            result = super(AccountsStore, self).executeTransactional(
+            [accountId, ] = super(AccountsStore, self).executeTransactional(
                 "select * from accounting.account_add('{0}', {1}::smallint, '{2}')".format(
                     clientId,
                     typeId,
                     name
                 )
             )
-            return result
+            return accountId
+        except Exception as e:
+            log.error(e)
+            raise e
+
+    def assign_account_parent(self, clientId: UUID, accountId: UUID, parentAccountId: UUID):
+        '''assign an account as the parent account
+        '''
+        try:
+            super(AccountsStore, self).runProcTransactional('accounting.account_assign_parent', [clientId, accountId, parentAccountId])
         except Exception as e:
             log.error(e)
             raise e
