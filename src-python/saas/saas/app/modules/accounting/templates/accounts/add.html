@@ -8,10 +8,10 @@ Accounting - Add Account
 
 {% block content %}
 <div class="form-wrapper">
-    <form class="form-account">
-        <fieldset>
-            {{ forms.input('text', 'name', 'name', 'Account Name' )}}
-        </fieldset>
-    </form>
+    <account-selector></account-selector>
 </div><!-- .form-wrapper -->
 {% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/account.selector.js"></script>
+{% endblock scripts %}
