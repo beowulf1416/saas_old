@@ -1,6 +1,6 @@
-from enum import Enum
+from enum import IntEnum
 
-class AccountTypes(Enum):
+class AccountTypes(IntEnum):
     ASSETS=1
     LIABILITIES=2
     EQUITY=3
