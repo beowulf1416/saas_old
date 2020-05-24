@@ -11,7 +11,8 @@ class ClientStore(BaseStore):
         super(ClientStore, self).__init__(manager, name)
 
     def getDefaultClient(self):
-        '''returns a tuple containing (client_id, active, name, address, url_name)
+        '''returns the default client
+            return value is a tuple containing (client_id, active, name, address, url_name)
         '''
         try:
             [client, ] = super(ClientStore, self).runProc('clients.client_default', [])
@@ -21,7 +22,8 @@ class ClientStore(BaseStore):
             raise Exception('Unable to retrieve default client')
 
     def getClient(self, client_id: str):
-        '''returns a tuple containing (client_id, active, name, address, url_name)
+        '''returns the specified client
+            return value is a tuple containing (client_id, active, name, address, url_name)
         '''
         try:
             [client, ] = super(ClientStore, self).runProc('clients.clients_get', [client_id, ])
