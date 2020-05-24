@@ -13,15 +13,16 @@ class AccountsStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(AccountsStore, self).__init__(manager, name)
 
-    def add(self, clientId: UUID, typeId: AccountTypes, name: str):
+    def add(self, clientId: UUID, typeId: AccountTypes, name: str, description: str):
         '''add an account record for a specified client
         '''
         try:
             [accountId, ] = super(AccountsStore, self).executeTransactional(
-                "select * from accounting.account_add('{0}', {1}::smallint, '{2}')".format(
+                "select * from accounting.account_add('{0}', {1}::smallint, '{2}', '{3}')".format(
                     clientId,
                     typeId,
-                    name
+                    name,
+                    description
                 )
             )
             return accountId

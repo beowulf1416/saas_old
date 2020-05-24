@@ -31,7 +31,7 @@ class TestAccountStore(unittest.TestCase):
 
         from saas.app.modules.accounting.models.account_types import AccountTypes
         try:
-            result = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name)
+            result = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name, random_name)
         except Exception as e:
             self.fail(e)
 
@@ -42,8 +42,8 @@ class TestAccountStore(unittest.TestCase):
 
         from saas.app.modules.accounting.models.account_types import AccountTypes
         try:
-            account_1 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_1)
-            account_2 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_2)
+            account_1 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_1, random_name_1)
+            account_2 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_2, random_name_2)
             self.accountsStore.assign_account_parent(client_id, account_1, account_2)
         except Exception as e:
             self.fail(e)
