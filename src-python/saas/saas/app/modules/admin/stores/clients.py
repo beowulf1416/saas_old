@@ -1,6 +1,8 @@
 import logging
 log = logging.getLogger(__name__)
 
+from uuid import UUID
+
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.stores.base import BaseStore
 
@@ -9,8 +11,6 @@ class ClientsStore(BaseStore):
 
     def __init__(self, manager: ConnectionManager, name: str):
         super(ClientsStore, self).__init__(manager, name)
-        # self._mgr = manager
-        # self._name = name
 
     def getAll(self):
         try:
@@ -27,7 +27,7 @@ class ClientsStore(BaseStore):
         except Exception as e:
             raise Exception('An error occured while adding a client')
 
-    def get(self, client_id: str):
+    def get(self, client_id: UUID):
         try:
             (client, ) = super(ClientsStore, self).runProc('clients.clients_get', [client_id, ])
             return client
@@ -43,7 +43,7 @@ class ClientsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving client by url name')
 
-    def setActive(self, clientId: str, active: bool):
+    def setActive(self, clientId: UUID, active: bool):
         try:
             super(ClientsStore, self).runProcTransactional('clients.client_set_active', [clientId, active])
         except Exception as e:
