@@ -12,5 +12,5 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    accountsStore = AccountsStore(mgr)
+    accountsStore = AccountsStore(mgr, 'default')
     services['store.accounting.accounts'] = accountsStore

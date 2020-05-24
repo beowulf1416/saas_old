@@ -13,8 +13,8 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    countryStore = CountryStore(mgr)
+    countryStore = CountryStore(mgr, 'default')
     services['stores.common.countries'] = countryStore
 
-    currencyStore = CurrencyStore(mgr)
+    currencyStore = CurrencyStore(mgr, 'default')
     services['stores.common.currencies'] = currencyStore
