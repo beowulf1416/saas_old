@@ -35,3 +35,28 @@ class BaseStore(object):
             raise e
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+    def execute(self, query: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.execute(query)
+            return c.fetchall()
+        except Exception as e:
+            log.error(e)
+            raise e
+        finally:
+            self._mgr.returnConnection(self._name, cn)
+
+    def executeTransactional(self, query: str):
+        cn = self._mgr.getConnection(self._name)
+        try:
+            c = cn.cursor()
+            c.execute(query)
+            cn.commit()
+            return c.fetchall()
+        except Exception as e:
+            log.error(e)
+            raise e
+        finally:
+            self._mgr.returnConnection(self._name, cn)

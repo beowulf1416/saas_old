@@ -12,7 +12,7 @@ class TestAccountStore(unittest.TestCase):
         self.config = testing.setUp()
 
         from saas.app.core.services.connection import ConnectionManager
-        from saas.app.core.stores.clients import ClientStore
+        from saas.app.core.stores.client import ClientStore
         from saas.app.modules.accounting.stores.accounts import AccountsStore
 
         self.mgr = ConnectionManager({
@@ -26,6 +26,11 @@ class TestAccountStore(unittest.TestCase):
         return ''.join(random.choice(allowed) for i in range(length))
 
     def test_account_add(self):
-        [(client_id,  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        random_name = self.generate_random_str(10)
 
-        result = self.accountsStore.add('')
+        from saas.app.modules.accounting.models.account_types import AccountTypes
+        try:
+            result = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name)
+        except Exception as e:
+            self.fail(e)
