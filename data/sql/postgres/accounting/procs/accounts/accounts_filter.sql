@@ -3,11 +3,10 @@ create or replace function accounts_filter (
     p_filter_name accounting.accounts.name%type
 )
 returns table (
-    id uuid,
-    active boolean,
-    created_ts timestamp without time zone,
-    type_id smallint,
-    name varchar(200)
+    id accounting.accounts.id%type,
+    active accounting.accounts.active%type,
+    type_id accounting.accounts.type_id%type,
+    name accounting.accounts.name%type
 )
 as $$
 begin
@@ -15,7 +14,6 @@ begin
     select
         a.id,
         a.active,
-        a.created_ts,
         a.type_id,
         a.name
     from accounting.accounts a
