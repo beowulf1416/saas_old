@@ -20,6 +20,8 @@ def add_renderer_globals(event):
 
     if 'client' in session:
         client_id = session['client']
+        event['client_id'] = client_id
+        
         clientStore = services['store.client']
         try:
             client = clientStore.getClient(client_id)
