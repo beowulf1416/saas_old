@@ -57,7 +57,7 @@ class AccountTree extends HTMLElement {
                 const tdsall = tds.join('');
 
                 const tr = document.createElement('tr');
-                tr.classList.add('row-item', 'row-account');
+                tr.classList.add('row-item', 'row-account', `row-account-${acct_id}`);
                 tr.innerHTML = `${tdsall}`;
 
                 tbody.appendChild(tr);
@@ -74,7 +74,43 @@ class AccountTree extends HTMLElement {
                 });
             });
         } else {
-            console.log(accounts);
+            const tracct = tbody.querySelector(`tr.row-account-${parent}`);
+            if (tracct == null) {
+                self.dispatchEvent(new CustomEvent('onerror', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        message: 'Unable to find parent account'
+                    }
+                }));
+            } else {
+                const colspan = tracct.children.length;
+
+                const trs = [];
+                accounts.forEach(a => {
+                    const tds = [];
+                    tds.push(`<td class="col-name">${a.name}</td>`);
+                    tds.push(`<td class="col-description">${a.description}</td>`);
+                    const tdsall = tds.join('');
+
+                    trs.push(`<tr class="row-item row-account row-account-${a.id}">${tdsall}</tr>`);
+                });
+                const trall = trs.join('');
+
+                const tr = document.createElement('tr');
+                tr.classList.add('row-account-children');
+                tr.innerHTML = `
+                    <td colspan="${colspan}">
+                        <table class="tbl-child-accounts">
+                            <tbody>
+                                ${trall}
+                            </tbody>
+                        </table>
+                    </td>
+                `;
+
+                tracct.insertAdjacentElement('afterend', tr);
+            }
         }
     }
 }
