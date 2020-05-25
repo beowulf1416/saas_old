@@ -38,7 +38,7 @@ class AccountsStore(BaseStore):
             return accountId
         except Exception as e:
             log.error(e)
-            raise e
+            raise Exception('Unable to add account')
 
     def assign_account_parent(self, clientId: UUID, accountId: UUID, parentAccountId: UUID):
         '''assign an account as the parent account
@@ -57,4 +57,4 @@ class AccountsStore(BaseStore):
             return result
         except Exception as e:
             log.error(e)
-            raise e
+            raise Exception('Unable to retrieve accounts')

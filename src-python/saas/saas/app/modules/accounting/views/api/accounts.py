@@ -79,9 +79,9 @@ def view_accounting_accounts_all(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
 
-    if client_id is None or name is None:
+    if client_id is None:
         raise exception.HTTPBadRequest(
-            detail='Missing required parameters',
+            detail='Missing required parameter',
             explanation='Client Id is required'
         )
 
@@ -91,7 +91,7 @@ def view_accounting_accounts_all(request):
         accountStore = services['store.accounting.accounts']
         result = accountStore.all(client_id)
         accounts = [
-            { 'id': r[0], 'active': r[1], 'created_ts': r[2], 'type_id': r[3], 'name': r[4] }
+            { 'id': r[0], 'active': r[1], 'created_ts': r[2], 'type_id': r[3], 'name': r[4], 'description': r[5] }
             for r in result
         ]
     except Exception as e:
@@ -101,7 +101,7 @@ def view_accounting_accounts_all(request):
         )
 
     raise exception.HTTPOk(
-        detail='Account added',
+        detail='{0} accounts found'.format(len(accounts)),
         body={
             'accounts': accounts
         }

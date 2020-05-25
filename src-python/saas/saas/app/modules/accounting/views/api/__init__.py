@@ -13,3 +13,8 @@ def includeme(config):
         'api.accounting.accounts.add',
         '/api/accounting/accounts/add'
     )
+
+    config.add_route(
+        'api.accounting.accounts.all',
+        '/api/accounting/accounts/all'
+    )
