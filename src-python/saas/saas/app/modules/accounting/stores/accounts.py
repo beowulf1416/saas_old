@@ -48,3 +48,13 @@ class AccountsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise e
+
+    def all(self, clientId: UUID):
+        '''rerieve all accounts for client
+        '''
+        try:
+            result = super(AccountsStore, self).runProc('accounting.accounts_all', [clientId, ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise e

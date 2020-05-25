@@ -43,6 +43,15 @@ class TestAccountStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_accounts_all(self):
+        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        try:
+            result = self.accountsStore.all(client_id)
+            self.assertGreater(len(result), 0)
+        except Exception as e:
+            self.fail(e)
+
+
     def test_assign_parent_account(self):
         (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
         random_name_1 = self.generate_random_str(10)
