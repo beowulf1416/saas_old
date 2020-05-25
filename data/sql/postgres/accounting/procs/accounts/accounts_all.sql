@@ -18,7 +18,7 @@ begin
         a.type_id,
         a.name
     from accounting.accounts a
-    where a.name like p_filter_name;
+    where a.client_id = p_client_id;
 end
 $$
 language plpgsql;
