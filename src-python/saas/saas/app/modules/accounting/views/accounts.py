@@ -6,7 +6,7 @@ from pyramid.view import view_config
 @view_config(
     route_name='accounting.accounts.all',
     request_method='GET',
-    renderer='saas.app.modules.accounting:templates/default.html'
+    renderer='saas.app.modules.accounting:templates/accounts/all.html'
 )
 def view_accounting_accounts_all(request):
     return {}

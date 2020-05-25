@@ -32,5 +32,20 @@ class Accounts {
         })
         .then((r) => r.json());
     }
+
+    static all(clientId) {
+        return fetch('/api/accounting/accounts/all', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Accounts };

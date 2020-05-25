@@ -69,3 +69,40 @@ def view_accounting_accounts_add(request):
             'message': 'Account added'
         }
     )
+
+@view_config(
+    route_name='api.accounting.accounts.all',
+    request_method='POST',
+    renderer='json'
+)
+def view_accounting_accounts_all(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None or name is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    accounts = []
+    try:
+        accountStore = services['store.accounting.accounts']
+        result = accountStore.all(client_id)
+        accounts = [
+            { 'id': r[0], 'active': r[1], 'created_ts': r[2], 'type_id': r[3], 'name': r[4] }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Account added',
+        body={
+            'accounts': accounts
+        }
+    )
