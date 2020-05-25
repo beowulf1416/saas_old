@@ -7,11 +7,67 @@ Accounting - Add Account
 {% endblock title %}
 
 {% block content %}
+<notification-list></notification-list>
 <div class="form-wrapper">
-    <account-selector></account-selector>
+    <form class="form-account">
+        <fieldset>
+            <div class="form-group">
+                <label for="type">Account Type</label>
+                <select id="type" name="type" class="form-input-select form-input-type">
+                </select>
+            </div><!-- .form-group -->
+            {{ forms.input('text', 'name', 'name', 'Name') }}
+            {{ forms.input('textarea', 'description', 'description', 'Description') }}
+        </fieldset>
+        <fieldset>
+            <legend>Parent</legend>
+            <account-selector></account-selector>
+        </fieldset>
+        <button type="button" id="btnsave" class="btn btn-primary">Save</button>
+    </form>
 </div><!-- .form-wrapper -->
 {% endblock content %}
 
 {% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/account.selector.js"></script>
+<script type="module">
+'use strict';
+import { Accounts } from '/static/js/helpers/accounts.js';
+(function(){
+    const notifier = document.querySelector('notification-list');
+
+    Accounts.getAccountTypes().then((r) => {
+        if (r.status == 'success') {
+            const types = r.json.types;
+            const select = document.querySelector('select#type');
+            types.forEach(t => {
+                const opt = document.createElement('option');
+                opt.text = t.name;
+                opt.value = t.id;
+                select.appendChild(opt);
+            });
+        } else {
+            notifier.add('error', r.message);
+        }
+    });
+
+    const btnsave = document.querySelector('button#btnsave');
+    btnsave.addEventListener('click', function(e) {
+        const typeId = document.querySelector('select#type');
+        const name = document.querySelector('input#name');
+        const description = document.querySelector('textarea#description');
+        const parentAcct = document.querySelector('account-selector');
+
+        Accounts.add('{{ client_id }}', typeId.value, name.value, description.value, parentAcct).then((r) => {
+            if (r.status == 'success') {
+                window.location = '{{ request.route_path("accounting.accounts.all") }}';
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
+        console.log('btnsave');
+    });
+})();
+</script>
 {% endblock scripts %}

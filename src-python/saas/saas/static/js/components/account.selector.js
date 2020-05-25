@@ -20,6 +20,8 @@ class AccountSelector extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
         shadow.appendChild(div);
+
+        this.getSelected = this.getSelected.bind(this);
     }
 
     init(component, container) {
@@ -58,10 +60,11 @@ class AccountSelector extends HTMLElement {
         btnsearch.addEventListener('click', function(e) {
             const dlg = md.show();
         });
-        
     }
 
-
+    getSelected() {
+        console.log('getSelected');
+    }
 }
 customElements.define('account-selector', AccountSelector);
 export { AccountSelector };

@@ -13,6 +13,16 @@ class AccountsStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(AccountsStore, self).__init__(manager, name)
 
+    def accountTypesAll(self):
+        '''retrieve all account types
+        '''
+        try:
+            result = super(AccountsStore, self).runProc('accounting.account_types_all', [])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while retrieving account types')
+
     def add(self, clientId: UUID, typeId: AccountTypes, name: str, description: str):
         '''add an account record for a specified client
         '''
