@@ -25,6 +25,14 @@ class TestAccountStore(unittest.TestCase):
         allowed = string.ascii_lowercase + string.digits
         return ''.join(random.choice(allowed) for i in range(length))
 
+    def test_account_types_all (self):
+        try:
+            result = self.accountsStore.accountTypesAll()
+            self.assertGreater(len(result), 0)
+        except Exception as e:
+            self.fail(e)
+
+
     def test_account_add(self):
         (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
         random_name = self.generate_random_str(10)

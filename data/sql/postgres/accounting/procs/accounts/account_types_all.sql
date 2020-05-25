@@ -9,7 +9,7 @@ begin
     select
         a.id,
         a.name
-    from accounting.account_types a
+    from accounting.account_types a;
 end
 $$
 language plpgsql;
