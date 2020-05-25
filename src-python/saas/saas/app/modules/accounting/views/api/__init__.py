@@ -18,3 +18,8 @@ def includeme(config):
         'api.accounting.accounts.all',
         '/api/accounting/accounts/all'
     )
+
+    config.add_route(
+        'api.accounting.accounts.children',
+        '/api/accounting/accounts/children'
+    )

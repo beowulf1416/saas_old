@@ -106,3 +106,41 @@ def view_accounting_accounts_all(request):
             'accounts': accounts
         }
     )
+
+@view_config(
+    route_name='api.accounting.accounts.children',
+    request_method='POST',
+    renderer='json'
+)
+def view_accounting_accounts_children(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    account_id = params['accountId'] if 'accountId' in params else None
+
+    if client_id is None or account_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Account Id is required'
+        )
+
+    services = request.services()
+    accounts = []
+    try:
+        accountStore = services['store.accounting.accounts']
+        result = accountStore.getChildren(client_id, account_id)
+        accounts = [
+            { 'id': r[0], 'active': r[1], 'type_id': r[2], 'name': r[4] }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} accounts found'.format(len(accounts)),
+        body={
+            'accounts': accounts
+        }
+    )
