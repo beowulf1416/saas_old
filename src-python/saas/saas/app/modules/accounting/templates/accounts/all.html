@@ -19,10 +19,11 @@ Accounting - Accounts
 'use strict';
 import { Accounts } from '/static/js/helpers/accounts.js';
 (function(){
+    const client_id = '{{ client_id }}';
     const notifier = document.querySelector('notification-list');
     const atree = document.querySelector('account-tree');
 
-    Accounts.all('{{ client_id }}').then((r) => {
+    Accounts.all(client_id).then((r) => {
         if (r.status == 'success') {
             const accounts = r.json.accounts;
             atree.addAccounts(accounts);
@@ -31,9 +32,21 @@ import { Accounts } from '/static/js/helpers/accounts.js';
         }
     });
 
+    atree.addEventListener('onerror', function(e) {
+        console.error(e);
+        notifier.add('error', e.detail.message);
+    });
+
     atree.addEventListener('onselectaccount', function(e) {
         const accountId = e.detail.accountId;
-        
+        Accounts.getChildren(client_id, accountId).then((r) => {
+            if (r.status == 'success') {
+                const accounts = r.json.accounts;
+                atree.addAccounts(accounts, accountId);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
     });
 })();
 </script>
