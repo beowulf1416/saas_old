@@ -1,5 +1,6 @@
 'use strict';
 import { Util } from '/static/js/util.js';
+// ref: https://www.w3.org/TR/wai-aria-practices/examples/treegrid/treegrid-1.html
 
 class AccountTree extends HTMLElement {
 
@@ -31,23 +32,29 @@ class AccountTree extends HTMLElement {
         }
 
         const ths = [];
-        ths.push(`<div class="column col-name">Name</div>`);
-        ths.push(`<div class="column col-description">Description</div>`);
+        ths.push(`<th scope="col" class="column col-name">Name</th>`);
+        ths.push(`<th scope="col" class="column col-description">Description</th>`);
         const thall = ths.join('');
 
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
-            <div class="header">
-                <div class="row">
-                    ${thall}
-                </div><!-- .row -->
-            </div><!-- .header -->
-            <div class="body">
-            </div><!-- .body -->
-            <div class="footer">
-                ${add}
-            </div><!-- .footer -->
+            <table class="tbl-accounts">
+                <colgroup>
+                    <col id="colgrp1">
+                    <col id="colgrp2">
+                    <col id="colgrp3">
+                </colgroup>
+                <thead>
+                    <tr>
+                        ${thall}
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
         `
         container.appendChild(div);
 
@@ -65,78 +72,35 @@ class AccountTree extends HTMLElement {
     addAccounts(accounts = [], parent = null) {
         const self = this;
         const shadow = this.shadowRoot;
-
-        const body = shadow.querySelector('div.table-wrapper div.body');
+        const tbody = shadow.querySelector('table.tbl-accounts tbody');
         if (parent == null) {
             accounts.forEach(a => {
-                const id = 'id' + Util.generateId();
-
                 const tds = [];
-                tds.push(`<div class="column col-name"><a class="nav-link link-select-account" title="Account ${a.name}" href="#" data-id="${a.id}">${a.name}</a></div>`);
-                tds.push(`<div class="column col-description">${a.description}</div>`);
+                tds.push(`<td role="gridcell" class="col col-name">${a.name}</td>`);
+                tds.push(`<td role="gridcell" class="col col-description">${a.description}</td>`);
                 const tdall = tds.join('');
 
-                const wrapper = document.createElement('div');
-                wrapper.classList.add('row-wrapper');
-                wrapper.dataset.id = a.id;
-                wrapper.innerHTML = `
-                    <div id="${id}" class="row row-account" draggable="true" data-id="${a.id}" data-level="0">
-                        ${tdall}
-                    </div><!-- .row -->
+                const tr = document.createElement('tr');
+                tr.classList.add('row-account');
+                tr.setAttribute('role', 'row');
+                tr.setAttribute('aria-level', 1);
+                tr.setAttribute('aria-posinset', 1);
+                tr.setAttribute('aria-setsize', 1);
+                tr.setAttribute('aria-expanded', true);
+                tr.innerHTML = `
+                    ${tdall}
                 `;
 
-                body.appendChild(wrapper);
-
-                const aselect = shadow.querySelector('a.link-select-account');
-                aselect.addEventListener('click', function(e) {
-                    self.dispatchEvent(new CustomEvent('onselectaccount', {
-                        bubbles: true,
-                        cancelable: true,
-                        detail: {
-                            accountId: aselect.dataset.id
-                        }
-                    }));
-                });
-
-                const tr = wrapper.querySelector('div.row-account');
-                tr.addEventListener('dragstart', function(e) {
-                    e.dataTransfer.setData('text/plain', e.target.id);
-                    e.dataTransfer.effectAllowed = 'link';
-
-                    e.currentTarget.style.opacity = 0.5;
-                });
-
-                wrapper.addEventListener('dragenter', function(e) {
-                    console.log('ondragenter');
-                    console.log(e);
-                    e.preventDefault();
-                    e.dataTransfer.dropEffect = 'link';
-                });
-
-                wrapper.addEventListener('dragover', function(e) {
-                    console.log('ondragover');
-                    e.preventDefault();
-                    e.dataTransfer.dropEffect = 'link';
-                });
-
-                wrapper.addEventListener('drop', function(e) {
-                    e.preventDefault();
-                    const dragstartid = e.dataTransfer.getData('text/plain');
-                    const start_tr = shadow.querySelector('div#' + dragstartid);
-                    start_tr.style.opacity = 1.0;
-
-                    self.dispatchEvent(new CustomEvent('onassignparentaccount', {
-                        bubbles: true,
-                        cancelable: true,
-                        detail: {
-                            accountId: start_tr.dataset.id,
-                            parentAccountId: wrapper.dataset.id
-                        }
-                    }));
-                });
+                tbody.appendChild(tr);
             });
         } else {
-            console.log('working on this');
+            self.dispatchEvent(new CustomEvent('onerror', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    'message': '// todo working on this'
+                }
+            }));
         }
     }
 }
