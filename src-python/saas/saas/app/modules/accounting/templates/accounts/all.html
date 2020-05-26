@@ -37,6 +37,10 @@ import { Accounts } from '/static/js/helpers/accounts.js';
         notifier.add('error', e.detail.message);
     });
 
+    atree.addEventListener('onaddaccount', function(e) {
+        console.log('onaddaccount');
+    });
+
     atree.addEventListener('onselectaccount', function(e) {
         const accountId = e.detail.accountId;
         Accounts.getChildren(client_id, accountId).then((r) => {
@@ -51,7 +55,16 @@ import { Accounts } from '/static/js/helpers/accounts.js';
 
     atree.addEventListener('onassignparentaccount', function(e) {
         console.log('onassignparentaccount');
-        console.log(e.detail);
+        // console.log(e.detail);
+        const parent_account_id = e.detail.parentAccountId;
+        const account_id = e.detail.accountId;
+        Accounts.assignParent(client_id, account_id, parent_account_id).then((r) => {
+            if (r.status == 'success') {
+                notifier.add('success', r.message);
+            } else {
+                notifier.add('error', r.message);
+            }
+        });
     });
 })();
 </script>

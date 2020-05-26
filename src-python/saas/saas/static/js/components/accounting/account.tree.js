@@ -23,6 +23,13 @@ class AccountTree extends HTMLElement {
     }
 
     init(component, container) {
+        const showAdd = this.hasAttribute('show-add');
+
+        const add = '';
+        if (showAdd) {
+            add = '<a class="nav-link link-add-account" title="Add Account" href="#">&plus;</a>';
+        }
+
         const ths = [];
         ths.push(`<div class="column col-name">Name</div>`);
         ths.push(`<div class="column col-description">Description</div>`);
@@ -38,8 +45,21 @@ class AccountTree extends HTMLElement {
             </div><!-- .header -->
             <div class="body">
             </div><!-- .body -->
+            <div class="footer">
+                ${add}
+            </div><!-- .footer -->
         `
         container.appendChild(div);
+
+        if (showAdd) {
+            const ladd = container.querySelector('a.link-add-account');
+            ladd.addEventListener('click', function(e) {
+                self.dispatchEvent(new CustomEvent('onaddaccount', {
+                    bubbles: true,
+                    cancelable: true
+                }));
+            });
+        }
     }
 
     addAccounts(accounts = [], parent = null) {
@@ -49,10 +69,10 @@ class AccountTree extends HTMLElement {
         const body = shadow.querySelector('div.table-wrapper div.body');
         if (parent == null) {
             accounts.forEach(a => {
-                const id = Util.generateId();
+                const id = 'id' + Util.generateId();
 
                 const tds = [];
-                tds.push(`<div class="column col-name">${a.name}</div>`);
+                tds.push(`<div class="column col-name"><a class="nav-link link-select-account" title="Account ${a.name}" href="#" data-id="${a.id}">${a.name}</a></div>`);
                 tds.push(`<div class="column col-description">${a.description}</div>`);
                 const tdall = tds.join('');
 
@@ -66,6 +86,17 @@ class AccountTree extends HTMLElement {
                 `;
 
                 body.appendChild(wrapper);
+
+                const aselect = shadow.querySelector('a.link-select-account');
+                aselect.addEventListener('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('onselectaccount', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            accountId: aselect.dataset.id
+                        }
+                    }));
+                });
 
                 const tr = wrapper.querySelector('div.row-account');
                 tr.addEventListener('dragstart', function(e) {
@@ -91,7 +122,7 @@ class AccountTree extends HTMLElement {
                 wrapper.addEventListener('drop', function(e) {
                     e.preventDefault();
                     const dragstartid = e.dataTransfer.getData('text/plain');
-                    const start_tr = shadow.querySelector(`div#${dragstartid}`);
+                    const start_tr = shadow.querySelector('div#' + dragstartid);
                     start_tr.style.opacity = 1.0;
 
                     self.dispatchEvent(new CustomEvent('onassignparentaccount', {
