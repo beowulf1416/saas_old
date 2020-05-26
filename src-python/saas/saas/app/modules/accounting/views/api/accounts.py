@@ -71,6 +71,41 @@ def view_accounting_accounts_add(request):
     )
 
 @view_config(
+    route_name='api.accounting.accounts.assign.parent',
+    request_method='POST',
+    renderer='json'
+)
+def view_accounting_accounts_set_parent(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    account_id = params['accountId'] if 'accountId' in params else None
+    parent_account_id = params['parentAccountId'] if 'parentAccountId' in params else None
+
+    if client_id is None or account_id is None or parent_account_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, Account Id and Parent Account Id is required'
+        )
+
+    services = request.services()
+    try:
+        accountStore = services['store.accounting.accounts']
+        accountStore.assign_account_parent(client_id, account_id, parent_account_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Account updated',
+        body={
+            'message': 'account updated'
+        }
+    )
+    
+
+@view_config(
     route_name='api.accounting.accounts.all',
     request_method='POST',
     renderer='json'
