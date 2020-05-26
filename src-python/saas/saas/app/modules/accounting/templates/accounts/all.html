@@ -1,5 +1,7 @@
 {% extends "saas.app.modules.accounting:templates/default.html" %}
 
+{% import 'saas.app:templates/forms.html' as forms %}
+
 {% block title %}
 Accounting - Accounts
 {% endblock title %}
@@ -10,6 +12,18 @@ Accounting - Accounts
     <account-tree show-add></account-tree>
 </div><!-- .tree-wrapper -->
 {% endblock content %}
+
+{% block sidebar_right %}
+<div class="form-wrapper">
+    <form class="form-account">
+        <fieldset>
+            {{ forms.input('text', 'name', 'name', 'Name') }}
+            {{ forms.input('textarea', 'description', 'description', 'Description') }}
+        </fieldset>
+        <button type="button" class="btn btn-primary" id="btnadd">Add</button>
+    </form>
+</div><!-- .form-wrapper -->
+{% endblock sidebar_right %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
