@@ -55,10 +55,32 @@ class AccountTree extends HTMLElement {
 
                 const tr = document.createElement('div');
                 tr.classList.add('row', 'row-account');
+                tr.setAttribute('draggable', true);
+                tr.dataset.id = a.id;
                 tr.dataset.level = 0;
                 tr.innerHTML = `${tdall}`;
 
                 body.appendChild(tr);
+
+                tr.addEventListener('dragstart', function(e) {
+                    console.log('dragstart');
+                    console.log(e);
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    e.dataTransfer.dropEffect = 'link';
+                });
+
+                tr.addEventListener('ondragover', function(e) {
+                    console.log('ondragover');
+                    console.log(e);
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'link';
+                });
+
+                tr.addEventListener('ondrop', function(e) {
+                    console.log('ondrop');
+                    console.log(e);
+                    e.preventDefault();
+                });
             });
         } else {
             console.log('working on this');
