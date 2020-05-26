@@ -1,4 +1,5 @@
 'use strict';
+import { Util } from '/static/js/util.js';
 
 class AccountTree extends HTMLElement {
 
@@ -48,6 +49,8 @@ class AccountTree extends HTMLElement {
         const body = shadow.querySelector('div.table-wrapper div.body');
         if (parent == null) {
             accounts.forEach(a => {
+                const id = Util.generateId();
+
                 const tds = [];
                 tds.push(`<div class="column col-name">${a.name}</div>`);
                 tds.push(`<div class="column col-description">${a.description}</div>`);
@@ -55,6 +58,7 @@ class AccountTree extends HTMLElement {
 
                 const tr = document.createElement('div');
                 tr.classList.add('row', 'row-account');
+                tr.setAttribute('id', `row${id}`);
                 tr.setAttribute('draggable', true);
                 tr.dataset.id = a.id;
                 tr.dataset.level = 0;
@@ -67,6 +71,15 @@ class AccountTree extends HTMLElement {
                     console.log(e);
                     e.dataTransfer.setData('text/plain', e.target.id);
                     e.dataTransfer.dropEffect = 'link';
+
+                    e.currentTarget.style.backgroundColor = 'yellow';
+                });
+
+                tr.addEventListener('ondragenter', function(e) {
+                    console.log('ondragenter');
+                    console.log(e);
+                    e.preventDefault();
+                    // e.dataTransfer.dropEffect = 'link';
                 });
 
                 tr.addEventListener('ondragover', function(e) {
