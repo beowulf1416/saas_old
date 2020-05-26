@@ -22,6 +22,7 @@ class AccountTree extends HTMLElement {
     }
 
     init(component, container) {
+        /*
         const ths = [];
         ths.push(`<th class="col-name">Name</th>`);
         ths.push(`<th class="col-description">Description</th>`);
@@ -40,13 +41,31 @@ class AccountTree extends HTMLElement {
                 </tfoot>
             </table><!-- .tbl-accounts -->
         `;
+        */
 
+        const ths = [];
+        ths.push(`<div class="column col-name">Name</div>`);
+        ths.push(`<div class="column col-description">Description</div>`);
+        const thall = ths.join('');
+
+        const div = document.createElement('div');
+        div.classList.add('table-wrapper');
+        div.innerHTML = `
+            <div class="header">
+                <div class="row">
+                    ${thall}
+                </div><!-- .row -->
+            </div><!-- .header -->
+            <div class="body">
+            </div><!-- .body -->
+        `
         container.appendChild(div);
     }
 
     addAccounts(accounts = [], parent = null) {
         const self = this;
         const shadow = this.shadowRoot;
+        /*
         const tbody = shadow.querySelector('table.tbl-accounts tbody');
         if (parent == null) {
             accounts.forEach(a => {
@@ -111,6 +130,25 @@ class AccountTree extends HTMLElement {
 
                 tracct.insertAdjacentElement('afterend', tr);
             }
+        }*/
+
+        const body = shadow.querySelector('div.table-wrapper div.body');
+        if (parent == null) {
+            accounts.forEach(a => {
+                const tds = [];
+                tds.push(`<div class="column col-name">${a.name}</div>`);
+                tds.push(`<div class="column col-description">${a.description}</div>`);
+                const tdall = tds.join('');
+
+                const tr = document.createElement('div');
+                tr.classList.add('row', 'row-account');
+                tr.dataset.level = 0;
+                tr.innerHTML = `${tdall}`;
+
+                body.appendChild(tr);
+            });
+        } else {
+            console.log('working on this');
         }
     }
 }
