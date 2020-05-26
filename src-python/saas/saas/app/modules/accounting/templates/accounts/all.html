@@ -48,6 +48,11 @@ import { Accounts } from '/static/js/helpers/accounts.js';
             }
         });
     });
+
+    atree.addEventListener('onassignparentaccount', function(e) {
+        console.log('onassignparentaccount');
+        console.log(e.detail);
+    });
 })();
 </script>
 {% endblock scripts %}

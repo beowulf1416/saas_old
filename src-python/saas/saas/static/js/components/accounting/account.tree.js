@@ -56,43 +56,52 @@ class AccountTree extends HTMLElement {
                 tds.push(`<div class="column col-description">${a.description}</div>`);
                 const tdall = tds.join('');
 
-                const tr = document.createElement('div');
-                tr.classList.add('row', 'row-account');
-                tr.setAttribute('id', `row${id}`);
-                tr.setAttribute('draggable', true);
-                tr.dataset.id = a.id;
-                tr.dataset.level = 0;
-                tr.innerHTML = `${tdall}`;
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('row-wrapper');
+                wrapper.dataset.id = a.id;
+                wrapper.innerHTML = `
+                    <div id="${id}" class="row row-account" draggable="true" data-id="${a.id}" data-level="0">
+                        ${tdall}
+                    </div><!-- .row -->
+                `;
 
-                body.appendChild(tr);
+                body.appendChild(wrapper);
 
+                const tr = wrapper.querySelector('div.row-account');
                 tr.addEventListener('dragstart', function(e) {
-                    console.log('dragstart');
-                    console.log(e);
                     e.dataTransfer.setData('text/plain', e.target.id);
-                    e.dataTransfer.dropEffect = 'link';
+                    e.dataTransfer.effectAllowed = 'link';
 
-                    e.currentTarget.style.backgroundColor = 'yellow';
+                    e.currentTarget.style.opacity = 0.5;
                 });
 
-                tr.addEventListener('ondragenter', function(e) {
+                wrapper.addEventListener('dragenter', function(e) {
                     console.log('ondragenter');
                     console.log(e);
                     e.preventDefault();
-                    // e.dataTransfer.dropEffect = 'link';
+                    e.dataTransfer.dropEffect = 'link';
                 });
 
-                tr.addEventListener('ondragover', function(e) {
+                wrapper.addEventListener('dragover', function(e) {
                     console.log('ondragover');
-                    console.log(e);
                     e.preventDefault();
                     e.dataTransfer.dropEffect = 'link';
                 });
 
-                tr.addEventListener('ondrop', function(e) {
-                    console.log('ondrop');
-                    console.log(e);
+                wrapper.addEventListener('drop', function(e) {
                     e.preventDefault();
+                    const dragstartid = e.dataTransfer.getData('text/plain');
+                    const start_tr = shadow.querySelector(`div#${dragstartid}`);
+                    start_tr.style.opacity = 1.0;
+
+                    self.dispatchEvent(new CustomEvent('onassignparentaccount', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            accountId: start_tr.dataset.id,
+                            parentAccountId: wrapper.dataset.id
+                        }
+                    }));
                 });
             });
         } else {
