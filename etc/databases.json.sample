@@ -1,0 +1,13 @@
+{
+    "databases": [
+        {
+            "name": "default",
+            "type": "postgresql",
+            "host": "<hostname>",
+            "port": <port>,
+            "dbname": "<username>",
+            "dbuser": "<db_user>",
+            "dbpassword": "<db_password>"
+        }
+    ]
+}
