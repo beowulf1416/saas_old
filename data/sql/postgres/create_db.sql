@@ -8,6 +8,7 @@
  */
 set schema 'public';
 create extension if not exists pgcrypto;
+create extension if not exists ltree;
 
 
 -- http://www.regular-expressions.info/email.html
