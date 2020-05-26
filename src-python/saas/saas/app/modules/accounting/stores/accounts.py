@@ -47,7 +47,7 @@ class AccountsStore(BaseStore):
             super(AccountsStore, self).runProcTransactional('accounting.account_assign_parent', [clientId, accountId, parentAccountId])
         except Exception as e:
             log.error(e)
-            raise e
+            raise Exception('Unable to assign parent account')
 
     def all(self, clientId: UUID):
         '''rerieve all accounts for client
