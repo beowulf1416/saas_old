@@ -7,7 +7,7 @@ Accounting - Accounts
 {% block content %}
 <notification-list></notification-list>
 <div class="tree-wrapper">
-    <account-tree></account-tree>
+    <account-tree show-add></account-tree>
 </div><!-- .tree-wrapper -->
 {% endblock content %}
 
@@ -39,6 +39,7 @@ import { Accounts } from '/static/js/helpers/accounts.js';
 
     atree.addEventListener('onaddaccount', function(e) {
         console.log('onaddaccount');
+        window.location = '{{ request.route_path('accounting.accounts.add') }}';
     });
 
     atree.addEventListener('onselectaccount', function(e) {
