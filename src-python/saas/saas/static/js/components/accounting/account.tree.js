@@ -25,7 +25,7 @@ class AccountTree extends HTMLElement {
     init(component, container) {
         const showAdd = this.hasAttribute('show-add');
 
-        const add = '';
+        let add = '';
         if (showAdd) {
             add = '<a class="nav-link link-add-account" title="Add Account" href="#">&plus;</a>';
         }
