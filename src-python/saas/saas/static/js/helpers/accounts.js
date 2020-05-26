@@ -33,6 +33,23 @@ class Accounts {
         .then((r) => r.json());
     }
 
+    static assignParent(clientId, accountId, parentAccountId) {
+        return fetch('/api/accounting/accounts/parent/assign', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                accountId: accountId,
+                parentAccountId: parentAccountId
+            })
+        })
+        .then((r) => r.json());
+    }
+
     static all(clientId) {
         return fetch('/api/accounting/accounts/all', {
             method: 'POST',
