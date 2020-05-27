@@ -41,26 +41,26 @@ import { Accounts } from '/static/js/helpers/accounts.js';
     const notifier = document.querySelector('notification-list');
     const atree = document.querySelector('account-tree');
 
-    Accounts.getAccountTypes().then((r) => {
-        if (r.status == 'success') {
-            const types = r.json.types;
-            atree.setAccountTypes(types);
-            const stypes = document.querySelector('form.form-account select.form-input-type');
-            types.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.id;
-                opt.text = t.name;
+    // Accounts.getAccountTypes().then((r) => {
+    //     if (r.status == 'success') {
+    //         const types = r.json.types;
+    //         atree.setAccountTypes(types);
+    //         const stypes = document.querySelector('form.form-account select.form-input-type');
+    //         types.forEach(t => {
+    //             const opt = document.createElement('option');
+    //             opt.value = t.id;
+    //             opt.text = t.name;
 
-                stypes.appendChild(opt);
-            });
-        } else {
-            notifier.add('error', r.message);
-        }
-    });
+    //             stypes.appendChild(opt);
+    //         });
+    //     } else {
+    //         notifier.add('error', r.message);
+    //     }
+    // });
 
     Accounts.getTree(client_id).then((r) => {
         if (r.status == 'success') {
-            console.log(r);
+            atree.addAccounts(r.json.accounts);
         } else {
             notifier.add('error', r.message);
         }
