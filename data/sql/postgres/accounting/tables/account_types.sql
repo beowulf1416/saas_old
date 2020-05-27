@@ -10,8 +10,8 @@ create table if not exists account_types (
 
 insert into account_types (id, name) values 
 (0, 'root'),
-(1,'assets'),
-(2,'liabilities'),
+(1,'asset'),
+(2,'liability'),
 (3,'equity'),
 (4,'income'),
 (5,'expense')
