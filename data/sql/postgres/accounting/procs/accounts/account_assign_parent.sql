@@ -37,7 +37,8 @@ begin
             and a.acct_id = p_parent_acct_id;
 
         update accounting.account_tree
-        set parent_acct_id = p_parent_acct_id
+        set parent_acct_id = p_parent_acct_id,
+            path = text2ltree(ltree2text(t_parent_path) || '.' || replace(acct_id::text, '-', ''))
         where client_id = p_client_id
             and acct_id = p_acct_id;
     else
