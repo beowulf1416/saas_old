@@ -28,6 +28,7 @@ begin
         and a.id = p_parent_acct_id;
     
     -- check that both accounts are the same type
+    -- if not raise exception
     if t_acct_type_id = t_parent_acct_type_id then
         select
             a.path into t_parent_path 
@@ -35,7 +36,7 @@ begin
         where a.client_id = p_client_id
             and a.acct_id = p_parent_acct_id;
 
-        insert into accounting.account_tree (
+        insert into accounting.account_tree as a (
             client_id,
             acct_id,
             parent_acct_id,
@@ -44,12 +45,12 @@ begin
             p_client_id,
             p_acct_id,
             p_parent_acct_id,
-            t_parent_path || p_acct_id
+            text2ltree(ltree2text(t_parent_path) || '.' || p_acct_id)
         )
-        on conflict do 
-            update set parent_acct_id = p_parent_acct_id
-            where client_id = p_client_id
-                and acct_id = p_acct_id;
+        on conflict on constraint pk_account_tree do 
+            update set a.parent_acct_id = p_parent_acct_id
+            where a.client_id = p_client_id
+                and a.acct_id = p_acct_id;
     else
         raise exception 'cannot assign parent account of type %s to account of type %s', parent_acct_type_id, acct_type_id;
     end if;
