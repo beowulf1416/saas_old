@@ -64,3 +64,10 @@ class TestAccountStore(unittest.TestCase):
             self.accountsStore.assign_account_parent(client_id, account_1, account_2)
         except Exception as e:
             self.fail(e)
+
+    def test_account_tree_all(self):
+        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        try:
+            result = self.accountsStore.getTree(client_id)
+        except Exception as e:
+            self.fail(e)
