@@ -67,7 +67,7 @@ begin
         p_client_id,
         t_acct_id,
         t_root_acct_id,
-        t_path::ltree
+        text2ltree(t_path)
     );
 
     return t_acct_id;

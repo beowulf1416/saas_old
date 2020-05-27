@@ -30,7 +30,6 @@ begin
     -- create root accounting account for client
     insert into accounting.accounts (client_id, type_id, name, description) values
     (t_client_id, 0, 'root', 'root account');
-    ()
 
     return t_client_id;
 end
