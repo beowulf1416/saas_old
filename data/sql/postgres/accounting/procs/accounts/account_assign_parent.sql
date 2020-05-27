@@ -45,12 +45,12 @@ begin
             p_client_id,
             p_acct_id,
             p_parent_acct_id,
-            text2ltree(ltree2text(t_parent_path) || '.' || p_acct_id)
+            text2ltree(ltree2text(t_parent_path) || '.' || replace(p_acct_id::text, '-', ''))
         )
-        on conflict on constraint pk_account_tree do 
-            update set a.parent_acct_id = p_parent_acct_id
-            where a.client_id = p_client_id
-                and a.acct_id = p_acct_id;
+        on conflict on constraint pk_account_tree do
+        update set parent_acct_id = p_parent_acct_id
+        where a.client_id = p_client_id
+            and a.acct_id = p_acct_id;
     else
         raise exception 'cannot assign parent account of type %s to account of type %s', parent_acct_type_id, acct_type_id;
     end if;
