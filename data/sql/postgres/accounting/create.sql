@@ -24,6 +24,9 @@ begin
         a.id into default_client_id
     from clients.clients a
     where a.name = 'default';
+
+    insert into accounting.accounts values (client_id, type_id, name, description) values
+    (default_client_id, 0, 'root', 'root account');
 end
 $$
 language plpgsql;
