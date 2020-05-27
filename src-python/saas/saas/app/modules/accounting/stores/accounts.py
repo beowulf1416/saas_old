@@ -68,3 +68,13 @@ class AccountsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve child accounts')
+
+    def getTree(self, clientId: UUID):
+        '''get account tree
+        '''
+        try:
+            result = super(AccountsStore, self).runProc('accounting.account_tree_all', [clientId, ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve account tree')
