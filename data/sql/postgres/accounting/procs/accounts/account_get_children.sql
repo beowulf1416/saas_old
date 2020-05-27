@@ -1,4 +1,4 @@
-create or replace account_get_children (
+create or replace function account_get_children (
     p_client_id clients.clients.id%type,
     p_account_id accounting.accounts.id%type
 )
@@ -6,7 +6,7 @@ returns table (
     id accounting.accounts.id%type,
     active accounting.accounts.active%type,
     type_id accounting.accounts.type_id%type,
-    name accounting.accounts.name%type,
+    name accounting.accounts.name%type
 )
 as $$
 begin

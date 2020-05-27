@@ -33,7 +33,7 @@ begin
         );
     else
         raise exception 'cannot assign parent account of type %s to account of type %s', parent_acct_type_id, acct_type_id;
-    endif;
+    end if;
 end
 $$
 language plpgsql;

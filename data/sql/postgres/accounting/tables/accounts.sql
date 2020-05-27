@@ -14,5 +14,5 @@ create table if not exists accounts (
     constraint fk_accounts_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_accounts_2 foreign key (type_id)
-        references account_types (id) on delete restrict on update restrict)
+        references account_types (id) on delete restrict on update restrict
 );
