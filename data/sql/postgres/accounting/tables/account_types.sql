@@ -9,6 +9,7 @@ create table if not exists account_types (
 );
 
 insert into account_types (id, name) values 
+(0, 'root'),
 (1,'assets'),
 (2,'liabilities'),
 (3,'equity'),

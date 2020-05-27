@@ -9,7 +9,7 @@ create or replace function client_add (
 returns clients.clients.id%type
 as $$
 declare
-    tmp_id clients.clients.id%type;
+    t_client_id clients.clients.id%type;
 begin
     insert into clients.clients (
         name, 
@@ -20,13 +20,18 @@ begin
         p_addr,
         p_url
     )
-    returning id into tmp_id;
+    returning id into t_client_id;
 
+    -- create default role for client
     insert into iam.roles (client_id, name) values (
-        tmp_id, 'everyone'
+        t_client_id, 'everyone'
     );
 
-    return tmp_id;
+    -- create root accounting account for client
+    insert into accounting.accounts (client_id, type_id, name, description) values 
+    (t_client_id, 0, 'root', 'root account');
+
+    return t_client_id;
 end
 $$
 language plpgsql;
