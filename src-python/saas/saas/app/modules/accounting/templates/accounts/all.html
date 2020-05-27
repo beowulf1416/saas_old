@@ -19,8 +19,12 @@ Accounting - Accounts
         <fieldset>
             {{ forms.input('text', 'name', 'name', 'Name') }}
             {{ forms.input('textarea', 'description', 'description', 'Description') }}
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select id="type" class="form-input-type"></select>
+            </div><!-- .form-group -->
         </fieldset>
-        <button type="button" class="btn btn-primary" id="btnadd">Add</button>
+        <button type="button" class="btn btn-primary btn-add" id="btnadd">Add</button>
     </form>
 </div><!-- .form-wrapper -->
 {% endblock sidebar_right %}
@@ -37,14 +41,49 @@ import { Accounts } from '/static/js/helpers/accounts.js';
     const notifier = document.querySelector('notification-list');
     const atree = document.querySelector('account-tree');
 
-    Accounts.all(client_id).then((r) => {
+    Accounts.getAccountTypes().then((r) => {
         if (r.status == 'success') {
-            const accounts = r.json.accounts;
-            atree.addAccounts(accounts);
+            const types = r.json.types;
+            atree.setAccountTypes(types);
+            const stypes = document.querySelector('form.form-account select.form-input-type');
+            types.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.id;
+                opt.text = t.name;
+
+                stypes.appendChild(opt);
+            });
         } else {
             notifier.add('error', r.message);
         }
     });
+
+    Accounts.getTree(client_id).then((r) => {
+        if (r.status == 'success') {
+            console.log(r);
+        } else {
+            notifier.add('error', r.message);
+        }
+    });
+
+    document.querySelector('form.form-account button.btn-add')
+        .addEventListener('click', function(e) {
+            const tname = document.querySelector('form.form-account input#name');
+            const tdesc = document.querySelector('form.form-account textarea#description');
+            const ttype = document.querySelector('form.form-account select#type');
+            Accounts.add(client_id, ttype.value, tname.value, tdesc.value, null).then((r) => {
+                notifier.add(r.status, r.message, 3000);
+            });
+        });
+
+    // Accounts.all(client_id).then((r) => {
+    //     if (r.status == 'success') {
+    //         const accounts = r.json.accounts;
+    //         atree.addAccounts(accounts);
+    //     } else {
+    //         notifier.add('error', r.message);
+    //     }
+    // });
 
     atree.addEventListener('onerror', function(e) {
         console.error(e);
@@ -54,6 +93,11 @@ import { Accounts } from '/static/js/helpers/accounts.js';
     atree.addEventListener('onaddaccount', function(e) {
         console.log('onaddaccount');
         window.location = '{{ request.route_path('accounting.accounts.add') }}';
+    });
+
+    atree.addEventListener('onselectaccounttype', function(e) {
+        const typeId = e.detail.accountTypeId;
+        console.log('onselectaccounttype');
     });
 
     atree.addEventListener('onselectaccount', function(e) {

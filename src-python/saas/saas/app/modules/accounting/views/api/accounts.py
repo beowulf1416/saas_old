@@ -179,3 +179,41 @@ def view_accounting_accounts_children(request):
             'accounts': accounts
         }
     )
+
+
+@view_config(
+    route_name='api.accounting.account.tree',
+    request_method='POST',
+    renderer='json'
+)
+def view_accounting_account_tree(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    accounts = []
+    try:
+        accountStore = services['store.accounting.accounts']
+        result = accountStore.getTree(client_id)
+        accounts = [
+            { 'id': r[0], 'type_id': r[1], 'name': r[2], 'description': r[3], 'level': r[4], 'path': r[5] }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} accounts found'.format(len(accounts)),
+        body={
+            'accounts': accounts
+        }
+    )

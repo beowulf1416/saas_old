@@ -28,3 +28,8 @@ def includeme(config):
         'api.accounting.accounts.children',
         '/api/accounting/accounts/children'
     )
+
+    config.add_route(
+        'api.accounting.account.tree',
+        '/api/accounting/accounts/tree'
+    )
