@@ -22,7 +22,8 @@ begin
     from accounting.account_tree a
         inner join accounting.accounts b on a.acct_id = b.id
     where a.client_id = p_client_id
-        and a.path <@ 'root';
+        and a.path <@ 'root'
+    order by a.path;
 end
 $$
 language plpgsql;
