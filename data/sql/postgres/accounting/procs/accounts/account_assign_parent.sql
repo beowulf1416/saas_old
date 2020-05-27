@@ -30,7 +30,11 @@ begin
             p_client_id,
             p_acct_id,
             p_parent_acct_id
-        );
+        )
+        on conflict 
+        update parent_acct_id = p_parent_acct_id
+            where client_id = p_client_id
+                and acct_id = p_acct_id;
     else
         raise exception 'cannot assign parent account of type %s to account of type %s', parent_acct_type_id, acct_type_id;
     end if;
