@@ -56,6 +56,7 @@ class BaseStore(object):
             cn.commit()
             return c.fetchall()
         except Exception as e:
+            cn.rollback()
             log.error(e)
             raise e
         finally:
