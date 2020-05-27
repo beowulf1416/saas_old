@@ -54,7 +54,8 @@ class AccountTree extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
-            <table class="tbl-accounts">
+            <table class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
+                <caption>Chart of Accounts</caption>
                 <colgroup>
                     <col id="colgrp1">
                     <col id="colgrp2">
@@ -93,7 +94,6 @@ class AccountTree extends HTMLElement {
             accounts.forEach(a => {
                 let tbody = null;
                 const type_id = a.type_id;
-                console.log(type_id);
                 switch(type_id) {
                     case 1: { // asset
                         tbody = shadow.querySelector('table.tbl-accounts tbody#asset');
@@ -127,7 +127,6 @@ class AccountTree extends HTMLElement {
                     }
                 }
 
-                console.log(tbody);
                 if (tbody != null) {
                     const tds = [];
                     tds.push(`<td role="gridcell" class="col col-name">${a.name}</td>`);
@@ -146,7 +145,6 @@ class AccountTree extends HTMLElement {
                     `;
 
                     tbody.appendChild(tr);
-                    console.log('here');
                 }
             });
         } else {

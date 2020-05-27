@@ -1,21 +1,9 @@
-.table-wrapper {
-    
+
+/* indent levels */
+.tbl-accounts tr.row-account[aria-level="3"] > td:first-child {
+    padding-left: 2ch;
 }
 
-.table-wrapper .header,
-.table-wrapper .body {
-    
-}
-
-.table-wrapper .header .row,
-.table-wrapper .body .row {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.table-wrapper .header .row .column,
-.table-wrapper .body .row .column {
-    flex: auto;
-    border: solid 1px black;
+.tbl-accounts tr.row-account[aria-level="4"] > td:first-child {
+    padding-left: 4ch;
 }
