@@ -21,6 +21,7 @@ class AccountTree extends HTMLElement {
         shadow.appendChild(div);
 
         this.addAccounts = this.addAccounts.bind(this);
+        this.setAccountTypes = this.setAccountTypes.bind(this);
     }
 
     init(component, container) {
@@ -53,6 +54,9 @@ class AccountTree extends HTMLElement {
                 <tbody>
                 </tbody>
                 <tfoot>
+                    <tr>
+                        <td>${add}</td>
+                    </tr>
                 </tfoot>
             </table>
         `
@@ -67,6 +71,40 @@ class AccountTree extends HTMLElement {
                 }));
             });
         }
+    }
+
+    setAccountTypes(types = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+        const tbody = shadow.querySelector('table.tbl-accounts tbody');
+        types.forEach(t => {
+            const tds = [];
+            tds.push(`<td role="gridcell" class="col col-name"><a class="link-nav link-select-type" href="#" title="${t.name}" data-typeid="${t.id}">${t.name}</a></td>`);
+            tds.push(`<td role="gridcell" class="col col-description"></td>`);
+            const tdall = tds.join('');
+
+            const tr = document.createElement('tr');
+            tr.classList.add('row-account-type');
+            tr.setAttribute('role', 'row');
+            tr.setAttribute('aria-level', 1);
+            tr.setAttribute('aria-posinset', 1);
+            tr.setAttribute('aria-setsize', 1);
+            tr.setAttribute('aria-expanded', true);
+            tr.innerHTML = `${tdall}`;
+
+            tbody.appendChild(tr);
+
+            const ltype = tr.querySelector('a.link-select-type');
+            ltype.addEventListener('click', function(e) {
+                self.dispatchEvent(new CustomEvent('onselectaccounttype', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        accountTypeId: ltype.dataset.typeid
+                    }
+                }));
+            });
+        });
     }
 
     addAccounts(accounts = [], parent = null) {
