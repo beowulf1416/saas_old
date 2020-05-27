@@ -54,7 +54,7 @@ begin
 
     -- account tree
     select
-        'root.' || t_acct_type_name || '.' || replace(t_acct_id::text, '-', '')
+        'root.' || t_acct_type_name || '.' || replace(t_acct_id::text, '-', '_')
         into 
         t_path;
 
