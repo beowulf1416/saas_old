@@ -14,6 +14,7 @@ set schema 'inventory';
 \ir procs/items/items_all.sql
 \ir procs/items/items_by_name.sql
 \ir procs/items/item_by_id.sql
+\ir procs/items/items_filter.sql
 
 
 set schema 'public';
