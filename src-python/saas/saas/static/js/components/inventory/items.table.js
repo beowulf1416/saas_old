@@ -5,6 +5,10 @@ class ItemsTable extends HTMLElement {
     constructor() {
         const self = super();
 
+        const bulma = document.createElement("link");
+        bulma.setAttribute('rel', 'stylesheet');
+        bulma.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css');
+
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/css/inventory/items.table.css');
@@ -15,6 +19,7 @@ class ItemsTable extends HTMLElement {
         this.init(self, div);
 
         const shadow = this.attachShadow({ mode: 'open' });
+        shadow.appendChild(bulma);
         shadow.appendChild(style);
         shadow.appendChild(div);
 
@@ -31,16 +36,18 @@ class ItemsTable extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <table class="tbl-items">
-                <caption>Items</caption>
-                <thead>
-                    ${thall}
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
-                </tfoot>
-            </table>
+            <div class="table-wrapper">
+                <table class="tbl-items">
+                    <caption>Items</caption>
+                    <thead>
+                        ${thall}
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div><!-- .table-wrapper -->
         `;
 
 
