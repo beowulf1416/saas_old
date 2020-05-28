@@ -16,7 +16,7 @@ Inventory Item
 <div class="item-wrapper">
     <nav class="navbar is-transparent" role="toolbar" aria-label="Inventory Item Actions">
         <div class="navbar-item">
-            <a class="link-new" title="New" href="#">
+            <a class="link-new" title="New Item" href="{{ request.route_path('inventory.items.add') }}">
                 <span class="material-icons">insert_drive_file</span>
             </a>
         </div><!-- .navbar-item -->
@@ -28,14 +28,14 @@ Inventory Item
     </nav>
     <div class="tabs">
         <ul>
-            <li class="is-active" href="#general"><a>General</a></li>
-            <li><a class="link-nav link-tabs link-substitutes" href="#substitutes">Substitutes</a></li>
-            <li><a class="link-nav link-tabs link-vendors" href="#vendors">Vendors</a></li>
-            <li><a class="link-nav link-tabs link-monitoring" href="#monitoring">Monitoring</a></li>
+            <li class="list-item-general is-active"><a class="link-nav link-tabs link-general" href="#general">General</a></li>
+            <li class="list-item-substitutes"><a class="link-nav link-tabs link-substitutes" href="#substitutes">Substitutes</a></li>
+            <li class="list-item-vendors"><a class="link-nav link-tabs link-vendors" href="#vendors">Vendors</a></li>
+            <li class="list-item-monitoring"><a class="link-nav link-tabs link-monitoring" href="#monitoring">Monitoring</a></li>
         </ul>
     </div><!-- .tabs -->
     <form class="form-item">
-        <fieldset id="general" class="panel">
+        <fieldset id="general" class="panel is-active">
             <div class="grid">
                 <div class="col-group">
                     {{ forms.input('text', 'name', 'name', 'Name') }}
@@ -66,4 +66,21 @@ Inventory Item
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module">
+'use script';
+(function(){
+    document.querySelectorAll('.item-wrapper .tabs .link-tabs').forEach((l) => {
+        l.addEventListener('click', function(e) {
+            const href = e.target.getAttribute('href');
+            const litemclass = href.substring(1, href.length);
+            console.log(litemclass);
+
+            document.querySelector('.tabs li.is-active').classList.remove('is-active');
+            document.querySelector('.tabs li.list-item-' + litemclass).classList.add('is-active');
+            document.querySelector('form.form-item fieldset.is-active').classList.remove('is-active');
+            document.querySelector('form.form-item fieldset' + href).classList.add('is-active');
+        });
+    });
+})();
+</script>
 {% endblock scripts %}

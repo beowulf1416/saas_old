@@ -7,17 +7,16 @@ Inventory Items
 {% block content %}
 <h1>Inventory Content goes here</h1>
 <notification-list></notification-list>
-<a class="link-item-add" title="Add Inventory Item" href="{{ request.route_path('inventory.items.add') }}">Add Item</a>
 <div class="items-wrapper">
     <div class="toolbar-wrapper">
         <nav class="navbar is-transparent" role="toolbar" aria-label="Items Table Actions">
             <div class="navbar-item">
-                <a class="link-new" title="New Item" href="#">
+                <a class="link-new" title="New Item" href="{{ request.route_path('inventory.items.add') }}">
                     <span class="material-icons">insert_drive_file</span>
                 </a>
             </div><!-- navbar-item -->
             <div class="navbar-item">
-                <form class="item-filter">
+                <form class="item-filter control">
                     <input type="search" id="itemSearch" name="itemSearch" class="form-input-search" title="Search for Item" placeholder="Search" />
                     <button type="button" class="btn btn-flat btn-search">
                         <span class="material-icons">search</span>

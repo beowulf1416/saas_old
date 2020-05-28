@@ -1,3 +1,7 @@
+form.form-item fieldset:not(.is-active) {
+    display: none;
+}
+
 form.form-item .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, min-max(200px, 1fr));
