@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://* ; child-src 'none'; style-src 'self' https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
         {% block base_meta -%}
         {%- endblock base_meta %}
         <title>SAAS - {% block title %}Welcome{% endblock %}</title>
