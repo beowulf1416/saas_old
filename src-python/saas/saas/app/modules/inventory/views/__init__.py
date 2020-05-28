@@ -13,3 +13,8 @@ def includeme(config):
         'inventory.items.list',
         '/inventory/items/list'
     )
+
+    config.add_route(
+        'inventory.items.add',
+        '/inventory/items/add'
+    )
