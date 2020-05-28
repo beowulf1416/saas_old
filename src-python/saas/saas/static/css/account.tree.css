@@ -7,3 +7,11 @@
 .tbl-accounts tr.row-account[aria-level="4"] > td:first-child {
     padding-left: 4ch;
 }
+
+.tbl-accounts tr.drag-start {
+    opacity: 0.5;
+}
+
+.tbl-accounts tr.drag-valid {
+    border: solid 1px green;
+}

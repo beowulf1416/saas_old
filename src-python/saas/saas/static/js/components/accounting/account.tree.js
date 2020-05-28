@@ -140,11 +140,70 @@ class AccountTree extends HTMLElement {
                     tr.setAttribute('aria-posinset', 1);
                     tr.setAttribute('aria-setsize', 1);
                     tr.setAttribute('aria-expanded', true);
+                    tr.setAttribute('draggable', true);
+
+                    const trid = Util.generateId();
+                    tr.id = `id${trid}`;
+                    tr.dataset.acctid = a.id;
+                    tr.dataset.typeid = a.type_id;
                     tr.innerHTML = `
                         ${tdall}
                     `;
 
                     tbody.appendChild(tr);
+
+                    tr.addEventListener('dragstart', function(e) {
+                        // console.log('dragstart');
+                        // console.log(tr.dataset.acctid);
+                        // const accountId = tr.dataset.acctid;
+                        e.dataTransfer.setData('text/plain', JSON.stringify({
+                            id: tr.id,
+                            accountId: tr.dataset.acctid,
+                            typeId: tr.dataset.typeid
+                        }));
+                        // tr.style.opacity = 0.5;
+                        tr.classList.add('drag-start');
+                    });
+
+                    tr.addEventListener('dragenter', function(e) {
+                        e.preventDefault();
+                        console.log('dragenter');
+                        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                        const trstart = shadow.querySelector(`tr#${data.id}`);
+                        if (trstart.dataset.typeid == tr.dataset.typeid) {
+                            tr.classList.add('drag-valid');
+                            console.log('dragenter drag-valid');
+                        }
+                    });
+
+                    tr.addEventListener('dragexit', function(e) {
+                        e.preventDefault();
+                        console.log('dragexit');
+                        // const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                        // const trstart = shadow.querySelector(`tr#${data.id}`);
+                        // if (trstart.dataset.typeid == tr.dataset.typeid) {
+                            tr.classList.remove('drag-valid');
+                            console.log('dragexit drag-valid');
+                        // }
+                    });
+
+                    tr.addEventListener('dragover', function(e) {
+                        console.log('dragover');
+                        e.preventDefault();
+                    });
+
+                    tr.addEventListener('drop', function(e) {
+                        console.log('drop');
+                        e.preventDefault();
+                        console.log(tr.dataset.acctid);
+                        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                        // const trstart = shadow.querySelector(`tr#${data.id}`);
+                        // if (trstart.dataset.typeid == tr.dataset.typeid) {
+                        //     tr.classList.add('drag-valid');
+                        // }
+                        const trstart = shadow.querySelector('tr.drag-start');
+                        trstart.classList.remove('drag-start');
+                    });
                 }
             });
         } else {
