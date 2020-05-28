@@ -8,10 +8,27 @@
     padding-left: 4ch;
 }
 
+.tbl-accounts tr.row-account[aria-level="5"] > td:first-child {
+    padding-left: 6ch;
+}
+
+.tbl-accounts tr.row-account[aria-level="6"] > td:first-child {
+    padding-left: 8ch;
+}
+
+
 .tbl-accounts tr.drag-start {
     opacity: 0.5;
 }
 
-.tbl-accounts tr.drag-valid {
-    border: solid 1px green;
+.tbl-accounts tr.drag-valid td.col-name {
+    border-left: solid 1px green;
+    border-top: solid 1px green;
+    border-bottom: solid 1px green;
+}
+
+.tbl-accounts tr.drag-valid td.col-description {
+    border-right: solid 1px green;
+    border-top: solid 1px green;
+    border-bottom: solid 1px green;
 }

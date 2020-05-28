@@ -44,7 +44,7 @@ class AccountTree extends HTMLElement {
             tbodies.push(`
                 <tbody id="${t}">
                     <tr class="tbody-header">
-                        <td colspan="${col_count}" role="row" aria-level="1">${t}</td>
+                        <td colspan="${col_count}" role="row" aria-level="1"><span>${t}</span></td>
                     </tr>
                 </tbody>
             `);
@@ -87,134 +87,134 @@ class AccountTree extends HTMLElement {
         }
     }
 
-    addAccounts(accounts = [], parent = null) {
+    addAccounts(accounts = []) {
         const self = this;
         const shadow = this.shadowRoot;
-        if (parent == null) {
-            accounts.forEach(a => {
-                let tbody = null;
-                const type_id = a.type_id;
-                switch(type_id) {
-                    case 1: { // asset
-                        tbody = shadow.querySelector('table.tbl-accounts tbody#asset');
-                        break;
-                    }
-                    case 2: { // liabilities
-                        tbody = shadow.querySelector('table.tbl-accounts tbody#liability');
-                        break;
-                    }
-                    case 3: { // equity
-                        tbody = shadow.querySelector('table.tbl-accounts tbody#equity');
-                        break;
-                    }
-                    case 4: { // income
-                        tbody = shadow.querySelector('table.tbl-accounts tbody#income');
-                        break;
-                    }
-                    case 5: { // expense
-                        tbody = shadow.querySelector('table.tbl-accounts tbody#expense');
-                        break;
-                    }
-                    default: {
-                        self.dispatchEvent(new CustomEvent('onerror', {
-                            bubbles: true,
-                            cancelable: true,
-                            detail: {
-                                message: `unknown account type: ${type_id}`
-                            }
-                        }));
-                        break;
-                    }
-                }
 
-                if (tbody != null) {
-                    const tds = [];
-                    tds.push(`<td role="gridcell" class="col col-name">${a.name}</td>`);
-                    tds.push(`<td role="gridcell" class="col col-description">${a.description}</td>`);
-                    const tdall = tds.join('');
-
-                    const tr = document.createElement('tr');
-                    tr.classList.add('row-account');
-                    tr.setAttribute('role', 'row');
-                    tr.setAttribute('aria-level', a.level);
-                    tr.setAttribute('aria-posinset', 1);
-                    tr.setAttribute('aria-setsize', 1);
-                    tr.setAttribute('aria-expanded', true);
-                    tr.setAttribute('draggable', true);
-
-                    const trid = Util.generateId();
-                    tr.id = `id${trid}`;
-                    tr.dataset.acctid = a.id;
-                    tr.dataset.typeid = a.type_id;
-                    tr.innerHTML = `
-                        ${tdall}
-                    `;
-
-                    tbody.appendChild(tr);
-
-                    tr.addEventListener('dragstart', function(e) {
-                        // console.log('dragstart');
-                        // console.log(tr.dataset.acctid);
-                        // const accountId = tr.dataset.acctid;
-                        e.dataTransfer.setData('text/plain', JSON.stringify({
-                            id: tr.id,
-                            accountId: tr.dataset.acctid,
-                            typeId: tr.dataset.typeid
-                        }));
-                        // tr.style.opacity = 0.5;
-                        tr.classList.add('drag-start');
-                    });
-
-                    tr.addEventListener('dragenter', function(e) {
-                        e.preventDefault();
-                        console.log('dragenter');
-                        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                        const trstart = shadow.querySelector(`tr#${data.id}`);
-                        if (trstart.dataset.typeid == tr.dataset.typeid) {
-                            tr.classList.add('drag-valid');
-                            console.log('dragenter drag-valid');
-                        }
-                    });
-
-                    tr.addEventListener('dragexit', function(e) {
-                        e.preventDefault();
-                        console.log('dragexit');
-                        // const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                        // const trstart = shadow.querySelector(`tr#${data.id}`);
-                        // if (trstart.dataset.typeid == tr.dataset.typeid) {
-                            tr.classList.remove('drag-valid');
-                            console.log('dragexit drag-valid');
-                        // }
-                    });
-
-                    tr.addEventListener('dragover', function(e) {
-                        console.log('dragover');
-                        e.preventDefault();
-                    });
-
-                    tr.addEventListener('drop', function(e) {
-                        console.log('drop');
-                        e.preventDefault();
-                        console.log(tr.dataset.acctid);
-                        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                        // const trstart = shadow.querySelector(`tr#${data.id}`);
-                        // if (trstart.dataset.typeid == tr.dataset.typeid) {
-                        //     tr.classList.add('drag-valid');
-                        // }
-                        const trstart = shadow.querySelector('tr.drag-start');
-                        trstart.classList.remove('drag-start');
-                    });
-                }
+        // remove account rows before adding new one
+        ['asset', 'liability', 'equity', 'income', 'expense'].forEach(t => {
+            const tbody = shadow.querySelector(`table.tbl-accounts tbody#${t}`);
+            const trs = tbody.querySelectorAll('tr:not(.tbody-header)');
+            trs.forEach(tr => {
+                tbody.removeChild(tr);
             });
-        } else {
-            self.dispatchEvent(new CustomEvent('onerror', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    'message': '// todo working on this'
+        });
+
+        accounts.forEach(a => {
+            let tbody = null;
+            const type_id = a.type_id;
+            switch(type_id) {
+                case 1: { // asset
+                    tbody = shadow.querySelector('table.tbl-accounts tbody#asset');
+                    break;
                 }
-            }));
-        }
+                case 2: { // liabilities
+                    tbody = shadow.querySelector('table.tbl-accounts tbody#liability');
+                    break;
+                }
+                case 3: { // equity
+                    tbody = shadow.querySelector('table.tbl-accounts tbody#equity');
+                    break;
+                }
+                case 4: { // income
+                    tbody = shadow.querySelector('table.tbl-accounts tbody#income');
+                    break;
+                }
+                case 5: { // expense
+                    tbody = shadow.querySelector('table.tbl-accounts tbody#expense');
+                    break;
+                }
+                default: {
+                    self.dispatchEvent(new CustomEvent('onerror', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            message: `unknown account type: ${type_id}`
+                        }
+                    }));
+                    break;
+                }
+            }
+
+            if (tbody != null) {
+                const tds = [];
+                tds.push(`<td role="gridcell" class="col col-name" data-level="${a.level}"><span>${a.name}</span></td>`);
+                tds.push(`<td role="gridcell" class="col col-description"><span>${a.description}</span></td>`);
+                const tdall = tds.join('');
+
+                const tr = document.createElement('tr');
+                tr.classList.add('row-account');
+                tr.setAttribute('role', 'row');
+                tr.setAttribute('aria-level', a.level);
+                tr.setAttribute('aria-posinset', 1);
+                tr.setAttribute('aria-setsize', 1);
+                tr.setAttribute('aria-expanded', true);
+                tr.setAttribute('draggable', true);
+
+                const trid = Util.generateId();
+                tr.id = `id${trid}`;
+                tr.dataset.acctid = a.id;
+                tr.dataset.typeid = a.type_id;
+                tr.innerHTML = `
+                    ${tdall}
+                `;
+
+                tbody.appendChild(tr);
+
+                tr.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', JSON.stringify({
+                        id: tr.id,
+                        accountId: tr.dataset.acctid,
+                        typeId: tr.dataset.typeid
+                    }));
+                    tr.classList.add('drag-start');
+                });
+
+                tr.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    console.log('dragenter');
+                    // const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                    const trstart = shadow.querySelector(`tr.drag-start`);
+                    if (trstart.dataset.typeid == tr.dataset.typeid) {
+                        tr.classList.add('drag-valid');
+                        console.log('dragenter drag-valid');
+                    }
+                });
+
+                tr.addEventListener('dragexit', function(e) {
+                    e.preventDefault();
+                    console.log('dragexit');
+                    tr.classList.remove('drag-valid');
+                });
+
+                tr.addEventListener('dragover', function(e) {
+                    console.log('dragover');
+                    e.preventDefault();
+                });
+
+                tr.addEventListener('drop', function(e) {
+                    // console.log('drop');
+                    e.preventDefault();
+                    // const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+
+                    shadow.querySelector('tr.drag-valid').classList.remove('drag-valid');
+                    const trstart = shadow.querySelector('tr.drag-start');
+                    trstart.classList.remove('drag-start');
+
+                    const accountId = trstart.dataset.acctid;
+                    const parentAccountId = tr.dataset.acctid;
+                    
+                    self.dispatchEvent(new CustomEvent('onassignparent', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            accountId: accountId,
+                            parentAccountId: parentAccountId
+                        }
+                    }));
+                });
+            }
+        });
     }
 }
 customElements.define('account-tree', AccountTree);

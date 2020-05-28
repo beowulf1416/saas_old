@@ -93,13 +93,14 @@ import { Accounts } from '/static/js/helpers/accounts.js';
         });
     });
 
-    atree.addEventListener('onassignparentaccount', function(e) {
-        console.log('onassignparentaccount');
+    atree.addEventListener('onassignparent', function(e) {
+        console.log('onassignparent');
         const parent_account_id = e.detail.parentAccountId;
         const account_id = e.detail.accountId;
         Accounts.assignParent(client_id, account_id, parent_account_id).then((r) => {
             if (r.status == 'success') {
-                notifier.add('success', r.message);
+                // notifier.add('success', r.message);
+                refreshAccountTree();
             } else {
                 notifier.add('error', r.message);
             }
