@@ -1,0 +1,17 @@
+{% extends "saas.app.modules.inventory:templates/default.html" %}
+
+{% block title %}
+Inventory Items
+{% endblock title %}
+
+{% block content %}
+<h1>Inventory Content goes here</h1>
+<div class="items-wrapper">
+    <items-table></items-table>
+</div><!-- .table-wrapper -->
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/inventory/items.table.js"></script>
+{% endblock scripts %}

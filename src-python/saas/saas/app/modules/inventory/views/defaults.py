@@ -11,3 +11,12 @@ from pyramid.view import view_config
 )
 def view_inventory_dashboard(request):
     return {}
+
+
+@view_config(
+    route_name='inventory.items.list',
+    request_method='GET',
+    renderer='saas.app.modules.inventory:templates/items/list.html'
+)
+def view_inventory_items_list(request):
+    return {}

@@ -8,3 +8,8 @@ def includeme(config):
         'inventory.dashboard',
         '/inventory'
     )
+
+    config.add_route(
+        'inventory.items.list',
+        '/inventory/items/list'
+    )
