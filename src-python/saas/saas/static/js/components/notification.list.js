@@ -33,7 +33,35 @@ class NotificationList extends HTMLElement {
         li.classList.add('list-item');
         li.classList.add('message');
         li.classList.add('message-' + status);
-        li.textContent = msg;
+        // li.textContent = msg;
+
+        let c = '';
+        switch(status) {
+            case 'success': {
+                c = 'is-success';
+                break;
+            }
+            case 'error': {
+                c = 'is-danger';
+                break;
+            }
+            case 'info': {
+                c = 'is-info';
+                break;
+            }
+            default: {
+                console.log('unsupported notification status type: ' + status);
+                break;
+            }
+        }
+
+        li.innerHTML = `
+            <div class="notification ${c}">
+                <button type="button" class="delete" title="Delete"></button>
+                ${msg}
+            </div>
+        `;
+
         ul.appendChild(li);
         if (timeout && Number.isInteger(timeout)) {
             setTimeout(() => {
