@@ -7,6 +7,21 @@ Inventory Items
 {% block content %}
 <h1>Inventory Content goes here</h1>
 <div class="items-wrapper">
+    <div class="toolbar-wrapper">
+        <nav class="navbar is-transparent" role="toolbar" aria-label="Items Table Actions">
+            <div class="navbar-item">
+                <a class="link-new" title="New Item" href="#">
+                    <span class="material-icons">insert_drive_file</span>
+                </a>
+            </div><!-- navbar-item -->
+            <div class="navbar-item">
+                <form class="item-filter">
+                    <input type="search" id="itemSearch" name="itemSearch" class="form-input-search" title="Search for Item" placeholder="Search" />
+                    <button type="button" class="btn btn-search">Search</button>
+                </form>
+            </div><!-- .navbar-item -->
+        </nav>
+    </div><!-- .toolbar-wrapper -->
     <items-table></items-table>
 </div><!-- .table-wrapper -->
 {% endblock content %}

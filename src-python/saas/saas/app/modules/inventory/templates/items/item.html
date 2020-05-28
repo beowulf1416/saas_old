@@ -1,0 +1,31 @@
+{% extends "saas.app.modules.inventory:templates/default.html" %}
+
+{% import "saas.app:templates/forms.html" as forms %}
+
+{% block title %}
+Inventory Item
+{% endblock title %}
+
+{% block content %}
+<notification-list></notification-list>
+<div class="item-wrapper">
+    <nav class="navbar is-transparent" role="toolbar" aria-label="Inventory Item Actions">
+        <div class="navbar-item">
+            <a class="link-save" title="Save" href="#">Save</a>
+        </div><!-- .navbar-item -->
+        <div class="navbar-item">
+            <a class="link-save" title="Save" href="#">Save</a>
+        </div><!-- .navbar-item -->
+    </nav>
+    <form class="form-item">
+        <fieldset>
+            {{ forms.input('text', 'name', 'name', 'Name') }}
+            {{ forms.input('textarea', 'description', 'description', 'Description') }}
+        </fieldset>
+    </form>
+</div><!-- .table-wrapper -->
+{% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+{% endblock scripts %}
