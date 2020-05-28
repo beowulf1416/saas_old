@@ -1,0 +1,9 @@
+form.form-item .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, min-max(200px, 1fr));
+    gap: 1rem 1rem;
+}
+
+form.form-item .grid .col-group {
+    width: 100%;
+}

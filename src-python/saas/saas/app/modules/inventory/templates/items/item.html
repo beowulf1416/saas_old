@@ -2,6 +2,11 @@
 
 {% import "saas.app:templates/forms.html" as forms %}
 
+{% block links %}
+{{ super() }}
+<link rel="stylesheet" href="/static/css/inventory/items.css">
+{% endblock links %}
+
 {% block title %}
 Inventory Item
 {% endblock title %}
@@ -21,10 +26,39 @@ Inventory Item
             </a>
         </div><!-- .navbar-item -->
     </nav>
+    <div class="tabs">
+        <ul>
+            <li class="is-active" href="#general"><a>General</a></li>
+            <li><a class="link-nav link-tabs link-substitutes" href="#substitutes">Substitutes</a></li>
+            <li><a class="link-nav link-tabs link-vendors" href="#vendors">Vendors</a></li>
+            <li><a class="link-nav link-tabs link-monitoring" href="#monitoring">Monitoring</a></li>
+        </ul>
+    </div><!-- .tabs -->
     <form class="form-item">
-        <fieldset>
-            {{ forms.input('text', 'name', 'name', 'Name') }}
-            {{ forms.input('textarea', 'description', 'description', 'Description') }}
+        <fieldset id="general" class="panel">
+            <div class="grid">
+                <div class="col-group">
+                    {{ forms.input('text', 'name', 'name', 'Name') }}
+                    {{ forms.input('textarea', 'description', 'description', 'Description') }}
+                </div><!-- .col-group -->
+                <div class="row-group">
+                    {{ forms.input('text', 'sku', 'sku', 'SKU') }}
+                    {{ forms.input('text', 'upc', 'upc', 'UPC/EAN') }}
+                </div><!-- .row-group -->
+                {{ forms.input('number', 'length', 'length', 'Length') }}
+                {{ forms.input('number', 'width', 'width', 'Width') }}
+                {{ forms.input('number', 'height', 'height', 'Height') }}
+                {{ forms.input('number', 'weight', 'weight', 'Weight') }}
+            </div><!-- .grid -->
+        </fieldset>
+        <fieldset id="substitutes">
+            <legend>Substitutes</legend>
+        </fieldset>
+        <fieldset id="vendors">
+            <legend>Vendors</legend>
+        </fieldset>
+        <fieldset id="monitoring">
+            <legend>Monitoring</legend>
         </fieldset>
     </form>
 </div><!-- .table-wrapper -->
