@@ -11,7 +11,6 @@ def includeme(config):
 
     services = get_service(None)
     mgr = services['connection.manager']
-    # connection = mgr['default']
 
     userStore = UserStore(mgr, 'default')
     services['store.user'] = userStore
