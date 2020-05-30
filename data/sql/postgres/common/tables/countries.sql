@@ -11,6 +11,3 @@ create table if not exists countries (
     constraint pk_countries primary key (iso_3166_1_numeric),
     constraint u_countries unique (name)
 );
-
--- https://www.postgresql.org/docs/12/app-psql.html
-\copy common.countries (name,iso_3166_1_alpha_2,iso_3166_1_alpha_3,iso_3166_1_numeric,iso_4217_currency_alpha,iso_4217_currency_country_name,iso_4217_currency_minor_unit,iso_4217_currency_name,iso_4217_currency_numeric) from '../../csv/countries.csv' with delimiter ',' csv header quote '"'

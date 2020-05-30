@@ -7,11 +7,3 @@ create table if not exists dimensions (
     constraint pk_dimensions primary key (id),
     constraint u_dimensions_1 unique (name)
 );
-
-insert into dimensions (id, name) values 
-(1, 'length'),
-(2, 'area'),
-(3, 'volume'),
-(4, 'weight'),
-(5, 'quantity')
-on conflict do nothing;

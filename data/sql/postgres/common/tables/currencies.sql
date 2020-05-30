@@ -9,5 +9,3 @@ create table if not exists currencies (
     constraint pk_currencies primary key (id),
     constraint u_currencies_1 unique (name)
 );
-
-\copy common.currencies (currency, name, symbol) from '../../csv/currencies.csv' with delimiter ',' csv header quote '"'; 
