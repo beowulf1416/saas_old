@@ -18,4 +18,4 @@ class TestCurrencyStore(unittest.TestCase):
 
     def test_countries_all(self):
         result = self.currencyStore.all()
-        self.assertGreater(result, 0)
+        self.assertGreater(len(result), 0)
