@@ -47,16 +47,7 @@ begin
         and a.name = 'everyone';
 
     -- assign role to user
-    insert into iam.role_users (
-        client_id,
-        role_id,
-        user_id
-    ) values (
-        default_client_id,
-        default_role_id,
-        t_user_id
-    )
-    on conflict do nothing;
+    perform * from iam.role_assign_user(default_client_id, default_role_id, t_user_id);
 
     return t_user_id;
 end
