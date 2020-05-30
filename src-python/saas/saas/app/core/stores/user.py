@@ -1,6 +1,8 @@
 import logging
 log = logging.getLogger(__name__)
 
+from uuid import UUID
+
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.stores.base import BaseStore
 
@@ -51,7 +53,7 @@ class UserStore(BaseStore):
             log.error(e)
             raise Exception("Unable to retrieve user clients")
 
-    def userHasPermission(self, user_id: str, client_id: str, permission: str):
+    def userHasPermission(self, user_id: str, client_id: UUID, permission: str):
         '''check if user has permission on client
         '''
         try:
