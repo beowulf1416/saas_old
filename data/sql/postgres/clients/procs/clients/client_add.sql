@@ -27,6 +27,17 @@ begin
         t_client_id, 'everyone'
     );
 
+    -- create root organization for client
+    insert into clients.organizations (
+        client_id,
+        name,
+        description
+    ) values (
+        t_client_id,
+        'root',
+        'root organization'
+    );
+
     -- create root accounting account for client
     insert into accounting.accounts (client_id, type_id, name, description) values
     (t_client_id, 0, 'root', 'root account');

@@ -2,7 +2,7 @@ create table if not exists org_tree (
     client_id uuid not null,
     org_id uuid not null,
     parent_org_id uuid not null,
-    path ltree not null,
+    path public.ltree not null,
     constraint pk_org_tree primary key (client_id, org_id, parent_org_id),
     -- organization can only have 1 parent
     constraint u_org_tree_1 unique (client_id, org_id),
