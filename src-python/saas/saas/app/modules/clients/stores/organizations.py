@@ -23,6 +23,16 @@ class OrganizationsStore(BaseStore):
             log.error(e)
             raise Exception('Unable to add organization to client')
 
+    def get(self, organizationId: UUID):
+        ''' retrieve organization
+        '''
+        try:
+            [result, ] = super(OrganizationsStore, self).runProc('clients.organization_get', [organizationId, ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrive organization record')
+
     def getRoot(self, clientId: UUID):
         '''get root organization id for client
         '''

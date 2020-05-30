@@ -12,7 +12,8 @@ begin
     select
         a.id into t_root_id
     from clients.organizations a
-    where a.name = 'root';
+    where a.client_id = p_client_id
+        and a.name = 'root';
 
     return t_root_id;
 end

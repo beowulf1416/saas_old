@@ -33,6 +33,16 @@ class TestOrganizationsStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_get_organization(self):
+        org_name = self.generate_random_str(10)
+        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        try:
+            org_id = self.orgStore.add(client_id, org_name, org_name)
+            [t_org_id, active, name, description] = self.orgStore.get(org_id)
+            self.assertEqual(org_id, t_org_id)
+        except Exception as e:
+            self.fail(e)
+
     def test_get_root_organization(self):
         (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
         try:
