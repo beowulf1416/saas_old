@@ -17,7 +17,7 @@ class OrganizationsStore(BaseStore):
         '''
         try:
             [(result, )] = super(OrganizationsStore, self).runProcTransactional(
-                'clients.organization_add', clientId, name, description)
+                'clients.organization_add', [clientId, name, description])
             return result
         except Exception as e:
             log.error(e)

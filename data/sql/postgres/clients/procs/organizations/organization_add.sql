@@ -25,7 +25,17 @@ begin
 
     -- insert organization to tree, set parent as root
     t_root_id := clients.organization_root(p_client_id);
-    perform * from clients.organization_set_parent(p_client_id, t_org_id, t_root_id);
+    insert into clients.org_tree (
+        client_id,
+        org_id,
+        parent_org_id,
+        path
+    ) values (
+        p_client_id,
+        t_org_id,
+        t_root_id,
+        text2ltree('root.' || replace(t_org_id::text, '-', '_'))
+    );
 
     return t_org_id;
 end
