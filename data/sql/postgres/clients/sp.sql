@@ -17,6 +17,7 @@ set schema 'clients';
 \ir procs/organizations/organization_set_parent.sql
 \ir procs/organizations/organization_root.sql
 \ir procs/organizations/organization_set_parent.sql
+\ir procs/organizations/organizations_tree_all.sql
 
 
 set schema 'public';

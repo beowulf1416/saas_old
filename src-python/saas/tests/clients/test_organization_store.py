@@ -60,3 +60,10 @@ class TestOrganizationsStore(unittest.TestCase):
             self.orgStore.setParentOrg(client_id, org_id_1, org_id_2)
         except Exception as e:
             self.fail(e)
+
+    def test_get_tree(self):
+        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        try:
+            result = self.orgStore.tree(client_id)
+        except Exception as e:
+            self.fail(e)

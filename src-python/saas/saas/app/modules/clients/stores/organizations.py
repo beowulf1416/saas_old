@@ -53,3 +53,17 @@ class OrganizationsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to set parent organization id')
+
+
+    def tree(self, clientId: UUID):
+        '''retrieve organizations for a client in tree format
+        '''
+        try:
+            result = super(OrganizationsStore, self).runProc(
+                'organizations_tree_all',
+                [clientId, ]
+            )
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve organizations')
