@@ -32,43 +32,31 @@ class UserStore(BaseStore):
         
 
     def userByEmail(self, email: str):
-        cn = self._mgr.getConnection(self._name)
+        '''find user account by email address
+        '''
         try:
-            c = cn.cursor()
-            c.callproc('iam.user_get_by_email', [email, ])
-            [result, ] = c.fetchall()
+            [result, ] = super(UserStore, self).runProcTransactional('iam.user_get_by_email', [email, ])
             return result
-        except ValueError as e:
-            log.error(e)
-            raise Exception("User with email '{0}' not found".format(email))
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving user info')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception("Unable to find user account by email address")
 
     def userClients(self, user_id: str):
-        cn = self._mgr.getConnection(self._name)
+        '''retrieve clients allowed/available to user
+        '''
         try:
-            c = cn.cursor()
-            c.callproc('iam.user_clients_all', [user_id, ])
-            return c.fetchall()
-        except Exception as e:
-            log.error(e)
-            raise Exception('An error occured while retrieving user clients')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
-
-
-    def userHasPermission(self, user_id: str, client_id: str, permission: str):
-        cn = self._mgr.getConnection(self._name)
-        try:
-            c = cn.cursor()
-            c.callproc('iam.user_has_permission', [user_id, client_id, permission])
-            [(result, )] = c.fetchall()
+            result = super(UserStore, self).runProc('iam.user_clients_all', [user_id, ])
             return result
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while checking if user has permission')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception("Unable to retrieve user clients")
+
+    def userHasPermission(self, user_id: str, client_id: str, permission: str):
+        '''check if user has permission on client
+        '''
+        try:
+            [(result, )] = super(UserStore, self).runProc('iam.user_has_permission', [user_id, client_id, permission])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception("Unable to check if user has permission on client")
