@@ -5,16 +5,34 @@ create or replace function organization_set_parent (
 )
 returns void
 as $$
+declare
+    t_parent_path clients.org_tree.path%type;
 begin
+    select
+        a.path into t_parent_path
+    from clients.org_tree a
+    where a.org_id = p_parent_org_id;
+
+    if t_parent_path is null then
+        t_parent_path := 'root';
+    end if;
+
     insert into clients.org_tree (
         client_id,
         org_id,
-        parent_org_id
+        parent_org_id,
+        path
     ) values (
         p_client_id,
         p_org_id,
-        p_parent_org_id
-    );
+        p_parent_org_id,
+        text2ltree(ltree2text(t_parent_path) || '.' || replace(p_org_id::text, '-', '_'))
+    )
+    on conflict constraint u_org_tree_1 do
+    update set parent_org_id = p_parent_org_id,
+        path = text2ltree(ltree2text(t_parent_path) || '.' || replace(p_org_id::text, '-', '_'))
+    where client_id = p_client_id
+        and org_id = p_org_id;
 end
 $$
 language plpgsql;
