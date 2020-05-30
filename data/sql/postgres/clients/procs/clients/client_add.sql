@@ -23,9 +23,7 @@ begin
     returning id into t_client_id;
 
     -- create default role for client
-    insert into iam.roles (client_id, name) values (
-        t_client_id, 'everyone'
-    );
+    perform * from iam.role_add(t_client_id, 'everyone');
 
     -- create root organization for client
     insert into clients.organizations (

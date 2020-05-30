@@ -3,7 +3,7 @@
  */
 
 -- permissions
-insert into permissions (name) values
+insert into iam.permissions (name) values
 ('user.authenticated'),
 ('admin.clients'),
 ('admin.security.permissions'),
@@ -27,74 +27,42 @@ on conflict do nothing;
 do $$
 declare
     default_client_id clients.clients.id%type;
-    tmp_rid iam.roles.id%type;
+    t_sysad_role_id iam.roles.id%type;
+    t_everyone_role_id iam.roles.id%type;
+    t_default_permission_id iam.permissions.id%type;
 begin
     -- get default client
     select
         a.id into default_client_id
     from clients.client_default() a;
-    -- select
-    --     a.id into default_client_id
-    -- from clients.clients a
-    -- where a.name = 'default';
 
     -- create sysadmin role
-    insert into iam.roles (client_id, name, active) values
-    (default_client_id, 'system administrator', true)
-    on conflict do nothing;
-
-    select 
-        a.id into tmp_rid
-    from iam.roles a
-    where a.client_id = default_client_id
-        and a.name = 'system administrator';
+    select
+        a into t_sysad_role_id
+    from iam.role_add(default_client_id, 'system administrator') a;
 
     -- give all permissions to sysad role
     insert into iam.role_permissions (role_id, permission_id, client_id)
     select 
-        tmp_rid,
+        t_sysad_role_id,
         a.id,
         default_client_id
     from iam.permissions a
     on conflict do nothing;
-end
-$$
-language plpgsql;
 
-
--- create default role for default client
-do $$
-declare
-    default_client_id clients.clients.id%type;
-    tmp_rid iam.roles.id%type;
-    tmp_pid iam.permissions.id%type;
-begin
-    -- get default client
-    select
-        a.id into default_client_id
-    from clients.clients a
-    where a.name = 'default';
-
-    --create everyone role
-    insert into iam.roles (client_id, name, active) values
-    (default_client_id, 'everyone', true)
-    on conflict do nothing;
-
-    select 
-        a.id into tmp_rid
-    from iam.roles a
-    where a.name = 'everyone';
+    -- create everyone role
+    -- select
+    --     a into t_everyone_role_id
+    -- from iam.role_add(default_client_id, 'everyone') a;
 
     -- retrieve user.authenticated permission id
     select
-        a.id into tmp_pid
+        a.id into t_default_permission_id
     from iam.permissions a
     where a.name = 'user.authenticated';
 
-    -- assign permission to everyone role
-    insert into iam.role_permissions (client_id, role_id, permission_id)
-    values (default_client_id, tmp_rid, tmp_pid)
-    on conflict do nothing;
+    -- assign permission to role
+    -- perform * from iam.permissions_role_assign(default_client_id, t_everyone_role_id, t_default_permission_id);    
 end
 $$
 language plpgsql;
