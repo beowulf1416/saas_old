@@ -60,7 +60,7 @@ class OrganizationsStore(BaseStore):
         '''
         try:
             result = super(OrganizationsStore, self).runProc(
-                'organizations_tree_all',
+                'clients.organizations_tree_all',
                 [clientId, ]
             )
             return result
