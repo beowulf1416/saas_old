@@ -14,5 +14,5 @@ create table if not exists contact_addresses (
     constraint fk_contact_addresses_2 foreign key (people_id)
         references crm.people (id) on delete restrict on update restrict,
     constraint fk_contact_addresses_3 foreign key (country_id)
-        references common.countries (id) on delete restrict on update restrict
+        references common.countries (iso_3166_1_numeric) on delete restrict on update restrict
 );
