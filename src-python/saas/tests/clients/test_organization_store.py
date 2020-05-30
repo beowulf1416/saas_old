@@ -6,7 +6,7 @@ import string
 import random
 
 
-class TestAdminRolesStore(unittest.TestCase):
+class TestOrganizationsStore(unittest.TestCase):
 
     def setUp(self):
         self.config = testing.setUp()
