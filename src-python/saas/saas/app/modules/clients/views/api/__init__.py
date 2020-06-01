@@ -13,3 +13,8 @@ def includeme(config):
         'api.clients.organizations.tree',
         '/api/clients/organizations/tree'
     )
+
+    config.add_route(
+        'api.clients.organizations.assign.parent',
+        '/api/clients/organizations/parent/assign'
+    )
