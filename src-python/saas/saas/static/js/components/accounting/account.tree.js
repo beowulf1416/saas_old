@@ -11,6 +11,10 @@ class AccountTree extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/css/account.tree.css');
 
+        const styleTree = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/treegrid.css');
+
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
@@ -18,6 +22,7 @@ class AccountTree extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(styleTree);
         shadow.appendChild(div);
 
         this.addAccounts = this.addAccounts.bind(this);
@@ -43,8 +48,8 @@ class AccountTree extends HTMLElement {
         account_types.forEach(t => {
             tbodies.push(`
                 <tbody id="${t}">
-                    <tr class="tbody-header">
-                        <td colspan="${col_count}" role="row" aria-level="1"><span>${t}</span></td>
+                    <tr class="tbody-header" role="row">
+                        <td colspan="${col_count}" aria-level="1"><span>${t}</span></td>
                     </tr>
                 </tbody>
             `);
@@ -54,12 +59,11 @@ class AccountTree extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('table-wrapper');
         div.innerHTML = `
-            <table class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
+            <table class="treegrid tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
                 <caption>Chart of Accounts</caption>
                 <colgroup>
-                    <col id="colgrp1">
-                    <col id="colgrp2">
-                    <col id="colgrp3">
+                    <col class="col-name">
+                    <col class="col-description">
                 </colgroup>
                 <thead>
                     <tr>

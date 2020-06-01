@@ -1,5 +1,7 @@
 'use strict';
 
+// ref: https://www.w3.org/TR/wai-aria-practices/examples/treegrid/treegrid-1.html
+
 class OrganizationTree extends HTMLElement {
     
     constructor() {
@@ -38,7 +40,8 @@ class OrganizationTree extends HTMLElement {
             <table class="treegrid tbl-organizations" role="treegrid" aria-label="Organizational Chart">
                 <caption>Organizational Chart</caption>
                 <colgroup>
-                    <col id="col1">
+                    <col class="col-name">
+                    <col class="col-description">
                 </colgroup>
                 <thead>
                     <tr>
@@ -75,11 +78,37 @@ class OrganizationTree extends HTMLElement {
             tr.setAttribute('aria-posinset', 1);
             tr.setAttribute('aria-setsize', 1);
             tr.setAttribute('aria-expanded', true);
+            tr.setAttribute('draggable', true);
+            tr.dataset.orgid = o.id;
             tr.innerHTML = `
                 ${tdall}
             `;
 
             tbody.appendChild(tr);
+
+            tr.addEventListener('dragstart', function(e) {
+                tr.classList.add('drag-start');
+            });
+
+            tr.addEventListener('dragenter', function(e) {
+                e.preventDefault();
+                tr.classList.add('drag-over');
+            });
+
+            tr.addEventListener('dragexit', function(e) {
+                e.preventDefault();
+                tr.className.add('drag-over');
+            });
+
+            tr.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            tr.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const trstart = shadow.querySelector('tr.drag-start');
+                trstart.classList.remove('drag-start');
+            });
         });
     }
 }
