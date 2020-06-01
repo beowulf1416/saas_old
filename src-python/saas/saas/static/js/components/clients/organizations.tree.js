@@ -9,6 +9,10 @@ class OrganizationTree extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/css/clients/organization.tree.css');
 
+        const styleTree = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/treegrid.css');
+
         const container = document.createElement('div');
         container.classList.add('component-wrapper');
 
@@ -16,6 +20,7 @@ class OrganizationTree extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(styleTree);
         shadow.appendChild(container);
 
         this.setOrganizations = this.setOrganizations.bind(this);
@@ -30,7 +35,7 @@ class OrganizationTree extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper-tree');
         div.innerHTML = `
-            <table class="tbl-organizations" role="treegrid" aria-label="Organizational Chart">
+            <table class="treegrid tbl-organizations" role="treegrid" aria-label="Organizational Chart">
                 <caption>Organizational Chart</caption>
                 <colgroup>
                     <col id="col1">
@@ -59,12 +64,17 @@ class OrganizationTree extends HTMLElement {
         }
         organizations.forEach(o => {
             const tds = [];
-            tds.push(`<td class="col-name"><span>${o.name}</span></td>`);
-            tds.push(`<td class="col-description"><span>${o.description}</span></td>`);
+            tds.push(`<td class="col-name" role="gridcell" data-level="${o.level}"><span>${o.name}</span></td>`);
+            tds.push(`<td class="col-description" role="gridcell"><span>${o.description}</span></td>`);
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
             tr.classList.add('row-org');
+            tr.setAttribute('role', 'row');
+            tr.setAttribute('aria-level', o.level);
+            tr.setAttribute('aria-posinset', 1);
+            tr.setAttribute('aria-setsize', 1);
+            tr.setAttribute('aria-expanded', true);
             tr.innerHTML = `
                 ${tdall}
             `;
