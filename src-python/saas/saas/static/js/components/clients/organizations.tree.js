@@ -108,6 +108,17 @@ class OrganizationTree extends HTMLElement {
                 e.preventDefault();
                 const trstart = shadow.querySelector('tr.drag-start');
                 trstart.classList.remove('drag-start');
+
+                const orgId = trstart.dataset.orgid;
+                const parentOrgId = tr.dataset.orgid;
+                self.dispatchEvent(new CustomEvent('onassignparent', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        orgId: orgId,
+                        parentOrgId: parentOrgId
+                    }
+                }));
             });
         });
     }
