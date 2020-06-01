@@ -56,6 +56,7 @@ import { Organizations } from '/static/js/helpers/clients/organizations.js';
         Organizations.add(tName.value, tDescription.value).then((r) => {
             if (r.status == 'success') {
                 document.querySelector('form.form-org').reset();
+                refreshTree();
             } else {
                 notifier.add('error', r.message);
             }

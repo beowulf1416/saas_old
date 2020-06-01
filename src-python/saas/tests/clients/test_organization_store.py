@@ -53,11 +53,21 @@ class TestOrganizationsStore(unittest.TestCase):
     def test_set_parent_organization(self):
         org_name_1 = self.generate_random_str(10)
         org_name_2 = self.generate_random_str(10)
+        org_name_3 = self.generate_random_str(10)
+        org_name_4 = self.generate_random_str(10)
         (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
         try:
             org_id_1 = self.orgStore.add(client_id, org_name_1, org_name_1)
             org_id_2 = self.orgStore.add(client_id, org_name_2, org_name_2)
-            self.orgStore.setParentOrg(client_id, org_id_1, org_id_2)
+            org_id_3 = self.orgStore.add(client_id, org_name_3, org_name_3)
+            org_id_4 = self.orgStore.add(client_id, org_name_4, org_name_4)
+
+            # org_id_3 -> org_id_2 -> org_id_1
+            self.orgStore.setParentOrg(client_id, org_id_3, org_id_2)
+            self.orgStore.setParentOrg(client_id, org_id_2, org_id_1)
+
+            # org_id_2 -> org_id_4
+            self.orgStore.setParentOrg(client_id, org_id_2, org_id_4)
         except Exception as e:
             self.fail(e)
 
