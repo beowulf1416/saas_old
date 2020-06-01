@@ -11,4 +11,4 @@ def includeme(config):
     mgr = services['connection.manager']
 
     orgsStore = OrganizationsStore(mgr, 'default')
-    services['store.clients.organizations']
+    services['store.clients.organizations'] = orgsStore

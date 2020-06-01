@@ -1,0 +1,18 @@
+{% extends "saas.app:templates/default.html" %}
+
+{% block title %}
+Client Home
+{% endblock title %}
+
+{% block content %}
+<h1>Client Content</h1>
+{% endblock content %}
+
+{% block sidebar_left %}
+<div class="menu">
+    <ul class="menu-list">
+        <li><a class="nav-link link-admin-clients" title="Dashboard" href="{{ request.route_path('clients.home') }}">Dashboard</a></li>
+        <li><a class="nav-link link-admin-clients" title="Organizations" href="{{ request.route_path('clients.organizations') }}">Organizations</a></li>
+    </ul><!-- .menu-list -->
+</div><!-- .menu -->
+{% endblock sidebar_left %}
