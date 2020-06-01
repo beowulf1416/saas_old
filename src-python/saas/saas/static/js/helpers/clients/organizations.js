@@ -16,5 +16,17 @@ class Organizations {
         })
         .then((r) => r.json());
     }
+
+    static tree() {
+        return fetch('/api/clients/organizations/tree', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+        .then((r) => r.json());
+    }
 }
 export { Organizations }

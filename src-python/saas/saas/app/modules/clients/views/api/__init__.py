@@ -8,3 +8,8 @@ def includeme(config):
         'api.clients.organizations.add',
         '/api/clients/organizations/add'
     )
+
+    config.add_route(
+        'api.clients.organizations.tree',
+        '/api/clients/organizations/tree'
+    )

@@ -40,4 +40,34 @@ def view_clients_organizations_add(request):
         body={'message': 'Client Organization added'}
     )
 
-    return {}
+@view_config(
+    route_name='api.clients.organizations.tree',
+    request_method='POST',
+    renderer='json'
+)
+def view_clients_organizations_tree(request):
+    session = request.session
+    client_id = session['client']
+
+    organizations = []
+    services = request.services()
+    try:
+        orgStore = services['store.clients.organizations']
+        result = orgStore.tree(client_id)
+        organizations = [
+            { 'id': r[0], 'name': r[1], 'description': r[2], 'level': r[3] }
+            for r in result
+        ]
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+        
+    raise exception.HTTPOk(
+        detail='{0} organizations found'.format(len(organizations)),
+        body={
+            'organizations': organizations
+        }
+    )
