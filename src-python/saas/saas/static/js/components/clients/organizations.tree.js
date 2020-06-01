@@ -97,7 +97,7 @@ class OrganizationTree extends HTMLElement {
 
             tr.addEventListener('dragexit', function(e) {
                 e.preventDefault();
-                tr.className.add('drag-over');
+                tr.classList.add('drag-over');
             });
 
             tr.addEventListener('dragover', function(e) {

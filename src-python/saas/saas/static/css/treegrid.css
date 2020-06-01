@@ -18,3 +18,11 @@ table.treegrid tr[aria-level="5"] > td:first-child {
 table.treegrid tr[aria-level="6"] > td:first-child {
     padding-left: 10ch;
 }
+
+table.treegrid tr.drag-start {
+    opacity: 0.5;
+}
+
+table.treegrid tr.drag-over {
+    text-decoration: underline;
+}
