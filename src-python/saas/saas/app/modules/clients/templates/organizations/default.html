@@ -9,6 +9,9 @@ Organizations Home
 {% block content %}
 <h1>Client Organizations</h1>
 <notification-list></notification-list>
+<div class="wrapper">
+    <organization-tree></organization-tree>
+</div><!-- .wrapper -->
 {% endblock content %}
 
 {% block sidebar_right %}
@@ -27,16 +30,19 @@ Organizations Home
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/helpers/clients/organizations.js"></script>
+<script type="module" src="/static/js/components/clients/organizations.tree.js"></script>
 <script type="module">
 'use strict';
 import { Organizations } from '/static/js/helpers/clients/organizations.js';
 (function(){
     const notifier = document.querySelector('notification-list');
+    const orgTree = document.querySelector('organization-tree');
 
     const refreshTree = function(){
         Organizations.tree().then((r) => {
             if (r.status == 'success') {
-                console.log(r);
+                // console.log(r);
+                orgTree.setOrganizations(r.json.organizations);
             } else {
                 notifier.add('error', r.message);
             }
