@@ -58,9 +58,10 @@ def view_clients_add(request):
         result = clientsStore.add(name, address, url)
     except Exception as e:
         raise exception.HTTPInternalServerError(
-            detail=e,
-            explanation=e
+            detail=str(e),
+            explanation=str(e)
         )
+
     raise exception.HTTPOk(
         detail='Client added',
         body={'message': 'Client added'}
