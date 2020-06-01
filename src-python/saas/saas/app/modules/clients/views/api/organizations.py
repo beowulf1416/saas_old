@@ -105,3 +105,4 @@ def view_clients_organizations_set_parent(request):
     raise exception.HTTPOk(
         detail='Client Organization assigned',
         body={'message': 'Client Organization assigned parent'}
+    )
