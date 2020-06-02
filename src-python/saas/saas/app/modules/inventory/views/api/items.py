@@ -84,8 +84,13 @@ def view_inventory_items_add(request):
 
     services = request.services()
     itemStore = services['store.inventory.items']
+    validator = services['validator.json']
     try:
-        validate( instance = params, schema = schema)
+        # validate( instance = params, schema = schema)
+        validator.validate(
+            instance = params,
+            schema_file = '/inventory/item.json'
+        )
         
         client_id = params['client'] if 'client' in params else None
         if client_id is None:
