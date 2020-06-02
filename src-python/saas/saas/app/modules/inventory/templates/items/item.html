@@ -45,6 +45,12 @@ Inventory Item
                     {{ forms.input('text', 'sku', 'sku', 'SKU') }}
                     {{ forms.input('text', 'upc', 'upc', 'UPC/EAN') }}
                 </div><!-- .row-group -->
+                <div class="row-group">
+                    {{ forms.input('text', 'make', 'make', 'Make') }}
+                    {{ forms.input('text', 'model', 'model', 'Model') }}
+                    {{ forms.input('text', 'brand', 'brand', 'Brand') }}
+                    {{ forms.input('text', 'version', 'version', 'Version') }}
+                </div><!-- .row-group -->
                 {{ forms.input('number', 'length', 'length', 'Length') }}
                 {{ forms.input('number', 'width', 'width', 'Width') }}
                 {{ forms.input('number', 'height', 'height', 'Height') }}
@@ -71,7 +77,7 @@ Inventory Item
 'use script';
 import { Inventory } from '/static/js/helpers/inventory.js';
 (function(){
-    const clientId = '{{ client }}';
+    const clientId = '{{ client_id }}';
     const notifier = document.querySelector('notification-list');
     document.querySelectorAll('.item-wrapper .tabs .link-tabs').forEach((l) => {
         l.addEventListener('click', function(e) {
@@ -104,6 +110,10 @@ import { Inventory } from '/static/js/helpers/inventory.js';
             description: tdesc.value,
             sku: tsku.value,
             upc: tupc.value,
+            make: tmake.value,
+            model: tmodel.value,
+            brand: tbrand.value,
+            version: tversion.value,
             length: parseFloat(tlength.value),
             width: parseFloat(twidth.value),
             height: parseFloat(theight.value),

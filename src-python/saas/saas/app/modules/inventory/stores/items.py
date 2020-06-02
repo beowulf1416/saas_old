@@ -20,18 +20,18 @@ class ItemsStore(BaseStore):
                 clientId,
                 item['name'],
                 item['description'],
-                item['make'],
-                item['brand'],
-                item['model'],
-                item['version'],
-                item['sku'],
-                item['upc'],
-                item['length'],
-                item['width'],
-                item['height'],
-                item['weight'],
-                item['perishable'],
-                item['hazardous']
+                item['make'] if 'make' in item else '',
+                item['brand'] if 'brand' in item else '',
+                item['model'] if 'model' in item else '',
+                item['version'] if 'version' in item else '',
+                item['sku'] if 'sku' in item else '',
+                item['upc'] if 'upc' in item else '',
+                item['length'] if 'length' in item else 0,
+                item['width'] if 'width' in item else 0,
+                item['height'] if 'height' in item else 0,
+                item['weight'] if 'weight' in item else 0,
+                item['perishable'] if 'perishable' in item else False,
+                item['hazardous'] if 'hazardous' in item else False
             ])
         except Exception as e:
             log.error(e)

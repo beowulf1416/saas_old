@@ -109,8 +109,8 @@ def view_inventory_items_add(request):
         )
 
     raise exception.HTTPOk(
-        detail='test',
+        detail='Inventory Item record created',
         body={
-            'message': 'test'
+            'message': 'Inventory Item record created'
         }
     )
