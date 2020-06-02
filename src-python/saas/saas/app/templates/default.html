@@ -35,6 +35,7 @@
     <div class="navbar-menu">
         <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">SAAS</a>
+            {% if client_id is defined %}
             <div class="navbar-dropdown">
                 <a title="Accounting" class="nav-link navbar-item" href="/accounting">Accounting</a>
                 <a title="Inventory" class="nav-link navbar-item" href="/inventory">Inventory</a>
@@ -42,6 +43,7 @@
                 <hr class="navbar-divider">
                 <a title="Administion" class="nav-link navbar-item" href="/admin">Administration</a>
             </div><!-- .navbar-dropdown -->
+            {% endif %}
         </div><!-- .navbar-item -->
     </div><!-- .navbar-menu -->
 </nav><!-- .navbar -->
@@ -59,17 +61,22 @@
             {% if client_name is defined %}
                 <a class="navbar-link client-select-link" title="Select Client" href="/client/list?destination={{ current_path }}">{{ client_name }}</a>
             {% else %}
-                <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list?destination={{ current_path }}">Default</a>
+                <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list?destination={{ current_path }}">None</a>
             {% endif %}
             </div><!-- .navbar-item -->
             <div class="navbar-item has-dropdown is-hoverable">
             {% if email is defined %}
-                <a class="navbar-link">{{ email }}</a>
+                <a class="navbar-link">
+                    {{ email }}
+                    <span class="material-icons">lock_open</span>
+                </a>
                 <div class="navbar-dropdown">
                     <a title="Sign Out" class="navbar-item" href="/security/signout">Sign Out</a>
                 </div><!-- .navbar-dropdown -->
             {% else %}
-                <a class="navbar-link">Menu</a>
+                <a class="navbar-link">
+                    <span class="material-icons">lock</span>
+                </a>
                 <div class="navbar-dropdown">
                     <a title="Sign In" class="navbar-item" href="/security/signin">Sign In</a>
                 </div><!-- .navbar-dropdown -->
