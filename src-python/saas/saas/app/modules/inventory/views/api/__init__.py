@@ -8,3 +8,8 @@ def includeme(config):
         'api.inventory.items.filter',
         '/api/inventory/items/filter'
     )
+
+    config.add_route(
+        'api.inventory.items.add',
+        '/api/inventory/items/add'
+    )

@@ -66,9 +66,13 @@ Inventory Item
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/helpers/inventory.js"></script>
 <script type="module">
 'use script';
+import { Inventory } from '/static/js/helpers/inventory.js';
 (function(){
+    const clientId = '{{ client }}';
+    const notifier = document.querySelector('notification-list');
     document.querySelectorAll('.item-wrapper .tabs .link-tabs').forEach((l) => {
         l.addEventListener('click', function(e) {
             const href = e.target.getAttribute('href');
@@ -79,6 +83,29 @@ Inventory Item
             document.querySelector('.tabs li.list-item-' + litemclass).classList.add('is-active');
             document.querySelector('form.form-item fieldset.is-active').classList.remove('is-active');
             document.querySelector('form.form-item fieldset' + href).classList.add('is-active');
+        });
+    });
+
+    document.querySelector('div.item-wrapper a.link-save').addEventListener('click', function(e) {
+        const tname = document.querySelector('div.item-wrapper form.form-item input#name');
+        const tdesc = document.querySelector('div.item-wrapper form.form-item textarea#description');
+        const tsku = document.querySelector('div.item-wrapper form.form-item input#sku');
+        const tupc = document.querySelector('div.item-wrapper form.form-item input#upc');
+        const tlength = document.querySelector('div.item-wrapper form.form-item input#length');
+        const twidth = document.querySelector('div.item-wrapper form.form-item input#width');
+        const theight = document.querySelector('div.item-wrapper form.form-item input#height');
+        const tweight = document.querySelector('div.item-wrapper form.form-item input#weight');
+        Inventory.addItem(clientId, {
+            name: tname.value,
+            description: tdesc.value,
+            sku: tsku.value,
+            upc: tupc.value,
+            length: parseFloat(tlength.value),
+            width: parseFloat(twidth.value),
+            height: parseFloat(theight.value),
+            weight: parseFloat(tweight.value)
+        }).then((r) => {
+            notifier.add(r.status, r.message);
         });
     });
 })();

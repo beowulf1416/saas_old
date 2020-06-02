@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "client": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "sku": { "type": "string" },
+        "upc": { "type": "string" },
+        "length": { "type": "number" },
+        "width": { "type": "number" },
+        "height": { "type": "number" },
+        "weight": { "type": "number" }
+    },
+    "required": [
+        "client",
+        "name",
+        "description"
+    ],
+    "additionalProperties": false
+}
