@@ -6,6 +6,7 @@ import pyramid.httpexceptions as exception
 
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
+import json
 
 
 @view_config(
@@ -52,7 +53,6 @@ def view_inventory_items_filter(request):
 )
 def view_inventory_items_add(request):
     params = request.json_body
-
     schema = {
         "$schema": "http://json-schema.org/schema#",
         "type": "object",
@@ -62,10 +62,16 @@ def view_inventory_items_add(request):
             "description": { "type": "string" },
             "sku": { "type": "string" },
             "upc": { "type": "string" },
+            "make": { "type": "string" },
+            "brand": { "type": "string" },
+            "model": { "type": "string" },
+            "version": { "type": "string" },
             "length": { "type": "number" },
             "width": { "type": "number" },
             "height": { "type": "number" },
-            "weight": { "type": "number" }
+            "weight": { "type": "number" },
+            "perishable": { "type": "boolean" },
+            "hazardous": { "type": "boolean" }
         },
         "required": [
             "client",
@@ -76,8 +82,19 @@ def view_inventory_items_add(request):
         "additionalProperties": False
     }
 
+    services = request.services()
+    itemStore = services['store.inventory.items']
     try:
         validate( instance = params, schema = schema)
+        
+        client_id = params['client'] if 'client' in params else None
+        if client_id is None:
+            raise exception.HTTPBadRequest(
+                detail='Missing required parameter',
+                explanation='Client Id is required'
+            )
+
+        itemStore.add(client_id, params)
     except ValidationError as e:
         log.error(e)
         raise exception.HTTPBadRequest(

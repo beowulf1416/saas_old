@@ -7,10 +7,16 @@
         "description": { "type": "string" },
         "sku": { "type": "string" },
         "upc": { "type": "string" },
+        "make": { "type": "string" },
+        "brand": { "type": "string" },
+        "model": { "type": "string" },
+        "version": { "type": "string" },
         "length": { "type": "number" },
         "width": { "type": "number" },
         "height": { "type": "number" },
-        "weight": { "type": "number" }
+        "weight": { "type": "number" },
+        "perishable": { "type": "boolean" },
+        "hazardous": { "type": "boolean" }
     },
     "required": [
         "client",
