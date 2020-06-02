@@ -17,7 +17,8 @@ requires = [
     'psycopg2',
     'psycopg2.pool',
     'pyjwt',
-    'google-api-python-client'
+    'google-api-python-client',
+    'jsonschema'
 ]
 
 tests_require = [
