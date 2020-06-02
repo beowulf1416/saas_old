@@ -4,6 +4,7 @@ ul.notification-list {
     list-style-type: none;
 }
 
+/*
 ul.notification-list li.message-success {
     background: green;
     border: solid 1px green;
@@ -13,3 +14,4 @@ ul.notification-list li.message-error {
     background: red;
     border: solid 1px red;
 }
+*/

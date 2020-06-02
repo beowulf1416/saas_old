@@ -9,6 +9,10 @@ class NotificationList extends HTMLElement {
         style.rel = "stylesheet";
         style.href = "/static/css/notification.list.css";
 
+        const bulma = document.createElement('link');
+        bulma.rel = "stylesheet";
+        bulma.href = "https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css";
+
         const ul = document.createElement('ul');
         ul.classList.add('notification-list');
 
@@ -18,6 +22,7 @@ class NotificationList extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(bulma);
         shadow.appendChild(div);
 
         this.add = this.add.bind(this);
@@ -68,6 +73,10 @@ class NotificationList extends HTMLElement {
                 ul.removeChild(li);
             }, timeout);
         }
+
+        li.querySelector('button.delete').addEventListener('click', function(e) {
+            ul.removeChild(li);
+        });
     }
 }
 
