@@ -53,34 +53,6 @@ def view_inventory_items_filter(request):
 )
 def view_inventory_items_add(request):
     params = request.json_body
-    schema = {
-        "$schema": "http://json-schema.org/schema#",
-        "type": "object",
-        "properties": {
-            "client": { "type": "string" },
-            "name": { "type": "string" },
-            "description": { "type": "string" },
-            "sku": { "type": "string" },
-            "upc": { "type": "string" },
-            "make": { "type": "string" },
-            "brand": { "type": "string" },
-            "model": { "type": "string" },
-            "version": { "type": "string" },
-            "length": { "type": "number" },
-            "width": { "type": "number" },
-            "height": { "type": "number" },
-            "weight": { "type": "number" },
-            "perishable": { "type": "boolean" },
-            "hazardous": { "type": "boolean" }
-        },
-        "required": [
-            "client",
-            "name",
-            "description",
-            "sku"
-        ],
-        "additionalProperties": False
-    }
 
     services = request.services()
     itemStore = services['store.inventory.items']
