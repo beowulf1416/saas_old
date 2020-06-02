@@ -26,6 +26,7 @@ class NotificationList extends HTMLElement {
         shadow.appendChild(div);
 
         this.add = this.add.bind(this);
+        this.error = this.error.bind(this);
     }
 
     add(status, msg, timeout) {
@@ -77,6 +78,10 @@ class NotificationList extends HTMLElement {
         li.querySelector('button.delete').addEventListener('click', function(e) {
             ul.removeChild(li);
         });
+    }
+
+    error(message = '', timeout = null) {
+        this.add('error', message, timeout);
     }
 }
 
