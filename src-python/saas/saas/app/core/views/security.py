@@ -5,6 +5,7 @@ import json
 
 import pyramid.httpexceptions as exception
 from pyramid.view import view_config
+from pyramid.security import forget
 
 
 @view_config(
@@ -13,8 +14,7 @@ from pyramid.view import view_config
     renderer='saas.app.core:templates/security/signout.html'
 )
 def view_signout(request):
-    session = request.session
-    session.invalidate()
+    forget(request)
     return {}
 
 @view_config(

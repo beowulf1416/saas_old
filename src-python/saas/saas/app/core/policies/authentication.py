@@ -46,7 +46,6 @@ class AuthenticationPolicy(object):
 
 
     def remember(self, request, userid, **kw):
-        log.debug('//todo AuthenticationPolicy::remember()')
         try: 
             session = request.session
             session['email'] = userid
@@ -59,5 +58,7 @@ class AuthenticationPolicy(object):
         return None
 
     def forget(self, request):
-        log.debug('//todo AuthenticationPolicy::forget()')
+        session = request.session
+        session.invalidate()
+
         return None
