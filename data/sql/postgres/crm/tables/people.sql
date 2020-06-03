@@ -8,6 +8,7 @@ create table if not exists people (
     first_name varchar(100),
     middle_name varchar(100),
     last_name varchar(100),
+    gender smallint,
     constraint pk_people primary key (id),
     constraint u_people_1 unique (client_id, first_name, middle_name, last_name, prefix, suffix),
     constraint fk_people_1 foreign key (client_id)
