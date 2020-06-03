@@ -10,11 +10,11 @@
 
 {% block base_meta %}
 <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self'; img-src 'self' https://* ; 
-    child-src 'none'; 
-    style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css; 
+    default-src 'self'; img-src 'self' https://* ;
+    child-src 'none';
+    style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
     font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
-    script-src 'self' 'unsafe-inline';"
+    script-src 'self' 'unsafe-inline' {% block csp_script_src -%}{%- endblock csp_script_src %};"
 >
 {% endblock base_meta %}
 
