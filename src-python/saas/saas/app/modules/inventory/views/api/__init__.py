@@ -13,3 +13,13 @@ def includeme(config):
         'api.inventory.items.add',
         '/api/inventory/items/add'
     )
+
+    config.add_route(
+        'api.inventory.warehouses.add',
+        '/api/inventory/warehouses/add'
+    )
+    
+    config.add_route(
+        'api.inventory.warehouses.all',
+        '/api/inventory/warehouses/all'
+    )
