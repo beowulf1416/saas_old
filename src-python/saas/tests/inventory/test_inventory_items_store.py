@@ -31,20 +31,22 @@ class TestInventoryItemsStore(unittest.TestCase):
         try:
             result = self.itemsStore.add(
                 client_id,
-                random_str,
-                random_str,
-                random_str,
-                random_str,
-                random_str,
-                random_str,
-                random_str,
-                random_str,
-                1,
-                1,
-                1,
-                1,
-                True,
-                False
+                {
+                    'name': random_str,
+                    'description': random_str,
+                    'make': random_str,
+                    'brand': random_str,
+                    'model': random_str,
+                    'version': random_str,
+                    'sku': random_str,
+                    'upc': random_str,
+                    'length': 1,
+                    'width': 1,
+                    'height': 1,
+                    'weight': 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
             )
         except Exception as e:
             self.fail(e)

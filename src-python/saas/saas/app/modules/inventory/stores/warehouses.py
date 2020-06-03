@@ -14,7 +14,7 @@ class WarehouseStore(BaseStore):
 
     def add(self, clientId: UUID, name: str, address: str):
         try:
-            result = super(WarehouseStore, self).runTransactional('inventory.warehouse_add', [
+            result = super(WarehouseStore, self).runProcTransactional('inventory.warehouse_add', [
                 clientId,
                 name,
                 address
