@@ -37,7 +37,7 @@ class ItemsTable extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="table-wrapper">
-                <table class="tbl-items">
+                <table class="tbl-items" role="table">
                     <caption>Items</caption>
                     <colgroup>
                         <col class="col-select">
@@ -69,14 +69,22 @@ class ItemsTable extends HTMLElement {
         }
 
         items.forEach(item => {
+            let item_name = item.name;
+            let item_desc = item.description;
+            if (filter != '') {
+                item_name = item_name.replace(filter, `<strong>${filter}</strong>`);
+                item_desc = item_desc.replace(filter, `<strong>${filter}<strong>`);
+            }
+
             const tds = [];
-            tds.push(`<td class="col-select"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
-            tds.push(`<td class="col-name"><span>${item.name}</span></td>`);
-            tds.push(`<td class="col-description">${item.description}</td>`);
+            tds.push(`<td class="col-select" role="gridcell"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
+            tds.push(`<td class="col-name" role="gridcell"><span>${item_name}</span></td>`);
+            tds.push(`<td class="col-description" role="gridcell">${item_desc}</td>`);
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
             tr.classList.add('row-item');
+            tr.setAttribute('role', 'row');
             tr.innerHTML = `
                 ${tdall}
             `;
