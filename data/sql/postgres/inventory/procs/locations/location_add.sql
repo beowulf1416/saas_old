@@ -31,7 +31,7 @@ begin
     )
     returning id into t_location_id;
 
-    returns t_location_id;
+    return t_location_id;
 end
 $$
 language plpgsql;
