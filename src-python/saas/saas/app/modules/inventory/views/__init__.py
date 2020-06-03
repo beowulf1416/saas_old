@@ -18,3 +18,19 @@ def includeme(config):
         'inventory.items.add',
         '/inventory/items/add'
     )
+
+    config.add_route(
+        'inventory.items.groups',
+        '/inventory/items/groups'
+    )
+
+
+    config.add_route(
+        'inventory.warehouses',
+        '/inventory/warehouses'
+    )
+
+    config.add_route(
+        'inventory.locations',
+        '/inventory/locations'
+    )

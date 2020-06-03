@@ -19,3 +19,12 @@ def view_inventory_item_add(request):
 )
 def view_inventory_items_list(request):
     return {}
+
+
+@view_config(
+    route_name='inventory.items.groups',
+    request_method='GET',
+    renderer='saas.app.modules.inventory:templates/items/groups.html'
+)
+def view_inventory_items_groups(request):
+    return {}
