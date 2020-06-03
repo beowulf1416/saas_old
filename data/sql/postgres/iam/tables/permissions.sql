@@ -8,21 +8,3 @@ create table if not exists permissions (
     constraint pk_permissions primary key (id),
     constraint u_permission_1 unique (name)
 );
-
--- insert into permissions (name) values
--- ('user.authenticated'),
--- ('admin.clients'),
--- ('admin.security.permissions'),
--- ('admin.security.roles'),
--- ('admin.security.users'),
--- ('clients.admin'),
--- ('clients.admin.users'),
--- ('clients.admin.roles'),
--- ('accounting.dashboard'),
--- ('accounting.admin'),
--- ('inventory.admin'),
--- ('inventory.dashboard'),
--- ('inventory.items'),
--- ('inventory.transactions.receiving'),
--- ('inventory.transactions.receiving.add')
--- on conflict do nothing;
