@@ -14,12 +14,12 @@ class WarehouseStore(BaseStore):
 
     def add(self, clientId: UUID, name: str, address: str):
         try:
-            result = super(WarehouseStore, self).runProcTransactional('inventory.warehouse_add', [
+            [(warehouse_id, )] = super(WarehouseStore, self).runProcTransactional('inventory.warehouse_add', [
                 clientId,
                 name,
                 address
             ])
-            return result
+            return warehouse_id
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add warehouse')
