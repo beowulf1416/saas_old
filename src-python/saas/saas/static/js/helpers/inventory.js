@@ -2,7 +2,7 @@
 
 class Inventory {
 
-    static findItems(clientId = '', filter = '') {
+    static findItems(clientId = '', filter = '', numItems = 20, pageNum = 1) {
         return fetch('/api/inventory/items/filter', {
             method: 'POST',
             credentials: 'same-origin',
@@ -12,7 +12,9 @@ class Inventory {
             },
             body: JSON.stringify({
                 clientId: clientId,
-                filter: filter
+                filter: filter,
+                numItems: numItems,
+                pageNum: pageNum
             })
         })
         .then((r) => r.json());

@@ -41,7 +41,7 @@ class ItemsStore(BaseStore):
         '''retrieve all matching inventory items
         '''
         try:
-            result = super(ItemsStore, self).runProc('inventory.items_filter', [clientId, filter, numItems, pageNum])
+            result = super(ItemsStore, self).runProc('inventory.items_filter', [clientId, f'%{filter}%', numItems, pageNum])
             return result
         except Exception as e:
             log.error(e)

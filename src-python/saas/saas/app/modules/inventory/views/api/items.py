@@ -17,6 +17,9 @@ import json
 def view_inventory_items_filter(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else ''
+    num_items = params['numItems'] if 'numItems' in params else 20
+    page_num = params['pageNum'] if 'pageNum' in params else 1
 
     if client_id is None:
         raise exception.HTTPBadRequest(
@@ -28,9 +31,20 @@ def view_inventory_items_filter(request):
     items = []
     try:
         itemsStore = services['store.inventory.items']
-        result = itemsStore.filterItems(client_id, filter)
+        result = itemsStore.filterItems(client_id, filter, num_items, page_num)
         items = [
-            { 'id': r[0], 'type_id': r[1], 'name': r[2], 'description': r[3], 'level': r[4], 'path': r[5] }
+            { 
+                'id': r[0], 
+                'active': r[1], 
+                'name': r[2], 
+                'description': r[3], 
+                'make': r[4], 
+                'brand': r[5],
+                'model': r[6],
+                'version': r[7],
+                'sku': r[8],
+                'upc': r[9]
+            }
             for r in result
         ]
     except Exception as e:
