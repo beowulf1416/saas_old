@@ -56,7 +56,8 @@ def view_inventory_items_filter(request):
     raise exception.HTTPOk(
         detail='{0} items found'.format(len(items)),
         body={
-            'items': items
+            'items': items,
+            'filter': filter
         }
     )
 

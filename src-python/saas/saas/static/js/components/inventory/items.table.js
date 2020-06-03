@@ -39,6 +39,11 @@ class ItemsTable extends HTMLElement {
             <div class="table-wrapper">
                 <table class="tbl-items">
                     <caption>Items</caption>
+                    <colgroup>
+                        <col class="col-select">
+                        <col class="col-name">
+                        <col class="col-description">
+                    </colgroup>
                     <thead>
                         ${thall}
                     </thead>
@@ -54,7 +59,7 @@ class ItemsTable extends HTMLElement {
         container.appendChild(div);
     }
 
-    setItems(items = []) {
+    setItems(items = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 

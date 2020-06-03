@@ -53,6 +53,7 @@ const {
 (function(){
     const client_id = '{{ client_id }}';
     const notifier = document.querySelector('notification-list');
+    const items = document.querySelector('items-table');
 
     document.querySelector('button.btn-search').addEventListener('click', function(e) {
         const tsearch = document.querySelector('input#itemSearch');
@@ -75,14 +76,11 @@ const {
             tap(r => {
                 console.log(r);
                 if (r.status == 'success') {
-                    console.log(r);
+                    items.setItems(r.json.items, r.json.filter);
                 } else {
                     notifier.error(r.message);
                 }
             })
-            // tap(e => {
-            //     console.log(e);
-            // })
         )
         .subscribe();
 
