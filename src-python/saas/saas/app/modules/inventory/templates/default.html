@@ -12,8 +12,14 @@ Inventory
 <div class="menu">
     <div class="menu-label">Admin</div>
     <ul class="menu-list">
-        <li><a class="nav-link link-admin-clients" title="Dashboard" href="/inventory">Dashboard</a></li>
-        <li><a class="nav-link link-admin-clients" title="Items" href="/inventory/items/list">Items</a></li>
+        <li><a class="nav-link link-inventory" title="Dashboard" href="{{ request.route_path('inventory.dashboard') }}">Dashboard</a></li>
+        <li><a class="nav-link link-inventory" title="Items" href="{{ request.route_path('inventory.items.list') }}">Items</a></li>
+    </ul><!-- .menu-list -->
+    <div class="menu-label">Maintenance</div>
+    <ul class="menu-list">
+        <li><a class="nav-link" title="Item Groups" href="{{ request.route_path('inventory.items.groups') }}"></a></li>
+        <li><a class="nav-link" title="Warehouses" href="{{ request.route_path('inventory.warehouses') }}"></a></li>
+        <li><a class="nav-link" title="Locations" href="{{ request.route_path('inventory.locations') }}"></a></li>
     </ul><!-- .menu-list -->
 </div><!-- .menu -->
 {% endblock sidebar_left %}
