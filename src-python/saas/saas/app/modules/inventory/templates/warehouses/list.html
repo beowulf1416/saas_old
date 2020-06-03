@@ -1,9 +1,42 @@
 {% extends "saas.app.modules.inventory:templates/default.html" %}
 
+{% import "saas.app:templates/forms.html" as forms %}
+
 {% block title %}
 Inventory Warehouses
 {% endblock title %}
 
 {% block content %}
 <h1>Inventory Warehouses Content goes here</h1>
+<notification-list></notification-list>
 {% endblock content %}
+
+{% block sidebar_right %}
+<div class="form-warehouse-wrapper">
+    <div class="form-wrapper">
+        <form class="form-warehouse">
+            <fieldset>
+                {{ forms.input('text', 'name', 'name', 'Name') }}
+                {{ forms.input('textarea', 'description', 'description', 'Description') }}
+                {{ forms.input('textarea', 'address', 'address', 'Address') }}
+            </fieldset>
+            <button type="button" class="btn btn-save">Save</button> 
+        </form>
+    </div><!-- .form-wrapper -->
+</div><!-- .form-warehouse-wrapper -->
+{% endblock sidebar_right %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module">
+'use strict';
+(function(){
+    const clientId = '{{ client_id }}';
+    const notifier = document.querySelector('notification-list');
+
+    document.querySelector('form.form-warehouse button.btn-save').addEventListener('click', function(e) {
+        console.log('btn-save click');
+    });
+})();
+</script>
+{% endblock scripts %}
