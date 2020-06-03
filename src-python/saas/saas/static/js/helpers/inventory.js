@@ -11,6 +11,7 @@ class Inventory {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                clientId: clientId,
                 filter: filter
             })
         })

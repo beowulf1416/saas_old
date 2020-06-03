@@ -37,12 +37,12 @@ class ItemsStore(BaseStore):
             log.error(e)
             raise Exception('Unable to add inventory item')
 
-    def filterItems(self, clientId: UUID, filter: str):
+    def filterItems(self, clientId: UUID, filter: str, numItems: int, pageNum: int):
         '''retrieve all matching inventory items
         '''
         try:
-            result = super(ItemsStore, self).runProc('inventory.items_filter', [clientId, filter])
+            result = super(ItemsStore, self).runProc('inventory.items_filter', [clientId, filter, numItems, pageNum])
             return result
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving account types')
+            raise Exception('An error occured while retrieving inventory items')
