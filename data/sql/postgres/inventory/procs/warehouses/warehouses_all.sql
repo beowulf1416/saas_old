@@ -19,4 +19,5 @@ begin
     where a.client_id = p_client_id;
 end
 $$
-language plpgsql;
+language plpgsql
+stable;

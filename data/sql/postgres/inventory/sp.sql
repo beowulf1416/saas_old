@@ -19,4 +19,6 @@ set schema 'inventory';
 \ir procs/warehouses/warehouse_add.sql
 \ir procs/warehouses/warehouses_all.sql
 
+\ir procs/locations/location_add.sql
+
 set schema 'public';
