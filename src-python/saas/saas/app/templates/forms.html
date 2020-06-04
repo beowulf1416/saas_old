@@ -1,10 +1,19 @@
-{% macro input(type, id, name, title) %}
+{% macro input(type, id, name, title) -%}
     <div class="form-group form-group-{{ name }}">
         <label for="{{ name }}">{{ title }}</label>
-    {% if type == 'textarea' %}
+    {% if type == 'textarea' -%}
         <textarea id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }}"></textarea>
-    {% else %}
+    {%- else -%}
         <input type="{{ type }}" id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }}" />
-    {% endif %}
+    {%- endif %}
     </div><!-- .form-group -->
-{% endmacro %}
+{%- endmacro %}
+
+{% macro gridinput(type, id, name, title, classes = '') -%}
+<label for="{{ name }}">{{ title }}</label>
+{% if type == 'textarea' -%}
+    <textarea id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }} {{ classes }}"></textarea>
+{%- else -%}
+    <input type="{{ type }}" id="{{ id }}" name="{{ name }}" title="{{ title }}" placeholder="{{ title }}" class="form-input-{{ type }} form-input-{{ name }} {{ classes }}" />
+{%- endif %}
+{%- endmacro %}

@@ -36,25 +36,19 @@ Inventory Item
     </div><!-- .tabs -->
     <form class="form-item">
         <fieldset id="general" class="panel is-active">
-            <div class="grid">
-                <div class="col-group">
-                    {{ forms.input('text', 'name', 'name', 'Name') }}
-                    {{ forms.input('textarea', 'description', 'description', 'Description') }}
-                </div><!-- .col-group -->
-                <div class="row-group">
-                    {{ forms.input('text', 'sku', 'sku', 'SKU') }}
-                    {{ forms.input('text', 'upc', 'upc', 'UPC/EAN') }}
-                </div><!-- .row-group -->
-                <div class="row-group">
-                    {{ forms.input('text', 'make', 'make', 'Make') }}
-                    {{ forms.input('text', 'model', 'model', 'Model') }}
-                    {{ forms.input('text', 'brand', 'brand', 'Brand') }}
-                    {{ forms.input('text', 'version', 'version', 'Version') }}
-                </div><!-- .row-group -->
-                {{ forms.input('number', 'length', 'length', 'Length') }}
-                {{ forms.input('number', 'width', 'width', 'Width') }}
-                {{ forms.input('number', 'height', 'height', 'Height') }}
-                {{ forms.input('number', 'weight', 'weight', 'Weight') }}
+            <div class="grid column-4">
+                {{ forms.gridinput('text', 'name', 'name', 'Name') }}
+                {{ forms.gridinput('textarea', 'description', 'description', 'Description') }}
+                {{ forms.gridinput('text', 'sku', 'sku', 'SKU') }}
+                {{ forms.gridinput('text', 'upc', 'upc', 'UPC/EAN') }}
+                {{ forms.gridinput('text', 'make', 'make', 'Make') }}
+                {{ forms.gridinput('text', 'model', 'model', 'Model') }}
+                {{ forms.gridinput('text', 'brand', 'brand', 'Brand') }}
+                {{ forms.gridinput('text', 'version', 'version', 'Version') }}
+                {{ forms.gridinput('number', 'length', 'length', 'Length') }}
+                {{ forms.gridinput('number', 'width', 'width', 'Width') }}
+                {{ forms.gridinput('number', 'height', 'height', 'Height') }}
+                {{ forms.gridinput('number', 'weight', 'weight', 'Weight') }}
             </div><!-- .grid -->
         </fieldset>
         <fieldset id="substitutes">

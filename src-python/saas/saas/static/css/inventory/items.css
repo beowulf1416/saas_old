@@ -2,12 +2,26 @@ form.form-item fieldset:not(.is-active) {
     display: none;
 }
 
-form.form-item .grid {
+form.form-item .column-2 {
     display: grid;
-    grid-template-columns: repeat(auto-fill, min-max(200px, 1fr));
+    grid-template-columns: min-content auto;
     gap: 1rem 1rem;
 }
 
-form.form-item .grid .col-group {
-    width: 100%;
+form.form-item .column-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 1rem;
+}
+
+form.form-item .column-4 {
+    display: grid;
+    grid-template-columns: repeat(2, min-content auto);
+    gap: 1rem 1rem;
+}
+
+form.form-item input.form-input-name,
+form.form-item textarea.form-input-description {
+    grid-column-start: 2;
+    grid-column-end: 5;
 }
