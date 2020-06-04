@@ -17,3 +17,6 @@ insert into common.dimensions (id, name) values
 (4, 'weight'),
 (5, 'quantity')
 on conflict do nothing;
+
+-- units of measure
+\copy common.uom (id, dimension_id, name, symbol) from '../../csv/uom.csv' with delimiter ',' csv header quote '"';
