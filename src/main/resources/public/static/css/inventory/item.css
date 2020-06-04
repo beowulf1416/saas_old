@@ -1,7 +1,0 @@
-.panel-blocks {
-    display: none;
-}
-
-.panel-blocks.is-active {
-    display: block;
-}

@@ -1,7 +1,0 @@
-/**
- * clients table styles
- */
- table.tbl-clients th.col-hidden,
- table.tbl-clients td.col-hidden {
-     display: none;
- }

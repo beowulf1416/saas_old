@@ -1,7 +1,0 @@
-/**
- * inventory items table styles
- */
-table.tbl-items th.col-hidden,
-table.tbl-items td.col-hidden {
-    display: none;
-}
