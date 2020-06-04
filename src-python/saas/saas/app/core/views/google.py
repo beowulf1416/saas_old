@@ -51,58 +51,64 @@ def view_google_oauth_redirect(request):
     # ref: https://developers.google.com/identity/protocols/oauth2/openid-connect#exchangecode
     # exchange code for access token
     http = httplib2.Http()
-    (response, content) = http.request(
-        token_url,
-        'POST',
-        headers = {
-            'content-type': 'application/x-www-form-urlencoded',
-            'cache-control': 'no-cache'
-        },
-        body = urlencode({
-            'code': code,
-            'client_id': client_id,
-            'client_secret': client_secret,
-            'redirect_uri': request.route_url('security.oauth.redirect.google'),
-            'grant_type': 'authorization_code'
-        })
-    )
-
-    if response['status'] == '200':
-        content = json.loads(content)
-
-        access_token = content['access_token']
-        expires = content['expires_in']
-        token_type = content['token_type']
-        id_token = content['id_token']
-
-        decoded = parse_id_token(id_token)
-        sub = decoded['sub']
-        email = decoded['email']
-        name = decoded['name']
-        given_name = decoded['given_name']
-        family_name = decoded['family_name']
-        locale = decoded['locale']
-        issued_at = decoded['iat']
-        expires = decoded['exp']
-
-        services = request.services()
-        userStore = services['store.user']
-        clientStore = services['store.client']
-
-        # check if email is already registered
-        if not userStore.emailExists(email):
-            userStore.userAdd(email, name)
-
-        user = userStore.userByEmail(email)
-        (client_id, active, name, address, url_name) = clientStore.getDefaultClient()
-        remember(request, email, client=client_id)
-
-        raise exception.HTTPFound(request.route_url('user.dashboard'))
-    else:
-        raise exception.HTTPInternalServerError(
-            detail = 'OAUTH request failed'
+    try:
+        (response, content) = http.request(
+            token_url,
+            'POST',
+            headers = {
+                'content-type': 'application/x-www-form-urlencoded',
+                'cache-control': 'no-cache'
+            },
+            body = urlencode({
+                'code': code,
+                'client_id': client_id,
+                'client_secret': client_secret,
+                'redirect_uri': request.route_url('security.oauth.redirect.google'),
+                'grant_type': 'authorization_code'
+            })
         )
-        
+
+        if response['status'] == '200':
+            content = json.loads(content)
+
+            access_token = content['access_token']
+            expires = content['expires_in']
+            token_type = content['token_type']
+            id_token = content['id_token']
+
+            decoded = parse_id_token(id_token)
+            sub = decoded['sub']
+            email = decoded['email']
+            name = decoded['name']
+            given_name = decoded['given_name']
+            family_name = decoded['family_name']
+            locale = decoded['locale']
+            issued_at = decoded['iat']
+            expires = decoded['exp']
+
+            services = request.services()
+            userStore = services['store.user']
+            clientStore = services['store.client']
+
+            # check if email is already registered
+            if not userStore.emailExists(email):
+                userStore.userAdd(email, name)
+
+            user = userStore.userByEmail(email)
+            (client_id, active, name, address, url_name) = clientStore.getDefaultClient()
+            remember(request, email, client=client_id)
+
+            raise exception.HTTPFound(request.route_url('user.dashboard'))
+        else:
+            raise exception.HTTPInternalServerError(
+                detail = 'OAUTH request failed'
+            )
+    except httplib2.ServerNotFoundError as e:
+        log.error(e)
+        raise exception.HttpInternalServerError(
+            message = e.message,
+            detail = e.message
+        )
 
 # https://stackoverflow.com/questions/16923931/python-google-ouath-authentication-decode-and-verify-id-token
 def parse_id_token(token: str) -> dict:
