@@ -30,6 +30,7 @@ Inventory Item
         <ul>
             <li class="list-item-general is-active"><a class="link-nav link-tabs link-general" href="#general">General</a></li>
             <li class="list-item-substitutes"><a class="link-nav link-tabs link-substitutes" href="#substitutes">Substitutes</a></li>
+            <li class="list-item-components"><a class="link-nav link-tabs link-components" href="#components">Components</a></li>
             <li class="list-item-vendors"><a class="link-nav link-tabs link-vendors" href="#vendors">Vendors</a></li>
             <li class="list-item-monitoring"><a class="link-nav link-tabs link-monitoring" href="#monitoring">Monitoring</a></li>
         </ul>
@@ -53,27 +54,11 @@ Inventory Item
         </fieldset>
         <fieldset id="substitutes">
             <legend>Substitutes</legend>
-            <table class="tbl-substitutes">
-                <caption>Substitutes</caption>
-                <colgroup>
-                    <col class="col-select">
-                    <col class="col-name">
-                    <col class="col-description">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-                <tfoot>
-
-                </tfoot>
-            </table>
+            <items-table caption="Substitutes"></items-table>
+        </fieldset>
+        <fieldset id="components">
+            <legend>Components</legend>
+            <items-table caption="Components"></items-table>
         </fieldset>
         <fieldset id="vendors">
             <legend>Vendors</legend>
@@ -120,6 +105,7 @@ Inventory Item
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/inventory/items.table.js"></script>
 <script type="module" src="/static/js/helpers/inventory.js"></script>
 <script type="module">
 'use script';

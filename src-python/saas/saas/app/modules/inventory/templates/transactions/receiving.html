@@ -3,35 +3,28 @@
 {% import "saas.app:templates/forms.html" as forms %}
 
 {% block title %}
-Inventory Warehouses
+Inventory - Receiving
 {% endblock title %}
 
 {% block content %}
-<h1>Inventory Warehouses Content goes here</h1>
+<h1>Receiving</h1>
+<notification-list></notification-list>
 <div class="form-wrapper">
     <form class="form-receiving">
         <div class="table-wrapper">
-            <table class="tbl-items">
-                <caption>Items</caption>
-                <colgroup>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>UOM</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfooter>
-                    <tr>
-                        <td><a class="link-add" titlte="Add Item" href="#">&plus;</a></td>
-                    </tr>
-                </tfooter>
-            </table>
+            <items-table caption="Items to Receive" hide-description show-add ></items-table>
         </div><!-- .table-wrapper -->
     </form>
 </div><!-- .form-wrapper -->
 {% endblock content %}
+
+{% block scripts %}
+<script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/components/inventory/items.table.js"></script>
+<script type="module" src="/static/js/components/inventory/item.selector.js"></script>
+<script type="module">
+(function(){
+
+})();
+</script>
+{% endblock scripts %}

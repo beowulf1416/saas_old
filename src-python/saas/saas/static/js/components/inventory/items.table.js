@@ -27,22 +27,55 @@ class ItemsTable extends HTMLElement {
     }
 
     init(component, container) {
+        const caption = this.hasAttribute('caption') ? this.getAttribute('caption') : 'Items';
+        const hide_description = this.hasAttribute('hide-description');
+        const hide_qty = this.hasAttribute('hide-quantity');
+        const show_add = this.hasAttribute('show-add');
+
         const ths = [];
+        const colgroups = [];
         ths.push(`<th class="col-select"></th>`);
+        colgroups.push('<col class="col-select">');
+
         ths.push(`<th class="col-name"><span>Name</span></th>`);
-        ths.push(`<th class="col-description"><span>Description</span></th>`);
+        colgroups.push('<col class="col-name">');
+
+        if (!hide_description) {
+            ths.push(`<th class="col-description"><span>Description</span></th>`);
+            colgroups.push('<col class="col-description">');
+        }
+        if (!hide_qty) {
+            ths.push(`<th class="col-qty"><span>Quantity</span></th>`);
+            colgroups.push('<col class="col-qty">');
+
+            ths.push(`<th class="col-uom"><span>UOM</span></th>`);
+            colgroups.push('<col class="col-uom">');
+        }
         const thall = ths.join('');
+        const colgroupsall = colgroups.join('');
+
+        const footers = [];
+        if (show_add) {
+            footers.push('<td><a id="addItem" class="link-add" title="Add Item" href="#addItem">&plus;</a></td>');
+        }
+        footers.push('<td><input type="text" id="itemName" class="form-input-name" title="Item Name" placeholder="Item Name" /></td>');
+        if (!hide_description) {
+            footers.push('<td></td>');
+        }
+        if (!hide_qty) {
+            footers.push('<td><input type="number" id="itemQty" class="form-input-qty" title="Quantity" /></td>');
+            footers.push('<td><input type="text" id="itemUOM" class="form-input-uom" title="Unit of Measure" /></td>');
+        }
+        const footersall = footers.join('');
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="table-wrapper">
                 <table class="tbl-items" role="table">
-                    <caption>Items</caption>
+                    <caption>${caption}</caption>
                     <colgroup>
-                        <col class="col-select">
-                        <col class="col-name">
-                        <col class="col-description">
+                        ${colgroupsall}
                     </colgroup>
                     <thead>
                         ${thall}
@@ -50,11 +83,13 @@ class ItemsTable extends HTMLElement {
                     <tbody>
                     </tbody>
                     <tfoot>
+                        <tr>
+                            ${footersall}
+                        </tr>
                     </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
-
 
         container.appendChild(div);
     }
@@ -62,6 +97,9 @@ class ItemsTable extends HTMLElement {
     setItems(items = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const hide_description = this.hasAttribute('hide-description');
+        const hide_qty = this.hasAttribute('hide-quantity');
 
         const tbody = shadow.querySelector('table.tbl-items tbody');
         while(tbody.firstChild) {
@@ -79,7 +117,13 @@ class ItemsTable extends HTMLElement {
             const tds = [];
             tds.push(`<td class="col-select" role="gridcell"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
             tds.push(`<td class="col-name" role="gridcell"><span>${item_name}</span></td>`);
-            tds.push(`<td class="col-description" role="gridcell">${item_desc}</td>`);
+            if (!hide_description) {
+                tds.push(`<td class="col-description" role="gridcell">${item_desc}</td>`);
+            }
+            if (!hide_qty) {
+                tds.push(`<td class="col-qty" role="gridcell">${item_desc}</td>`);
+                tds.push(`<td class="col-uom" role="gridcell">${item_desc}</td>`);
+            }
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
