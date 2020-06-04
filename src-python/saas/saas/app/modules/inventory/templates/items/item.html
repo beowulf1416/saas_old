@@ -35,7 +35,7 @@ Inventory Item
         </ul>
     </div><!-- .tabs -->
     <form class="form-item">
-        <fieldset id="general" class="panel is-active">
+        <fieldset id="general" class="is-active">
             <div class="grid column-4">
                 {{ forms.gridinput('text', 'name', 'name', 'Name') }}
                 {{ forms.gridinput('textarea', 'description', 'description', 'Description') }}
@@ -63,6 +63,18 @@ Inventory Item
     </form>
 </div><!-- .table-wrapper -->
 {% endblock content %}
+
+{% block sidebar_right %}
+<div class="form-wrapper">
+    <form class="form-item-substitutes">
+        <fieldset class="grid column-2">
+            {{ forms.gridinput('text', 'name', 'name', 'Name') }}
+            {{ forms.gridinput('textarea', 'description', 'description', 'Description') }}
+        </fieldset>
+        <button type="button" class="btn btn-save">Add</button>
+    </form>
+</div><!-- .form-wrapper -->
+{% endblock sidebar_right %}
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>

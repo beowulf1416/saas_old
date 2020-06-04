@@ -25,3 +25,9 @@ form.form-item textarea.form-input-description {
     grid-column-start: 2;
     grid-column-end: 5;
 }
+
+form.form-item-substitutes .column-2 {
+    display: grid;
+    grid-template-columns: min-content auto;
+    gap: 1rem 1rem;
+}

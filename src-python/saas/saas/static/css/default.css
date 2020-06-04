@@ -6,3 +6,9 @@ html {
 .hide {
     display: none;
 }
+
+#sidebarright,
+#sidebarleft,
+#content {
+    padding: 6px;
+}
