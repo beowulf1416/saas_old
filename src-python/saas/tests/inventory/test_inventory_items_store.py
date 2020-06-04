@@ -98,3 +98,10 @@ class TestInventoryItemsStore(unittest.TestCase):
             self.itemsStore.addSubstitute(client_id, item_1, item_2)
         except Exception as e:
             self.fail(e)
+
+    def test_item_substitutes(self):
+        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        try:
+            result = self.itemsStore.substitutes(client_id)
+        except Exception as e:
+            self.fail(e)
