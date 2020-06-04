@@ -17,7 +17,6 @@ Inventory Warehouses
         <form class="form-warehouse">
             <fieldset>
                 {{ forms.input('text', 'name', 'name', 'Name') }}
-                {{ forms.input('textarea', 'description', 'description', 'Description') }}
                 {{ forms.input('textarea', 'address', 'address', 'Address') }}
             </fieldset>
             <button type="button" class="btn btn-save">Save</button> 
@@ -28,14 +27,23 @@ Inventory Warehouses
 
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
+<script type="module" src="/static/js/helpers/inventory/warehouses.js"></script>
 <script type="module">
 'use strict';
+import { InventoryWarehouse } from '/static/js/helpers/inventory/warehouses.js';
 (function(){
     const clientId = '{{ client_id }}';
     const notifier = document.querySelector('notification-list');
 
     document.querySelector('form.form-warehouse button.btn-save').addEventListener('click', function(e) {
-        console.log('btn-save click');
+        const tname = document.querySelector('form.form-warehouse input#name');
+        const taddr = document.querySelector('form.form-warehouse textarea#address');
+        InventoryWarehouse.add(clientId, tname.value, taddr.value).then((r) => {
+            notifier.add(r.status, r.message);
+            if (r.status == 'success') {
+                document.querySelector('form.form-warehouses').reset();
+            }
+        });
     });
 })();
 </script>
