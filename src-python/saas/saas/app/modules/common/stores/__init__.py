@@ -5,6 +5,7 @@ from saas.app.core.services import get_service
 
 from saas.app.modules.common.stores.countries import CountryStore
 from saas.app.modules.common.stores.currencies import CurrencyStore
+from saas.app.modules.common.stores.uom import UOMStore
 
 
 def includeme(config):
@@ -18,3 +19,6 @@ def includeme(config):
 
     currencyStore = CurrencyStore(mgr, 'default')
     services['stores.common.currencies'] = currencyStore
+
+    uomStore = UOMStore(mgr, 'default')
+    services['stores.common.uom'] = uomStore
