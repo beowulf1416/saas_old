@@ -67,17 +67,18 @@
             <div class="navbar-item has-dropdown is-hoverable">
             {% if email is defined %}
                 <a class="navbar-link">
-                    {{ email }}
                     <span class="material-icons">lock_open</span>
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-right">
+                    <a title="Profile" class="navbar-item" href="#">{{ email }}</a>
+                    <hr class="navbar-divider">
                     <a title="Sign Out" class="navbar-item" href="/security/signout">Sign Out</a>
                 </div><!-- .navbar-dropdown -->
             {% else %}
                 <a class="navbar-link">
                     <span class="material-icons">lock</span>
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-right">
                     <a title="Sign In" class="navbar-item" href="/security/signin">Sign In</a>
                 </div><!-- .navbar-dropdown -->
             {% endif %}

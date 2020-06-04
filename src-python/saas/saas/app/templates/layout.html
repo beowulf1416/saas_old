@@ -7,47 +7,45 @@
 {%- endblock base_links %}
 
 {% block base_body %}
-<div id="bodywrapper" class="row-wrapper">
-    <div id="rowheader" class="row row-start row-1">
-        <div id="colheader" class="col-wrapper">
-            <div id="hdrleft" class="col col-start col-1">
-                {% block header_left %}
-                <h2>header left</h2>
-                {% endblock header_left %}
-            </div><!-- .col -->
-            <div class="col col-2">
-                {% block header_center %}
-                <h2>header center</h2>
-                {% endblock header_center %}
-            </div><!-- .col -->
-            <div id="hdrright" class="col col-end col-3">
-                {% block header_right %}
-                <h2>header right</h2>
-                {% endblock header_right %}
-            </div><!-- .col -->
-        </div><!-- .col-wrapper -->
-    </div><!-- .row -->
-    <div id="rowcontent" class="row row-2">
-        <div class="col-wrapper">
-            <div id="sidebarleft" class="col col-start col-1">
-                {% block sidebar_left %}
-                <h2>sidebar left</h2>
-                {% endblock sidebar_left %}
-            </div><!-- .col -->
-            <div id="content" class="col col-2">
-                {% block content %}
-                <h1>Default</h1>
-                {% endblock content %}
-            </div><!-- .col -->
-            <div id="sidebarright" class="col col-end col-3">
-                {% block sidebar_right %}
-                <h2>sidebar right</h2>
-                {% endblock sidebar_right %}
-            </div><!-- .col -->
-        </div><!-- .col-wrapper -->
-    </div><!-- .row -->
-    <div id="rowfooter" class="row row-end row-3">
-        &copy; application_name
-    </div><!-- .row -->
-</div><!-- #wrapper -->
+<div class="layout-wrapper">
+    <div class="header-left">
+        {% block header_left %}
+        <h2>header left</h2>
+        {% endblock header_left %}
+    </div><!-- .header-left -->
+    <div class="header-center">
+        {% block header_center %}
+        <h2>header center</h2>
+        {% endblock header_center %}
+    </div><!-- .header-center -->
+    <div class="header-right">
+        {% block header_right %}
+        <h2>header right</h2>
+        {% endblock header_right %}
+    </div><!-- .header-right -->
+    <div class="sidebar-left">
+        {% block sidebar_left %}
+        <h2>sidebar left</h2>
+        {% endblock sidebar_left %}
+    </div><!-- .sidebar-left -->
+    <div class="main-content">
+        {% block content %}
+        <h1>Default</h1>
+        {% endblock content %}
+    </div><!-- .main-content -->
+    <div class="sidebar-right">
+        {% block sidebar_right %}
+        <h2>sidebar right</h2>
+        {% endblock sidebar_right %}
+    </div><!-- .sidebar-right -->
+    <div class="footer-right">
+        footer right
+    </div><!-- .footer-right -->
+    <div class="footer-center">
+        footer center
+    </div><!-- .footer-center -->
+    <div class="footer-right">
+        footer-right
+    </div><!-- .footer-right -->
+</div><!-- .layout-wrapper -->
 {% endblock base_body %}

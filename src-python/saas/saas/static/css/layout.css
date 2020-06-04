@@ -32,3 +32,23 @@
     display: flex;
     flex: 1;
 }
+
+.layout-wrapper {
+    display: grid;
+    grid-template-columns: min-content auto min-content min-content;
+}
+
+.layout-wrapper .header-right {
+    grid-column-start: 3;
+    grid-column-end: 5;
+}
+
+.layout-wrapper .main-content {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
+.layout-wrapper .footer-center {
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
