@@ -7,3 +7,5 @@ def includeme(config):
     config.include('saas.app.modules.inventory.stores')
     config.include('saas.app.modules.inventory.views')
     config.include('saas.app.modules.inventory.views.api')
+
+    config.include('saas.app.modules.inventory.views.transactions')

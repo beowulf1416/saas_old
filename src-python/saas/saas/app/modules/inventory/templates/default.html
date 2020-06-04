@@ -15,6 +15,12 @@ Inventory
         <li><a class="nav-link link-inventory" title="Dashboard" href="{{ request.route_path('inventory.dashboard') }}">Dashboard</a></li>
         <li><a class="nav-link link-inventory" title="Items" href="{{ request.route_path('inventory.items.list') }}">Items</a></li>
     </ul><!-- .menu-list -->
+
+    <div class="menu-label">Transactions</div>
+    <ul class="menu-list">
+        <li><a class="nav-link" title="Item Groups" href="{{ request.route_path('inventory.transactions.receiving') }}">Receiving</a></li>
+    </ul><!-- .menu-list -->
+    
     <div class="menu-label">Maintenance</div>
     <ul class="menu-list">
         <li><a class="nav-link" title="Item Groups" href="{{ request.route_path('inventory.items.groups') }}">Groups</a></li>
