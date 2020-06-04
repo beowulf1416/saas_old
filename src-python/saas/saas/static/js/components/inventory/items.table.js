@@ -24,6 +24,7 @@ class ItemsTable extends HTMLElement {
         shadow.appendChild(div);
 
         this.setItems = this.setItems.bind(this);
+        this.getItems = this.getItems.bind(this);
     }
 
     init(component, container) {
@@ -121,20 +122,43 @@ class ItemsTable extends HTMLElement {
                 tds.push(`<td class="col-description" role="gridcell">${item_desc}</td>`);
             }
             if (!hide_qty) {
-                tds.push(`<td class="col-qty" role="gridcell">${item_desc}</td>`);
-                tds.push(`<td class="col-uom" role="gridcell">${item_desc}</td>`);
+                tds.push(`<td class="col-qty" role="gridcell" data-qty="${item.quantity}">${item.quantity}</td>`);
+                tds.push(`<td class="col-uom" role="gridcell" data-uom="${item.uom}">${item.uom}</td>`);
             }
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
             tr.classList.add('row-item');
             tr.setAttribute('role', 'row');
+            tr.setAttribute('data-itemid', item.id);
             tr.innerHTML = `
                 ${tdall}
             `;
 
             tbody.appendChild(tr);
         });
+    }
+
+    getItems() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const hide_description = this.hasAttribute('hide-description');
+        const hide_qty = this.hasAttribute('hide-quantity');
+
+        const items = [];
+        shadow.querySelectorAll('table.tbl-items tbody').forEach(tr => {
+            const itemId = tr.dataset.itemid;
+            const qty = hide_qty ? 0 : tr.querySelector('td.col-qty').dataset.qty;
+            const uom = hide_qty ? '' : tr.querySelector('td.col-uom').dataset.uom;
+
+            items.push({
+                id: itemId,
+                quantity: qty,
+                uom: uom
+            });
+        });
+        return items;
     }
 }
 customElements.define('items-table', ItemsTable);
