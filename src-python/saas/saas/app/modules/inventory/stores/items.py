@@ -16,7 +16,7 @@ class ItemsStore(BaseStore):
         '''add an inventory item
         '''
         try:
-            result = super(ItemsStore, self).runProcTransactional('inventory.item_add', [
+            [(item_id, )] = super(ItemsStore, self).runProcTransactional('inventory.item_add', [
                 clientId,
                 item['name'],
                 item['description'],
@@ -33,6 +33,7 @@ class ItemsStore(BaseStore):
                 item['perishable'] if 'perishable' in item else False,
                 item['hazardous'] if 'hazardous' in item else False
             ])
+            return item_id
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add inventory item')
@@ -47,9 +48,9 @@ class ItemsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving inventory items')
 
-    def substitutes(self, clientId: UUID):
+    def substitutes(self, clientId: UUID, itemId: UUID):
         try:
-            result = super(ItemsStore, self).runProc('inventory.item_substitutes', [clientId, ])
+            result = super(ItemsStore, self).runProc('inventory.item_substitutes', [clientId, itemId])
             return result
         except Exception as e:
             log.error(e)

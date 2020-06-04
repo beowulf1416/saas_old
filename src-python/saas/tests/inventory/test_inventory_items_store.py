@@ -95,13 +95,57 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addSubstitute(client_id, item_1, item_2)
+            self.itemsStore.addSubstitute(client_id, item_id_1, item_id_2)
         except Exception as e:
             self.fail(e)
 
     def test_item_substitutes(self):
+        item_1 = self.generate_random_str(10)
+        item_2 = self.generate_random_str(10)
         (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
         try:
-            result = self.itemsStore.substitutes(client_id)
+            item_id_1 = self.itemsStore.add(
+                client_id,
+                {
+                    'name': item_1,
+                    'description': item_1,
+                    'make': item_1,
+                    'brand': item_1,
+                    'model': item_1,
+                    'version': item_1,
+                    'sku': item_1,
+                    'upc': item_1,
+                    'length': 1,
+                    'width': 1,
+                    'height': 1,
+                    'weight': 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
+            )
+            item_id_2 = self.itemsStore.add(
+                client_id,
+                {
+                    'name': item_2,
+                    'description': item_2,
+                    'make': item_2,
+                    'brand': item_2,
+                    'model': item_2,
+                    'version': item_2,
+                    'sku': item_2,
+                    'upc': item_2,
+                    'length': 1,
+                    'width': 1,
+                    'height': 1,
+                    'weight': 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
+            )
+
+            self.itemsStore.addSubstitute(client_id, item_id_1, item_id_2)
+
+            result = self.itemsStore.substitutes(client_id, item_id_1)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
