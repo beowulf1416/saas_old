@@ -46,5 +46,22 @@ class InventoryItem {
         })
         .then((r) => r.json());
     }
+
+    static substitutes(clientId = '', itemId = '', substituteItemId = '') {
+        return fetch('/api/inventory/items/substitutes', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                itemId: itemId,
+                substituteItemId: substituteItemId
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { InventoryItem };

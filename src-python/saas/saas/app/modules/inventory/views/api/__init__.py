@@ -15,6 +15,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.inventory.items.substitutes',
+        '/api/inventory/items/substitutes'
+    )
+
+    config.add_route(
         'api.inventory.warehouses.add',
         '/api/inventory/warehouses/add'
     )

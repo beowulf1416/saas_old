@@ -68,6 +68,13 @@ def view_inventory_items_filter(request):
 )
 def view_inventory_items_add(request):
     params = request.json_body
+    
+    client_id = params['clientId'] if 'clientId' in params else None
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
 
     services = request.services()
     itemStore = services['store.inventory.items']
@@ -78,15 +85,47 @@ def view_inventory_items_add(request):
             instance = params,
             schema_file = '/inventory/item.json'
         )
-        
-        client_id = params['client'] if 'client' in params else None
-        if client_id is None:
-            raise exception.HTTPBadRequest(
-                detail='Missing required parameter',
-                explanation='Client Id is required'
-            )
 
         itemStore.add(client_id, params)
+    except ValidationError as e:
+        log.error(e)
+        raise exception.HTTPBadRequest(
+            detail=e.message,
+            explanation='Incorrect parameters'
+        )
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Inventory Item record created',
+        body={
+            'message': 'Inventory Item record created'
+        }
+    )
+
+@view_config(
+    route_name='api.inventory.items.substitutes',
+    request_method='POST',
+    renderer='json'
+)
+def view_inventory_item_substitutes(request):
+    params = request.json_body
+
+    client_id = params['client'] if 'client' in params else None
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    itemStore = services['store.inventory.items']
+    try:
+        itemStore.addSubstitute(client_id, params)
     except ValidationError as e:
         log.error(e)
         raise exception.HTTPBadRequest(
