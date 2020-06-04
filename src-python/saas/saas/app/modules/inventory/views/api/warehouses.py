@@ -39,6 +39,11 @@ def view_inventory_warehouses_add(request):
         }
     )
 
+@view_config(
+    route_name='api.inventory.warehouses.all',
+    request_method='POST',
+    renderer='json'
+)
 def view_inventory_warehouses_all(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
@@ -53,7 +58,16 @@ def view_inventory_warehouses_all(request):
     warehouses = []
     try:
         warehouseStore = services['store.inventory.warehouses']
-        warehouses = warehouseStore.add(client_id)
+        result = warehouseStore.all(client_id)
+        warehouses = [
+            {
+                'id': r[0],
+                'active': r[1],
+                'name': r[2],
+                'address': r[3]
+            }
+            for r in result
+        ]
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),

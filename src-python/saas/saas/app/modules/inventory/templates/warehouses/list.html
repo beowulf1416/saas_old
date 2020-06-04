@@ -9,6 +9,31 @@ Inventory Warehouses
 {% block content %}
 <h1>Inventory Warehouses Content goes here</h1>
 <notification-list></notification-list>
+<div class="form-wrapper">
+    <form class="form-warehouses">
+        <div class="table-wrapper">
+            <table class="tbl-warehouses">
+                <caption>Warehouses</caption>
+                <colgroup>
+                    <col class="col-select">
+                    <col class="col-name">
+                    <col class="col-address">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div><!-- .table-wrapper -->
+    </form>
+</div><!-- .form-wrapper -->
 {% endblock content %}
 
 {% block sidebar_right %}
@@ -28,9 +53,11 @@ Inventory Warehouses
 {% block scripts %}
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/helpers/inventory/warehouses.js"></script>
+<script type="module" src="/static/js/util.js"></script>
 <script type="module">
 'use strict';
 import { InventoryWarehouse } from '/static/js/helpers/inventory/warehouses.js';
+import { Util } from '/static/js/util.js';
 (function(){
     const clientId = '{{ client_id }}';
     const notifier = document.querySelector('notification-list');
@@ -45,6 +72,31 @@ import { InventoryWarehouse } from '/static/js/helpers/inventory/warehouses.js';
             }
         });
     });
+
+    const refreshList = function(){
+        InventoryWarehouse.all(clientId).then((r) => {
+            if (r.status == 'success') {
+                const tbody = document.querySelector('table.tbl-warehouses tbody');
+                while(tbody.firstChild) {
+                    tbody.removeChild(tbody.lastChild);
+                }
+                const warehouses = r.json.warehouses;
+                warehouses.forEach(w => {
+                    const id = Util.generateId();
+                    const tr = document.createElement('tr');
+                    tr.classList.add('warehouse-item');
+                    tr.innerHTML = `
+                        <td><input type="radio" id="${id}" class="select-warehouse" name="warehouse" value="${w.id}" /></td>
+                        <td><label for="${id}">${w.name}</label></td>
+                        <td>${w.address}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        });
+    };
+
+    refreshList();
 })();
 </script>
 {% endblock scripts %}
