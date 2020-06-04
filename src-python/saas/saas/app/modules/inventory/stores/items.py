@@ -46,3 +46,12 @@ class ItemsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while retrieving inventory items')
+
+    def addSubstitute(self, clientId: UUID, itemId: UUID, substituteItemId: UUID):
+        try:
+            super(ItemsStore, self).runProcTransactional('inventory.items_add_substitute', [
+                clientId, itemId, substituteItemId
+            ])
+        except Exception as e:
+            log.error(e)
+            raise Exception('An error occured while adding a substitute')
