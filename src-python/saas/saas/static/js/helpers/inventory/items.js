@@ -47,4 +47,4 @@ class InventoryItem {
         .then((r) => r.json());
     }
 }
-export { Inventory };
+export { InventoryItem };
