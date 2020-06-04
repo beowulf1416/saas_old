@@ -2,23 +2,17 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
+from saas.app.core.stores.base import BaseStore
 
 
-class CurrencyStore(object):
+class CurrencyStore(BaseStore):
 
     def __init__(self, manager: ConnectionManager, name: str):
-        self._mgr = manager
-        self._name = name
+        super(CurrencyStore, self).__init__(manager, name)
 
     def all(self):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('common.currencies_all')
-            result = c.fetchall()
-            return result
+            return super(CurrencyStore, self).runProc('common.currencies_all', [])
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving all currencies')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve all currencies')
