@@ -1,11 +1,11 @@
 import logging
 log = logging.getLogger(__name__)
 
-from saas.app.core.services.manager import ServiceManager
+from saas.app.core.services.services import Services
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.services.validator import SchemaValidator
 
-__services = ServiceManager()
+__services = Services()
 
 def includeme(config):
     log.debug('including: saas.app.core.services')
@@ -17,6 +17,8 @@ def includeme(config):
     schema_path = settings['schema.path']
     validator = SchemaValidator(schema_path)
     __services['validator.json'] = validator
+
+    __services['modules'] = {}
 
     config.add_request_method(
         get_service,

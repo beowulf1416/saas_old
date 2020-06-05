@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class ServiceManager(dict):
+class Services(dict):
     def getServices(self):
         return self.keys()
 
