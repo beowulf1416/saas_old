@@ -27,6 +27,7 @@ body > .page-footer {
 .page-main > .main-content {
     order: 2;
     flex: 1 1 0;
+    padding: 4px;
 }
 
 .page-main > .sidebar-right {

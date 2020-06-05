@@ -22,8 +22,18 @@ html {
     display: none;
 }
 
+.modules-wrapper .module-links {
+    background-color: #7e7f81;;
+    padding: 2px;
+}
+
 .modules-wrapper .module-links li.module-item.active {
-    background: red;
+    background-color: #d3d5d8;
+}
+
+.modules-wrapper .module-contents {
+    padding: 4px;
+    background-color: #a8aaac;
 }
 
 .modules-wrapper .module-contents .module-content:not(.active) {
