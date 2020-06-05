@@ -13,7 +13,20 @@ from pyramid.view import view_config, notfound_view_config, forbidden_view_confi
     request_method='GET'
 )
 def view_default(request):
-    return {}
+    services = request.services()
+    available = services['modules']
+
+    modules = [
+        {
+            'module_name': k,
+            'descriptor': v.getModuleDescriptor()
+        }
+        for (k,v) in available.items()
+    ]
+
+    return {
+        'modules': modules
+    }
 
 @view_config(
     route_name='user.dashboard',
