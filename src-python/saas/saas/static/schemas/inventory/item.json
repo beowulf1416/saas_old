@@ -19,7 +19,7 @@
     },
     "type": "object",
     "properties": {
-        "client": { "type": "string" },
+        "clientId": { "type": "string" },
         "name": { "type": "string" },
         "description": { "type": "string" },
         "sku": { "type": "string" },
@@ -44,7 +44,7 @@
         }
     },
     "required": [
-        "client",
+        "clientId",
         "name",
         "description"
     ],
