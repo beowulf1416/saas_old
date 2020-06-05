@@ -9,7 +9,8 @@ class InventoryModule(BaseModule):
     def getModuleDescriptor(self):
         return {
             'name': 'inventory',
-            'help': 'Inventory Module'
+            'help': 'Inventory Module',
+            'icon': '<span class="material-icons">view_quilt</span>'
         }
 
     def getContent(self):

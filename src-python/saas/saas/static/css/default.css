@@ -12,3 +12,20 @@ html {
 #content {
     padding: 6px;
 }
+
+.modules-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.modules-wrapper a span:not(.material-icons) {
+    display: none;
+}
+
+.modules-wrapper .module-links li.module-item.active {
+    background: red;
+}
+
+.modules-wrapper .module-contents .module-content:not(.active) {
+    display: none;
+}

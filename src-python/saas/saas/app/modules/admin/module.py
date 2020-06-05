@@ -9,7 +9,8 @@ class AdminModule(BaseModule):
     def getModuleDescriptor(self):
         return {
             'name': 'admin',
-            'help': 'System Administration Module'
+            'help': 'System Administration Module',
+            'icon': '<span class="material-icons">view_quilt</span>'
         }
 
     def getContent(self):

@@ -89,22 +89,23 @@
 {% endblock header_right %}
 
 {% block sidebar_left %}
-<h2>sidebar left</h2>
 {% if modules is defined %}
 <div class="modules-wrapper">
     <div class="module-links">
         <ul class="list-modules" role="tablist" aria-label="Modules">
         {% for m in modules %}
-            <li class="module-item">
+            <li class="module-item module-{{ m.module_name }}">
                 <a id="link-{{ m.module_name }}" 
                     class="link-module" 
                     title="{{ m.descriptor.help }}" 
                     href="#module-{{ m.module_name }}" 
                     role="tab" 
                     aria-selected="false" 
-                    aria-controls="module-{{ m.module_name }}"
-                    tabindex="-1">
-                    {{ m.module_name }}
+                    aria-controls="module-content-{{ m.module_name }}"
+                    tabindex="-1"
+                    data-module="{{ m.module_name }}">
+                    {{ m.descriptor.icon | safe }}
+                    <span>{{ m.module_name }}</span>
                 </a>
             </li>
         {% endfor %}
@@ -112,7 +113,8 @@
     </div><!-- .module-link -->
     <div class="module-contents">
         {% for m in modules %}
-            <div class="module-content"
+            <div id="module-content-{{ m.module_name }}" 
+                class="module-content"
                 role="tabpanel" 
                 aria-labelledby="#link-{{ m.module_name }}"
                 tabindex="0">
@@ -135,6 +137,7 @@
 
 {% block base_body_scripts %}
 <script type="module" src="/static/js/components/tab.container.js"></script>
+<script type="module" src="/static/js/page/default.js"></script>
 <script type="module">
 'use strict';
 (function(){
