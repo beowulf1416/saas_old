@@ -30,6 +30,8 @@ class ItemsTable extends HTMLElement {
     init(component, container) {
         const caption = this.hasAttribute('caption') ? this.getAttribute('caption') : 'Items';
         const hide_description = this.hasAttribute('hide-description');
+        const hide_sku = this.hasAttribute('hide-sku');
+        const hide_upc = this.hasAttribute('hide-upc');
         const hide_qty = this.hasAttribute('hide-quantity');
         const show_add = this.hasAttribute('show-add');
 
@@ -44,6 +46,14 @@ class ItemsTable extends HTMLElement {
         if (!hide_description) {
             ths.push(`<th class="col-description"><span>Description</span></th>`);
             colgroups.push('<col class="col-description">');
+        }
+        if (!hide_sku) {
+            ths.push(`<th class="col-sku"><span>SKU</span></th>`);
+            colgroups.push('<col class="col-sku">');
+        }
+        if (!hide_upc) {
+            ths.push(`<th class="col-upc"><span>UPC</span></th>`);
+            colgroups.push('<col class="col-upc">');
         }
         if (!hide_qty) {
             ths.push(`<th class="col-qty"><span>Quantity</span></th>`);
@@ -99,6 +109,8 @@ class ItemsTable extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const hide_sku = this.hasAttribute('hide-sku');
+        const hide_upc = this.hasAttribute('hide-upc');
         const hide_description = this.hasAttribute('hide-description');
         const hide_qty = this.hasAttribute('hide-quantity');
 
@@ -109,15 +121,25 @@ class ItemsTable extends HTMLElement {
 
         items.forEach(item => {
             let item_name = item.name;
+            let item_sku = item.sku;
+            let item_upc = item.upc;
             let item_desc = item.description;
             if (filter != '') {
                 item_name = item_name.replace(filter, `<strong>${filter}</strong>`);
-                item_desc = item_desc.replace(filter, `<strong>${filter}<strong>`);
+                item_sku = item_sku.replace(filter, `<strong>${filter}</strong>`);
+                item_upc = item_upc.replace(filter, `<strong>${filter}</strong>`);
+                item_desc = item_desc.replace(filter, `<strong>${filter}</strong>`);
             }
 
             const tds = [];
             tds.push(`<td class="col-select" role="gridcell"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
             tds.push(`<td class="col-name" role="gridcell"><span>${item_name}</span></td>`);
+            if (!hide_sku) {
+                tds.push(`<td class="col-sku" role="gridcell">${item_sku}</td>`);
+            }
+            if (!hide_upc) {
+                tds.push(`<td class="col-upc" role="gridcell">${item_upc}</td>`);
+            }
             if (!hide_description) {
                 tds.push(`<td class="col-description" role="gridcell">${item_desc}</td>`);
             }

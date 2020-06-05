@@ -77,19 +77,11 @@ class ItemSelector extends HTMLElement {
             fromEvent(tfilter, 'keyup')
             .pipe(
                 debounceTime(250),
-                // tap(e => {
-                //     // console.log(e);
-                //     // console.log(tfilter.value);
-                //     // return e;
-                //     return tfilter.value;
-                // }),
-                // map(e => e.target.value),
                 map(e => tfilter.value),
                 filter(query => query.length > 3),
                 distinctUntilChanged(),
                 switchMap(query => from(InventoryItem.find(client_id, query))),
                 tap(r => {
-                    console.log(r);
                     if (r.status == 'success') {
                         itemsTbl.setItems(r.json.items, r.json.filter);
                     } else {
