@@ -29,7 +29,7 @@ class InventoryItem {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                client: clientId,
+                clientId: clientId,
                 name: item.name,
                 description: item.description,
                 sku: item.sku,

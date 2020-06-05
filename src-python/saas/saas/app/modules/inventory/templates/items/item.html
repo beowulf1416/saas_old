@@ -93,19 +93,19 @@ Inventory Item
 
 {% block sidebar_right %}
 <div class="form-wrapper">
-    <form class="form-item-substitutes">
-        <fieldset class="grid column-2">
-            {{ forms.gridinput('text', 'name', 'name', 'Name') }}
-            {{ forms.gridinput('textarea', 'description', 'description', 'Description') }}
-        </fieldset>
-        <button type="button" class="btn btn-save">Add</button>
-    </form>
+    <item-selector client-id="{{ client_id }}"></item-selector>
 </div><!-- .form-wrapper -->
 {% endblock sidebar_right %}
 
+{% block csp_script_src -%}
+https://unpkg.com/rxjs/bundles/rxjs.umd.min.js
+{%- endblock csp_script_src %}
+
 {% block scripts %}
+<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
 <script type="module" src="/static/js/components/notification.list.js"></script>
 <script type="module" src="/static/js/components/inventory/items.table.js"></script>
+<script type="module" src="/static/js/components/inventory/item.selector.js"></script>
 <script type="module" src="/static/js/helpers/inventory/items.js"></script>
 <script type="module">
 'use script';
