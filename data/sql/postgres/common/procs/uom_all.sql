@@ -11,9 +11,11 @@ begin
     select
         a.id,
         a.dimension_id,
+        b.name dimension,
         a.name,
         a.symbol
-    from common.uom a;
+    from common.uom a
+        inner join common.dimensions b on a.dimension_id = b.id;
 end
 $$
 language plpgsql

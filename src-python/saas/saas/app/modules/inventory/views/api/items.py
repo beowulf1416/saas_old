@@ -10,6 +10,40 @@ import json
 
 
 @view_config(
+    route_name='api.inventory.uom.all',
+    request_method='POST',
+    renderer='json'
+)
+def view_inventory_items_uom(request):
+    services = request.services()
+    uoms = []
+    try:
+        uomStore = services['stores.common.uom']
+        result = uomStore.all()
+        uoms = [
+            { 
+                'id': r[0], 
+                'dimension_id': r[1],
+                'dimension': r[2], 
+                'name': r[3], 
+                'symbol': r[4]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} uom found'.format(len(uoms)),
+        body={
+            'uoms': uoms
+        }
+    )    
+
+@view_config(
     route_name='api.inventory.items.filter',
     request_method='POST',
     renderer='json'
