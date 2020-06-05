@@ -7,7 +7,24 @@
 {%- endblock base_links %}
 
 {% block base_body %}
-<div class="layout-wrapper">
+<div class="page-main">
+    <div class="main-content">
+        {% block content %}
+        <h1>Default</h1>
+        {% endblock content %}
+    </div><!-- .main-content -->
+    <div class="sidebar-left">
+        {% block sidebar_left %}
+        <h2>sidebar left</h2>
+        {% endblock sidebar_left %}
+    </div><!-- .sidebar-left -->
+    <div class="sidebar-right">
+        {% block sidebar_right %}
+        <h2>sidebar right</h2>
+        {% endblock sidebar_right %}
+    </div><!-- .sidebar-right -->
+</div><!-- .main -->
+<div class="page-header">
     <div class="header-left">
         {% block header_left %}
         <h2>header left</h2>
@@ -23,29 +40,8 @@
         <h2>header right</h2>
         {% endblock header_right %}
     </div><!-- .header-right -->
-    <div class="sidebar-left">
-        {% block sidebar_left %}
-        <h2>sidebar left</h2>
-        {% endblock sidebar_left %}
-    </div><!-- .sidebar-left -->
-    <div class="main-content">
-        {% block content %}
-        <h1>Default</h1>
-        {% endblock content %}
-    </div><!-- .main-content -->
-    <div class="sidebar-right">
-        {% block sidebar_right %}
-        <h2>sidebar right</h2>
-        {% endblock sidebar_right %}
-    </div><!-- .sidebar-right -->
-    <div class="footer-right">
-        footer right
-    </div><!-- .footer-right -->
-    <div class="footer-center">
-        footer center
-    </div><!-- .footer-center -->
-    <div class="footer-right">
-        footer-right
-    </div><!-- .footer-right -->
-</div><!-- .layout-wrapper -->
+</div><!-- .page-header -->
+<div class="page-footer">
+    footer
+</div><!-- .page-footer -->
 {% endblock base_body %}

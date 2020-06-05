@@ -90,6 +90,23 @@
 
 {% block sidebar_left %}
 <h2>sidebar left</h2>
+{% if modules is defined %}
+<div class="modules-wrapper">
+    <div class="module-links">
+        <ul class="list-modules">
+        {% for m in modules %}
+            <li class="module-item">
+                <a id="module_{{ m.module_name }}" class="link-module" title="{{ m.descriptor.help }}" href="#module_{{ m.module_name }}">{{ m.module_name }}</a>
+            </li>
+        {% endfor %}
+        </ul><!-- .list-modules -->
+    </div><!-- .module-link -->
+    <div class="module-contents">
+        {% for m in modules %}
+        {% endfor %}
+    </div><!-- .module-contents -->
+</div><!-- .modules-wrapper -->
+{% endif %}
 {% endblock sidebar_left %}
 
 {% block content %}
