@@ -1,0 +1,33 @@
+id,dimension_id,name,symbol
+1,1,meter,m
+2,1,centimeter,cm
+3,1,millimeter,cm
+4,1,kilometer,km
+5,1,feet,ft
+6,1,inch,in
+7,1,yard,
+8,2,square meter,m²
+9,2,square centimeter,cm²
+10,2,square millimeter,mm²
+11,2,square kilometer,km²
+12,2,square feet,ft²
+13,2,square inch,in²
+14,3,cubic meter,m³
+15,3,cubic centimeter,cm³
+16,3,cubic millimeter,mm³
+17,3,cubic feet,ft³
+18,3,cubic inch,in³
+19,3,quart,
+20,3,gallon,
+21,3,pint,
+22,4,gram,g
+23,4,milligram,mg
+24,4,kilogram,kg
+25,4,pound,lb
+26,4,ounce,oz
+27,5,each,
+28,5,piece,
+29,5,box,
+30,5,pouch,
+31,5,item,
+32,5,bundle,
