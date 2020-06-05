@@ -89,6 +89,27 @@
 {% endblock header_right %}
 
 {% block sidebar_left %}
+{% if navigators is defined %}
+<div class="navigators">
+    <div class="tab tab-vertical" role="tablist" aria-label="Navigators">
+        <ul class="nav-links">
+        {% for k,n in navigators.items() %}
+            <li>
+                <a title="{{ n.help }}">
+                    {{ n.icon | safe }}
+                    <span>{{ n.title }}</span>
+                </a>
+            </li>
+        {% endfor %}
+        </ul><!-- .nav-links -->
+        <div class="nav-content">
+        {% for k,n in navigators.items() %}
+            {% include n.template %}
+        {% endfor %}
+        </div><!-- .nav-content -->
+    </div><!-- .tabs -->
+</div><!-- .navigators -->
+{% endif %}
 {% if modules is defined %}
 <div class="modules-wrapper">
     <div class="module-links">
@@ -143,6 +164,21 @@
 (function(){
     const tab = document.querySelector('tab-container');
     tab.addTab('news', 'News', '<h1>This is the news');
+
+    const actions = {
+        {% for id,action in actions.items() %}
+        '{{ id }}': {{ action | safe }},
+        {% endfor %}
+    };
+    window.actions = actions;
+
+    document.querySelectorAll('[data-action]').forEach(elem => {
+        elem.addEventListener('click', function(e) {
+            console.log(elem.dataset.action);
+            const action = window.actions[elem.dataset.action];
+            action();
+        });
+    });
 })();
 </script>
 {% block scripts %}

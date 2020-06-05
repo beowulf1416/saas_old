@@ -15,8 +15,12 @@ from pyramid.renderers import render
 )
 def view_default(request):
     services = request.services()
-    available = services['modules']
 
+    navigators = services['navigators']
+
+    page_actions = services['page.actions']
+
+    available = services['modules']
     modules = []
     for module_name, module in available.items():
         descriptor = module.getDescriptor()
@@ -28,7 +32,9 @@ def view_default(request):
         })
 
     return {
-        'modules': modules
+        'modules': modules,
+        'navigators': navigators,
+        'actions': page_actions
     }
 
 @view_config(

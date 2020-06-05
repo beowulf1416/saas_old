@@ -17,3 +17,17 @@ def includeme(config):
     services = get_service(None)
     modules = services['modules']
     modules['inventory'] = InventoryModule()
+
+    navigators = services['navigators']
+    navigators['inventory'] = {
+        'title': 'Inventory',
+        'help': 'Manage Inventory',
+        'icon': '<span class="material-icons">view_quilt</span>',
+        'template': 'saas.app.modules.inventory:templates/module.html'
+    }
+
+    page_actions = services['page.actions']
+    # page_actions['inventory.items'] = 'showInventoryItems'
+    # page_actions['inventory.transactions.receiving'] = 'showInventoryTransactionsReceiving'
+    page_actions['inventory.items'] = 'function(){ console.log(\'inventory items action\'); }'
+    page_actions['inventory.transactions.receiving'] = 'function(){ console.log(\'inventory transactions receiving action\'); }'

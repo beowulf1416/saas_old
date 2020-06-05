@@ -1,6 +1,7 @@
 /** common styles **/
 html {
     background-color: #ebedf0;
+    height: 100%;
 }
 
 .hide {
@@ -16,6 +17,7 @@ html {
 .modules-wrapper {
     display: flex;
     flex-direction: row;
+    min-height: 100%;
 }
 
 .modules-wrapper a span:not(.material-icons) {
@@ -37,5 +39,14 @@ html {
 }
 
 .modules-wrapper .module-contents .module-content:not(.active) {
+    display: none;
+}
+
+.tab-vertical {
+    display: flex;
+    flex-direction: row;
+}
+
+.tab-vertical span:not(.material-icons) {
     display: none;
 }
