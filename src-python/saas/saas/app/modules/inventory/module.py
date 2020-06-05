@@ -6,14 +6,10 @@ from saas.app.core.services.module import BaseModule
 
 class InventoryModule(BaseModule):
 
-    def getModuleDescriptor(self):
+    def getDescriptor(self):
         return {
             'name': 'inventory',
             'help': 'Inventory Module',
+            'template': 'saas.app.modules.inventory:templates/module.html',
             'icon': '<span class="material-icons">view_quilt</span>'
-        }
-
-    def getContent(self):
-        return {
-            'template': 'saas.app.modules.inventory:templates/module.html'
         }

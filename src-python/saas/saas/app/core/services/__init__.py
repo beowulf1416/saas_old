@@ -22,6 +22,7 @@ def includeme(config):
     
     __services['page.styles'] = {}
     __services['page.scripts'] = {}
+    __services['page.actions'] = {}
 
     config.add_request_method(
         get_service,

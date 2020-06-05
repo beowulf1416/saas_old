@@ -17,15 +17,15 @@ def view_default(request):
     services = request.services()
     available = services['modules']
 
-    modules = [
-        {
-            'module_name': k,
-            'descriptor': v.getModuleDescriptor(),
-            'template': v.getContent()['template'],
-            'content': render(v.getContent()['template'], {}, request)
-        }
-        for (k,v) in available.items()
-    ]
+    modules = []
+    for module_name, module in available.items():
+        descriptor = module.getDescriptor()
+        modules.append({
+            'module_name': module_name,
+            'help': descriptor['help'],
+            'template': descriptor['template'],
+            'icon': descriptor['icon']
+        })
 
     return {
         'modules': modules

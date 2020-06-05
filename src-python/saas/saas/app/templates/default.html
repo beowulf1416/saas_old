@@ -97,14 +97,14 @@
             <li class="module-item module-{{ m.module_name }}">
                 <a id="link-{{ m.module_name }}" 
                     class="link-module" 
-                    title="{{ m.descriptor.help }}" 
+                    title="{{ m.help }}" 
                     href="#module-{{ m.module_name }}" 
                     role="tab" 
                     aria-selected="false" 
                     aria-controls="module-content-{{ m.module_name }}"
                     tabindex="-1"
                     data-module="{{ m.module_name }}">
-                    {{ m.descriptor.icon | safe }}
+                    {{ m.icon | safe }}
                     <span>{{ m.module_name }}</span>
                 </a>
             </li>

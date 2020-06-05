@@ -49,7 +49,9 @@ class TabContainer extends HTMLElement {
         const ul = this.querySelector('ul.list-tabs');
         const li = document.createElement('li');
         li.innerHTML = `
-            <a id="link-${id}" class="link-tab active" href="#" data-id="${id}">${label}</a>
+            <a id="link-${id}" class="link-tab active" href="#" data-id="${id}">
+                <span>${label}</span>
+            </a>
         `;
         ul.appendChild(li);
 

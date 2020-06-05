@@ -1,3 +1,9 @@
+.list-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 .tab-content {
     display: none;
 }

@@ -1,15 +1,29 @@
-<h1>Inventory</h1>
-<div class="module-admin menu">
-    <ul class="menu-list">
-        <li><a title="Items">Items</a></li>
-    </ul><!-- .menu-list -->
-    <div class="menu-label">Transactions</div>
-    <ul class="menu-list">
-        <li><a title="Receiving">Receiving</a></li>
-    </ul><!-- .menu-list -->
-    <div class="menu-label">Maintenance</div>
-    <ul class="menu-list">
-        <li><a>Warehouses</a></li>
-        <li><a>Locations</a></li>
-    </ul><!-- .menu-list -->
-</div><!-- .module-admin -->
+<div class="module-inventory-wrapper">
+    <h1>Inventory</h1>
+    <div class="module-admin menu">
+        <ul class="menu-list">
+            <li><a id="link-inventory-items" title="Items">Items</a></li>
+        </ul><!-- .menu-list -->
+        <div class="menu-label">Transactions</div>
+        <ul class="menu-list">
+            <li><a title="Receiving">Receiving</a></li>
+        </ul><!-- .menu-list -->
+        <div class="menu-label">Maintenance</div>
+        <ul class="menu-list">
+            <li><a>Warehouses</a></li>
+            <li><a>Locations</a></li>
+        </ul><!-- .menu-list -->
+    </div><!-- .module-admin -->
+</div><!-- .module-inventory-wrapper -->
+<script type="module">
+'use script';
+(function(){
+    const tab = document.querySelector('tab-container');
+
+    document.getElementById('link-inventory-items').addEventListener('click', function(e) {
+        console.log('link-inventory-items');
+
+        tab.addTab('items', 'Items', '<h1>Inventory Items</h1>');
+    });
+})();
+</script>
