@@ -55,14 +55,14 @@ class TabContainer extends HTMLElement {
                 <span>${label}</span>
             </a>
             <a class="link-close" href="#" title="Close" data-id="${id}">
-                <span class="material-icons">cancel</span>
+                <span class="material-icons">close</span>
             </a>
         `;
         ul.appendChild(li);
 
         const div = document.createElement('div');
         div.setAttribute('id', `content-${id}`);
-        div.classList.add('tab-content', 'active');
+        div.classList.add('tab-content');
         div.innerHTML = `
             ${content}
         `;
@@ -72,7 +72,7 @@ class TabContainer extends HTMLElement {
         const a = li.querySelector('a.link-tab');
         a.addEventListener('click', function(e) {
             const id = a.dataset.id;
-            this.setActiveTab(id);
+            self.setActiveTab(id);
         });
 
         const close = li.querySelector('a.link-close');
@@ -86,6 +86,8 @@ class TabContainer extends HTMLElement {
             const div_wrapper = div_content.parentElement;
             div_wrapper.removeChild(div_content);
         });
+
+        this.setActiveTab(id);
     }
 
     setActiveTab(id = '') {
@@ -97,10 +99,14 @@ class TabContainer extends HTMLElement {
         selected.classList.add('active');
 
         const cactive = this.querySelector('div.tab-content.active');
-        cactive.classList.remove('active');
+        if (cactive != null) {
+            cactive.classList.remove('active');
+        }
 
         const cselected = this.querySelector(`div#content-${id}.tab-content`);
-        cselected.classList.add('active');
+        if (cselected != null) {
+            cselected.classList.add('active');
+        }
     }
 
     closeTab(id = '') {
