@@ -93,16 +93,31 @@
 {% if modules is defined %}
 <div class="modules-wrapper">
     <div class="module-links">
-        <ul class="list-modules">
+        <ul class="list-modules" role="tablist" aria-label="Modules">
         {% for m in modules %}
             <li class="module-item">
-                <a id="module_{{ m.module_name }}" class="link-module" title="{{ m.descriptor.help }}" href="#module_{{ m.module_name }}">{{ m.module_name }}</a>
+                <a id="link-{{ m.module_name }}" 
+                    class="link-module" 
+                    title="{{ m.descriptor.help }}" 
+                    href="#module-{{ m.module_name }}" 
+                    role="tab" 
+                    aria-selected="false" 
+                    aria-controls="module-{{ m.module_name }}"
+                    tabindex="-1">
+                    {{ m.module_name }}
+                </a>
             </li>
         {% endfor %}
         </ul><!-- .list-modules -->
     </div><!-- .module-link -->
     <div class="module-contents">
         {% for m in modules %}
+            <div class="module-content"
+                role="tabpanel" 
+                aria-labelledby="#link-{{ m.module_name }}"
+                tabindex="0">
+                {% include m.template %}
+            </div><!-- .module-content -->
         {% endfor %}
     </div><!-- .module-contents -->
 </div><!-- .modules-wrapper -->

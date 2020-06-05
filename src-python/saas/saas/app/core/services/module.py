@@ -9,3 +9,6 @@ class BaseModule(object):
             'help': 'This is the base module',
             'icon': '/static/img/gear.ico'
         }
+
+    def getContent(self):
+        return {}

@@ -11,3 +11,8 @@ class InventoryModule(BaseModule):
             'name': 'inventory',
             'help': 'Inventory Module'
         }
+
+    def getContent(self):
+        return {
+            'template': 'saas.app.modules.inventory:templates/module.html'
+        }

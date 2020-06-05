@@ -11,3 +11,8 @@ class AdminModule(BaseModule):
             'name': 'admin',
             'help': 'System Administration Module'
         }
+
+    def getContent(self):
+        return {
+            'template': 'saas.app.modules.admin:templates/module.html'
+        }

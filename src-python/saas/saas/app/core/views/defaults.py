@@ -5,6 +5,7 @@ import json
 
 import pyramid.httpexceptions as exception
 from pyramid.view import view_config, notfound_view_config, forbidden_view_config, exception_view_config
+from pyramid.renderers import render
 
 
 @view_config(
@@ -19,7 +20,9 @@ def view_default(request):
     modules = [
         {
             'module_name': k,
-            'descriptor': v.getModuleDescriptor()
+            'descriptor': v.getModuleDescriptor(),
+            'template': v.getContent()['template'],
+            'content': render(v.getContent()['template'], {}, request)
         }
         for (k,v) in available.items()
     ]
