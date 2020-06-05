@@ -14,13 +14,11 @@ class TabContainer extends HTMLElement {
 
         this.init(self, div);
 
-        // const shadow = this.attachShadow({ mode: 'open' });
-        // shadow.appendChild(style);
-        // shadow.appendChild(div);
         this.appendChild(style);
         this.appendChild(div);
 
         this.addTab = this.addTab.bind(this);
+        this.setActiveTab = this.setActiveTab.bind(this);
     }
 
     connectedCallback() {
@@ -45,23 +43,45 @@ class TabContainer extends HTMLElement {
         container.appendChild(div);
     }
 
-    addTab(label = '', content = '') {
+    addTab(id = '', label = '', content = '') {
         const self = this;
-        // const shadow = this.shadowRoot;
 
         const ul = this.querySelector('ul.list-tabs');
         const li = document.createElement('li');
         li.innerHTML = `
-            <a href="#">${label}</a>
+            <a id="link-${id}" class="link-tab active" href="#" data-id="${id}">${label}</a>
         `;
         ul.appendChild(li);
 
         const div = document.createElement('div');
+        div.setAttribute('id', `content-${id}`);
+        div.classList.add('tab-content', 'active');
         div.innerHTML = `
             ${content}
         `;
         const tcontent = this.querySelector('.content-wrapper');
         tcontent.appendChild(div);
+
+        const a = li.querySelector('a');
+        a.addEventListener('click', function(e) {
+            const id = a.dataset.id;
+            this.setActiveTab(id);
+        });
+    }
+
+    setActiveTab(id = '') {
+        const self = this;
+        const active = this.querySelector('a.link-tab.active');
+        active.classList.remove('active');
+
+        const selected = this.querySelector(`a#link-${id}`);
+        selected.classList.add('active');
+
+        const cactive = this.querySelector('div.tab-content.active');
+        cactive.classList.remove('active');
+
+        const cselected = this.querySelector(`div#content-${id}.tab-content`);
+        cselected.classList.add('active');
     }
 }
 customElements.define('tab-container', TabContainer);
