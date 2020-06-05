@@ -126,6 +126,7 @@
 
 {% block content %}
 <h1>Default</h1>
+<tab-container></tab-container>
 {% endblock content %}
 
 {% block sidebar_right %}
@@ -133,6 +134,14 @@
 {% endblock sidebar_right %}
 
 {% block base_body_scripts %}
+<script type="module" src="/static/js/components/tab.container.js"></script>
+<script type="module">
+'use strict';
+(function(){
+    const tab = document.querySelector('tab-container');
+    tab.addTab('News', '<h1>This is the news');
+})();
+</script>
 {% block scripts %}
 {% endblock scripts %}
 {% endblock base_body_scripts %}
