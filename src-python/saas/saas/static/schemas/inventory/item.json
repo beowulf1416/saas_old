@@ -1,5 +1,22 @@
 {
     "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/inventory/item.json",
+    "definitions": {
+        "uom": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" }
+            }
+        },
+        "item": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "quantity": { "type": "number" },
+                "uom": { "$ref": "#/definitions/uom" }
+            }
+        }
+    },
     "type": "object",
     "properties": {
         "client": { "type": "string" },
@@ -16,7 +33,15 @@
         "height": { "type": "number" },
         "weight": { "type": "number" },
         "perishable": { "type": "boolean" },
-        "hazardous": { "type": "boolean" }
+        "hazardous": { "type": "boolean" },
+        "substitutes": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/item" }
+        },
+        "components": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/item" }
+        }
     },
     "required": [
         "client",
