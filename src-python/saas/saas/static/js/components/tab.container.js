@@ -48,9 +48,14 @@ class TabContainer extends HTMLElement {
 
         const ul = this.querySelector('ul.list-tabs');
         const li = document.createElement('li');
+        li.setAttribute('id', `list-item-${id}`);
+        li.dataset.id = id;
         li.innerHTML = `
             <a id="link-${id}" class="link-tab active" href="#" data-id="${id}">
                 <span>${label}</span>
+            </a>
+            <a class="link-close" href="#" title="Close" data-id="${id}">
+                <span class="material-icons">cancel</span>
             </a>
         `;
         ul.appendChild(li);
@@ -64,10 +69,22 @@ class TabContainer extends HTMLElement {
         const tcontent = this.querySelector('.content-wrapper');
         tcontent.appendChild(div);
 
-        const a = li.querySelector('a');
+        const a = li.querySelector('a.link-tab');
         a.addEventListener('click', function(e) {
             const id = a.dataset.id;
             this.setActiveTab(id);
+        });
+
+        const close = li.querySelector('a.link-close');
+        close.addEventListener('click', function(e) {
+            const id = close.dataset.id;
+            const li = self.querySelector(`li#list-item-${id}`);
+            const ul = li.parentElement;
+            ul.removeChild(li);
+
+            const div_content = self.querySelector(`div#content-${id}`);
+            const div_wrapper = div_content.parentElement;
+            div_wrapper.removeChild(div_content);
         });
     }
 
@@ -84,6 +101,11 @@ class TabContainer extends HTMLElement {
 
         const cselected = this.querySelector(`div#content-${id}.tab-content`);
         cselected.classList.add('active');
+    }
+
+    closeTab(id = '') {
+        const self = this;
+        const li = this.querySelector('li#')
     }
 }
 customElements.define('tab-container', TabContainer);
