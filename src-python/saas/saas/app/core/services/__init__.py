@@ -19,6 +19,9 @@ def includeme(config):
     __services['validator.json'] = validator
 
     __services['modules'] = {}
+    
+    __services['page.styles'] = {}
+    __services['page.scripts'] = {}
 
     config.add_request_method(
         get_service,
