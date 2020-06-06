@@ -17,6 +17,7 @@
 </div><!-- .module-inventory-wrapper -->
 {% do scripts.update({ '/static/js/components/inventory/items.table.js': {'type': 'module' }}) %}
 {% do scripts.update({ '/static/js/components/inventory/items.search.js': { 'type': 'module' }}) %}
+{% do scripts.update({ '/static/js/helpers/inventory/items.js': { 'type': 'module' }}) %}
 {% do scripts.update({ 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js': { 'external': true }}) %}
 <script type="module">
 'use script';
