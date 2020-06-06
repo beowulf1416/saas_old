@@ -42,11 +42,33 @@ html {
     display: none;
 }
 
+.navigators {
+    min-height: 100%;
+}
+
 .tab-vertical {
     display: flex;
     flex-direction: row;
+    min-height: 100%;
 }
 
-.tab-vertical span:not(.material-icons) {
+.tab-vertical .nav-links {
+    background-color: #7e7f81;;
+    padding: 2px;
+}
+
+.tab-vertical .nav-links span:not(.material-icons) {
+    display: none;
+}
+
+.tab-vertical .nav-links li.active {
+    background-color: #d3d5d8;
+}
+
+.tab-vertical .nav-contents {
+    padding: 4px;
+}
+
+.tab-vertical .nav-contents .nav-content:not(.active) {
     display: none;
 }

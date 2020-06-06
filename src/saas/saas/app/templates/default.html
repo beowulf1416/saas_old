@@ -95,55 +95,28 @@
         <ul class="nav-links">
         {% for k,n in navigators.items() %}
             <li>
-                <a title="{{ n.help }}">
+                <a id="nav-{{ k }}"
+                    class="nav"
+                    title="{{ n.help }}"
+                    href="#nav-content-{{ k }}"
+                    role="tab"
+                    aria-selected="false"
+                    data-navid="{{ k }}">
                     {{ n.icon | safe }}
                     <span>{{ n.title }}</span>
                 </a>
             </li>
         {% endfor %}
         </ul><!-- .nav-links -->
-        <div class="nav-content">
+        <div class="nav-contents">
         {% for k,n in navigators.items() %}
+            <div id="nav-content-{{ k }}" class="nav-content">
             {% include n.template %}
+        </div><!-- .nav-content -->
         {% endfor %}
         </div><!-- .nav-content -->
     </div><!-- .tabs -->
 </div><!-- .navigators -->
-{% endif %}
-{% if modules is defined %}
-<div class="modules-wrapper">
-    <div class="module-links">
-        <ul class="list-modules" role="tablist" aria-label="Modules">
-        {% for m in modules %}
-            <li class="module-item module-{{ m.module_name }}">
-                <a id="link-{{ m.module_name }}" 
-                    class="link-module" 
-                    title="{{ m.help }}" 
-                    href="#module-{{ m.module_name }}" 
-                    role="tab" 
-                    aria-selected="false" 
-                    aria-controls="module-content-{{ m.module_name }}"
-                    tabindex="-1"
-                    data-module="{{ m.module_name }}">
-                    {{ m.icon | safe }}
-                    <span>{{ m.module_name }}</span>
-                </a>
-            </li>
-        {% endfor %}
-        </ul><!-- .list-modules -->
-    </div><!-- .module-link -->
-    <div class="module-contents">
-        {% for m in modules %}
-            <div id="module-content-{{ m.module_name }}" 
-                class="module-content"
-                role="tabpanel" 
-                aria-labelledby="#link-{{ m.module_name }}"
-                tabindex="0">
-                {% include m.template %}
-            </div><!-- .module-content -->
-        {% endfor %}
-    </div><!-- .module-contents -->
-</div><!-- .modules-wrapper -->
 {% endif %}
 {% endblock sidebar_left %}
 
@@ -164,17 +137,11 @@
 (function(){
     const tab = document.querySelector('tab-container');
     tab.addTab('news', 'News', '<h1>This is the news');
-
-    const actions = {
-        {% for id,action in actions.items() %}
-        '{{ id }}': {{ action | safe }},
-        {% endfor %}
-    };
-    window.actions = actions;
+    
+    window.actions = window.actions ? window.actions : {};
 
     document.querySelectorAll('[data-action]').forEach(elem => {
         elem.addEventListener('click', function(e) {
-            console.log(elem.dataset.action);
             const action = window.actions[elem.dataset.action];
             action();
         });

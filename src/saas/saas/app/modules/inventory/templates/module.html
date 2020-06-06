@@ -35,5 +35,10 @@
     // window.actions['inventory.transactions.receiving'] = function() {
     //     console.log('inventory transactions receiving action');
     // }
+
+    window.actions = window.actions ? window.actions : {};
+    window.actions['inventory.items'] = function(){
+        console.log('inventory items action');
+    };
 })();
 </script>
