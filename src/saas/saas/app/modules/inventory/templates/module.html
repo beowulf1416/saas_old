@@ -15,6 +15,8 @@
         </ul><!-- .menu-list -->
     </div><!-- .module-admin -->
 </div><!-- .module-inventory-wrapper -->
+{% do scripts.update({ '/static/js/components/inventory/items.table.js': {'type': 'module' }}) %}
+{% do scripts.update({'/static/js/components/inventory/items.search.js': { 'type': 'module' }}) %}
 <script type="module">
 'use script';
 (function(){
@@ -22,7 +24,7 @@
 
     window.actions = window.actions ? window.actions : {};
     window.actions['inventory.items'] = function(){
-        console.log('inventory items action');
+        tab.addTab('inventory-items', 'Items', '<item-search></item-search>');
     };
     window.actions['inventory.transactions.receiving'] = function() {
         console.log('inventory.transactions.receiving');

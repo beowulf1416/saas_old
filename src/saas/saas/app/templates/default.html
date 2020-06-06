@@ -8,6 +8,8 @@
     {% extends "saas.app:templates/layout.html" %}
 {% endif %}
 
+{% set scripts = {} %}
+
 {% block base_meta %}
 <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; img-src 'self' https://* ;
@@ -130,6 +132,9 @@
 {% endblock sidebar_right %}
 
 {% block base_body_scripts %}
+{% for src, v in scripts.items() -%}
+<script type="{{ v.type }}" src="{{ src }}"></script>
+{%- endfor %}
 <script type="module" src="/static/js/components/tab.container.js"></script>
 <script type="module" src="/static/js/page/default.js"></script>
 <script type="module">
