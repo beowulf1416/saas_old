@@ -8,6 +8,7 @@
     {% extends "saas.app:templates/layout.html" %}
 {% endif %}
 
+{% set css = {} %}
 {% set scripts = {} %}
 
 {% block base_meta %}
@@ -16,11 +17,15 @@
     child-src 'none';
     style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
     font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
-    script-src 'self' 'unsafe-inline' {% block csp_script_src -%}{%- endblock csp_script_src %};"
+    script-src 'self' 'unsafe-inline' https://unpkg.com/rxjs/bundles/rxjs.umd.min.js {% block csp_script_src -%}{%- endblock csp_script_src %};"
 >
 {% endblock base_meta %}
 
+
 {% block links -%}
+{% for c in css.items() -%}
+<link rel="stylesheet" href="{{ c }}">
+{%- endfor %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="/static/css/default.css">
@@ -133,8 +138,8 @@
 
 {% block base_body_scripts %}
 {% for src, v in scripts.items() -%}
-<script type="{{ v.type }}" src="{{ src }}"></script>
-{%- endfor %}
+<script {% if v.type %}type="{{ v.type }}"{% endif %} src="{{ src }}"></script>
+{% endfor %}
 <script type="module" src="/static/js/components/tab.container.js"></script>
 <script type="module" src="/static/js/page/default.js"></script>
 <script type="module">
