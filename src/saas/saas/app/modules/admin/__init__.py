@@ -2,7 +2,6 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services import get_service
-from saas.app.modules.admin.module import AdminModule
 
 
 def includeme(config):
@@ -13,13 +12,11 @@ def includeme(config):
     config.include('saas.app.modules.admin.views.api')
 
     services = get_service(None)
-    modules = services['modules']
-    modules['admin'] = AdminModule()
 
     navigators = services['navigators']
     navigators['admin'] = {
         'title': 'System Administration',
         'help': 'Manage clients, users and roles',
-        'icon': '<span class="material-icons">view_quilt</span>',
+        'icon': '<span class="material-icons">admin_panel_settings</span>',
         'template': 'saas.app.modules.admin:templates/module.html'
     }

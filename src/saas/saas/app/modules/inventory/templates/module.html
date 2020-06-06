@@ -10,35 +10,28 @@
         </ul><!-- .menu-list -->
         <div class="menu-label">Maintenance</div>
         <ul class="menu-list">
-            <li><a>Warehouses</a></li>
-            <li><a>Locations</a></li>
+            <li><a title="Warehouses" data-action="inventory.warehouses">Warehouses</a></li>
+            <li><a title="Locations" data-action="inventory.locations">Locations</a></li>
         </ul><!-- .menu-list -->
     </div><!-- .module-admin -->
 </div><!-- .module-inventory-wrapper -->
 <script type="module">
 'use script';
 (function(){
-    // const tab = document.querySelector('tab-container');
-
-    // document.getElementById('link-inventory-items').addEventListener('click', function(e) {
-    //     console.log('link-inventory-items');
-
-    //     tab.addTab('items', 'Items', '<h1>Inventory Items</h1>');
-    // });
-    // if (!window.actions) {
-    //     window.actions = {};
-    // }
-    // window.actions['inventory.items'] = function(){
-    //     console.log('inventory items action');
-    // };
-
-    // window.actions['inventory.transactions.receiving'] = function() {
-    //     console.log('inventory transactions receiving action');
-    // }
+    const tab = document.querySelector('tab-container');
 
     window.actions = window.actions ? window.actions : {};
     window.actions['inventory.items'] = function(){
         console.log('inventory items action');
     };
+    window.actions['inventory.transactions.receiving'] = function() {
+        console.log('inventory.transactions.receiving');
+    }
+    window.actions['inventory.warehouses'] = function() {
+        console.log('inventory.warehouses');
+    }
+    window.actions['inventory.locations'] = function() {
+        console.log('inventory.locations');
+    }
 })();
 </script>

@@ -1,8 +1,27 @@
-<h1>Administration</h1>
-<div class="module-admin menu">
-    <ul class="menu-list">
-        <li><a title="Clients">Clients</a></li>
-        <li><a title="Clients">Roles</a></li>
-        <li><a title="Clients">Users</a></li>
-    </ul><!-- .menu-list -->
-</div><!-- .module-admin -->
+<div class="module-admin-wrapper">
+    <h1>Administration</h1>
+    <div class="module-admin menu">
+        <ul class="menu-list">
+            <li><a title="Clients" data-action="admin.clients">Clients</a></li>
+            <li><a title="Roles" data-action="admin.roles">Roles</a></li>
+            <li><a title="Users" data-action="admin.users">Users</a></li>
+        </ul><!-- .menu-list -->
+    </div><!-- .module-admin -->
+</div><!-- .module-admin-wrapper -->
+<script type="module">
+'use script';
+(function(){
+    const tab = document.querySelector('tab-container');
+
+    window.actions = window.actions ? window.actions : {};
+    window.actions['admin.clients'] = function(){
+        console.log('admin.clients');
+    };
+    window.actions['admin.roles'] = function() {
+        console.log('admin.roles');
+    }
+    window.actions['admin.users'] = function() {
+        console.log('admin.users');
+    }
+})();
+</script>
