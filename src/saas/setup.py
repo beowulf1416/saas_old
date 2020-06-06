@@ -15,7 +15,6 @@ requires = [
     'pyramid_debugtoolbar',
     'waitress',
     'psycopg2',
-    'psycopg2.pool',
     'pyjwt',
     'google-api-python-client',
     'jsonschema'
