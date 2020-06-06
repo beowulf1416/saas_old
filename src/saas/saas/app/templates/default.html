@@ -145,10 +145,11 @@
 <script type="module">
 'use strict';
 (function(){
+    window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
+    window.actions = window.actions ? window.actions : {};
+
     const tab = document.querySelector('tab-container');
     tab.addTab('news', 'News', '<h1>This is the news');
-    
-    window.actions = window.actions ? window.actions : {};
 
     document.querySelectorAll('[data-action]').forEach(elem => {
         elem.addEventListener('click', function(e) {

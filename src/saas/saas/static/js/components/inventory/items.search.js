@@ -47,7 +47,7 @@ class ItemSearch extends HTMLElement {
                     map(e => search.value),
                     filter(query => query.length > 3),
                     distinctUntilChanged(),
-                    switchMap(query => from(InventoryItem.find(client_id, query))),
+                    switchMap(query => from(InventoryItem.find(window.clientId, query))),
                     tap(r => {
                         console.log(r);
                         if (r.status == 'success') {
