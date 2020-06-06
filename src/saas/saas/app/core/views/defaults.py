@@ -18,23 +18,8 @@ def view_default(request):
 
     navigators = services['navigators']
 
-    page_actions = services['page.actions']
-
-    available = services['modules']
-    modules = []
-    for module_name, module in available.items():
-        descriptor = module.getDescriptor()
-        modules.append({
-            'module_name': module_name,
-            'help': descriptor['help'],
-            'template': descriptor['template'],
-            'icon': descriptor['icon']
-        })
-
     return {
-        'modules': modules,
-        'navigators': navigators,
-        'actions': page_actions
+        'navigators': navigators
     }
 
 @view_config(
