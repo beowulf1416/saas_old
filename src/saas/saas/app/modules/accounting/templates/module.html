@@ -1,0 +1,19 @@
+<div class="module-acctg-wrapper">
+    <h1>Accounting</h1>
+    <div class="module-acctg menu">
+        <ul class="menu-list">
+            <li><a title="Chart of Accounts" data-action="accounting.accounts">Accounts</a></li>
+        </ul><!-- .menu-list -->
+    </div><!-- .module-admin -->
+</div><!-- .module-acctg-wrapper -->
+<script type="module">
+'use script';
+(function(){
+    const tab = document.querySelector('tab-container');
+
+    window.actions = window.actions ? window.actions : {};
+    window.actions['accounting.accounts'] = function(){
+        console.log('accounting.accounts');
+    };
+})();
+</script>
