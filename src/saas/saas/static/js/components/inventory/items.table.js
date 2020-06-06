@@ -150,7 +150,7 @@ class ItemsTable extends HTMLElement {
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
-            tr.classList.add('row-item');
+            tr.classList.add('row-item', 'draggable');
             tr.setAttribute('role', 'row');
             tr.setAttribute('data-itemid', item.id);
             tr.innerHTML = `
@@ -158,6 +158,11 @@ class ItemsTable extends HTMLElement {
             `;
 
             tbody.appendChild(tr);
+
+            // drag-drop support
+            tr.addEventListener('dragstart', function(e) {
+
+            });
         });
     }
 
