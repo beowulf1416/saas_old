@@ -21,7 +21,7 @@ def includeme(config):
                 'title': 'System Administration',
                 'help': 'Manage clients, users and roles',
                 'icon': '<span class="material-icons">admin_panel_settings</span>',
-                'template': 'saas.app.modules.admin:templates/module.html'
+                'template': 'saas.app.modules.admin:templates/navigator.html'
             }
         ],
         'views': [
