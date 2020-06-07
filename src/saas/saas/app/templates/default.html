@@ -14,7 +14,7 @@
     child-src 'none';
     style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
     font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
-    script-src 'self' 'unsafe-inline' {%- for js in csp.scripts %}{{ js }}{% endfor -%};"
+    script-src 'self' 'unsafe-inline' {% if csp is defined %}{% for js in csp.scripts %}{{ js }}{% endfor -%}{% endif %};"
 >
 {% endblock base_meta %}
 
@@ -38,15 +38,6 @@
     <div class="navbar-menu">
         <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">SAAS</a>
-            {% if client_id is defined %}
-            <div class="navbar-dropdown">
-                <a title="Accounting" class="nav-link navbar-item" href="/accounting">Accounting</a>
-                <a title="Inventory" class="nav-link navbar-item" href="/inventory">Inventory</a>
-                <a title="Client" class="nav-link navbar-item" href="/client">Client</a>
-                <hr class="navbar-divider">
-                <a title="Administion" class="nav-link navbar-item" href="/admin">Administration</a>
-            </div><!-- .navbar-dropdown -->
-            {% endif %}
         </div><!-- .navbar-item -->
     </div><!-- .navbar-menu -->
 </nav><!-- .navbar -->
@@ -127,7 +118,7 @@
 {% endblock sidebar_left %}
 
 {% block content %}
-<h1>Default</h1>
+<notification-list></notification-list>
 <tab-container></tab-container>
 {% endblock content %}
 
@@ -136,11 +127,14 @@
 {% endblock sidebar_right %}
 
 {% block base_body_scripts -%}
+{% if scripts is defined %}
 {%- for k,js in scripts.items() -%}
 <script {% if js.type %}type="{{ js.type }}"{% endif %} src="{{ js.script }}"></script>
 {% endfor %}
+{% endif %}
 
-<script type="module" src="/static/js/components/tab.container.js"></script>
+<script type="module" src="/static/custom.elements/notification.list/notification.list.js"></script>
+<script type="module" src="/static/custom.elements/tab.container/tab.container.js"></script>
 <script type="module" src="/static/js/page/default.js"></script>
 <script type="module" src="/static/js/ui/tabs.js"></script>
 <script type="module">
@@ -148,6 +142,8 @@
 import { tabs } from '/static/js/ui/tabs.js';
 (function(){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
+
+    window.services = window.services ? window.services : {};
     window.actions = window.actions ? window.actions : {};
 
     tabs(document);
