@@ -61,15 +61,12 @@ class ItemEditor extends HTMLElement {
                 </div><!-- .toolbar -->
                 <form class="form-item-editor tabs">
                     <ul class="tablist" role="tablist">
-                        <li class="tab-item"><a role="tab" aria-controls="general">General</a></li>
-                        <li class="tab-item"><a role="tab">Substitutes</a></li>
-                        <li class="tab-item"><a role="tab">Components</a></li>
+                        <li class="tab-item"><a title="General" href="#" role="tab" aria-controls="general">General</a></li>
+                        <li class="tab-item"><a title="Substitutes" href="#" role="tab" aria-controls="substitutes">Substitutes</a></li>
+                        <li class="tab-item"><a title="Components" href="#" role="tab" aria-controls="components">Components</a></li>
                     </ul><!-- .tab-links -->
 
-                    <div class="tab-panel" role="tabpanel">
-                    </div><!-- .tab-panel -->
-
-                    <fieldset id="general">
+                    <div id="general" class="tab-panel active" role="tabpanel">
                         <!-- name -->
                         <label for="name">Name</label>
                         <div class="form-group form-group-name">
@@ -146,7 +143,15 @@ class ItemEditor extends HTMLElement {
                         <div class="form-group form-group-weight">
                             <input type="text" id="weight" name="weight" class="form-input form-input-weight" title="Weight" placeholder="Weight" />
                         </div><!-- .form-group -->
-                    </fieldset>
+                    </div><!-- .tab-panel -->
+
+                    <div id="substitutes" class="tab-panel" role="tabpanel">
+                        // TODO substitutes
+                    </div><!-- .tab-panel -->
+
+                    <div id="components" class="tab-panel" role="tabpanel">
+                        // TODO components
+                    </div><!-- .tab-panel -->
                 </form>
             </div><!-- .form-wrapper -->
         `;
