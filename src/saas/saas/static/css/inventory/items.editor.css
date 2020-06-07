@@ -1,0 +1,19 @@
+#general {
+    display: grid;
+    grid-template-columns: min-content auto min-content auto;
+    row-gap: 4px;
+}
+
+.form-group .form-input {
+    width: 100%;
+}
+
+.form-group span.help-text {
+    display: block;
+    font-size: 0.8em;
+}
+
+#general .form-group-name,
+#general .form-group-description {
+    grid-column: 1/ span 4;
+}
