@@ -17,6 +17,7 @@
 </div><!-- .module-inventory-wrapper -->
 {% do scripts.update({ '/static/js/components/inventory/items.table.js': {'type': 'module' }}) %}
 {% do scripts.update({ '/static/js/components/inventory/items.search.js': { 'type': 'module' }}) %}
+{% do scripts.update({ '/static/js/components/inventory/item.editor.js': { 'type': 'module' }}) %}
 {% do scripts.update({ '/static/js/helpers/inventory/items.js': { 'type': 'module' }}) %}
 {% do scripts.update({ 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js': { 'external': true }}) %}
 <script type="module">
@@ -26,10 +27,10 @@
 
     window.actions = window.actions ? window.actions : {};
     window.actions['inventory.items'] = function(){
-        tab.addTab('inventory-items', 'Items', '<item-search></item-search>');
+        tab.addTab('inventory-items', 'Items', '<item-search tab="tab-container" client-id="{{ client_id }}"></item-search>');
     };
     window.actions['inventory.transactions.receiving'] = function() {
-        console.log('inventory.transactions.receiving');
+        tab.addTab('inventory-item-editor', 'Item', '<item-editor  client-id="{{ client_id }}"></item-editor>');
     }
     window.actions['inventory.warehouses'] = function() {
         console.log('inventory.warehouses');

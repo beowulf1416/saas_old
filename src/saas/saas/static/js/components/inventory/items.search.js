@@ -38,6 +38,15 @@ class ItemSearch extends HTMLElement {
         if (this.isConnected) {
             const self = this;
             const shadow = this.shadowRoot;
+
+            const tab = this.hasAttribute('tab') ? document.querySelector(this.getAttribute('tab')) : null;
+            const client_id = this.hasAttribute('client-id') ? this.getAttribute('client-id') : '';
+            if (tab != null) {
+                shadow.querySelector('button.btn-new').addEventListener('click', function(e) {
+                    tab.addTab('inventory-item-editor', 'Item', '<item-editor  client-id="{{ client_id }}"></item-editor>');
+                });
+            }
+
             const search = shadow.getElementById('search');
             const items = shadow.querySelector('items-table');
             fromEvent(search, 'keyup')
@@ -69,10 +78,20 @@ class ItemSearch extends HTMLElement {
     }
 
     init(component, container) {
+        const tab = this.hasAttribute('tab') ? this.getAttribute('tab') : '';
+        if (tab == '') {
+            console.error('tab attribute is required');
+        }
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
+                <div class="toolbar" role="toolbar" aria-label="Inventory Items">
+                    <button type="button" class="btn btn-new">
+                        <span class="material-icons">insert_drive_file</span>
+                    </button>
+                </div><!-- .toolbar -->
                 <form class="form-search">
                     <label for="search">Search</label>
                     <input type="search" id="search" class="form-input-search" title="Search" placeholder="Search" />
