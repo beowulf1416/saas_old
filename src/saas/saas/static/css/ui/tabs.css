@@ -1,9 +1,16 @@
-.tabs ul[role=tablist] {
+div[role=tabs].vertical > ul[role=tablist] {
+    height: 100%;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+}
+
+[role=tabs] > ul[role=tablist] {
     list-style-type: none;
     display: flex;
     flex-direction: row;
 }
 
-.tabs [role=tabpanel]:not(.active) {
+[role=tabs] [role=tabpanel]:not(.active) {
     display: none;
 }
