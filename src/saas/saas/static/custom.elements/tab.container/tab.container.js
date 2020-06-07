@@ -9,6 +9,11 @@ class TabContainer extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/tab.container/tab.container.css');
 
+        const google_web_fonts = document.createElement("link");
+        google_web_fonts.setAttribute('rel', 'stylesheet');
+        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+
+
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
@@ -16,6 +21,7 @@ class TabContainer extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
         this.setActiveTab = this.setActiveTab.bind(this);
@@ -72,7 +78,6 @@ class TabContainer extends HTMLElement {
 
             // check if tab already exists
             const existingTab = shadow.getElementById(`link-${id}`);
-            console.log(existingTab);
             if (existingTab == null) {
                 const li = document.createElement('li');
                 li.classList.add('list-item');
@@ -82,8 +87,16 @@ class TabContainer extends HTMLElement {
                         role="tab"
                         aria-selected="true"
                         aria-controls="tabpanel-${id}"
+                        data-id="${id}"
                         href="#">
                         ${title}
+                    </a>
+                    <a id="close-${id}"
+                        title="Close"
+                        class="tab-link-close"
+                        aria-controls="tabpanel-${id}"
+                        href="#">
+                        <span class="material-icons">close</span>
                     </a>
                 `;
 
@@ -91,6 +104,7 @@ class TabContainer extends HTMLElement {
                 div.classList.add('tab-panel', 'active');
                 div.setAttribute('role', 'tabpanel');
                 div.setAttribute('id', `tabpanel-${id}`);
+                div.setAttribute('data-id', id);
                 div.innerHTML = `
                     <div class="content-wrapper">
                         ${content}
@@ -110,7 +124,7 @@ class TabContainer extends HTMLElement {
                 ul.appendChild(li);
                 tabs.appendChild(div);
 
-                const a = li.querySelector('a');
+                const a = li.querySelector('a.tab-link');
                 a.addEventListener('click', function(e) {
                     const tab = shadow.querySelector('.tabs [role=tablist] .tab-link[aria-selected=true]');
                     if (tab != null) {
@@ -126,6 +140,21 @@ class TabContainer extends HTMLElement {
                     const aria_controls = a.getAttribute('aria-controls');
                     tp = shadow.getElementById(aria_controls);
                     tp.classList.add('active'); 
+                });
+
+                const close = li.querySelector('a.tab-link-close');
+                close.addEventListener('click', function(e) {
+                    const tp_id = close.getAttribute('aria-controls');
+                    const tp = shadow.getElementById(tp_id);
+
+                    const li = close.parentElement;
+                    
+                    tabs.removeChild(tp);
+                    ul.removeChild(li);
+
+                    const tab = ul.querySelector('[role=tab]');
+                    const tab_id = tab.dataset.id;
+                    self.setActiveTab(tab_id);
                 });
             } else {
                 this.setActiveTab(id);
