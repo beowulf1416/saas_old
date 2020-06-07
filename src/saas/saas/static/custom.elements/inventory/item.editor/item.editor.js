@@ -11,7 +11,7 @@ class ItemEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/css/inventory/items.editor.css');
+        style.setAttribute('href', '/static/custom.elements/inventory/item.editor/item.editor.css');
 
         const tb = document.createElement("link");
         tb.setAttribute('rel', 'stylesheet');
@@ -151,13 +151,13 @@ class ItemEditor extends HTMLElement {
 
                     <div id="substitutes" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                        // TODO substitutes
+                            <items-table hide-description hide-quantity></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
 
                     <div id="components" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                        // TODO components
+                        <items-table hide-description></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
                 </form>
