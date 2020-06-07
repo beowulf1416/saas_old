@@ -1,0 +1,5 @@
+/** notification list styles **/
+ul.notification-list {
+    padding: 2px;
+    list-style-type: none;
+}
