@@ -13,10 +13,15 @@ def includeme(config):
 
     services = get_service(None)
     
-    navigators = services['navigators']
-    navigators['client'] = {
-        'title': 'Client Management',
-        'help': 'Client management',
-        'icon': '<span class="material-icons">business</span>',
-        'template': 'saas.app.modules.clients:templates/module.html'
+    modules = services['modules']
+    modules['client'] = {
+        'navigators': [
+            {
+                'id': 'client',
+                'title': 'Client Management',
+                'help': 'Client management',
+                'icon': '<span class="material-icons">business</span>',
+                'template': 'saas.app.modules.clients:templates/module.html'
+            }
+        ]
     }

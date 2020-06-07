@@ -18,12 +18,12 @@ def includeme(config):
     validator = SchemaValidator(schema_path)
     __services['validator.json'] = validator
 
-    __services['navigators'] = {}
+    # __services['navigators'] = {}
     __services['modules'] = {}
     
     # __services['page.styles'] = {}
     # __services['page.scripts'] = {}
-    __services['page.actions'] = {}
+    # __services['page.actions'] = {}
 
     config.add_request_method(
         get_service,

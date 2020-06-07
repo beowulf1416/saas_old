@@ -1,4 +1,4 @@
-{% if sidebars is defined %}
+{%- if sidebars is defined -%}
     {% if sidebars %}
         {% extends "saas.app:templates/layout.html" %}
     {% else %}
@@ -6,10 +6,7 @@
     {% endif %}
 {% else %}
     {% extends "saas.app:templates/layout.html" %}
-{% endif %}
-
-{% set css = {} %}
-{% set scripts = {} %}
+{% endif -%}
 
 {% block base_meta %}
 <meta http-equiv="Content-Security-Policy" content="
@@ -17,18 +14,17 @@
     child-src 'none';
     style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
     font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
-    script-src 'self' 'unsafe-inline' https://unpkg.com/rxjs/bundles/rxjs.umd.min.js {% block csp_script_src -%}{%- endblock csp_script_src %};"
+    script-src 'self' 'unsafe-inline' {%- for js in csp.scripts %}{{ js }}{% endfor -%};"
 >
 {% endblock base_meta %}
 
 
 {% block links -%}
-{% for c in css.items() -%}
-<link rel="stylesheet" href="{{ c }}">
-{%- endfor %}
+<link rel="icon" type="image/ico" href="/static/img/favicon.ico">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="/static/css/default.css">
+<link rel="stylesheet" href="/static/css/ui/tabs.css">
 {%- endblock links %}
 
 
@@ -96,34 +92,37 @@
 {% endblock header_right %}
 
 {% block sidebar_left %}
-{% if navigators is defined %}
-<div class="navigators">
-    <div class="tab tab-vertical" role="tablist" aria-label="Navigators">
-        <ul class="nav-links">
-        {% for k,n in navigators.items() %}
-            <li>
-                <a id="nav-{{ k }}"
-                    class="nav"
-                    title="{{ n.help }}"
-                    href="#nav-content-{{ k }}"
-                    role="tab"
-                    aria-selected="false"
-                    data-navid="{{ k }}">
-                    {{ n.icon | safe }}
-                    <span>{{ n.title }}</span>
-                </a>
-            </li>
-        {% endfor %}
-        </ul><!-- .nav-links -->
-        <div class="nav-contents">
-        {% for k,n in navigators.items() %}
-            <div id="nav-content-{{ k }}" class="nav-content">
-            {% include n.template %}
-        </div><!-- .nav-content -->
-        {% endfor %}
-        </div><!-- .nav-content -->
-    </div><!-- .tabs -->
-</div><!-- .navigators -->
+{% if modules is defined %}
+    <div class="navigators">
+        <div class="tab-vertical vertical" role="tabs" aria-label="Navigators">
+            <ul class="nav-links" role="tablist">
+                {% for m, module in modules.items() %}
+                {% for navigator in module.navigators %}
+                    <li>
+                        <a id="nav-{{ navigator.id }}"
+                            class="nav"
+                            title="{{ navigator.help }}"
+                            href="#"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="{{ navigator.id }}">
+                            {{ navigator.icon | safe }}
+                            <span>{{ navigator.title }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+                {% endfor %}
+            </ul><!-- .nav-links -->
+
+            {% for m, module in modules.items() %}
+            {% for navigator in module.navigators %}
+                <div id="{{ navigator.id  }}" class="tab-panel" role="tabpanel">
+                {% include navigator.template %}
+                </div><!-- .tab-panel -->
+            {% endfor %}
+            {% endfor %}
+        </div><!-- .tabs -->
+    </div><!-- .navigators -->
 {% endif %}
 {% endblock sidebar_left %}
 
@@ -136,17 +135,22 @@
 <h2>sidebar right</h2>
 {% endblock sidebar_right %}
 
-{% block base_body_scripts %}
-{% for src, v in scripts.items() -%}
-<script {% if v.type %}type="{{ v.type }}"{% endif %} src="{{ src }}"></script>
+{% block base_body_scripts -%}
+{%- for k,js in scripts.items() -%}
+<script {% if js.type %}type="{{ js.type }}"{% endif %} src="{{ js.script }}"></script>
 {% endfor %}
+
 <script type="module" src="/static/js/components/tab.container.js"></script>
 <script type="module" src="/static/js/page/default.js"></script>
+<script type="module" src="/static/js/ui/tabs.js"></script>
 <script type="module">
 'use strict';
+import { tabs } from '/static/js/ui/tabs.js';
 (function(){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
     window.actions = window.actions ? window.actions : {};
+
+    tabs(document);
 
     const tab = document.querySelector('tab-container');
     tab.addTab('news', 'News', '<h1>This is the news');

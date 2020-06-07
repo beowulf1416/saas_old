@@ -14,13 +14,31 @@ from pyramid.renderers import render
     request_method='GET'
 )
 def view_default(request):
+    log.info('view_default')
     services = request.services()
 
-    navigators = services['navigators']
+    modules = services['modules']
+
+    scripts = {}
+    for m, module in modules.items():
+        if 'js' in module:
+            for js in module['js']:
+                k = js['script']
+                scripts[k] = js
+
+    csp = {
+        'scripts': []
+    }
+    for js, script in scripts.items():
+        if 'external' in script:
+            csp['scripts'].append(script['script'])
 
     return {
-        'navigators': navigators
+        'modules': modules,
+        'scripts': scripts,
+        'csp': csp
     }
+
 
 @view_config(
     route_name='user.dashboard',

@@ -18,16 +18,47 @@ def includeme(config):
     modules = services['modules']
     modules['inventory'] = InventoryModule()
 
-    navigators = services['navigators']
-    navigators['inventory'] = {
-        'title': 'Inventory',
-        'help': 'Manage Inventory',
-        'icon': '<span class="material-icons">view_quilt</span>',
-        'template': 'saas.app.modules.inventory:templates/module.html'
+    modules = services['modules']
+    modules['inventory'] = {
+        'navigators': [
+            {
+                'id': 'inventory',
+                'title': 'Inventory',
+                'help': 'Manage Inventory',
+                'icon': '<span class="material-icons">view_quilt</span>',
+                'template': 'saas.app.modules.inventory:templates/module.html'
+            }
+        ],
+        'views': [
+            {
+                'id': 'inv-item-selector',
+                'title': 'Item Selector',
+                'help': 'Inventory Item Selector',
+                'icon': '<span class="material-icons">view_quilt</span>',
+                'template': 'saas.app.modules.inventory:templates/item-selector.html'
+            }
+        ],
+        'css': [],
+        'js': [
+            {
+                'type': 'module',
+                'script': '/static/js/components/inventory/item.selector.js' 
+            },
+            {
+                'type': 'module',
+                'script': '/static/js/components/inventory/items.search.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/js/components/inventory/item.editor.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/js/helpers/inventory/items.js'
+            },
+            {
+                'external': 'true',
+                'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
+            }
+        ]
     }
-
-    page_actions = services['page.actions']
-    # page_actions['inventory.items'] = 'showInventoryItems'
-    # page_actions['inventory.transactions.receiving'] = 'showInventoryTransactionsReceiving'
-    page_actions['inventory.items'] = 'function(){ console.log(\'inventory items action\'); }'
-    page_actions['inventory.transactions.receiving'] = 'function(){ console.log(\'inventory transactions receiving action\'); }'

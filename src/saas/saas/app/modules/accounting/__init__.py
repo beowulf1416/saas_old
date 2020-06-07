@@ -12,10 +12,23 @@ def includeme(config):
 
     services = get_service(None)
 
-    navigators = services['navigators']
-    navigators['accounting'] = {
-        'title': 'Accounting',
-        'help': 'Accounting',
-        'icon': '<span class="material-icons">account_balance</span>',
-        'template': 'saas.app.modules.accounting:templates/module.html'
+    modules = services['modules']
+    modules['accounting'] = {
+        'navigators': [
+            {
+                'id': 'accounting',
+                'title': 'Accounting',
+                'help': 'Accounting',
+                'icon': '<span class="material-icons">account_balance</span>',
+                'template': 'saas.app.modules.accounting:templates/module.html'
+            }
+        ],
+        'views': [],
+        'css': [],
+        'js': [
+            {
+                'type': 'module',
+                'script': '/static/js/components/accounting/account.tree.js'
+            }
+        ]
     }

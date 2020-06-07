@@ -13,10 +13,24 @@ def includeme(config):
 
     services = get_service(None)
 
-    navigators = services['navigators']
-    navigators['admin'] = {
-        'title': 'System Administration',
-        'help': 'Manage clients, users and roles',
-        'icon': '<span class="material-icons">admin_panel_settings</span>',
-        'template': 'saas.app.modules.admin:templates/module.html'
+    modules = services['modules']
+    modules['admin'] = {
+        'navigators': [
+            {
+                'id': 'admin',
+                'title': 'System Administration',
+                'help': 'Manage clients, users and roles',
+                'icon': '<span class="material-icons">admin_panel_settings</span>',
+                'template': 'saas.app.modules.admin:templates/module.html'
+            }
+        ],
+        'views': [
+            {
+                'name': 'user selector',
+                'id': 'admin-user-selector',
+                'help': 'User Selector',
+                'icon': '<span class="material-icons">admin_panel_settings</span>',
+                'template': 'saas.app.modules.admin:templates/user-selector.html'
+            }
+        ]
     }
