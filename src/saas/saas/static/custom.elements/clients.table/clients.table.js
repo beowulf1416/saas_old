@@ -1,4 +1,5 @@
 'use strict';
+import { Clients } from '/static/js/helpers/clients/clients.js';
 
 class ClientsTable extends HTMLElement {
 
@@ -17,11 +18,21 @@ class ClientsTable extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
         shadow.appendChild(div);
+
+        this.setClients = this.setClients.bind(this);
+        this.refresh = this.refresh.bind(this);
+
+        setTimeout(() => {
+            Clients.getAll().then((r) => {
+                this.setClients(r.json.clients);
+            });
+        });
     }
 
     connectedCallback() {
         if (this.isConnected) {
-
+            const self = this;
+            const shadow = this.shadowRoot;
         }
     }
 
@@ -51,6 +62,34 @@ class ClientsTable extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    setClients(clients = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tbody = shadow.querySelector('table tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        clients.forEach((c) => {
+            const tds = [];
+            tds.push(`<td><input type="radio" name="select" class="form-input-radio" value="${c.id}"</td>`);
+            tds.push(`<td>${c.name}</td>`);
+            const tdall = tds.join('');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `${tdall}`;
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    refresh() {
+        Clients.getAll().then((r) => {
+            this.setClients(r.json.clients);
+        });
     }
 }
 customElements.define('clients-table', ClientsTable);
