@@ -8,7 +8,7 @@ class ClientsTable extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/custom.elements/clients.table.css');
+        style.setAttribute('href', '/static/custom.elements/clients.table/clients.table.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
