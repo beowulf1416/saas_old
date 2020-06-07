@@ -1,5 +1,4 @@
 div[role=tabs].vertical > ul[role=tablist] {
-    height: 100%;
     list-style-type: none;
     display: flex;
     flex-direction: column;
