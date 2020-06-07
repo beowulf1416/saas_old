@@ -75,8 +75,8 @@ class ClientsTable extends HTMLElement {
 
         clients.forEach((c) => {
             const tds = [];
-            tds.push(`<td><input type="radio" name="select" class="form-input-radio" value="${c.id}"</td>`);
-            tds.push(`<td>${c.name}</td>`);
+            tds.push(`<td><input type="radio" id="${c.id}" name="select" class="form-input-radio" value="${c.id}"</td>`);
+            tds.push(`<td><label for="${c.id}">${c.name}</label></td>`);
             const tdall = tds.join('');
 
             const tr = document.createElement('tr');
