@@ -75,7 +75,7 @@ class ClientsTable extends HTMLElement {
 
         clients.forEach((c) => {
             const tds = [];
-            tds.push(`<td><input type="radio" id="${c.id}" name="select" class="form-input-radio" value="${c.id}"</td>`);
+            tds.push(`<td><input type="radio" id="${c.id}" name="select" class="form-input-radio" value="${c.id}" /></td>`);
             tds.push(`<td><label for="${c.id}">${c.name}</label></td>`);
             const tdall = tds.join('');
 
@@ -83,6 +83,17 @@ class ClientsTable extends HTMLElement {
             tr.innerHTML = `${tdall}`;
 
             tbody.appendChild(tr);
+
+            const radio = tr.querySelector('[name=select]');
+            radio.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        client: radio.value
+                    }
+                }));
+            });
         });
     }
 
