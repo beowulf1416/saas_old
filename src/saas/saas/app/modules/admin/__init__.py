@@ -31,6 +31,31 @@ def includeme(config):
                 'help': 'User Selector',
                 'icon': '<span class="material-icons">admin_panel_settings</span>',
                 'template': 'saas.app.modules.admin:templates/user-selector.html'
+            },
+            {
+                'name': 'client selector',
+                'id': 'client-selector',
+                'help': 'Select Client',
+                'icon': '<span class="material-icons">search</span>'
+            }
+        ],
+        'css': [],
+        'js': [
+            {
+                'type': 'module',
+                'script': '/static/js/modules/admin.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/clients.table/clients.table.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/client.roles/client.roles.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/client.selector/client.selector.js'
             }
         ]
     }
