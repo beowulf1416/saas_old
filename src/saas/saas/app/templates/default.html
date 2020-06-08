@@ -123,7 +123,11 @@
 {% endblock content %}
 
 {% block sidebar_right %}
-<h2>sidebar right</h2>
+{% if modules is defined %}
+<div id="views">
+
+</div><!-- .views -->
+{% endif %}
 {% endblock sidebar_right %}
 
 {% block base_body_scripts -%}
@@ -137,9 +141,11 @@
 <script type="module" src="/static/custom.elements/tab.container/tab.container.js"></script>
 <script type="module" src="/static/js/page/default.js"></script>
 <script type="module" src="/static/js/ui/tabs.js"></script>
+<script type="module" src="/static/js/ui/views.js"></script>
 <script type="module">
 'use strict';
 import { tabs } from '/static/js/ui/tabs.js';
+import { view } from '/static/js/ui/views.js';
 (function(){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
 
@@ -154,7 +160,11 @@ import { tabs } from '/static/js/ui/tabs.js';
     document.querySelectorAll('[data-action]').forEach(elem => {
         elem.addEventListener('click', function(e) {
             const action = window.actions[elem.dataset.action];
-            action();
+            if (action != null) {
+                action();
+            } else {
+                console.error(`missing action: ${elem.dataset.action}`);
+            }
         });
     });
 })();
