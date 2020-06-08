@@ -47,6 +47,10 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/client.editor/client.editor.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/clients.table/clients.table.js'
             },
             {
