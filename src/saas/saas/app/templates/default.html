@@ -145,7 +145,7 @@
 <script type="module">
 'use strict';
 import { tabs } from '/static/js/ui/tabs.js';
-import { view } from '/static/js/ui/views.js';
+import { showInTab, showInView } from '/static/js/ui/ui.js';
 (function(){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
 
@@ -154,8 +154,9 @@ import { view } from '/static/js/ui/views.js';
 
     tabs(document);
 
-    const tab = document.querySelector('tab-container');
-    tab.addTab('news', 'News', '<h1>This is the news');
+    // const tab = document.querySelector('tab-container');
+    // tab.addTab('news', 'News', '<h1>This is the news');
+    showInTab('news', 'News', '<h1>This is the news</h1>');
 
     document.querySelectorAll('[data-action]').forEach(elem => {
         elem.addEventListener('click', function(e) {

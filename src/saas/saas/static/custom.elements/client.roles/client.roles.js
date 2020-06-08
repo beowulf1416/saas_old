@@ -1,6 +1,6 @@
 'use strict';
 
-import { view } from '/static/js/ui/views.js';
+import { showInView } from '/static/js/ui/ui.js';
 import { Clients } from '/static/js/helpers/clients/clients.js';
 import { Roles } from '/static/js/helpers/roles.js';
 
@@ -93,7 +93,7 @@ class ClientRoles extends HTMLElement {
 
         const btnClient = div.querySelector('button.btn-client');
         btnClient.addEventListener('click', function(e) {
-            const clientSelector = view('<client-selector></client-selector>');
+            const clientSelector = showInView('<client-selector></client-selector>');
             clientSelector.addEventListener('selected', function(e) {
                 if (e.detail.client) {
                     const client_id = e.detail.client;
@@ -107,7 +107,7 @@ class ClientRoles extends HTMLElement {
             const client = self.shadowRoot.getElementById('client');
             if (client.dataset.clientid) {
                 const client_id = client.dataset.clientid;
-                const roleSelector = view(`<role-selector client="${client_id}"></role-selector>`);
+                const roleSelector = showInView(`<role-selector client="${client_id}"></role-selector>`);
             } else {
                 console.error('client id is required');
             }
