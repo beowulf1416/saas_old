@@ -27,7 +27,7 @@ class TestOrganizationsStore(unittest.TestCase):
 
     def test_add_organization(self):
         org_name = self.generate_random_str(10)
-        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address) = self.clientStore.getDefaultClient()
         try:
             result = self.orgStore.add(client_id, org_name, org_name)
         except Exception as e:
@@ -35,7 +35,7 @@ class TestOrganizationsStore(unittest.TestCase):
 
     def test_get_organization(self):
         org_name = self.generate_random_str(10)
-        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address) = self.clientStore.getDefaultClient()
         try:
             org_id = self.orgStore.add(client_id, org_name, org_name)
             [t_org_id, active, name, description] = self.orgStore.get(org_id)
@@ -44,7 +44,7 @@ class TestOrganizationsStore(unittest.TestCase):
             self.fail(e)
 
     def test_get_root_organization(self):
-        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address) = self.clientStore.getDefaultClient()
         try:
             result = self.orgStore.getRoot(client_id)
         except Exception as e:
@@ -55,7 +55,7 @@ class TestOrganizationsStore(unittest.TestCase):
         org_name_2 = self.generate_random_str(10)
         org_name_3 = self.generate_random_str(10)
         org_name_4 = self.generate_random_str(10)
-        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address) = self.clientStore.getDefaultClient()
         try:
             org_id_1 = self.orgStore.add(client_id, org_name_1, org_name_1)
             org_id_2 = self.orgStore.add(client_id, org_name_2, org_name_2)
@@ -72,7 +72,7 @@ class TestOrganizationsStore(unittest.TestCase):
             self.fail(e)
 
     def test_get_tree(self):
-        (client_id, active, name, address, url_name) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address) = self.clientStore.getDefaultClient()
         try:
             result = self.orgStore.tree(client_id)
         except Exception as e:

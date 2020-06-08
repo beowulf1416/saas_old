@@ -32,13 +32,13 @@ class TestAdminClientStore(unittest.TestCase):
     def test_add_client(self):
         random_name = self.generate_random_str(10)
         try:
-            self.clientStore.add(random_name, random_name, random_name)
+            self.clientStore.add(random_name, random_name)
         except Exception as e:
             self.fail(e)
 
     def test_add_client_not_unique(self):
         random_name = self.generate_random_str(10)
-        self.clientStore.add(random_name, random_name, random_name)
+        self.clientStore.add(random_name, random_name)
         self.assertRaises(
             Exception,
             self.clientStore.add,
@@ -49,25 +49,25 @@ class TestAdminClientStore(unittest.TestCase):
 
     def test_get_client(self):
         random_name = self.generate_random_str(10)
-        client_id = self.clientStore.add(random_name, random_name, random_name)
+        client_id = self.clientStore.add(random_name, random_name)
         try:
             client = self.clientStore.get(client_id)
             self.assertEqual(client_id, client[0], '{0}'.format(client))
         except Exception as e:
             self.fail(e)
 
-    def test_get_client_by_urlname(self):
-        random_name = self.generate_random_str(10)
-        client_id = self.clientStore.add(random_name, random_name, random_name)
-        try:
-            client = self.clientStore.getByUrlName(random_name)
-            self.assertEqual(client_id, client[0], '{0}'.format(client))
-        except Exception as e:
-            self.fail(e)
+    # def test_get_client_by_urlname(self):
+    #     random_name = self.generate_random_str(10)
+    #     client_id = self.clientStore.add(random_name, random_name, random_name)
+    #     try:
+    #         client = self.clientStore.getByUrlName(random_name)
+    #         self.assertEqual(client_id, client[0], '{0}'.format(client))
+    #     except Exception as e:
+    #         self.fail(e)
 
     def test_set_active(self):
         random_name = self.generate_random_str(10)
-        client_id = self.clientStore.add(random_name, random_name, random_name)
+        client_id = self.clientStore.add(random_name, random_name)
         try:
             self.clientStore.setActive(client_id, False)
         except Exception as e:

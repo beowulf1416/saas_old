@@ -27,7 +27,7 @@ class TestInventoryItemsStore(unittest.TestCase):
 
     def test_item_add(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             result = self.itemsStore.add(
                 client_id,
@@ -54,7 +54,7 @@ class TestInventoryItemsStore(unittest.TestCase):
     def test_item_add_substitute(self):
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             item_id_1 = self.itemsStore.add(
                 client_id,
@@ -102,7 +102,7 @@ class TestInventoryItemsStore(unittest.TestCase):
     def test_item_substitutes(self):
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             item_id_1 = self.itemsStore.add(
                 client_id,

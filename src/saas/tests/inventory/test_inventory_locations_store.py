@@ -30,7 +30,7 @@ class TestInventoryItemsStore(unittest.TestCase):
 
     def test_location_add(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, url_name)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
             location_id = self.locationStore.add(
