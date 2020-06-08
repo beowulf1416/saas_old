@@ -95,7 +95,7 @@ def view_google_oauth_redirect(request):
                 userStore.userAdd(email, name)
 
             user = userStore.userByEmail(email)
-            (client_id, active, name, address, url_name) = clientStore.getDefaultClient()
+            (client_id, active, name, address) = clientStore.getDefaultClient()
             remember(request, email, client=client_id)
 
             raise exception.HTTPFound(request.route_url('user.dashboard'))
