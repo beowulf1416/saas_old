@@ -2,6 +2,7 @@ create or replace function uom_all ()
 returns table (
     id common.uom.id%type,
     dimension_id common.uom.dimension_id%type,
+    dimension_name common.dimensions.name%type,
     name common.uom.name%type,
     symbol common.uom.symbol%type
 )
