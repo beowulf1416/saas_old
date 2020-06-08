@@ -2,23 +2,27 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
+from saas.app.core.stores.base import BaseStore
 
 
-class PermissionsStore(object):
+class PermissionsStore(BaseStore):
 
     def __init__(self, manager: ConnectionManager, name: str):
-        self._mgr = manager
-        self._name = name
+        super(PermissionsStore, self).__init__(manager, name)
 
-    def getAll(self):
-        cn = self._mgr.getConnection(self._name)
+    def all(self):
         try:
-            c = cn.cursor()
-            c.callproc('iam.permissions_all')
-            result = c.fetchall()
+            result = super(PermissionsStore, self).runProc('iam.permissions_all', [])
             return result
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving all permissions')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve permissions')
+
+    def filter(self, filter: str):
+        try:
+            result = super(PermissionsStore, self).runProc('iam.permissions_filter', 
+                ['%{0}%'.format(filter), ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve permissions')
