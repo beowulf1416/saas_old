@@ -1,5 +1,6 @@
 'use strict';
 import { Clients } from '/static/js/helpers/clients/clients.js';
+import { showInTab } from '/static/js/ui/ui.js';
 
 class ClientsTable extends HTMLElement {
 
@@ -10,6 +11,10 @@ class ClientsTable extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/clients.table/clients.table.css');
 
+        const google_web_fonts = document.createElement("link");
+        google_web_fonts.setAttribute('rel', 'stylesheet');
+        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
@@ -17,10 +22,14 @@ class ClientsTable extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
         this.setClients = this.setClients.bind(this);
         this.refresh = this.refresh.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this)
+
+        this._attachEventHandlers();
 
         setTimeout(() => {
             Clients.getAll().then((r) => {
@@ -40,9 +49,12 @@ class ClientsTable extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" class="btn btn-new">
+                    <span class="material-icons">create_new_folder</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="table-wrapper">
-                <div class="toolbar" role="toolbar">
-                </div><!-- .toolbar -->
                 <table class="tbl-clients">
                     <caption>Clients</caption>
                     <colgroup>
@@ -62,6 +74,16 @@ class ClientsTable extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const btnnew = shadow.querySelector('button.btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('client.editor.new', 'New Client', '<client-editor></client-editor>');
+        });
     }
 
     setClients(clients = []) {
