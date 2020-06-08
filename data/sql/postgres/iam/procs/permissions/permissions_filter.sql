@@ -1,7 +1,9 @@
 /**
  * retrieve all permissions
  */
-create or replace function permissions_all ()
+create or replace function permissions_filter (
+    p_filter iam.permissions.name%type
+)
 returns table (
     id iam.permissions.id%type,
     active iam.permissions.active%type,
@@ -14,8 +16,8 @@ begin
         a.id,
         a.active,
         a.name
-    from iam.permissions a;
+    from iam.permissions a
+    where a.name like p_filter;
 end
 $$
-language plpgsql
-stable;
+language plpgsql;

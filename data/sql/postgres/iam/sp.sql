@@ -24,6 +24,7 @@ set schema 'iam';
 
 /* permissions */
 \ir procs/permissions/permissions_all.sql
+\ir procs/permissions/permissions_filter.sql
 \ir procs/permissions/permissions_role.sql
 \ir procs/permissions/permissions_role_assign.sql
 \ir procs/permissions/permissions_role_revoke.sql
