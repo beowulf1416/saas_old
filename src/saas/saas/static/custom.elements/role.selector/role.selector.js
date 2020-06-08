@@ -1,4 +1,5 @@
 'use strict';
+import { Roles } from '/static/js/helpers/roles.js';
 
 class RoleSelector extends HTMLElement {
 
@@ -32,9 +33,44 @@ class RoleSelector extends HTMLElement {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="form-wrapper">
-                
+                <form class="form-role-selector">
+                    <label for="search">Role</label>
+                    <input type="search" id="search" name="search" class="form-input-search" title="Search Role" placeholder="Role" />
+                    <button type="button" class="btn btn-search">
+                        <span class="material-icons">search</span>
+                    </button>
+                </form>
             </div><!-- .form-wrapper -->
+            <div class="table-wrapper">
+                <table class="tbl-roles">
+                    <caption>Roles</caption>
+                    <colgroup>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div><!-- .table-wrapper -->
         `;
+
+        container.appendChild(div);
+    }
+
+    connectedCallback() {
+        if (this.isConnected) {
+            const self = this;
+            const shadow = this.shadowRoot;
+
+            const search = shadow.getElementById('search');
+            search.addEventListener('click', function(e) {
+                
+            });
+        }
     }
 
     setRoles(roles = []) {
