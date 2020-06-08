@@ -88,3 +88,8 @@ def includeme(config):
         'api.clients.permissions.all',
         '/api/clients/permissions/all'
     )
+
+    config.add_route(
+        'api.clients.permissions.filter',
+        '/api/clients/permissions/filter'
+    )

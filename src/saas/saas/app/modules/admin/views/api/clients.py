@@ -124,7 +124,7 @@ def view_client_set_active(request):
     client_id = params['clientId'] if 'clientId' in params else None
     active = params['active'] if 'active' in params else None
 
-    if client_id is None or active is None:    
+    if client_id is None or active is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
             explanation='Client Id and Active state is required'
