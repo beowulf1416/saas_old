@@ -29,6 +29,7 @@ class ClientRoles extends HTMLElement {
 
         this.setClientId = this.setClientId.bind(this);
         this._setRoles = this._setRoles.bind(this);
+        this._setPermissions = this._setPermissions.bind(this);
     }
 
     connectedCallback() {
@@ -182,6 +183,62 @@ class ClientRoles extends HTMLElement {
                     }
                 });
             });
+
+            const selected = tr.querySelector('input.form-input-radio');
+            selected.addEventListener('change', function(e) {
+                const role_id = selected.value
+                Roles.getPermissions(client_id, role_id).then((r) => {
+                    if (r.status == 'success') {
+                        const permissions = r.json.permissions;
+                        self._setPermissions(client_id, role_id, permissions);
+                    } else {
+                        console.error(r.message);
+                    }
+                });
+            });
+        });
+    }
+
+    _setPermissions(client_id = '', role_id = '', permissions = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tbody = shadow.querySelector('table.tbl-permissions tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        permissions.forEach((p) => {
+            const tds = [];
+            tds.push(`<td><a title="Remove Permission" class="link-remove-permission" href="#" data-permissionid="${p.id}">&minus;</a></td>`);
+            tds.push(`<td>${p.name}</td>`);
+            const tdall = tds.join('');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                ${tdall}
+            `
+
+            tbody.appendChild(tr);
+
+            const remove = tr.querySelector('a.link-remove-permission');
+            remove.addEventListener('click', function(e) {
+                const permission_id = remove.dataset.permissionid;
+                Roles.removePermission(client_id, role_id, permission_id).then((r) => {
+                    if (r.status == 'success') {
+                        Roles.getPermissions(client_id, role_id).then((r2) => {
+                            if (r2.status == 'success') {
+                                const permissions = r2.json.permissions;
+                                self._setPermissions(client_id, role_id, permissions);
+                            } else {
+                                console.error(r.message);
+                            }
+                        });
+                    } else {
+                        console.error(r.message)
+                    }
+                });
+            })
         });
     }
 }
