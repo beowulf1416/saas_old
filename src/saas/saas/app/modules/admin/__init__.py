@@ -56,6 +56,14 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom.elements/client.selector/client.selector.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/role.selector/role.selector.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/permission.selector/permission.selector.js'
             }
         ]
     }
