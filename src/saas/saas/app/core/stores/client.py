@@ -23,7 +23,7 @@ class ClientStore(BaseStore):
 
     def getClient(self, client_id: str):
         '''returns the specified client
-            return value is a tuple containing (client_id, active, name, address, url_name)
+            return value is a tuple containing (client_id, active, name, address)
         '''
         try:
             [client, ] = super(ClientStore, self).runProc('clients.clients_get', [client_id, ])

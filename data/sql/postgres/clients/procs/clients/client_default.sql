@@ -6,8 +6,7 @@ returns table (
     id clients.clients.id%type,
     active clients.clients.active%type,
     name clients.clients.name%type,
-    address clients.clients.address%type,
-    url_name clients.clients.url_name%type
+    address clients.clients.address%type
 )
 as $$
 begin
@@ -16,8 +15,7 @@ begin
         a.id,
         a.active,
         a.name,
-        a.address,
-        a.url_name
+        a.address
     from clients.clients a
     where a.name = 'default';
 end

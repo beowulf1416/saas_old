@@ -47,17 +47,17 @@ def view_clients_client(request):
     services = request.services()
     clientsStore = services['store.admin.clients']
     try:
-        client = clientsStore.getByUrlName(client_url_name)
-        json = {
-            'id': client[0],
-            'active': client[1],
-            'name': client[2],
-            'address': client[3],
-            'url_name': client[4]
-        }
+        # client = clientsStore.getByUrlName(client_url_name)
+        # json = {
+        #     'id': client[0],
+        #     'active': client[1],
+        #     'name': client[2],
+        #     'address': client[3],
+        #     'url_name': client[4]
+        # }
 
         return {
-            'client': json
+            # 'client': json
         }
     except Exception as e:
         log.error(e)
@@ -78,17 +78,17 @@ def view_client_roles(request):
     services = request.services()
     clientsStore = services['store.admin.clients']
     try:
-        client = clientsStore.getByUrlName(client_url_name)
-        json = {
-            'id': client[0],
-            'active': client[1],
-            'name': client[2],
-            'address': client[3],
-            'url_name': client[4]
-        }
+        # client = clientsStore.getByUrlName(client_url_name)
+        # json = {
+        #     'id': client[0],
+        #     'active': client[1],
+        #     'name': client[2],
+        #     'address': client[3],
+        #     'url_name': client[4]
+        # }
 
         return {
-            'client': json
+            # 'client': json
         }
     except Exception as e:
         log.error(e)
@@ -109,17 +109,17 @@ def view_client_users(request):
     services = request.services()
     clientsStore = services['store.admin.clients']
     try:
-        client = clientsStore.getByUrlName(client_url_name)
-        json = {
-            'id': client[0],
-            'active': client[1],
-            'name': client[2],
-            'address': client[3],
-            'url_name': client[4]
-        }
+        # client = clientsStore.getByUrlName(client_url_name)
+        # json = {
+        #     'id': client[0],
+        #     'active': client[1],
+        #     'name': client[2],
+        #     'address': client[3],
+        #     'url_name': client[4]
+        # }
 
         return {
-            'client': json
+            # 'client': json
         }
     except Exception as e:
         log.error(e)

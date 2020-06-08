@@ -3,8 +3,7 @@
  */
 create or replace function client_add (
     p_name clients.clients.name%type,
-    p_addr clients.clients.address%type,
-    p_url clients.clients.url_name%type
+    p_addr clients.clients.address%type
 )
 returns clients.clients.id%type
 as $$
@@ -15,12 +14,10 @@ declare
 begin
     insert into clients.clients (
         name, 
-        address,
-        url_name
+        address
     ) values (
         p_name,
-        p_addr,
-        p_url
+        p_addr
     )
     returning id into t_client_id;
 

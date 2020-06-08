@@ -20,7 +20,7 @@ def api_clients_all(request):
         clientsStore = services['store.admin.clients']
         result = clientsStore.getAll()
         clients = [
-            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3], 'url_name': c[4] } 
+            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3] } 
             for c in result
         ]
     except Exception as e:
@@ -107,8 +107,7 @@ def view_clients_get(request):
                 'id': client[0],
                 'active': client[1],
                 'name': client[2],
-                'address': client[3],
-                'url_name': client[4]
+                'address': client[3]
             }}
         )
 

@@ -20,9 +20,9 @@ class ClientsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving all clients')
 
-    def add(self, name: str, address: str, url: str):
+    def add(self, name: str, address: str):
         try:
-            [(client_id, )] = super(ClientsStore, self).runProcTransactional('clients.client_add', [name, address, url])
+            [(client_id, )] = super(ClientsStore, self).runProcTransactional('clients.client_add', [name, address])
             return client_id
         except Exception as e:
             raise Exception('An error occured while adding a client')
@@ -35,13 +35,13 @@ class ClientsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving client')
 
-    def getByUrlName(self, url_name: str):
-        try:
-            (client, ) = super(ClientsStore, self).runProc('clients.client_by_url_name', [url_name, ])
-            return client
-        except Exception as e:
-            log.error(e)
-            raise Exception('An error occured while retrieving client by url name')
+    # def getByUrlName(self, url_name: str):
+    #     try:
+    #         (client, ) = super(ClientsStore, self).runProc('clients.client_by_url_name', [url_name, ])
+    #         return client
+    #     except Exception as e:
+    #         log.error(e)
+    #         raise Exception('An error occured while retrieving client by url name')
 
     def setActive(self, clientId: UUID, active: bool):
         try:

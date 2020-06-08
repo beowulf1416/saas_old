@@ -13,7 +13,7 @@ class Clients {
         .then((r) => r.json());
     }
 
-    static add(name, address, url) {
+    static add(name, address) {
         return fetch('/api/clients/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -23,8 +23,7 @@ class Clients {
             },
             body: JSON.stringify({
                 name: name,
-                address: address,
-                url: url
+                address: address
             })
         })
         .then((r) => r.json());
