@@ -44,12 +44,11 @@ def view_clients_add(request):
     params = request.json_body
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
-    url = params['url'] if 'url' in params else None
 
-    if name is None or address is None or url is None:
+    if name is None or address is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client name, address and URL friendly name is required'
+            explanation='Client name and address is required'
         )
 
     services = request.services()
@@ -64,7 +63,10 @@ def view_clients_add(request):
 
     raise exception.HTTPOk(
         detail='Client added',
-        body={'message': 'Client added'}
+        body={
+            'message': 'Client added',
+            'clientId': result
+        }
     )
     
 
