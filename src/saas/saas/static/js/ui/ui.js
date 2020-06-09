@@ -15,4 +15,9 @@ function showInView(content) {
     return views.firstChild;
 }
 
-export { showInTab, showInView };
+function notify(type = 'info', message = '', timeout = null) {
+    const notifier = document.querySelector('notification-list');
+    notifier.add(type, message, timeout);
+}
+
+export { showInTab, showInView, notify };
