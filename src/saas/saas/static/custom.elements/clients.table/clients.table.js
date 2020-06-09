@@ -30,15 +30,10 @@ class ClientsTable extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this)
 
         this._attachEventHandlers();
+        this.refresh = this.refresh.bind(this);
 
         setTimeout(() => {
-            Clients.getAll().then((r) => {
-                if (r.status == 'success') {
-                    this.setClients(r.json.clients);
-                } else {
-                    notify(r.status, r.message);
-                }
-            });
+            self.refresh();
         });
     }
 
@@ -62,16 +57,21 @@ class ClientsTable extends HTMLElement {
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
                 ${show_new}
+                <button type="button" class="btn btn-refresh">
+                    <span class="material-icons">refresh</span>
+                </button>
             </div><!-- .toolbar -->
             <div class="table-wrapper">
                 <table class="tbl-clients">
                     <caption>Clients</caption>
                     <colgroup>
                         <col class="col-select">
+                        <col class="col-edit">
                         <col class="col-name">
                     </colgroup>
                     <thead>
                         <tr>
+                            <th></th>
                             <th></th>
                             <th>Name</th>
                         </tr>
@@ -95,11 +95,18 @@ class ClientsTable extends HTMLElement {
                 showInTab('client.editor.new', 'New Client', '<client-editor></client-editor>');
             });
         }
+
+        const btnrefresh = shadow.querySelector('button.btn-refresh');
+        btnrefresh.addEventListener('click', function(e) {
+            self.refresh();
+        });
     }
 
     setClients(clients = []) {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const show_edit = this.hasAttribute('show-edit');
 
         const tbody = shadow.querySelector('table tbody');
         while(tbody.firstChild) {
@@ -109,6 +116,9 @@ class ClientsTable extends HTMLElement {
         clients.forEach((c) => {
             const tds = [];
             tds.push(`<td><input type="radio" id="${c.id}" name="select" class="form-input-radio" value="${c.id}" /></td>`);
+            if (show_edit) {
+                tds.push(`<td><a class="link-edit" title="Edit" href="#" data-clientid="${c.id}" data-clientname="${c.name}"><span class="material-icons">edit</span></a></td>`);
+            }
             tds.push(`<td><label for="${c.id}">${c.name}</label></td>`);
             const tdall = tds.join('');
 
@@ -117,6 +127,7 @@ class ClientsTable extends HTMLElement {
 
             tbody.appendChild(tr);
 
+            // attach event handlers
             const radio = tr.querySelector('[name=select]');
             radio.addEventListener('change', function(e) {
                 self.dispatchEvent(new CustomEvent('selected', {
@@ -127,12 +138,26 @@ class ClientsTable extends HTMLElement {
                     }
                 }));
             });
+
+            if (show_edit) {
+                const edit = tr.querySelector('.link-edit');
+                edit.addEventListener('click', function(e) {
+                    const client_id = edit.dataset.clientid;
+                    const client_name = edit.dataset.clientname;
+
+                    showInTab(client_id, `Client ${client_name}`, `<client-editor client-id="${client_id}"></client-editor>`)
+                });
+            }
         });
     }
 
     refresh() {
         Clients.getAll().then((r) => {
-            this.setClients(r.json.clients);
+            if (r.status == 'success') {
+                this.setClients(r.json.clients);
+            } else {
+                notify(r.status, r.message);
+            }
         });
     }
 }
