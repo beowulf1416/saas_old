@@ -1,5 +1,6 @@
 'use strict';
 import { Clients } from '/static/js/helpers/clients/clients.js';
+import { notify } from '/static/js/ui/ui.js';
 
 class ClientSelector extends HTMLElement {
 
@@ -23,6 +24,10 @@ class ClientSelector extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     connectedCallback() {
@@ -59,6 +64,24 @@ class ClientSelector extends HTMLElement {
                 cancelable: true,
                 detail: e.detail
             }));
+        });
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const search = shadow.querySelector('button.btn-search');
+        search.addEventListener('click', function(e) {
+            const filter = shadow.querySelector('input#search');
+            Clients.filter(filter.value).then((r) => {
+                if (r.status == 'success') {
+                    const clientsTbl = shadow.querySelector('clients-table');
+                    clientsTbl.setClients(r.json.clients);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         });
     }
 }
