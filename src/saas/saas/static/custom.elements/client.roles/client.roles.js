@@ -1,6 +1,6 @@
 'use strict';
 
-import { showInView, showInTab } from '/static/js/ui/ui.js';
+import { showInView, showInTab, notify } from '/static/js/ui/ui.js';
 import { Clients } from '/static/js/helpers/clients/clients.js';
 import { Roles } from '/static/js/helpers/roles.js';
 
@@ -31,6 +31,7 @@ class ClientRoles extends HTMLElement {
         this._setRoles = this._setRoles.bind(this);
         this._setPermissions = this._setPermissions.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._refreshRoles = this._refreshRoles.bind(this);
 
         this._attachEventHandlers();
     }
@@ -47,6 +48,9 @@ class ClientRoles extends HTMLElement {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
+                <button type="button" class="btn btn-refresh" title="Refresh">
+                    <span class="material-icons">refresh</span>
+                </button>
                 <button type="button" class="btn btn-role-add" title="Create a new role">
                     <span class="material-icons">group_add</span>
                 </button>
@@ -132,11 +136,28 @@ class ClientRoles extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const btnrefresh = shadow.querySelector('button.btn-refresh');
+        btnrefresh.addEventListener('click', function(e) {
+            const client_id = shadow.getElementById('client_id');
+            self._refreshRoles(client_id.value);
+        });
+
         const btnroleadd = shadow.querySelector('button.btn-role-add');
         btnroleadd.addEventListener('click', function(e) {
             const client_id = shadow.getElementById('client_id');
             const client_name = shadow.getElementById('client');
             showInTab('role-new', 'New Role', `<role-editor client-id="${client_id.value}" client-name="${client_name.value}"></role-editor>`);
+        });
+    }
+
+    _refreshRoles(client_id = '') {
+        const self = this;
+        Roles.all(client_id).then((r) => {
+            if (r.status == 'success') {
+                self._setRoles(client_id, r.json.roles);
+            } else {
+                notify(r.status, r.message);
+            }
         });
     }
 
@@ -159,13 +180,7 @@ class ClientRoles extends HTMLElement {
             }
         });
 
-        Roles.all(client_id).then((r) => {
-            if (r.status == 'success') {
-                self._setRoles(client_id, r.json.roles);
-            } else {
-                console.error(r.message);
-            }
-        });
+        this._refreshRoles(client_id);
     }
 
     _setRoles(client_id = '', roles = []) {
