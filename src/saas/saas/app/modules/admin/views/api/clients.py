@@ -165,7 +165,11 @@ def view_clients_filter(request):
     clients = []
     try:
         clientsStore = services['store.admin.clients']
-        clients = clientsStore.filter(filter)
+        result = clientsStore.filter(filter)
+        clients = [
+            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3] } 
+            for c in result
+        ]
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -176,4 +180,5 @@ def view_clients_filter(request):
         detail='{0} clients found'.format(len(clients)),
         body={
             'clients': clients
+        }
     )
