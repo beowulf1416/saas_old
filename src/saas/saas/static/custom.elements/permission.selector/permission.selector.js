@@ -1,4 +1,5 @@
 'use strict';
+import { notify } from '/static/js/ui/ui.js';
 import { Permissions } from '/static/js/helpers/permissions.js';
 
 class PermissionSelector extends HTMLElement {
@@ -32,6 +33,13 @@ class PermissionSelector extends HTMLElement {
 
     _init(container) {
         const self = this;
+        const show_assign = this.hasAttribute('show-assign');
+
+        const tdfooter =  [];
+        if (show_assign != null) {
+            tdfooter.push(`<td><a class="link-permissions-assign" title="Assign Permission" href="#"><span class="material-icons">assignment_return</span></a></td>`);
+        }
+        const tdfooterall = tdfooter.join('');
 
         const div = document.createElement('div');
         div.innerHTML = `
@@ -46,7 +54,7 @@ class PermissionSelector extends HTMLElement {
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
                 <table class="tbl-permissions">
-                    <caption>Roles</caption>
+                    <caption>Permissions</caption>
                     <colgroup>
                     </colgroup>
                     <thead>
@@ -57,6 +65,11 @@ class PermissionSelector extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
+                    <tfooter>
+                        <tr>
+                            ${tdfooterall}
+                        </tr>
+                    </tfooter>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -68,17 +81,47 @@ class PermissionSelector extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const search = shadow.querySelector('button.btn-search');
-        search.addEventListener('click', function(e) {
-            const filter = shadow.querySelector('input.form-input-search');
-            Permissions.filter(filter.value).then((r) => {
+        const beginsearch = function(filter_text){
+            Permissions.filter(filter_text).then((r) => {
                 if (r.status == 'success') {
                     self._setPermissions(r.json.permissions);
                 } else {
-                    console.error(r.message);
+                    notify(r.status, r.message);
                 }
             });
+        };
+
+        const filter = shadow.querySelector('input.form-input-search');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                beginsearch(filter.value);
+            }
         });
+
+        const search = shadow.querySelector('button.btn-search');
+        search.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
+
+        const assign = shadow.querySelector('.link-permissions-assign');
+        if (assign != null) {
+            assign.addEventListener('click', function(e) {
+                const selectedIds = [];
+                const selected = shadow.querySelectorAll('.form-input-check:checked');
+                selected.forEach((p) => {
+                    selectedIds.push(p.id);
+                });
+
+                self.dispatchEvent(new CustomEvent('assign', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        permissionIds: selectedIds
+                    }
+                }));
+            });
+        }
     }
 
     _setPermissions(permissions = []) {
