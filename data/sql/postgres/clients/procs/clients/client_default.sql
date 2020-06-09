@@ -19,4 +19,6 @@ begin
     from clients.clients a
     where a.name = 'default';
 end
-$$ language plpgsql;
+$$ 
+language plpgsql
+stable;

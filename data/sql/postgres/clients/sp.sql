@@ -9,6 +9,7 @@ set schema 'clients';
 \ir procs/clients/clients_get.sql
 \ir procs/clients/client_default.sql
 \ir procs/clients/client_set_active.sql
+\ir procs/clients/clients_filter.sql
 
 /** organizations **/
 \ir procs/organizations/organization_add.sql

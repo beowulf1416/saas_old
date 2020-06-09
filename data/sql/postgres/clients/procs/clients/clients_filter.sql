@@ -1,8 +1,8 @@
 /**
- * retrieve a specific client
+ * retrieve all clients
  */
-create or replace function clients_get (
-    p_client_id clients.clients.id%type
+create or replace function clients_filter (
+    p_filter clients.clients.name%type
 )
 returns table (
     id clients.clients.id%type,
@@ -19,7 +19,7 @@ begin
         a.name,
         a.address
     from clients.clients a
-    where a.id = p_client_id;
+    where a.name like p_filter;
 end
 $$
 language plpgsql

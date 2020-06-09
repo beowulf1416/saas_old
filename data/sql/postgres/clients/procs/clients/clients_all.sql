@@ -19,4 +19,5 @@ begin
     from clients.clients a;
 end
 $$
-language plpgsql;
+language plpgsql
+stable;
