@@ -1,6 +1,6 @@
 'use strict';
 import { Clients } from '/static/js/helpers/clients/clients.js';
-import { showInTab } from '/static/js/ui/ui.js';
+import { showInTab, notify } from '/static/js/ui/ui.js';
 
 class ClientsTable extends HTMLElement {
 
@@ -33,7 +33,11 @@ class ClientsTable extends HTMLElement {
 
         setTimeout(() => {
             Clients.getAll().then((r) => {
-                this.setClients(r.json.clients);
+                if (r.status == 'success') {
+                    this.setClients(r.json.clients);
+                } else {
+                    notify(r.status, r.message);
+                }
             });
         });
     }
@@ -46,13 +50,18 @@ class ClientsTable extends HTMLElement {
     }
 
     init(container) {
+        const show_new = this.hasAttribute('show-new') ? `
+            <button type="button" class="btn btn-new" title="New Client">
+                <span class="material-icons">create_new_folder</span>
+            </button>
+            ` : '';
+
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
-                <button type="button" class="btn btn-new">
-                    <span class="material-icons">create_new_folder</span>
-                </button>
+                ${show_new}
             </div><!-- .toolbar -->
             <div class="table-wrapper">
                 <table class="tbl-clients">
@@ -81,9 +90,11 @@ class ClientsTable extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const btnnew = shadow.querySelector('button.btn-new');
-        btnnew.addEventListener('click', function(e) {
-            showInTab('client.editor.new', 'New Client', '<client-editor></client-editor>');
-        });
+        if (btnnew != null) {
+            btnnew.addEventListener('click', function(e) {
+                showInTab('client.editor.new', 'New Client', '<client-editor></client-editor>');
+            });
+        }
     }
 
     setClients(clients = []) {
