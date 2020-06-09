@@ -63,6 +63,10 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/role.editor/role.editor.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/role.selector/role.selector.js'
             },
             {

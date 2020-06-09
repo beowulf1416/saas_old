@@ -1,6 +1,6 @@
 'use strict';
 
-import { showInView } from '/static/js/ui/ui.js';
+import { showInView, showInTab } from '/static/js/ui/ui.js';
 import { Clients } from '/static/js/helpers/clients/clients.js';
 import { Roles } from '/static/js/helpers/roles.js';
 
@@ -30,6 +30,9 @@ class ClientRoles extends HTMLElement {
         this.setClientId = this.setClientId.bind(this);
         this._setRoles = this._setRoles.bind(this);
         this._setPermissions = this._setPermissions.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     connectedCallback() {
@@ -43,9 +46,20 @@ class ClientRoles extends HTMLElement {
 
         const div = document.createElement('div');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" class="btn btn-role-add" title="Create a new role">
+                    <span class="material-icons">group_add</span>
+                </button>
+                <button type="button" class="btn btn-permission-add" title="Add permissions">
+                    <span class="material-icons">rule</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form class="form-client-role">
-                    <label for="search">Client</label>
+                    <input type="hidden" id="client_id" name="client_id" value="" />
+
+                    <!-- client -->
+                    <label for="client">Client</label>
                     <input type="text" id="client" name="client" title="Client" placeholder="Client" readonly />
                     <button type="button" class="btn btn-client">...</button>
                 </form>
@@ -114,9 +128,24 @@ class ClientRoles extends HTMLElement {
         });
     }
 
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const btnroleadd = shadow.querySelector('button.btn-role-add');
+        btnroleadd.addEventListener('click', function(e) {
+            const client_id = shadow.getElementById('client_id');
+            const client_name = shadow.getElementById('client');
+            showInTab('role-new', 'New Role', `<role-editor client-id="${client_id.value}" client-name="${client_name.value}"></role-editor>`);
+        });
+    }
+
     setClientId(client_id) {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const input_client_id = shadow.getElementById('client_id');
+        input_client_id.value = client_id;
 
         Clients.get(client_id).then((r) => {
             if (r.status == 'success') {
