@@ -81,12 +81,11 @@ def view_clients_update(request):
     client_id = params['clientId'] if 'clientId' in params else None
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
-    url = params['url'] if 'url' in params else None
 
-    if client_id is None or name is None or address is None or url is None:
+    if client_id is None or name is None or address is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id name, address and URL friendly name is required'
+            explanation='Client Id name and address is required'
         )
 
     services = request.services()
