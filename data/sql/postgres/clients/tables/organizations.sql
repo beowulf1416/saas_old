@@ -11,5 +11,6 @@ create table if not exists organizations (
     constraint pk_organizations primary key (id),
     constraint u_organizations_1 unique (client_id, name),
     constraint fk_organizations_1 foreign key (client_id)
-        references clients.clients (id) on delete restrict on update restrict
+        references clients.clients (id) on delete restrict on update restrict,
+    constraint chk_organizations_1 check (name <> '')
 );
