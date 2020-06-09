@@ -148,6 +148,11 @@ class ClientRoles extends HTMLElement {
             const client_name = shadow.getElementById('client');
             showInTab('role-new', 'New Role', `<role-editor client-id="${client_id.value}" client-name="${client_name.value}"></role-editor>`);
         });
+
+        const permissionadd = shadow.querySelector('a.link-permission-add');
+        permissionadd.addEventListener('click', function(e) {
+            showInView('<permission-selector></permission-selector>');
+        });
     }
 
     _refreshRoles(client_id = '') {
