@@ -1,4 +1,6 @@
 'use strict';
+import { notify } from '/static/js/ui/ui.js';
+import { Clients } from '/static/js/helpers/clients/clients.js';
 
 class ClientEditor extends HTMLElement {
 
@@ -24,18 +26,46 @@ class ClientEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandler = this._attachEventHandler.bind(this);
+
+        this._attachEventHandler();
+    }
+
+    connectedCallback() {
+        if (this.isConnected) {
+            const self = this;
+            const shadow = this.shadowRoot;
+
+            const client_id = this.hasAttribute('client-id') ? this.getAttribute('client-id') : '';
+            if (client_id != '') {
+                Clients.get(client_id).then((r) => {
+                    if (r.status == 'success') {
+                        const client = r.json.client;
+                        const name = shadow.getElementById('name');
+                        name.value = client.name;
+
+                        const address = shadow.getElementById('address');
+                        address.value = client.address;
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            }
+        }
     }
 
     _init(container) {
+        const client_id = this.hasAttribute('client-id') ? this.getAttribute('client-id') : '';
+
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="form-wrapper">
                 <div class="toolbar" role="toolbar">
-                    <button type="button" class="btn btn-save">
+                    <button type="button" class="btn btn-save" title="Save">
                         <span class="material-icons">save</span>
                     </button>
                 </div><!-- .toolbar -->
                 <form class="form-client-editor">
+                    <input type="hidden" id="client_id" name="client_id" value="${client_id}" />
                     <!-- name -->
                     <label for="name">Name</label>
                     <div class="form-group form-group-name">
@@ -61,7 +91,23 @@ class ClientEditor extends HTMLElement {
 
         const btnsave = shadow.querySelector('button.btn-save');
         btnsave.addEventListener('click', function(e) {
-            console.log('save');
+            const client_id = shadow.getElementById('client_id');
+            const name = shadow.getElementById('name');
+            const address = shadow.getElementById('address');
+
+            if (client_id.value == '') {
+                Clients.add(name.value, address.value, '').then((r) => {
+                    if (r.status == 'success') {
+                        client_id.value = r.json.clientId;
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            } else {
+                Clients.update(client_id.value, name.value, address.value).then((r) => {
+                    notify(r.status, r.message);
+                });
+            }
         });
     }
 }
