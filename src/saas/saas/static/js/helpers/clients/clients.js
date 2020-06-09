@@ -59,5 +59,20 @@ class Clients {
         })
         .then((r) => r.json());
     }
+
+    static filter(filter = '') {
+        return fetch('/api/clients/filter', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                filter: filter
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { Clients };
