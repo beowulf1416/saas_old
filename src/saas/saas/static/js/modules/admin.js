@@ -1,5 +1,6 @@
 'use strict';
 import { AdminClientsService } from '/static/js/services/admin.clients.js';
+import { showInTab } from '/static/js/ui/ui.js';
 (function(){
     const tab = document.querySelector('tab-container');
 
@@ -8,10 +9,14 @@ import { AdminClientsService } from '/static/js/services/admin.clients.js';
 
     window.actions = window.actions ? window.actions : {};
     window.actions['admin.clients'] = function() {
-        tab.addTab('admin.clients', 'Clients', '<clients-table show-new show-edit></clients-table>');
+        showInTab('admin.clients', 'Clients', '<clients-table show-new show-edit></clients-table>');
     };
 
     window.actions['admin.roles'] = function() {
-        tab.addTab('admin.roles', 'Roles', '<client-roles></client-roles>');
+        showInTab('admin.roles', 'Roles', '<client-roles></client-roles>');
+    };
+
+    window.actions['admin.users'] = function() {
+        showInTab('admin.users', 'Users', '<client-users></client-users>');
     };
 })();
