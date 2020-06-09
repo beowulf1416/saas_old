@@ -32,6 +32,7 @@ class ClientRoles extends HTMLElement {
         this._setPermissions = this._setPermissions.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._refreshRoles = this._refreshRoles.bind(this);
+        this._refreshPermissions = this._refreshPermissions.bind(this);
 
         this._attachEventHandlers();
     }
@@ -53,9 +54,6 @@ class ClientRoles extends HTMLElement {
                 </button>
                 <button type="button" class="btn btn-role-add" title="Create a new role">
                     <span class="material-icons">group_add</span>
-                </button>
-                <button type="button" class="btn btn-permission-add" title="Add permissions">
-                    <span class="material-icons">rule</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
@@ -127,7 +125,7 @@ class ClientRoles extends HTMLElement {
                 const client_id = client.dataset.clientid;
                 const roleSelector = showInView(`<role-selector client="${client_id}"></role-selector>`);
             } else {
-                console.error('client id is required');
+                notify('error', 'client id is required');
             }
         });
     }
@@ -151,7 +149,23 @@ class ClientRoles extends HTMLElement {
 
         const permissionadd = shadow.querySelector('a.link-permission-add');
         permissionadd.addEventListener('click', function(e) {
-            showInView('<permission-selector></permission-selector>');
+            showInView('<permission-selector show-assign></permission-selector>');
+
+            const selector = document.querySelector('permission-selector');
+            selector.addEventListener('assign', function(e) {
+                const permissionIds = e.detail.permissionIds;
+                const client = shadow.getElementById('client_id');
+                const role = shadow.querySelector('input.form-input-radio:checked');
+
+                Roles.addPermissions(client.value, role.value, permissionIds).then((r) => {
+                    if (r.status == 'success') {
+                        self._refreshPermissions(client.value, role.value);
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+                e.preventDefault();
+            });
         });
     }
 
@@ -181,7 +195,7 @@ class ClientRoles extends HTMLElement {
                 input_client.dataset.clientid = client.id;
                 input_client.value = client.name;
             } else {
-                console.error(r.message);
+                notify(r.status, r.message);
             }
         });
 
@@ -236,15 +250,20 @@ class ClientRoles extends HTMLElement {
             const selected = tr.querySelector('input.form-input-radio');
             selected.addEventListener('change', function(e) {
                 const role_id = selected.value
-                Roles.getPermissions(client_id, role_id).then((r) => {
-                    if (r.status == 'success') {
-                        const permissions = r.json.permissions;
-                        self._setPermissions(client_id, role_id, permissions);
-                    } else {
-                        console.error(r.message);
-                    }
-                });
+                self._refreshPermissions(client_id, role_id);
             });
+        });
+    }
+
+    _refreshPermissions(client_id, role_id) {
+        const self = this;
+        Roles.getPermissions(client_id, role_id).then((r) => {
+            if (r.status == 'success') {
+                const permissions = r.json.permissions;
+                self._setPermissions(client_id, role_id, permissions);
+            } else {
+                notify(r.status, r.message);
+            }
         });
     }
 
