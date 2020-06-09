@@ -36,6 +36,15 @@ class TestAdminClientStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_update_client(self):
+        random_name = self.generate_random_str(10)
+        try:
+            client_id = self.clientStore.add(random_name, random_name)
+            self.clientStore.update(client_id, random_name, random_name)
+        except Exception as e:
+            self.fail(e)
+
+
     def test_add_client_not_unique(self):
         random_name = self.generate_random_str(10)
         self.clientStore.add(random_name, random_name)

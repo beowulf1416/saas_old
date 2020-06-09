@@ -27,6 +27,12 @@ class ClientsStore(BaseStore):
         except Exception as e:
             raise Exception('An error occured while adding a client')
 
+    def update(self, client_id: UUID, name: str, address: str):
+        try:
+            super(ClientsStore, self).runProcTransactional('clients.client_update', [client_id, name, address])
+        except Exception as e:
+            raise Exception('An error occured while updating a client')
+
     def get(self, client_id: UUID):
         try:
             (client, ) = super(ClientsStore, self).runProc('clients.clients_get', [client_id, ])
