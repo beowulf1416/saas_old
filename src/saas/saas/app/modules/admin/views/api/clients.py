@@ -55,7 +55,7 @@ def view_clients_add(request):
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        result = clientsStore.add(name, address, url)
+        result = clientsStore.add(name, address)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -67,6 +67,41 @@ def view_clients_add(request):
         body={'message': 'Client added'}
     )
     
+
+@view_config(
+    route_name='api.clients.update',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_update(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    name = params['name'] if 'name' in params else None
+    address = params['address'] if 'address' in params else None
+    url = params['url'] if 'url' in params else None
+
+    if client_id is None or name is None or address is None or url is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id name, address and URL friendly name is required'
+        )
+
+    services = request.services()
+    try:
+        clientsStore = services['store.admin.clients']
+        clientsStore.update(client_id, name, address)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Client updated',
+        body={'message': 'Client update'}
+    )
+
 
 @view_config(
     route_name='api.clients.get',

@@ -15,6 +15,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.update',
+        '/api/clients/update'
+    )
+
+    config.add_route(
         'api.clients.get',
         '/api/clients/get'
     )
