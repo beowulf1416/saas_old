@@ -29,6 +29,23 @@ class Clients {
         .then((r) => r.json());
     }
 
+    static update(clientId, name, address) {
+        return fetch('/api/clients/update', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                name: name,
+                address: address
+            })
+        })
+        .then((r) => r.json());
+    }
+
     static get(clientId) {
         return fetch('/api/clients/get', {
             method: 'POST',
