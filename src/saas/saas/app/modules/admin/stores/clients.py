@@ -50,3 +50,11 @@ class ClientsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while setting client active status')
         
+    def filter(self, filter: str):
+        try:
+            result = super(ClientsStore, self).runProc('clients.clients_filter', 
+            ['%{0}%'.format(filter), ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to filter clients')

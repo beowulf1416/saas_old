@@ -143,3 +143,37 @@ def view_client_set_active(request):
         detail='Client active state changed',
         body={'message': 'Client active state changed'}
     )
+
+
+@view_config(
+    route_name='api.clients.filter',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_filter(request):
+    params = request.json_body
+    filter = params['filter'] if 'filter' in params else None
+
+    if filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Filter is required'
+        )
+
+    services = request.services()
+    clients = []
+    try:
+        clientsStore = services['store.admin.clients']
+        clients = clientsStore.filter(filter)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} clients found'.format(len(clients)),
+        body={
+            'clients': clients
+    )

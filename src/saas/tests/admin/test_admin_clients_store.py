@@ -72,3 +72,10 @@ class TestAdminClientStore(unittest.TestCase):
             self.clientStore.setActive(client_id, False)
         except Exception as e:
             self.fail(e)
+
+    def test_filter(self):
+        try:
+            result = self.clientStore.filter('defau')
+            self.assertGreater(len(result), 0)
+        except Exception as e:
+            self.fail(e)
