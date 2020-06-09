@@ -1,22 +1,21 @@
 {%- if sidebars is defined -%}
-    {% if sidebars %}
-        {% extends "saas.app:templates/layout.html" %}
-    {% else %}
-        {% extends "saas.app:templates/layout_no_sidebars.html" %}
-    {% endif %}
-{% else %}
-    {% extends "saas.app:templates/layout.html" %}
-{% endif -%}
+    {%- if sidebars -%}
+        {%- extends "saas.app:templates/layout.html" -%}
+    {%- else -%}
+        {%- extends "saas.app:templates/layout_no_sidebars.html" -%}
+    {%- endif -%}
+{%- else %}
+    {%- extends "saas.app:templates/layout.html" -%}
+{%- endif -%}
 
-{% block base_meta %}
+{% block base_meta -%}
 <meta http-equiv="Content-Security-Policy" content="
     default-src 'self'; img-src 'self' https://* ;
     child-src 'none';
     style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
     font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
-    script-src 'self' 'unsafe-inline' {% if csp is defined %}{% for js in csp.scripts %}{{ js }}{% endfor -%}{% endif %};"
->
-{% endblock base_meta %}
+    script-src 'self' 'unsafe-inline' {% if csp is defined %}{% for js in csp.scripts %}{{ js }}{% endfor -%}{% endif %};">
+{%- endblock base_meta %}
 
 
 {% block links -%}
