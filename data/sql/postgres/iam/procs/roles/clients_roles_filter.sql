@@ -15,7 +15,9 @@ begin
         a.active,
         a.name
     from iam.roles a
-    where a.name like p_filter;
+    where
+        a.client_id = p_client_id 
+        and a.name like p_filter;
 end
 $$
 language plpgsql
