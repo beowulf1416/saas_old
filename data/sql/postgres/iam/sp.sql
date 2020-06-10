@@ -12,6 +12,7 @@ set schema 'iam';
 
 \ir procs/users/user_email_exists.sql
 \ir procs/users/user_get_by_email.sql
+\ir procs/users/users_filter.sql
 
 \ir procs/users/user_signin.sql
 
