@@ -49,7 +49,7 @@ class UsersStore(BaseStore):
             raise Exception('Unable to retrieve client roles')
 
     def addClientUserRoles(self, clientId: UUID, userId: UUID, roleIds: list):
-        cn = self(UsersStore, self).begin()
+        cn = super(UsersStore, self).begin()
         try:
             for roleId in roleIds:
                 c = cn.cursor()
