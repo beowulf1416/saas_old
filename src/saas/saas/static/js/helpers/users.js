@@ -48,7 +48,7 @@ class Users {
         .then((r) => r.json());
     }
 
-    static addUserToClient(clientId, email) {
+    static addUsersToClient(clientId, userIds) {
         return fetch('/api/clients/users/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -58,7 +58,7 @@ class Users {
             },
             body: JSON.stringify({
                 clientId: clientId,
-                email: email
+                userIds: userIds
             })
         })
         .then((r) => r.json());
