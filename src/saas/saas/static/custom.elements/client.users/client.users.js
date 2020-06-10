@@ -1,6 +1,7 @@
 'use strict';
 import { showInTab, showInView, notify } from '/static/js/ui/ui.js';
 import { Users } from '/static/js/helpers/users.js';
+import { Clients } from '/static/js/helpers/clients/clients.js';
 
 class ClientUsers extends HTMLElement {
 
@@ -146,6 +147,16 @@ class ClientUsers extends HTMLElement {
 
         const client = shadow.getElementById('client_id');
         client.value = client_id;
+
+        Clients.get(client_id).then((r) => {
+            if (r.status == 'success') {
+                const client = r.json.client;
+                const client_name = shadow.getElementById('client');
+                client_name.value = client.name;
+            } else {
+                notify(r.status, r.message);
+            }
+        });
 
         self._refreshUsers(client_id);
     }
