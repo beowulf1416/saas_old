@@ -58,4 +58,11 @@ class UsersStore(BaseStore):
             log.error(e)
             raise Exception('Unable to remove role from user')
 
-
+    def filter(self, filter: str):
+        try:
+            result = super(UsersStore, self).runProc('iam.users_filter', 
+                ['%{0}%'.format(filter), ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to filter users')

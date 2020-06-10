@@ -40,3 +40,10 @@ class TestAdminUsersStore(unittest.TestCase):
             roles = self.usersStore.clientRoles(client_id, user_id)
         except Exception as e:
             self.fail(e)
+
+    def test_filter_users(self):
+        try:
+            result = self.usersStore.filter('com')
+            self.assertGreater(0, len(result))
+        except Exception as e:
+            self.fail(e)
