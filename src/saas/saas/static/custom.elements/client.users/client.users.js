@@ -44,9 +44,6 @@ class ClientUsers extends HTMLElement {
                 <button type="button" class="btn btn-refresh" title="Refresh">
                     <span class="material-icons">refresh</span>
                 </button>
-                <button type="button" class="btn btn-user-add" title="Add a User">
-                    <span class="material-icons">group_add</span>
-                </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form class="form-client-user">
@@ -119,11 +116,14 @@ class ClientUsers extends HTMLElement {
             e.preventDefault();
         });
 
-        const btnadduser = shadow.querySelector('button.btn-user-add');
-        btnadduser.addEventListener('click', function(e) {
+        const adduser = shadow.querySelector('.link-user-add');
+        adduser.addEventListener('click', function(e) {
+            console.log('add user');
+
             const client_id = self._getClientId();
             const selector = showInView(`<user-selector client-id="${client_id}"></user-selector>`);
             selector.addEventListener('assign', function(e) {
+                console.log('assign');
                 e.preventDefault();
             });
             e.preventDefault();
