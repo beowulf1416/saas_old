@@ -43,6 +43,7 @@ class UsersStore(BaseStore):
     def clientRoles(self, clientId: UUID, userId: UUID):
         try:
             result = super(UsersStore, self).runProc('iam.client_user_roles', [clientId, userId])
+            return result
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve client roles')
