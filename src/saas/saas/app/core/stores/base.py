@@ -64,7 +64,6 @@ class BaseStore(object):
 
     def begin(self):
         cn = self._mgr.getConnection(self._name)
-        cn.begin()
         return cn
 
     def commit(self, cn):
