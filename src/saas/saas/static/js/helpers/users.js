@@ -17,6 +17,37 @@ class Users {
         .then((r) => r.json());
     }
 
+    static filter(filter) {
+        return fetch('/api/users/filter', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                filter: filter
+            })
+        })
+        .then((r) => r.json());
+    }
+
+    static active(userId, active) {
+        return fetch('/api/user/active', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId,
+                active: active
+            })
+        })
+        .then((r) => r.json());
+    }
+
     static addUserToClient(clientId, email) {
         return fetch('/api/clients/users/add', {
             method: 'POST',
