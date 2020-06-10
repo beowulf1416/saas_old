@@ -2,91 +2,60 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
+from saas.app.core.stores.base import BaseStore
 
 
-class UsersStore(object):
+class UsersStore(BaseStore):
 
     def __init__(self, manager: ConnectionManager, name: str):
-        self._mgr = manager
-        self._name = name
+        super(UsersStore, self).__init__(manager, name)
 
     def getAllClientUsers(self, clientId: str):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('iam.client_users_all', [clientId, ])
-            result = c.fetchall()
+            result = super(UsersStore, self).runProc('iam.client_users_all', [clientId, ])
             return result
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving client users')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve client users')
 
     def addClientUser(self, clientId: str, userId: str):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('iam.client_user_add', [clientId, userId])
-            cn.commit()
+            super(UsersStore, self).runProcTransactional('iam.client_user_add', [clientId, userId])
         except Exception as e:
-            cn.rollback()
             log.error(e)
-            raise Exception('An error occured while adding client user')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to add client user')
 
     def removeClientUser(self, clientId: str, userId: str):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('iam.client_user_remove', [clientId, userId])
-            cn.commit()
+            super(UsersStore, self).runProcTransactional('iam.client_user_remove', [clientId, userId])
         except Exception as e:
-            cn.rollback()
             log.error(e)
-            raise Exception('An error occured while removing client user')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to remove client user')
 
     def clientRoles(self, clientId: str, userId: str):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('iam.client_user_roles', [clientId, userId])
-            result = c.fetchall()
-            return result
+            result = super(UsersStore, self).runProc('iam.client_user_roles', [clientId, userId])
         except Exception as e:
             log.error(e)
-            raise Exception('An error occured while retrieving client user roles')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to retrieve client roles')
 
     def addClientUserRoles(self, clientId: str, userId: str, roleIds: list):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
+            cn = self(UsersStore, self).begin()
             for roleId in roleIds:
+                c = cn.cursor()
                 c.callproc('iam.role_assign_user', [clientId, roleId, userId])
-            cn.commit()
+            super(UsersStore, self).commit(cn)
         except Exception as e:
-            cn.rollback()
             log.error(e)
-            raise Exception('An error occured while assigning client user roles')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            super(UsersStore, self).rollback(cn)
+            raise Exception('Unable to assign roles to user')
 
     def removeClientUserRole(self, clientId: str, userId: str, roleId: str):
-        cn = self._mgr.getConnection(self._name)
         try:
-            c = cn.cursor()
-            c.callproc('iam.role_remove_user', [clientId, roleId, userId])
-            cn.commit()
+            super(UsersStore, self).runProcTransactional('iam.role_remove_user', [clientId, roleId, userId])
         except Exception as e:
-            cn.rollback()
             log.error(e)
-            raise Exception('An error occured while assigning client user roles')
-        finally:
-            self._mgr.returnConnection(self._name, cn)
+            raise Exception('Unable to remove role from user')
 
 
