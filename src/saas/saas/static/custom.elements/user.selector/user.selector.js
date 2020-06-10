@@ -26,6 +26,8 @@ class UserSelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.setUsers = this.setUsers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -56,12 +58,18 @@ class UserSelector extends HTMLElement {
                     </tbody>
                     <tfooter>
                         <tr>
-                            <td><a class="link-assign-user" title="Assign Users" href="#">Assign Users</a></td>
+                            <td>
+                                <a class="link-assign-user" title="Assign Users" href="#">
+                                    <span class="material-icons">assignment_return</span>
+                                </a>
+                            </td>
                         </tr>
                     </tfooter>
                 </table>
             </div><!-- .wrapper -->
         `;
+
+        container.appendChild(div);
     }
 
     _attachEventHandlers() {
