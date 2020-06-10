@@ -80,3 +80,5 @@ class RoleSelector extends HTMLElement {
 
     }
 }
+customElements.define('role-selector', RoleSelector);
+export { RoleSelector };
