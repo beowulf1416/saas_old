@@ -38,6 +38,7 @@ set schema 'iam';
 \ir procs/roles/role_add.sql
 \ir procs/roles/role_set_active.sql
 \ir procs/roles/client_roles_all.sql
+\ir procs/roles/clients_roles_filter.sql
 \ir procs/roles/client_user_roles.sql
 \ir procs/roles/role_assign_user.sql
 \ir procs/roles/role_remove_user.sql
