@@ -137,9 +137,20 @@ class ClientUsers extends HTMLElement {
         const addrole = shadow.querySelector('.link-role-add');
         addrole.addEventListener('click', function(e) {
             const client_id = self._getClientId();
-            const selector = showInView('<role-selector></role-selector>');
-            selector.addEventListener('selected', function(e) {
-                console.log('selected');
+            const selector = showInView(`<role-selector client-id="${client_id}"></role-selector>`);
+            
+            selector.addEventListener('assign', function(e) {
+                const roleIds = e.detail.roleIds;
+                const user = shadow.querySelector('.tbl-users .form-input-selected:checked');
+                const user_id = user.value;
+
+                Users.addRoles(client_id, user_id, roleIds).then((r) => {
+                    if (r.status == 'success') {
+                        self._refreshRoles(client_id, user_id);
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
                 e.preventDefault();
             });
             e.preventDefault();
