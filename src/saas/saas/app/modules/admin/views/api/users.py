@@ -137,7 +137,11 @@ def view_client_user_roles_all(request):
         usersStore = services['store.admin.users']
         result = usersStore.clientRoles(client_id, user_id)
         roles = [
-            { 'id': r[0], 'active': r[1], 'name': r[2] }
+            { 
+                'id': r[0], 
+                'active': r[1], 
+                'name': r[2] 
+            }
             for r in result
         ]
     except Exception as e:
