@@ -98,7 +98,7 @@ def view_google_oauth_redirect(request):
             (client_id, active, name, address) = clientStore.getDefaultClient()
             remember(request, email, client=client_id)
 
-            raise exception.HTTPFound(request.route_url('user.dashboard'))
+            raise exception.HTTPFound(request.route_url('home'))
         else:
             raise exception.HTTPInternalServerError(
                 detail = 'OAUTH request failed'
