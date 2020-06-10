@@ -61,3 +61,16 @@ class BaseStore(object):
             raise e
         finally:
             self._mgr.returnConnection(self._name, cn)
+
+    def begin(self):
+        cn = self._mgr.getConnection(self._name)
+        cn.begin()
+        return cn
+
+    def commit(self, cn):
+        cn.commit()
+        self._mgr.returnConnection(self._name, cn)
+
+    def rollback(self, cn):
+        cn.rollback()
+        self._mgr.returnConnection(self._name, cn)
