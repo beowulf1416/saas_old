@@ -100,14 +100,14 @@ class RoleSelector extends HTMLElement {
         const filter = shadow.getElementById('search');
         filter.addEventListener('keyup', function(e) {
             if (e.keyCode == 13) {
-                beginsearch(client_id, filter.value);
+                beginsearch(filter.value);
                 e.preventDefault();
             }
         });
 
         const search = shadow.querySelector('button.btn-search');
         search.addEventListener('click', function(e) {
-            beginsearch(client_id, filter.value);
+            beginsearch(filter.value);
         });
 
         const assign = shadow.querySelector('.link-assign-role');
@@ -138,7 +138,7 @@ class RoleSelector extends HTMLElement {
 
         roles.forEach((r) => {
             const tds = [];
-            tds.push(`<td><input type="select" name="selected" class="form-input-selected" title="Select Role" value="${r.id}" /></td>`);
+            tds.push(`<td><input type="checkbox" name="selected" class="form-input-selected" title="Select Role" value="${r.id}" /></td>`);
             tds.push(`<td>${r.name}</td>`);
             const tdall = tds.join('');
 
