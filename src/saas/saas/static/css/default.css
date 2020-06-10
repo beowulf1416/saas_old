@@ -73,3 +73,20 @@ html {
 .tab-vertical .nav-contents .nav-content:not(.active) {
     display: none;
 }
+
+.view-wrapper {
+    padding: 4px;
+}
+
+.view-wrapper .view-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.view-wrapper .view-header > h4 {
+    flex: 1 1 0;
+}
+
+.view-wrapper .view-header span {
+    font-size: 1em;
+}
