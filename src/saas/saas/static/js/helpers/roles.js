@@ -16,6 +16,22 @@ class Roles {
         .then((r) => r.json());
     }
 
+    static filter(clientId, filter) {
+        return fetch('/api/clients/roles/filter', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                filter: filter
+            })
+        })
+        .then((r) => r.json());
+    }
+
     static add(clientId, name) {
         return fetch('/api/clients/roles/add', {
             method: 'POST',
