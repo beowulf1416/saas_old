@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 def includeme(config):
     log.info('including: saas.app.modules.admin.views.api')
 
+    # clients
     config.add_route(
         'api.clients.all',
         '/api/clients/all'
@@ -34,6 +35,7 @@ def includeme(config):
         '/api/clients/filter'
     )
 
+    # roles
     config.add_route(
         'api.clients.roles.all',
         '/api/clients/roles/all'
@@ -52,6 +54,11 @@ def includeme(config):
     config.add_route(
         'api.clients.roles.permissions.all',
         '/api/clients/roles/permissions/all'
+    )
+
+    config.add_route(
+        'api.clients.roles.filter',
+        '/api/clients/roles/filter'
     )
 
     config.add_route(
@@ -102,4 +109,10 @@ def includeme(config):
     config.add_route(
         'api.clients.permissions.filter',
         '/api/clients/permissions/filter'
+    )
+
+    # users
+    config.add_route(
+        'api.users.filter',
+        '/api/users/filter'
     )

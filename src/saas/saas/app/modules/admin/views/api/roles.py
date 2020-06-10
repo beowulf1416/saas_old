@@ -44,6 +44,52 @@ def view_clients_roles_all(request):
         }
     )
 
+
+@view_config(
+    route_name='api.clients.roles.filter',
+    request_method='POST',
+    accept='application/json',
+    permission='admin.clients'
+)
+def view_clients_roles_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and filter is required'
+        )
+
+    services = request.services()
+    roles = []
+    try:
+        rolesStore = services['store.admin.roles']
+        result = rolesStore.filter(client_id, filter)
+        roles = [
+            {
+                'id': r[0],
+                'active': r[1],
+                'name': r[2]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} roles found'.format(len(roles)),
+        body={
+            'roles': roles
+        }
+    )
+
+
 @view_config(
     route_name='api.clients.roles.add',
     request_method='POST',
