@@ -61,3 +61,11 @@ class TestAdminRolesStore(unittest.TestCase):
             self.rolesStore.setActive(role_id, False)
         except Exception as e:
             self.fail(e)
+
+    def test_role_filter(self):
+        try:
+            (client_id, active, name, address) = self.clientStore.getDefaultClient()
+            result = self.rolesStore.filter(client_id, 'every')
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
