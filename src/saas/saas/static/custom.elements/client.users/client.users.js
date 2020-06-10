@@ -118,12 +118,17 @@ class ClientUsers extends HTMLElement {
 
         const adduser = shadow.querySelector('.link-user-add');
         adduser.addEventListener('click', function(e) {
-            console.log('add user');
-
             const client_id = self._getClientId();
             const selector = showInView(`<user-selector client-id="${client_id}"></user-selector>`);
             selector.addEventListener('assign', function(e) {
-                console.log('assign');
+                const userIds = e.detail.userIds;
+                Users.addUsersToClient(client_id, userIds).then((r) => {
+                    if (r.status == 'success') {
+                        self._refreshUsers(client_id);
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
                 e.preventDefault();
             });
             e.preventDefault();
