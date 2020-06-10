@@ -44,6 +44,6 @@ class TestAdminUsersStore(unittest.TestCase):
     def test_filter_users(self):
         try:
             result = self.usersStore.filter('com')
-            self.assertGreater(0, len(result))
+            self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
