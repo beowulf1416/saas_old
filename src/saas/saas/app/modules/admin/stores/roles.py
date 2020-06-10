@@ -15,7 +15,7 @@ class RolesStore(BaseStore):
 
     def getAll(self, clientId: UUID):
         try:
-            result = super(RolesStore, self).runProc('iam.clients_roles_all', [clientId, ])
+            result = super(RolesStore, self).runProc('iam.client_roles_all', [clientId, ])
             return result
         except Exception as e:
             log.error(e)
@@ -33,7 +33,7 @@ class RolesStore(BaseStore):
 
     def add(self, clientId: UUID, name: str):
         try:
-            [(role_id, )] = super(RolesStore, self).runProcTransactional('iam.role_add', clientId, name)
+            [(role_id, )] = super(RolesStore, self).runProcTransactional('iam.role_add', [clientId, name])
             return role_id
         except Exception as e:
             log.error(e)
