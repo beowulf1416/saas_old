@@ -41,9 +41,13 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'sku': random_str,
                     'upc': random_str,
                     'length': 1,
+                    "length_unit_id": 1,
                     'width': 1,
+                    "width_unit_id": 1,
                     'height': 1,
+                    "height_unit_id": 1,
                     'weight': 1,
+                    "weight_unit_id": 1,
                     'perishable': True,
                     'hazardous': False
                 }
