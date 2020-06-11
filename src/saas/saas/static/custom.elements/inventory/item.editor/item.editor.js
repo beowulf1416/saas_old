@@ -13,6 +13,10 @@ class ItemEditor extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/inventory/item.editor/item.editor.css');
 
+        const google_web_fonts = document.createElement("link");
+        google_web_fonts.setAttribute('rel', 'stylesheet');
+        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+
         const tb = document.createElement("link");
         tb.setAttribute('rel', 'stylesheet');
         tb.setAttribute('href', '/static/css/toolbar.css');
@@ -24,13 +28,20 @@ class ItemEditor extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
-        this.init(div);
+        this._init(div);
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(google_web_fonts);
         shadow.appendChild(tb);
         shadow.appendChild(tabs);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._getClientId = this._getClientId.bind(this);
+        this._getItemId = this._getItemId.bind(this);
+
+        this._attachEventHandlers();
     }
 
     connectedCallback() {
@@ -48,8 +59,26 @@ class ItemEditor extends HTMLElement {
         }
     }
 
-    init(container) {
+    _getClientId() {
+        const shadow = this.shadowRoot;
+
+        const client = shadow.getElementById('client_id');
+        return client.value;
+    }
+
+    _getItemId() {
+        const shadow = this.shadowRoot;
+
+        const item = shadow.getElementById('item_id');
+        return item.value;
+    }
+
+    _init(container) {
         const self = this;
+
+        const client_id = this.getAttribute('client-id');
+        const item_id = this.getAttribute('item-id');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
@@ -60,6 +89,9 @@ class ItemEditor extends HTMLElement {
                     </button>
                 </div><!-- .toolbar -->
                 <form class="form-item-editor" role="tabs">
+                    <input type="hidden" id="client_id" name="client_id" value="${client_id}" />
+                    <input type="hidden" id="item_id" name="item_id" value="${item_id}" />
+
                     <ul class="tablist" role="tablist">
                         <li class="tab-item"><a title="General" href="#" role="tab" aria-controls="general">General</a></li>
                         <li class="tab-item"><a title="Substitutes" href="#" role="tab" aria-controls="substitutes">Substitutes</a></li>
@@ -78,8 +110,7 @@ class ItemEditor extends HTMLElement {
                             <!-- description -->
                             <label for="description">Description</label>
                             <div class="form-group form-group-description">
-                                <textarea id="description" name="description" class="form-input form-input-textarea" title="Description" placeholder="Description">
-                                </textarea>
+                                <textarea id="description" name="description" class="form-input form-input-textarea" title="Description" placeholder="Description"></textarea>
                                 <span class="help-text">Description</span>
                             </div><!-- .form-group -->
 
@@ -165,6 +196,15 @@ class ItemEditor extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+    }
+
+    setItem(item = {}) {
+
     }
 }
 customElements.define('item-editor', ItemEditor);
