@@ -2,19 +2,23 @@
  * add an inventory item
  */
 create or replace function item_add (
-    p_client_id items.client_id%type,
-    p_name items.name%type,
-    p_desc items.description%type,
-    p_make items.make%type,
-    p_brand items.brand%type,
-    p_model items.model%type,
-    p_version items.version%type,
-    p_sku items.sku%type,
-    p_upc items.upc%type,
-    p_length items.length%type,
-    p_width items.width%type,
+    p_client_id inventory.items.client_id%type,
+    p_name inventory.items.name%type,
+    p_desc inventory.items.description%type,
+    p_make inventory.items.make%type,
+    p_brand inventory.items.brand%type,
+    p_model inventory.items.model%type,
+    p_version inventory.items.version%type,
+    p_sku inventory.items.sku%type,
+    p_upc inventory.items.upc%type,
+    p_length inventory.items.length%type,
+    p_length_unit_id inventory.items.length_unit_id%type,
+    p_width inventory.items.width%type,
+    p_width_unit_id inventory.items.width_unit_id%type,
     p_height items.height%type,
+    p_height_unit_id inventory.items.height_unit_id%type,
     p_weight items.weight%type,
+    p_weight_unit_id inventory.items.weight_unit_id%type,
     p_perishable items.perishable%type,
     p_hazardous items.hazardous%type
 )
@@ -34,9 +38,13 @@ begin
         sku,
         upc,
         length,
+        length_unit_id,
         width,
+        width_unit_id,
         height,
+        height_unit_id,
         weight,
+        weight_unit_id,
         perishable,
         hazardous
     ) values (
@@ -50,9 +58,13 @@ begin
         p_sku,
         p_upc,
         p_length,
+        p_length_unit_id,
         p_width,
+        p_width_unit_id,
         p_height,
+        p_height_unit_id,
         p_weight,
+        p_weight_unit_id,
         p_perishable,
         p_hazardous
     )
