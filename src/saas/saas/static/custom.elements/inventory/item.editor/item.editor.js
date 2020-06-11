@@ -1,8 +1,10 @@
 'use strict';
+import { Inventory } from '/static/js/helpers/inventory/inventory.js';
 import { InventoryItem } from '/static/js/helpers/inventory/items.js';
 import { ItemsTable } from '/static/js/components/inventory/items.table.js';
 
 import { tabs } from '/static/js/ui/tabs.js';
+import { notify } from '/static/js/ui/ui.js';
 
 class ItemEditor extends HTMLElement {
 
@@ -37,9 +39,12 @@ class ItemEditor extends HTMLElement {
         shadow.appendChild(tabs);
         shadow.appendChild(div);
 
+        this._fetchData = this._fetchData.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._getClientId = this._getClientId.bind(this);
         this._getItemId = this._getItemId.bind(this);
+
+        this._fetchData();
 
         this._attachEventHandlers();
     }
@@ -156,26 +161,34 @@ class ItemEditor extends HTMLElement {
 
                             <!-- length -->
                             <label for="length">Length</label>
-                            <div class="form-group form-group-length">
+                            <div class="form-group form-group-dimension form-group-length">
                                 <input type="number" id="length" name="length" class="form-input form-input-length" title="Length" placeholder="Length" />
+                                <select id="length-unit" name="length_unit" title="Unit of Measure">
+                                </select>
                             </div><!-- .form-group -->
 
                             <!-- width -->
                             <label for="width">Width</label>
-                            <div class="form-group form-group-width">
+                            <div class="form-group form-group-dimension form-group-width">
                                 <input type="number" id="width" name="width" class="form-input form-input-width" title="Width" placeholder="Width" />
+                                <select id="width-unit" name="width_unit" title="Unit of Measure">
+                                </select>
                             </div><!-- .form-group -->
 
                             <!-- height -->
                             <label for="height">Height</label>
-                            <div class="form-group form-group-height">
+                            <div class="form-group form-group-dimension form-group-height">
                                 <input type="number" id="height" name="height" class="form-input form-input-height" title="Height" placeholder="Height" />
+                                <select id="height-unit" name="height_unit" title="Unit of Measure">
+                                </select>
                             </div><!-- .form-group -->
 
                             <!-- weight -->
                             <label for="weight">Weight</label>
-                            <div class="form-group form-group-weight">
+                            <div class="form-group form-group-dimension form-group-weight">
                                 <input type="number" id="weight" name="weight" class="form-input form-input-weight" title="Weight" placeholder="Weight" />
+                                <select id="weight-unit" name="weight_unit" title="Unit of Measure">
+                                </select>
                             </div><!-- .form-group -->
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
@@ -205,6 +218,61 @@ class ItemEditor extends HTMLElement {
 
     setItem(item = {}) {
 
+    }
+
+    _fetchData() {
+        const shadow = this.shadowRoot;
+
+        Inventory.uoms('length').then((r) => {
+            if (r.status == 'success') {
+                const length = shadow.getElementById('length-unit');
+                const width = shadow.getElementById('width-unit');
+                const height = shadow.getElementById('height-unit');
+
+                const l = [];
+                const uoms = r.json.uoms;
+                uoms.forEach((unit) => {
+                    if (unit.symbol) {
+                        l.push(`<option value="${unit.id}">${unit.name} (${unit.symbol})</option>`);
+                    } else {
+                        l.push(`<option value="${unit.id}">${unit.name}</option>`);
+                    }
+                });
+
+                const loptions = l.join('');
+
+                length.innerHTML = loptions;
+                width.innerHTML = loptions;
+                height.innerHTML = loptions;
+            } else {
+                notify(r.status, r.message);
+            }
+        });
+
+        Inventory.uoms('weight').then((r) => {
+            if (r.status == 'success') {
+                const weight = shadow.getElementById('weight-unit');
+                const uoms = r.json.uoms;
+                const o = [];
+                uoms.forEach((unit) => {
+                    if (unit.symbol) {
+                        o.push(`<option value="${unit.id}">${unit.name} (${unit.symbol})</option>`);
+                    } else {
+                        o.push(`<option value="${unit.id}">${unit.name}</option>`);
+                    }
+                });
+                const woptions = o.join('');
+
+                weight.innerHTML = woptions;
+            } else {
+                notify(r.status, r.message);
+            }
+        });
+
+        const item_id = this._getItemId();
+        if (item_id != null) {
+            console.log('//TODO');
+        }
     }
 }
 customElements.define('item-editor', ItemEditor);

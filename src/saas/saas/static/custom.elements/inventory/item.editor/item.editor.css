@@ -21,3 +21,12 @@
 #general .form-group-description {
     grid-column: 1/ span 4;
 }
+
+#general .form-group-dimension {
+    display: flex;
+    flex-direction: row;
+}
+
+#general .form-group-dimension input {
+    flex: 1 1 0;
+}
