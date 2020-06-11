@@ -214,6 +214,35 @@ class ItemEditor extends HTMLElement {
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const btnsave = shadow.querySelector('button.btn-save');
+        btnsave.addEventListener('click', function(e) {
+            const client_id = self._getClientId();
+            const item_id = self._getItemId();
+
+            if (lclient_id && item_id) {
+                const input_name = shadow.getElementById('name');
+                
+                InventoryItem.add({
+                    clientId: client_id,
+                    name: input_name.value
+                }).then((r) => {
+                    if (r.status == 'success') {
+                        console.log('//TODO');
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            } else {
+                InventoryItem.update().then((r) => {
+                    if (r.status == 'success') {
+                        console.log('//TODO');
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            }
+        });
     }
 
     setItem(item = {}) {
