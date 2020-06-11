@@ -132,7 +132,7 @@ def view_inventory_items_add(request):
             schema_file = '/inventory/item.json'
         )
 
-        itemStore.add(client_id, params)
+        itemStore.add(params)
     except ValidationError as e:
         log.error(e)
         raise exception.HTTPBadRequest(
@@ -152,6 +152,54 @@ def view_inventory_items_add(request):
             'message': 'Inventory Item record created'
         }
     )
+
+
+@view_config(
+    route_name='api.inventory.items.update',
+    request_method='POST',
+    renderer='json'
+)
+def view_inventory_item_update(request):
+    params = request.json_body
+    
+    client_id = params['clientId'] if 'clientId' in params else None
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    itemStore = services['store.inventory.items']
+    validator = services['validator.json']
+    try:
+        # validate( instance = params, schema = schema)
+        validator.validate(
+            instance = params,
+            schema_file = '/inventory/item.json'
+        )
+
+        itemStore.update(params)
+    except ValidationError as e:
+        log.error(e)
+        raise exception.HTTPBadRequest(
+            detail=e.message,
+            explanation='Incorrect parameters'
+        )
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Inventory Item record updated',
+        body={
+            'message': 'Inventory Item record updated'
+        }
+    )
+
 
 @view_config(
     route_name='api.inventory.items.substitutes',
