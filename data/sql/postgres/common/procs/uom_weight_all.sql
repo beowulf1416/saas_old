@@ -11,7 +11,7 @@ begin
         a.id,
         a.name,
         a.symbol
-    from common.uom_weight a
+    from common.uom_weight a;
 end
 $$
 language plpgsql

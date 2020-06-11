@@ -11,7 +11,7 @@ begin
         a.id,
         a.name,
         a.symbol
-    from common.uom_quantity a
+    from common.uom_quantity a;
 end
 $$
 language plpgsql
