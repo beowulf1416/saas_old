@@ -20,6 +20,7 @@
     "type": "object",
     "properties": {
         "clientId": { "type": "string" },
+        "itemId": { "type": "string" },
         "name": { "type": "string" },
         "description": { "type": "string" },
         "sku": { "type": "string" },
@@ -29,9 +30,13 @@
         "model": { "type": "string" },
         "version": { "type": "string" },
         "length": { "type": "number" },
+        "length_unit_id": { "type": "number" },
         "width": { "type": "number" },
+        "width_unit_id": { "type": "number" },
         "height": { "type": "number" },
+        "height_unit_id": { "type": "number" },
         "weight": { "type": "number" },
+        "weight_unit_id": { "type": "number" },
         "perishable": { "type": "boolean" },
         "hazardous": { "type": "boolean" },
         "substitutes": {
@@ -45,6 +50,7 @@
     },
     "required": [
         "clientId",
+        "itemId",
         "name",
         "description"
     ],
