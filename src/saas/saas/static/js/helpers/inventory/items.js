@@ -24,7 +24,7 @@ class InventoryItem {
 
     }
 
-    static add(clientId = '', item = {}) {
+    static add(item = {}) {
         return fetch('/api/inventory/items/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -34,6 +34,7 @@ class InventoryItem {
             },
             body: JSON.stringify({
                 clientId: clientId,
+                itemId: null,
                 name: item.name,
                 description: item.description,
                 sku: item.sku,
@@ -43,13 +44,47 @@ class InventoryItem {
                 model: item.model,
                 version: item.version,
                 length: item.length,
-                length_unit_id: item.length_unit_id,
+                lengthUnitId: item.lengthUnitId,
                 width: item.width,
-                width_unit_id: item.width_unit_id,
+                widthUnitId: item.widthUnitId,
                 height: item.height,
-                height_unit_id: item.height_unit_id,
+                heightUnitId: item.heightUnitId,
                 weight: item.weight,
-                weight_unit_id: item.weight_unit_id,
+                weightUnitId: item.weightUnitId,
+                perishable: item.perishable,
+                hazardous: item.hazardous
+            })
+        })
+        .then((r) => r.json());
+    }
+
+    static update(item = {}) {
+        return fetch('/api/inventory/items/update', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                itemId: item.id,
+                name: item.name,
+                description: item.description,
+                sku: item.sku,
+                upc: item.upc,
+                make: item.make,
+                brand: item.brand,
+                model: item.model,
+                version: item.version,
+                length: item.length,
+                lengthUnitId: item.lengthUnitId,
+                width: item.width,
+                widthUnitId: item.widthUnitId,
+                height: item.height,
+                heightUnitId: item.heightUnitId,
+                weight: item.weight,
+                weightUnitId: item.weightUnitId,
                 perishable: item.perishable,
                 hazardous: item.hazardous
             })
