@@ -27,9 +27,13 @@ class ItemsStore(BaseStore):
                 item['sku'] if 'sku' in item else '',
                 item['upc'] if 'upc' in item else '',
                 item['length'] if 'length' in item else 0,
+                item['length_unit_id'] if 'length_unit_id' in item else 1,
                 item['width'] if 'width' in item else 0,
+                item['width_unit_id'] if 'width_unit_id' in item else 1,
                 item['height'] if 'height' in item else 0,
+                item['height_unit_id'] if 'height_unit_id' in item else 1,
                 item['weight'] if 'weight' in item else 0,
+                item['weight_unit_id'] if 'weight_unit_id' in item else 1,
                 item['perishable'] if 'perishable' in item else False,
                 item['hazardous'] if 'hazardous' in item else False
             ])
