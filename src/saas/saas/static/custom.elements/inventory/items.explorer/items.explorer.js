@@ -41,6 +41,11 @@ class ItemsExplorer extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
+                <div class="toolbar" role="toolbar">
+                    <button type="button" class="btn btn-item-new">
+                        <span class="material-icons">widgets</span>
+                    </button> 
+                </div><!-- .toolbar -->
                 <form class="form-item-search">
                     <input type="hidden" id="client_id" value="${client_id}" />
                     <!-- filter -->
@@ -112,11 +117,19 @@ class ItemsExplorer extends HTMLElement {
             beginsearch(filter.value);
             e.preventDefault();
         });
+
+        const btnitemnew = shadow.querySelector('button.btn-item-new');
+        btnitemnew.addEventListener('click', function(e) {
+            showInTab('inventory-item', 'New Item', `<item-editor client-id="${client_id}"></item-editor>`);
+            e.preventDefault();
+        });
     }
 
     setItems(items = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = self._getClientId();
 
         const tbody = shadow.querySelector('table.tbl-items tbody');
         while(tbody.firstChild) {
@@ -129,7 +142,7 @@ class ItemsExplorer extends HTMLElement {
             const item_upc = item.upc.replace(filter, `<strong>${filter}</strong>`);
 
             const td = [];
-            td.push(`<td><a class="link-edit-item" title="Edit Item" href="#"><span class="material-icons">edit</a></td>`);
+            td.push(`<td><a class="link-edit-item" title="Edit Item" href="#" data-itemid="${item.id}"><span class="material-icons">edit</a></td>`);
             td.push(`<td>${item_name}</td>`);
             td.push(`<td>${item_sku}</td>`);
             td.push(`<td>${item_upc}</td>`);
@@ -139,6 +152,14 @@ class ItemsExplorer extends HTMLElement {
             tr.innerHTML = `${tdall}`;
 
             tbody.appendChild(tr);
+
+            // event handlers
+            const edititem = tr.querySelector('.link-edit-item');
+            edititem.addEventListener('click', function(e) {
+                const item_id = edititem.dataset.itemid;
+                showInTab(`inventory.item.${item_id}`, 'Item', `<item-editor client-id="${client_id}" item-id="${item_id}"></item-editor>`);
+                e.preventDefault();
+            });
         });
     }
 }
