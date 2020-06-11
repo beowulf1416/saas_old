@@ -15,18 +15,30 @@ import json
     renderer='json'
 )
 def view_inventory_items_uom(request):
+    params = request.json_body
+    dimension = params['dimension'] if 'dimension' in params else 'length'
+
     services = request.services()
     uoms = []
     try:
         uomStore = services['stores.common.uom']
-        result = uomStore.all()
+        result = []
+        if dimension == 'length':
+            result = uomStore.length()
+        elif dimension == 'area':
+            result = uomStore.area()
+        elif dimension == 'volume':
+            result = uomStore.volume()
+        elif dimension == 'weight':
+            result = uomStore.weight()
+        elif dimension == 'quantity':
+            result = uomStore.quantity()
+
         uoms = [
             { 
-                'id': r[0], 
-                'dimension_id': r[1],
-                'dimension': r[2], 
-                'name': r[3], 
-                'symbol': r[4]
+                'id': r[0],  
+                'name': r[1], 
+                'symbol': r[2]
             }
             for r in result
         ]
