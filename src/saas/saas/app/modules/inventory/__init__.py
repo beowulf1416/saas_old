@@ -42,6 +42,14 @@ def includeme(config):
         'js': [
             {
                 'type': 'module',
+                'script': '/static/js/modules/inventory.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/inventory/items.explorer/items.explorer.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/js/components/inventory/item.selector.js' 
             },
             {
