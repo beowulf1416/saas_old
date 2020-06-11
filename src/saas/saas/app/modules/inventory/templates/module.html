@@ -15,23 +15,3 @@
         </ul><!-- .menu-list -->
     </div><!-- .module-admin -->
 </div><!-- .module-inventory-wrapper -->
-<script type="module">
-'use script';
-(function(){
-    const tab = document.querySelector('tab-container');
-
-    window.actions = window.actions ? window.actions : {};
-    window.actions['inventory.items'] = function(){
-        tab.addTab('inventory-items', 'Items', '<item-search tab="tab-container" client-id="{{ client_id }}"></item-search>');
-    };
-    window.actions['inventory.transactions.receiving'] = function() {
-        tab.addTab('inventory-item-editor', 'Item', '<item-editor  client-id="{{ client_id }}"></item-editor>');
-    }
-    window.actions['inventory.warehouses'] = function() {
-        console.log('inventory.warehouses');
-    }
-    window.actions['inventory.locations'] = function() {
-        console.log('inventory.locations');
-    }
-})();
-</script>
