@@ -15,7 +15,7 @@ create or replace function item_update (
     p_length inventory.items.length%type,
     p_length_unit_id inventory.items.length_unit_id%type, 
     p_width items.width%type,
-    p_width_unit_id inventory..items.width_unit_id%type,
+    p_width_unit_id inventory.items.width_unit_id%type,
     p_height items.height%type,
     p_height_unit_id inventory.items.height_unit_id%type,
     p_weight items.weight%type,
@@ -26,9 +26,9 @@ create or replace function item_update (
 returns void
 as $$
 declare
-    tmp_id items.id%type;
+    tmp_id inventory.items.id%type;
 begin
-    update items set
+    update inventory.items set
         name = p_name,
         description = p_desc,
         make = p_make,
@@ -48,7 +48,7 @@ begin
         perishable = p_perishable,
         hazardous = p_hazardous
     where client_id = p_client_id
-        and item_id = p_item_id; 
+        and id = p_item_id; 
 end
 $$
 language plpgsql;

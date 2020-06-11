@@ -29,9 +29,64 @@ class TestInventoryItemsStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
-            result = self.itemsStore.add(
-                client_id,
+            item_id = self.itemsStore.add(
                 {
+                    'clientId': client_id,
+                    'name': random_str,
+                    'description': random_str,
+                    'make': random_str,
+                    'brand': random_str,
+                    'model': random_str,
+                    'version': random_str,
+                    'sku': random_str,
+                    'upc': random_str,
+                    'length': 1,
+                    "length_unit_id": 1,
+                    'width': 1,
+                    "width_unit_id": 1,
+                    'height': 1,
+                    "height_unit_id": 1,
+                    'weight': 1,
+                    "weight_unit_id": 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+
+    def test_item_update(self):
+        random_str = self.generate_random_str(10)
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        try:
+            item_id = self.itemsStore.add(
+                {
+                    'clientId': client_id,
+                    'name': random_str,
+                    'description': random_str,
+                    'make': random_str,
+                    'brand': random_str,
+                    'model': random_str,
+                    'version': random_str,
+                    'sku': random_str,
+                    'upc': random_str,
+                    'length': 1,
+                    "length_unit_id": 1,
+                    'width': 1,
+                    "width_unit_id": 1,
+                    'height': 1,
+                    "height_unit_id": 1,
+                    'weight': 1,
+                    "weight_unit_id": 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
+            )
+
+            self.itemsStore.update(
+                {
+                    'clientId': client_id,
+                    'itemId': item_id,
                     'name': random_str,
                     'description': random_str,
                     'make': random_str,
@@ -61,8 +116,8 @@ class TestInventoryItemsStore(unittest.TestCase):
         (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             item_id_1 = self.itemsStore.add(
-                client_id,
                 {
+                    'clientId': client_id,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -72,16 +127,20 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'sku': item_1,
                     'upc': item_1,
                     'length': 1,
+                    "length_unit_id": 1,
                     'width': 1,
+                    "width_unit_id": 1,
                     'height': 1,
+                    "height_unit_id": 1,
                     'weight': 1,
+                    "weight_unit_id": 1,
                     'perishable': True,
                     'hazardous': False
                 }
             )
             item_id_2 = self.itemsStore.add(
-                client_id,
                 {
+                    'clientId': client_id,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -91,9 +150,13 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'sku': item_2,
                     'upc': item_2,
                     'length': 1,
+                    "length_unit_id": 1,
                     'width': 1,
+                    "width_unit_id": 1,
                     'height': 1,
+                    "height_unit_id": 1,
                     'weight': 1,
+                    "weight_unit_id": 1,
                     'perishable': True,
                     'hazardous': False
                 }
@@ -109,8 +172,8 @@ class TestInventoryItemsStore(unittest.TestCase):
         (client_id, active, name, address)  = self.clientStore.getDefaultClient()
         try:
             item_id_1 = self.itemsStore.add(
-                client_id,
                 {
+                    'clientId': client_id,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -120,16 +183,20 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'sku': item_1,
                     'upc': item_1,
                     'length': 1,
+                    "length_unit_id": 1,
                     'width': 1,
+                    "width_unit_id": 1,
                     'height': 1,
+                    "height_unit_id": 1,
                     'weight': 1,
+                    "weight_unit_id": 1,
                     'perishable': True,
                     'hazardous': False
                 }
             )
             item_id_2 = self.itemsStore.add(
-                client_id,
                 {
+                    'clientId': client_id,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -139,9 +206,13 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'sku': item_2,
                     'upc': item_2,
                     'length': 1,
+                    "length_unit_id": 1,
                     'width': 1,
+                    "width_unit_id": 1,
                     'height': 1,
+                    "height_unit_id": 1,
                     'weight': 1,
+                    "weight_unit_id": 1,
                     'perishable': True,
                     'hazardous': False
                 }
