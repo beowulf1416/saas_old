@@ -20,6 +20,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.inventory.items.update',
+        '/api/inventory/items/update'
+    )
+
+    config.add_route(
         'api.inventory.items.substitutes',
         '/api/inventory/items/substitutes'
     )
