@@ -20,6 +20,10 @@ class InventoryItem {
         .then((r) => r.json());
     }
 
+    static get(clientId = '', itemId = '') {
+
+    }
+
     static add(clientId = '', item = {}) {
         return fetch('/api/inventory/items/add', {
             method: 'POST',
@@ -39,9 +43,15 @@ class InventoryItem {
                 model: item.model,
                 version: item.version,
                 length: item.length,
+                length_unit_id: item.length_unit_id,
                 width: item.width,
+                width_unit_id: item.width_unit_id,
                 height: item.height,
-                weight: item.weight
+                height_unit_id: item.height_unit_id,
+                weight: item.weight,
+                weight_unit_id: item.weight_unit_id,
+                perishable: item.perishable,
+                hazardous: item.hazardous
             })
         })
         .then((r) => r.json());
