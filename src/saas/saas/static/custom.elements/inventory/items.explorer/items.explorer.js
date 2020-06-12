@@ -42,7 +42,7 @@ class ItemsExplorer extends HTMLElement {
         div.innerHTML = `
             <div class="form-wrapper">
                 <div class="toolbar" role="toolbar">
-                    <button type="button" class="btn btn-item-new">
+                    <button type="button" class="btn btn-item-new" title="New Item">
                         <span class="material-icons">widgets</span>
                     </button> 
                 </div><!-- .toolbar -->
@@ -51,7 +51,7 @@ class ItemsExplorer extends HTMLElement {
                     <!-- filter -->
                     <label for="filter">Item</label>
                     <input type="search" id="filter" name="filter" class="form-input-search" title="Search for Item" placeholder="Item" />
-                    <button type="button" class="btn btn-search">
+                    <button type="button" class="btn btn-search" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
