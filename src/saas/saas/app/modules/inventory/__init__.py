@@ -42,7 +42,15 @@ def includeme(config):
         'js': [
             {
                 'type': 'module',
-                'script': '/static/js/modules/inventory.js'
+                'script': '/static/js/modules/inventory/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/js/modules/inventory/inventory.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/js/modules/inventory/items.js'
             },
             {
                 'type': 'module',
@@ -55,10 +63,6 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom.elements/inventory/item.editor/item.editor.js'
-            },
-            {
-                'type': 'module',
-                'script': '/static/js/helpers/inventory/items.js'
             },
             {
                 'external': 'true',
