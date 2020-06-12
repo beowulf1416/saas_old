@@ -55,6 +55,38 @@ class TestInventoryItemsStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_item_get(self):
+        random_str = self.generate_random_str(10)
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        try:
+            item_id = self.itemsStore.add(
+                {
+                    'clientId': client_id,
+                    'name': random_str,
+                    'description': random_str,
+                    'make': random_str,
+                    'brand': random_str,
+                    'model': random_str,
+                    'version': random_str,
+                    'sku': random_str,
+                    'upc': random_str,
+                    'length': 1,
+                    "length_unit_id": 1,
+                    'width': 1,
+                    "width_unit_id": 1,
+                    'height': 1,
+                    "height_unit_id": 1,
+                    'weight': 1,
+                    "weight_unit_id": 1,
+                    'perishable': True,
+                    'hazardous': False
+                }
+            )
+            result = self.itemsStore.get(item_id)
+            self.assertEqual(item_id, result[0], '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
+
     def test_item_update(self):
         random_str = self.generate_random_str(10)
         (client_id, active, name, address)  = self.clientStore.getDefaultClient()
