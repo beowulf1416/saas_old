@@ -3,8 +3,8 @@ create table if not exists item_components (
     item_id uuid not null,
     component_item_id uuid not null,
     quantity decimal(12,6) not null,
-    dimension_id not null,
-    unit_id not null,
+    dimension_id int not null,
+    unit_id int not null,
     constraint pk_item_components primary key (client_id, item_id, component_item_id),
     constraint fk_item_components_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,

@@ -14,7 +14,9 @@ begin
         p_client_id,
         p_item_id,
         p_substitute_item_id
-    );
+    )
+    on conflict (client_id, item_id, substitute_item_id)
+    do nothing;
 end
 $$
 language plpgsql;
