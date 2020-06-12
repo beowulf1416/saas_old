@@ -76,6 +76,7 @@ def view_inventory_item_get(request):
     item = {}
     try:
         r = itemsStore.get(item_id)
+        client_id = r[3]
         item = {
             'id': r[0],
             'active': r[1],
@@ -100,6 +101,17 @@ def view_inventory_item_get(request):
             'perishable': r[20],
             'hazardous': r[21]
         }
+
+        result = itemsStore.substitutes(client_id, item_id)
+        substitutes = [
+            {
+                'id': r[0],
+                'active': r[1],
+                'name': r[2]
+            }
+            for r in result
+        ]
+        item['substitutes'] = substitutes
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
