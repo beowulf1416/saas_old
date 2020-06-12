@@ -4,7 +4,7 @@ import { InventoryItem } from '/static/js/helpers/inventory/items.js';
 import { ItemsTable } from '/static/js/components/inventory/items.table.js';
 
 import { tabs } from '/static/js/ui/tabs.js';
-import { notify } from '/static/js/ui/ui.js';
+import { notify, showInView } from '/static/js/ui/ui.js';
 
 class ItemEditor extends HTMLElement {
 
@@ -91,6 +91,9 @@ class ItemEditor extends HTMLElement {
                 <div class="toolbar" role="toolbar">
                     <button type="button" class="btn btn-save" title="Save" tabindex="0">
                         <span class="material-icons">save</span>
+                    </button>
+                    <button type="button" class="btn btn-items" title="Select Items" tabindex="0>
+                        <span class="material-icons">widgets</span>
                     </button>
                 </div><!-- .toolbar -->
                 <form class="form-item-editor" role="tabs">
@@ -215,11 +218,11 @@ class ItemEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = self._getClientId();
+        const item_id = self._getItemId();
+
         const btnsave = shadow.querySelector('button.btn-save');
         btnsave.addEventListener('click', function(e) {
-            const client_id = self._getClientId();
-            const item_id = self._getItemId();
-
             const input_name = shadow.getElementById('name');
             const input_desc = shadow.getElementById('description');
             const input_sku = shadow.getElementById('sku');
@@ -292,6 +295,12 @@ class ItemEditor extends HTMLElement {
                     }
                 });
             }
+        });
+
+        const btnitems = shadow.querySelector('button.btn-items');
+        btnitems.addEventListener('click', function(e) {
+            showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+            e.preventDefault();
         });
     }
 
