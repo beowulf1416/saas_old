@@ -109,7 +109,7 @@ class ClientRoles extends HTMLElement {
 
         const btnClient = div.querySelector('button.btn-client');
         btnClient.addEventListener('click', function(e) {
-            const clientSelector = showInView('<client-selector></client-selector>');
+            const clientSelector = showInView('Select Clients','<client-selector></client-selector>');
             clientSelector.addEventListener('selected', function(e) {
                 if (e.detail.client) {
                     const client_id = e.detail.client;
@@ -123,7 +123,7 @@ class ClientRoles extends HTMLElement {
             const client = self.shadowRoot.getElementById('client');
             if (client.dataset.clientid) {
                 const client_id = client.dataset.clientid;
-                const roleSelector = showInView(`<role-selector client="${client_id}"></role-selector>`);
+                const roleSelector = showInView('Select Roles',`<role-selector client="${client_id}"></role-selector>`);
             } else {
                 notify('error', 'client id is required');
             }
@@ -149,7 +149,7 @@ class ClientRoles extends HTMLElement {
 
         const permissionadd = shadow.querySelector('a.link-permission-add');
         permissionadd.addEventListener('click', function(e) {
-            showInView('<permission-selector show-assign></permission-selector>');
+            showInView('Select Permissions', '<permission-selector show-assign></permission-selector>');
 
             const selector = document.querySelector('permission-selector');
             selector.addEventListener('assign', function(e) {

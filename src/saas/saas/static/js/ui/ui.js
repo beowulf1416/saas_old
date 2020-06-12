@@ -5,7 +5,7 @@ function showInTab(id = '', label = '', content = '') {
     tab.addTab(id, label, content);
 }
 
-function showInView(content) {
+function showInView(label = '', content = '') {
     const views = document.getElementById('views');
     if (views.firstChild) {
         views.removeChild(views.lastChild);
@@ -14,7 +14,7 @@ function showInView(content) {
     views.innerHTML = `
         <div class="view-wrapper">
             <div class="view-header">
-                <h4>view name</h4>
+                <h4>${label}</h4>
                 <a class="link-close" title="Close View" href="#">
                     <span class="material-icons">close</span>
                 </a>

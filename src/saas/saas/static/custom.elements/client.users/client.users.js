@@ -105,7 +105,7 @@ class ClientUsers extends HTMLElement {
 
         const btnclient = shadow.querySelector('button.btn-client');
         btnclient.addEventListener('click', function(e) {
-            const selector = showInView('<client-selector></client-selector>');
+            const selector = showInView('Select Clients','<client-selector></client-selector>');
             selector.addEventListener('selected', function(e) {
                 if (e.detail.client) {
                     const client_id = e.detail.client;
@@ -119,7 +119,7 @@ class ClientUsers extends HTMLElement {
         const adduser = shadow.querySelector('.link-user-add');
         adduser.addEventListener('click', function(e) {
             const client_id = self._getClientId();
-            const selector = showInView(`<user-selector client-id="${client_id}"></user-selector>`);
+            const selector = showInView('Select Users', `<user-selector client-id="${client_id}"></user-selector>`);
             selector.addEventListener('assign', function(e) {
                 const userIds = e.detail.userIds;
                 Users.addUsersToClient(client_id, userIds).then((r) => {
@@ -137,7 +137,7 @@ class ClientUsers extends HTMLElement {
         const addrole = shadow.querySelector('.link-role-add');
         addrole.addEventListener('click', function(e) {
             const client_id = self._getClientId();
-            const selector = showInView(`<role-selector client-id="${client_id}"></role-selector>`);
+            const selector = showInView('Select Roles', `<role-selector client-id="${client_id}"></role-selector>`);
             
             selector.addEventListener('assign', function(e) {
                 const roleIds = e.detail.roleIds;
