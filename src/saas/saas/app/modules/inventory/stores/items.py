@@ -107,3 +107,20 @@ class ItemsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('An error occured while adding a substitute')
+
+    def components(self, clientId: UUID, itemId: UUID):
+        try:
+            result = super(ItemsStore, self).runProc('inventory.item_components', [clientId, itemId])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve item components')
+
+    def addComponent(self, clientId: UUID, itemId: UUID, componentId: UUID, 
+        quantity: float, dimensionId: int, unitId: int):
+        try:
+            super(ItemsStore, self).runProcTransactional('inventory.item_component_add', 
+                [clientId, itemId, componentId, quantity, dimensionId, unitId])
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to add component')
