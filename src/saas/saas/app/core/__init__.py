@@ -5,6 +5,7 @@ log = logging.getLogger(__name__)
 import json
 from pyramid.renderers import JSON
 import datetime
+import decimal
 
 
 def includeme(config):
@@ -14,6 +15,11 @@ def includeme(config):
     def datetime_adapter(obj, request):
         return obj.isoformat()
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
+
+    def decimal_adapter(obj, request):
+        return str(obj)
+    json_renderer.add_adapter(decimal.Decimal, decimal_adapter)
+
     config.add_renderer('json', json_renderer)
 
     config.include('saas.app.core.services')
