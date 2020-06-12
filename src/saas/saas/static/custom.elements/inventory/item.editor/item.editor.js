@@ -220,15 +220,46 @@ class ItemEditor extends HTMLElement {
             const client_id = self._getClientId();
             const item_id = self._getItemId();
 
-            if (lclient_id && item_id) {
+            if (client_id && item_id) {
                 const input_name = shadow.getElementById('name');
+                const input_desc = shadow.getElementById('description');
+                const input_sku = shadow.getElementById('sku');
+                const input_upc = shadow.getElementById('upc');
+                const input_make = shadow.getElementById('make');
+                const input_model = shadow.getElementById('model');
+                const input_brand = shadow.getElementById('brand');
+                const input_version = shadow.getElementById('version');
+
+                const input_length = shadow.getElementById('length');
+                const input_length_unit = shadow.getElementById('length-unit');
+                const input_width = shadow.getElementById('width');
+                const input_width_unit = shadow.getElementById('width-unit');
+                const input_height = shadow.getElementById('height');
+                const input_height_unit = shadow.getElementById('height-unit');
+                const input_weight = shadow.getElementById('weight');
+                const input_weight_unit = shadow.getElementById('weight-unit');
                 
                 InventoryItem.add({
                     clientId: client_id,
-                    name: input_name.value
+                    name: input_name.value,
+                    description: input_desc.value,
+                    sku: input_sku.value,
+                    upc: input_upc.value,
+                    make: input_make.value,
+                    model: input_model.value,
+                    brand: input_brand.value,
+                    version: input_version.value,
+                    length: parseInt(input_length.value),
+                    lengthUnitId: parseInt(input_length_unit.value),
+                    width: parseInt(input_width.value),
+                    widthUnitId: parseInt(input_width_unit.value),
+                    height: parseInt(input_height.value),
+                    heightUnitId: parseInt(input_height_unit.value),
+                    weight: parseInt(input_weight.value),
+                    weightUnitId: parseInt(input_weight_unit.value)
                 }).then((r) => {
                     if (r.status == 'success') {
-                        console.log('//TODO');
+                        notify(r.status, r.message);
                     } else {
                         notify(r.status, r.message);
                     }
