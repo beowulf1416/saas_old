@@ -198,13 +198,13 @@ class ItemEditor extends HTMLElement {
 
                     <div id="substitutes" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                            <items-table hide-description hide-quantity></items-table>
+                            <items-table show_add hide-description hide-quantity></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
 
                     <div id="components" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                        <items-table hide-description></items-table>
+                        <items-table show_add hide-description></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
                 </form>
