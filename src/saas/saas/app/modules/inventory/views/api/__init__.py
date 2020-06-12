@@ -10,6 +10,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.inventory.item.get',
+        '/api/inventory/item/get'
+    )
+
+    config.add_route(
         'api.inventory.items.filter',
         '/api/inventory/items/filter'
     )

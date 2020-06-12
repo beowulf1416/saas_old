@@ -53,7 +53,66 @@ def view_inventory_items_uom(request):
         body={
             'uoms': uoms
         }
-    )    
+    )
+
+
+@view_config(
+    route_name='api.inventory.item.get',
+    request_method='POST',
+    renderer='json'
+)
+def view_inventory_item_get(request):
+    params = request.json_body
+    item_id = params['itemId'] if 'itemId' in params else None
+
+    if item_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Item Id is required'
+        )
+
+    services = request.services()
+    itemsStore = services['store.inventory.items']
+    item = {}
+    try:
+        r = itemsStore.get(item_id)
+        item = {
+            'id': r[0],
+            'active': r[1],
+            'created_ts': r[2],
+            'client_id': r[3],
+            'name': r[4],
+            'description': r[5],
+            'make': r[6],
+            'brand': r[7],
+            'model': r[8],
+            'version': r[9],
+            'sku': r[10],
+            'upc': r[11],
+            'length': r[12],
+            'length_unit_id': r[13],
+            'width': r[14],
+            'width_unit_id': r[15],
+            'height': r[16],
+            'height_unit_id': r[17],
+            'weight': r[18],
+            'weight_unit_id': r[19],
+            'perishable': r[20],
+            'hazardous': r[21]
+        }
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='item found',
+        body={
+            'item': item
+        }
+    )
+
 
 @view_config(
     route_name='api.inventory.items.filter',
