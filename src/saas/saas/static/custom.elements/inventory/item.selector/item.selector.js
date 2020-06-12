@@ -1,5 +1,5 @@
 'use strict';
-import { InventoryItem } from '/static/js/helpers/inventory/items.js';
+import { InventoryItem } from '/static/js/modules/inventory/items.js';
 import { notify } from '/static/js/ui/ui.js';
 
 class ItemSelector extends HTMLElement {

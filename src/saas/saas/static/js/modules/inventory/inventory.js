@@ -1,23 +1,20 @@
 'use strict';
-import { showInTab } from '/static/js/ui/ui.js';
-(function(){
-    console.log('inventory actions');
 
-    window.actions = window.actions ? window.actions : {};
-    window.actions['inventory.items'] = function() {
-        const client_id = window.clientId;
-        showInTab('inventory-items', 'Items', `<items-explorer client-id="${client_id}"></items-explorer>`);
-    };
+class Inventory {
 
-    window.actions['inventory.transactions.receiving'] = function() {
-        console.log('// TODO inventory.transactions.receiving');
-    };
-
-    window.actions['inventory.warehouses'] = function() {
-        console.log('// TODO inventory.warehouses');
-    };
-
-    window.actions['inventory.locations'] = function() {
-        console.log('// TODO inventory.locations');
-    };
-})();
+    static uoms(dimension = '') {
+        return fetch('/api/inventory/uom/all', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dimension: dimension
+            })
+        })
+        .then((r) => r.json());
+    }
+}
+export { Inventory };

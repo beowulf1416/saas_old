@@ -1,6 +1,6 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
-import { InventoryItem } from '/static/js/helpers/inventory/items.js';
+import { InventoryItem } from '/static/js/modules/inventory/items.js';
 
 class ItemsExplorer extends HTMLElement {
 

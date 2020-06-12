@@ -1,7 +1,7 @@
 'use strict';
-import { Inventory } from '/static/js/helpers/inventory/inventory.js';
-import { InventoryItem } from '/static/js/helpers/inventory/items.js';
-import { ItemsTable } from '/static/js/components/inventory/items.table.js';
+import { Inventory } from '/static/js/modules/inventory/inventory.js';
+import { InventoryItem } from '/static/js/modules/inventory/items.js';
+import { ItemsTable } from '/static/custom.elements/inventory/items.table/items.table.js';
 
 import { tabs } from '/static/js/ui/tabs.js';
 import { notify, showInView } from '/static/js/ui/ui.js';
