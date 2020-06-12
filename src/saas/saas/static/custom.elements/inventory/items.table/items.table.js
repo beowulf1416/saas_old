@@ -1,5 +1,4 @@
 'use strict';
-import { notify } from '/static/js/ui/ui.js';
 
 class ItemsTable extends HTMLElement {
 
@@ -26,6 +25,9 @@ class ItemsTable extends HTMLElement {
 
         this.setItems = this.setItems.bind(this);
         this.getItems = this.getItems.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     init(component, container) {
@@ -69,14 +71,6 @@ class ItemsTable extends HTMLElement {
         const footers = [];
         if (show_add) {
             footers.push('<td><a id="addItem" class="link-add" title="Add Item" href="#addItem">&plus;</a></td>');
-            footers.push('<td><input type="text" id="itemName" class="form-input-name" title="Item Name" placeholder="Item Name" /></td>');
-            if (!hide_description) {
-                footers.push('<td></td>');
-            }
-            if (!hide_qty) {
-                footers.push('<td><input type="number" id="itemQty" class="form-input-qty" title="Quantity" /></td>');
-                footers.push('<td><input type="text" id="itemUOM" class="form-input-uom" title="Unit of Measure" /></td>');
-            }
         }
         const footersall = footers.join('');
 
@@ -104,6 +98,22 @@ class ItemsTable extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const addItem = shadow.getElementById('addItem');
+        if (addItem) {
+            addItem.addEventListener('click', function(e) {
+                self.dispatchEvent(new CustomEvent('addItem',{
+                    bubbles: true,
+                    cancelable: true
+                }));
+                e.preventDefault();
+            });
+        }
     }
 
     setItems(items = [], filter = '') {
