@@ -50,11 +50,7 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/js/components/inventory/item.selector.js' 
-            },
-            {
-                'type': 'module',
-                'script': '/static/js/components/inventory/items.search.js'
+                'script': '/static/custom.elements/inventory/item.selector/item.selector.js' 
             },
             {
                 'type': 'module',
