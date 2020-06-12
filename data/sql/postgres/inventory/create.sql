@@ -16,6 +16,7 @@ set schema 'inventory';
 
 \ir tables/items.sql
 \ir tables/item_substitutes.sql
+\ir tables/item_components.sql
 \ir tables/item_categories.sql
 \ir tables/item_uom.sql
 \ir tables/item_locations.sql
