@@ -92,9 +92,6 @@ class ItemEditor extends HTMLElement {
                     <button type="button" class="btn btn-save" title="Save" tabindex="0">
                         <span class="material-icons">save</span>
                     </button>
-                    <button type="button" class="btn btn-items" title="Select Items" tabindex="0>
-                        <span class="material-icons">widgets</span>
-                    </button>
                 </div><!-- .toolbar -->
                 <form class="form-item-editor" role="tabs">
                     <input type="hidden" id="client_id" name="client_id" value="${client_id}" />
@@ -198,13 +195,13 @@ class ItemEditor extends HTMLElement {
 
                     <div id="substitutes" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                            <items-table show_add hide-description hide-quantity></items-table>
+                            <items-table id="item-substitutes" show-add hide-description hide-quantity></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
 
                     <div id="components" class="tab-panel" role="tabpanel">
                         <div class="tab-panel-content">
-                        <items-table show_add hide-description></items-table>
+                            <items-table id="item-components" show-add hide-description hide-quantity></items-table>
                         </div><!-- .tab-panel-content -->
                     </div><!-- .tab-panel -->
                 </form>
@@ -297,9 +294,23 @@ class ItemEditor extends HTMLElement {
             }
         });
 
-        const btnitems = shadow.querySelector('button.btn-items');
-        btnitems.addEventListener('click', function(e) {
-            showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+        const substitutes = shadow.getElementById('item-substitutes');
+        substitutes.addEventListener('addItem', function(e) {
+            const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+            selector.addEventListener('assign', function(e) {
+                console.log("assign substitutes");
+                console.log(e);
+            });
+            e.preventDefault();
+        });
+
+        const components = shadow.getElementById('item-components');
+        components.addEventListener('addItem', function(e) {
+            const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+            selector.addEventListener('assign', function(e) {
+                console.log("assign components");
+                console.log(e);
+            });
             e.preventDefault();
         });
     }
