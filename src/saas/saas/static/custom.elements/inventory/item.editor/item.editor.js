@@ -43,6 +43,7 @@ class ItemEditor extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._getClientId = this._getClientId.bind(this);
         this._getItemId = this._getItemId.bind(this);
+        this.setItem = this.setItem.bind(this);
 
         this._fetchData();
 
@@ -316,10 +317,29 @@ class ItemEditor extends HTMLElement {
     }
 
     setItem(item = {}) {
+        const shadow = this.shadowRoot;
 
+        shadow.getElementById('name').value = item.name;
+        shadow.getElementById('description').value = item.description;
+        shadow.getElementById('sku').value = item.sku;
+        shadow.getElementById('upc').value = item.upc;
+        shadow.getElementById('make').value = item.make;
+        shadow.getElementById('model').value = item.model;
+        shadow.getElementById('brand').value = item.brand;
+        shadow.getElementById('version').value = item.version;
+
+        shadow.getElementById('length').value = item.length;
+        shadow.getElementById('length-unit').value = item.length_unit_id;
+        shadow.getElementById('width').value = item.width;
+        shadow.getElementById('width-unit').value = item.width_unit_id;
+        shadow.getElementById('height').value = item.height;
+        shadow.getElementById('height-unit').value = item.height_unit_id;
+        shadow.getElementById('weight').value = item.weight;
+        shadow.getElementById('weight-unit').value = item.weight_unit_id;
     }
 
     _fetchData() {
+        const self = this;
         const shadow = this.shadowRoot;
 
         Inventory.uoms('length').then((r) => {
@@ -372,7 +392,7 @@ class ItemEditor extends HTMLElement {
         if (item_id != '') {
             InventoryItem.get(item_id).then((r) => {
                 if (r.status == 'success') {
-                    console.log(r);
+                    self.setItem(r.json.item);
                 } else {
                     notify(r.status, r.message);
                 }

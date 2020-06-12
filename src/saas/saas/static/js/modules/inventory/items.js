@@ -20,8 +20,19 @@ class InventoryItem {
         .then((r) => r.json());
     }
 
-    static get(clientId = '', itemId = '') {
-
+    static get(itemId = '') {
+        return fetch('/api/inventory/item/get', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                itemId: itemId
+            })
+        })
+        .then((r) => r.json());
     }
 
     static add(item = {}) {
