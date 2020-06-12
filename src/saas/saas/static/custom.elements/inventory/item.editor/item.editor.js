@@ -82,7 +82,7 @@ class ItemEditor extends HTMLElement {
         const self = this;
 
         const client_id = this.getAttribute('client-id');
-        const item_id = this.getAttribute('item-id');
+        const item_id = this.hasAttribute('item-id') ? this.getAttribute('item-id') : '';
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -369,8 +369,14 @@ class ItemEditor extends HTMLElement {
         });
 
         const item_id = this._getItemId();
-        if (item_id != null) {
-            console.log('//TODO');
+        if (item_id != '') {
+            InventoryItem.get(item_id).then((r) => {
+                if (r.status == 'success') {
+                    console.log(r);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         }
     }
 }
