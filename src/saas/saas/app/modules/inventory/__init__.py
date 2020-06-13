@@ -65,6 +65,10 @@ def includeme(config):
                 'script': '/static/custom.elements/inventory/item.editor/item.editor.js'
             },
             {
+                'type': 'module',
+                'script': '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.js'
+            },
+            {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
             }
