@@ -28,7 +28,11 @@ def includeme(config):
         'js': [
             {
                 'type': 'module',
-                'script': '/static/js/components/accounting/account.tree.js'
+                'script': '/static/js/modules/accounting/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/accounting/account.tree/account.tree.js'
             }
         ]
     }
