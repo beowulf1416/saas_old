@@ -1,5 +1,6 @@
 'use strict';
-import { showInTab } from '/static/js/ui/ui.js';
+import { showInTab, notify } from '/static/js/ui/ui.js';
+import { Accounts } from '/static/js/modules/accounting/accounts.js';
 
 class AccountTree extends HTMLElement {
 
@@ -25,10 +26,28 @@ class AccountTree extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.addAccounts = this.addAccounts.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
+        const self = this;
+
         const client_id = this.getAttribute('client-id');
+
+        const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
+        const tbody = [];
+        account_types.forEach((type) => {
+            tbody.push(`
+            <tbody id="${type}">
+                <tr class="header" role="row">
+                    <td colspan="2" aria-level="1"><span>${type}</span></td>
+                </tr>
+            </tbody>
+            `);
+        });
+        const tbodyall = tbody.join('');
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -44,10 +63,33 @@ class AccountTree extends HTMLElement {
                 </button>
             </div><!-- .toolbar -->
             <div class="table-wrapper">
+                <table class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
+                    <caption>Chart of Accounts</caption>
+                    <colgroup>
+                        <col class="col-name">
+                        <col class="col-amount">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    ${tbodyall}
+                </table>
             </div><!-- .table-wrapper -->
         `;
 
         container.appendChild(div);
+
+        Accounts.getTree(client_id).then((r) => {
+            if (r.status == 'success') {
+                const accounts = r.json.accounts;
+                self.addAccounts(accounts);
+            } else {
+                notify(r.status, r.message);
+            }
+        });
     }
 
     _attachEventHandlers() {
@@ -61,6 +103,21 @@ class AccountTree extends HTMLElement {
         });
     }
 
+    addAccounts(accounts = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
+        account_types.forEach((type) => {
+            const tbody = shadow.querySelector(`table.tbl-accounts tbody#${type}`);
+            const rows = shadow.querySelectorAll(`table.tbl-accounts tbody#${type} tr`);
+            rows.forEach((tr) => {
+                if (!tr.classList.contains('header')) {
+                    tbody.removeChild(tr);
+                }
+            });
+        });
+    }
 }
 customElements.define('account-tree', AccountTree);
 export { AccountTree };
