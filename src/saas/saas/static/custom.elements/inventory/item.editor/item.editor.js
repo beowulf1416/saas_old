@@ -239,6 +239,9 @@ class ItemEditor extends HTMLElement {
             const input_weight = shadow.getElementById('weight');
             const input_weight_unit = shadow.getElementById('weight-unit');
 
+            const substitutes = shadow.getElementById('item-substitutes');
+            const components = shadow.getElementById('item-components');
+
             if (client_id && item_id) {
                 InventoryItem.update({
                     clientId: client_id,
@@ -258,7 +261,9 @@ class ItemEditor extends HTMLElement {
                     height: parseInt(input_height.value),
                     heightUnitId: parseInt(input_height_unit.value),
                     weight: parseInt(input_weight.value),
-                    weightUnitId: parseInt(input_weight_unit.value)
+                    weightUnitId: parseInt(input_weight_unit.value),
+                    substitutes: substitutes.getItems(),
+                    components: components.getItems()
                 }).then((r) => {
                     if (r.status == 'success') {
                         console.log('//TODO');
@@ -284,7 +289,9 @@ class ItemEditor extends HTMLElement {
                     height: parseInt(input_height.value),
                     heightUnitId: parseInt(input_height_unit.value),
                     weight: parseInt(input_weight.value),
-                    weightUnitId: parseInt(input_weight_unit.value)
+                    weightUnitId: parseInt(input_weight_unit.value),,
+                    substitutes: substitutes.getItems(),
+                    components: components.getItems()
                 }).then((r) => {
                     if (r.status == 'success') {
                         notify(r.status, r.message);
@@ -336,6 +343,12 @@ class ItemEditor extends HTMLElement {
         shadow.getElementById('height-unit').value = item.height_unit_id;
         shadow.getElementById('weight').value = item.weight;
         shadow.getElementById('weight-unit').value = item.weight_unit_id;
+
+        const substitutes = shadow.getElementById('item-substitutes');
+        sustitutes.setItems(item.substitutes);
+
+        const components = shadow.getElementById('item-components');
+        components.setItems(item.components);
     }
 
     _fetchData() {
