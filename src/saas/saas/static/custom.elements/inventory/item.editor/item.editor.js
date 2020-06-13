@@ -325,8 +325,13 @@ class ItemEditor extends HTMLElement {
         components.addEventListener('addItem', function(e) {
             const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
             selector.addEventListener('assign', function(e) {
-                console.log("assign components");
-                console.log(e);
+                InventoryItem.get(itemId).then((r) => {
+                    if (r.status == 'success') {
+                        components.addItem(r.json.item);
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
             });
             e.preventDefault();
         });
