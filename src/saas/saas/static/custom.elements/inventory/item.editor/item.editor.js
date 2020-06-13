@@ -289,7 +289,7 @@ class ItemEditor extends HTMLElement {
                     height: parseInt(input_height.value),
                     heightUnitId: parseInt(input_height_unit.value),
                     weight: parseInt(input_weight.value),
-                    weightUnitId: parseInt(input_weight_unit.value),,
+                    weightUnitId: parseInt(input_weight_unit.value),
                     substitutes: substitutes.getItems(),
                     components: components.getItems()
                 }).then((r) => {
@@ -306,8 +306,17 @@ class ItemEditor extends HTMLElement {
         substitutes.addEventListener('addItem', function(e) {
             const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
             selector.addEventListener('assign', function(e) {
-                console.log("assign substitutes");
-                console.log(e);
+                const itemIds = e.detail.itemIds;
+                itemIds.forEach((itemId) => {
+                    InventoryItem.get(itemId).then((r) => {
+                        if (r.status == 'success') {
+                            substitutes.addItem(r.json.item);
+                        } else {
+                            notify(r.status, r.message);
+                        }
+                    });
+                });
+                e.preventDefault();
             });
             e.preventDefault();
         });
@@ -345,7 +354,7 @@ class ItemEditor extends HTMLElement {
         shadow.getElementById('weight-unit').value = item.weight_unit_id;
 
         const substitutes = shadow.getElementById('item-substitutes');
-        sustitutes.setItems(item.substitutes);
+        substitutes.setItems(item.substitutes);
 
         const components = shadow.getElementById('item-components');
         components.setItems(item.components);

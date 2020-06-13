@@ -40,6 +40,8 @@ class ItemsTable extends HTMLElement {
 
         const ths = [];
         const colgroups = [];
+        ths.push('<th></th>');
+        colgroups.push('<col class="col-remove">');
         ths.push(`<th class="col-select"></th>`);
         colgroups.push('<col class="col-select">');
 
@@ -143,6 +145,7 @@ class ItemsTable extends HTMLElement {
             }
 
             const tds = [];
+            tds.push(`<td><a class="link-item-remove" title="Remove Item" href="#" data-itemid="${item.id}">&minus;</a></td>`);
             tds.push(`<td class="col-select" role="gridcell"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
             tds.push(`<td class="col-name" role="gridcell"><span>${item_name}</span></td>`);
             if (!hide_sku) {
@@ -169,6 +172,14 @@ class ItemsTable extends HTMLElement {
             `;
 
             tbody.appendChild(tr);
+
+            // event handlers
+            const remove = tr.querySelector('.link-item-remove');
+            remove.addEventListener('click', function(e) {
+                console.log('here');
+                tbody.removeChild(remove.parentElement.parentElement);
+                e.preventDefault();
+            });
 
             // drag-drop support
             tr.addEventListener('dragstart', function(e) {
@@ -197,6 +208,55 @@ class ItemsTable extends HTMLElement {
             });
         });
         return items;
+    }
+
+    addItem(item = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const hide_sku = this.hasAttribute('hide-sku');
+        const hide_upc = this.hasAttribute('hide-upc');
+        const hide_description = this.hasAttribute('hide-description');
+        const hide_qty = this.hasAttribute('hide-quantity');
+
+        const tbody = shadow.querySelector('table.tbl-items tbody');
+
+        const tds = [];
+        tds.push(`<td><a class="link-item-remove" title="Remove Item" href="#" data-itemid="${item.id}">&minus;</a></td>`);
+        tds.push(`<td class="col-select" role="gridcell"><input type="radio" id="id${item.id}" name="selected" title="Select Item" value="${item.id}" /></td>`);
+        tds.push(`<td class="col-name" role="gridcell"><label for="id${item.id}">${item.name}</label></td>`);
+        if (!hide_sku) {
+            tds.push(`<td class="col-sku" role="gridcell">${item.sku}</td>`);
+        }
+        if (!hide_upc) {
+            tds.push(`<td class="col-upc" role="gridcell">${item.upc}</td>`);
+        }
+        if (!hide_description) {
+            tds.push(`<td class="col-description" role="gridcell">${item.desc}</td>`);
+        }
+        if (!hide_qty) {
+            tds.push(`<td class="col-qty" role="gridcell" data-qty="${item.quantity}">${item.quantity}</td>`);
+            tds.push(`<td class="col-uom" role="gridcell" data-uom="${item.uom}">${item.uom}</td>`);
+        }
+        const tdall = tds.join('');
+
+        const tr = document.createElement('tr');
+        tr.classList.add('row-item', 'draggable');
+        tr.setAttribute('role', 'row');
+        tr.setAttribute('data-itemid', item.id);
+        tr.innerHTML = `
+            ${tdall}
+        `;
+
+        tbody.appendChild(tr);
+        
+        // event handlers
+        const remove = tr.querySelector('.link-item-remove');
+        remove.addEventListener('click', function(e) {
+            console.log('here');
+            tbody.removeChild(remove.parentElement.parentElement);
+            e.preventDefault();
+        });
     }
 }
 customElements.define('items-table', ItemsTable);
