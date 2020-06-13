@@ -5,6 +5,8 @@ create or replace function item_components (
 returns table (
     id inventory.items.id%type,
     name inventory.items.name%type,
+    sku inventory.items.sku%type,
+    upc inventory.items.upc%type,
     quantity inventory.item_components.quantity%type,
     dimension_id inventory.item_components.dimension_id%type,
     unit_id inventory.item_components.unit_id%type
@@ -15,6 +17,8 @@ begin
     select
         a.component_item_id,
         b.name,
+        b.sku,
+        b.upc,
         a.quantity,
         a.dimension_id,
         a.unit_id
