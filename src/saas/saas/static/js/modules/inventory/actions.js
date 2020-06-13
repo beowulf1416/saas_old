@@ -14,10 +14,12 @@ import { showInTab } from '/static/js/ui/ui.js';
     };
 
     window.actions['inventory.warehouses'] = function() {
-        console.log('// TODO inventory.warehouses');
+        const client_id = window.clientId;
+        showInTab('inventory-warehouses', 'Warehouses', `<warehouse-explorer client-id="${client_id}"></warehouse-explorer>`);
     };
 
     window.actions['inventory.locations'] = function() {
+        const client_id = window.clientId;
         console.log('// TODO inventory.locations');
     };
 })();
