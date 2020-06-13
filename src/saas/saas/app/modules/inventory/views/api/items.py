@@ -107,7 +107,9 @@ def view_inventory_item_get(request):
             {
                 'id': r[0],
                 'active': r[1],
-                'name': r[2]
+                'name': r[2],
+                'upc': r[3],
+                'sku': r[4]
             }
             for r in result
         ]
