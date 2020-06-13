@@ -112,6 +112,19 @@ def view_inventory_item_get(request):
             for r in result
         ]
         item['substitutes'] = substitutes
+
+        result = itemsStore.components(client_id, item_id)
+        components = [
+            {
+                'id': r[0],
+                'name': r[1],
+                'quantity': r[2],
+                'dimensionId': r[3],
+                'unitId': r[4]
+            }
+            for r in result
+        ]
+        item['components'] = components
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
