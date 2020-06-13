@@ -1,4 +1,5 @@
 'use strict';
+import { showInTab } from '/static/js/ui/ui.js';
 
 class AccountTree extends HTMLElement {
 
@@ -22,17 +23,42 @@ class AccountTree extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
     }
 
     _init(container) {
+        const client_id = this.getAttribute('client-id');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="form-wrapper">
+                <form class="form-account-tree">
+                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+                </form>
+            </div><!-- .form-wrapper -->
+            <div class="toolbar" role="toolbar">
+                <button type="button" class="btn btn-new" title="New Account">
+                    <span class="material-icons">crete_new_folder</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="table-wrapper">
             </div><!-- .table-wrapper -->
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const btnnew = shadow.querySelector('button.btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('accounting-account-editor', 'New Account', `<account-editor client-id="${client_id}"></account-editor>`);
+            e.preventDefault();
+        });
     }
 
 }
