@@ -40,6 +40,7 @@ create domain slug
 \ir crm/create.sql
 \ir hr/create.sql
 \ir inventory/create.sql
+\ir purchasing/create.sql
 
 -- create functions and procedures
 \ir clients/sp.sql
@@ -49,5 +50,6 @@ create domain slug
 \ir crm/sp.sql
 \ir hr/sp.sql
 \ir inventory/sp.sql
+\ir purchasing/sp.sql
 
 set schema 'public';
