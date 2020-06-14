@@ -8,4 +8,5 @@ import { showInTab } from '/static/js/ui/ui.js';
         // const client_id = window.clientId;
         // showInTab('purchasing-dashboard', 'Dashboard', `<items-explorer client-id="${client_id}"></items-explorer>`);
         console.log('hr.dashboard');
+    }
 })();
