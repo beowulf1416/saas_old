@@ -7,6 +7,7 @@ set schema 'common';
 \ir tables/countries.sql
 \ir tables/currencies.sql
 
+\ir tables/uom.sql
 \ir tables/uom_length.sql
 \ir tables/uom_area.sql
 \ir tables/uom_volume.sql

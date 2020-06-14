@@ -19,6 +19,7 @@ insert into common.dimensions (id, name) values
 on conflict do nothing;
 
 -- units of measure
+\copy common.uom (id, dimension_id, name, symbol) from '../../csv/uom.csv' with delimiter ',' csv header quote '"';
 \copy common.uom_length (id, name, symbol) from '../../csv/uom_length.csv' with delimiter ',' csv header quote '"';
 \copy common.uom_area (id, name, symbol) from '../../csv/uom_area.csv' with delimiter ',' csv header quote '"';
 \copy common.uom_volume (id, name, symbol) from '../../csv/uom_volume.csv' with delimiter ',' csv header quote '"';
