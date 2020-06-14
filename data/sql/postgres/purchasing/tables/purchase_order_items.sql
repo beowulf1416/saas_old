@@ -10,5 +10,6 @@ create table if not exists purchase_order_items (
     constraint fk_purchase_order_items_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_purchase_order_items_2 foreign key (unit_id)
-        references common.uom (id) on delete restrict on update restrict
+        references common.uom (id) on delete restrict on update restrict,
+    constraint chk_purchase_order_items_1 check (quantity > 0)
 );

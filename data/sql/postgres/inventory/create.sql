@@ -27,6 +27,8 @@ set schema 'inventory';
 
 \ir tables/item_vendors.sql
 
+\ir tables/receiving.sql
+\ir tables/receiving_items.sql
 
 
 set schema 'public';
