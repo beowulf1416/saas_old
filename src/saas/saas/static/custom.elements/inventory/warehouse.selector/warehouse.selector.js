@@ -1,5 +1,6 @@
 'use strict';
-import { showInView } from '/static/js/ui/ui.js';
+import { showInView, notify } from '/static/js/ui/ui.js';
+import { InventoryWarehouse } from '/static/js/modules/inventory/warehouses.js';
 class WarehouseSelector extends HTMLElement {
 
     constructor() {
@@ -50,7 +51,19 @@ class WarehouseSelector extends HTMLElement {
 
         const btnwarehouse = shadow.getElementById('btn-warehouse');
         btnwarehouse.addEventListener('click', function(e) {
-            showInView('warehouse-selector', `<warehouse-selector-view client-id="${client_id}"></warehouse-selector-view>`);
+            const view = showInView('warehouse-selector', `<warehouse-selector-view client-id="${client_id}"></warehouse-selector-view>`);
+            view.addEventListener('selected', function(e) {
+                const warehouseId = e.detail.warehouseId;
+                InventoryWarehouse.get(client_id, warehouseId).then((r) => {
+                    if (r.status == 'success') {
+                        const warehouse = r.json.warehouse;
+                        const selector = shadow.getElementById('selector');
+                        selector.value = warehouse.name;
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            });
         });
     }
 }
