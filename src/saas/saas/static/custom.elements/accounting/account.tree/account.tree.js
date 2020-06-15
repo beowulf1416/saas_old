@@ -62,6 +62,9 @@ class AccountTree extends HTMLElement {
                 <button type="button" class="btn btn-new" title="New Account">
                     <span class="material-icons">create_new_folder</span>
                 </button>
+                <button type="button" class="btn btn-refresh" title="Refresh">
+                    <span class="material-icons">refresh</span>
+                </button>
             </div><!-- .toolbar -->
             <div class="table-wrapper">
                 <table class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
@@ -108,6 +111,19 @@ class AccountTree extends HTMLElement {
         const btnnew = shadow.querySelector('button.btn-new');
         btnnew.addEventListener('click', function(e) {
             showInTab('accounting-account-editor', 'New Account', `<account-editor client-id="${client_id}"></account-editor>`);
+            e.preventDefault();
+        });
+
+        const btnrefresh = shadow.querySelector('button.btn-refresh');
+        btnrefresh.addEventListener('click', function(e) {
+            Accounts.getTree(client_id).then((r) => {
+                if (r.status == 'success') {
+                    const accounts = r.json.accounts;
+                    self.addAccounts(accounts);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
             e.preventDefault();
         });
     }
