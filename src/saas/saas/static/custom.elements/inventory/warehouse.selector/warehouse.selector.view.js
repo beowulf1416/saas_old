@@ -124,6 +124,18 @@ class WarehouseSelectorView extends HTMLElement {
             `;
 
             tbody.appendChild(tr);
+
+            // event handlers
+            const check = tr.querySelector('.form-input-radio');
+            check.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        warehouseId: check.value
+                    }
+                }));
+            });
         });
     }
 }
