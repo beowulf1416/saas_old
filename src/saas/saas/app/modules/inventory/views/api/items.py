@@ -33,6 +33,8 @@ def view_inventory_items_uom(request):
             result = uomStore.weight()
         elif dimension == 'quantity':
             result = uomStore.quantity()
+        elif dimension == '':
+            result = uomStore.all()
 
         uoms = [
             { 
