@@ -54,3 +54,8 @@ def includeme(config):
         'api.inventory.warehouses.filter',
         '/api/inventory/warehouses/filter'
     )
+
+    config.add_route(
+        'api.inventory.warehouses.get',
+        '/api/inventory/warehouses/get'
+    )
