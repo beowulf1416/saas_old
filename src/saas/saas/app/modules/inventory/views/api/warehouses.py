@@ -147,7 +147,7 @@ def view_inventory_warehouses_get(request):
     try:
         warehouseStore = services['store.inventory.warehouses']
         r = warehouseStore.get(client_id, warehouse_id)
-        warehouses = {
+        warehouse = {
                 'id': r[0],
                 'active': r[1],
                 'name': r[2],
