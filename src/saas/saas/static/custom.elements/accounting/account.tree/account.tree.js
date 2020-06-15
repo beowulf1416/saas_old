@@ -1,7 +1,7 @@
 'use strict';
 import { showInTab, notify } from '/static/js/ui/ui.js';
 import { Accounts } from '/static/js/modules/accounting/accounts.js';
-
+import { Util } from '/static/js/util.js';
 class AccountTree extends HTMLElement {
 
     constructor() {
@@ -28,8 +28,10 @@ class AccountTree extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.addAccounts = this.addAccounts.bind(this);
         this._getClientId = this._getClientId.bind(this);
+        this._refresh = this._refresh.bind(this);
 
         this._attachEventHandlers();
+        this._refresh();
     }
 
     _init(container) {
@@ -85,15 +87,6 @@ class AccountTree extends HTMLElement {
         `;
 
         container.appendChild(div);
-
-        Accounts.getTree(client_id).then((r) => {
-            if (r.status == 'success') {
-                const accounts = r.json.accounts;
-                self.addAccounts(accounts);
-            } else {
-                notify(r.status, r.message);
-            }
-        });
     }
 
     _getClientId() {
@@ -116,21 +109,30 @@ class AccountTree extends HTMLElement {
 
         const btnrefresh = shadow.querySelector('button.btn-refresh');
         btnrefresh.addEventListener('click', function(e) {
-            Accounts.getTree(client_id).then((r) => {
-                if (r.status == 'success') {
-                    const accounts = r.json.accounts;
-                    self.addAccounts(accounts);
-                } else {
-                    notify(r.status, r.message);
-                }
-            });
+            self._refresh();
             e.preventDefault();
+        });
+    }
+
+    _refresh() {
+        const self = this;
+        const client_id = this._getClientId();
+
+        Accounts.getTree(client_id).then((r) => {
+            if (r.status == 'success') {
+                const accounts = r.json.accounts;
+                self.addAccounts(accounts);
+            } else {
+                notify(r.status, r.message);
+            }
         });
     }
 
     addAccounts(accounts = []) {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this._getClientId();
 
         const tbodys = [];
         const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
@@ -147,10 +149,21 @@ class AccountTree extends HTMLElement {
         });
 
         accounts.forEach((account) => {
+            const id = Util.generateId();
+
             const tr = document.createElement('tr');
             tr.setAttribute('tabindex', -1);
             tr.setAttribute('role', 'row');
             tr.setAttribute('aria-level', account.level - 1);
+            tr.setAttribute('aria-posinset', 1);
+            tr.setAttribute('aria-setsize', 1);
+            tr.setAttribute('aria-expanded', true);
+            tr.setAttribute('draggable', true);
+
+            tr.id = `id${id}`;
+            tr.dataset.typeid = account.type_id;
+            tr.dataset.acctid = account.id;
+
             tr.innerHTML = `
                 <td>
                     <span>${account.name}</span>
@@ -160,6 +173,58 @@ class AccountTree extends HTMLElement {
 
             const tbody = tbodys[account.type_id - 1];
             tbody.appendChild(tr);
+
+            // event handlers
+            tr.addEventListener('dragstart', function(e) {
+                e.dataTransfer.setData('text/plain', JSON.stringify({
+                    id: tr.id,
+                    typeid: tr.dataset.typeid
+                }));
+                tr.classList.add('drag-start');
+            });
+
+            tr.addEventListener('dragenter', function(e) {
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                if (data.typeid == tr.dataset.typeid) {
+                    tr.classList.add('drag-valid');
+                } else {
+                    tr.classList.add('drag-invalid');
+                }
+            });
+
+            tr.addEventListener('dragexit', function(e) {
+                tr.classList.remove('drag-valid', 'drag-invalid');
+            });
+
+            tr.addEventListener('dragover', function(e) {
+                e.preventDefault();
+
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                const tr = shadow.getElementById(data.id);
+                tr.classList.remove('drag-start');
+            });
+
+            tr.addEventListener('drop', function(e) {
+                e.preventDefault();
+
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                if (data.typeid == tr.dataset.typeid) {
+                    const tr_start = shadow.getElementById(data.id);
+                    console.log('dropped');
+
+                    const parentAcctId = tr.dataset.acctid;
+                    const acctId = tr_start.dataset.acctid;
+                    Accounts.assignParent(client_id, acctId, parentAcctId).then((r) => {
+                        if (r.status == 'success') {
+                            self._refresh();
+                        } else {
+                            notify(r.status, r.message);
+                        }
+                    });
+                } else {
+                    console.log('ignore invalid drop target');
+                }
+            });
         });
     }
 }

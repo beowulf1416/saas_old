@@ -13,3 +13,15 @@ table[role=treegrid] tr[aria-level="3"] > td:first-child {
 table[role=treegrid] tr[aria-level="4"] > td:first-child {
     padding-left: 6ch;
 }
+
+tr.drag-start {
+    opacity: 0.5;
+}
+
+tr.drag-valid {
+    color: green;
+}
+
+tr.drag-invalid {
+    color: red;
+}
