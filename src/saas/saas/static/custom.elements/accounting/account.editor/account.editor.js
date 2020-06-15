@@ -24,6 +24,11 @@ class AccountEditor extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._getClientId = this._getClientId.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -32,6 +37,11 @@ class AccountEditor extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" class="btn btn-save" title="Save">
+                    <span class="material-icons">save</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form class="form-account-editor">
                     <input type="hidden" id="client-id" name="client_id" title="Name" placeholder="Name" value="${client_id}" />
@@ -52,21 +62,45 @@ class AccountEditor extends HTMLElement {
             </div><!-- .form-wrapper -->
         `;
 
-        container.add(div);
+        container.appendChild(div);
 
-        Accounts.getAccountTypes().ten((r) => {
+        Accounts.getAccountTypes().then((r) => {
             if (r.status == 'success') {
                 const types = r.json.types;
                 const options = [];
                 types.forEach((type) => {
                     options.push(`<option value="${type.id}">${type.name}</option>`);
                 });
-                const select = div.getElementById('type');
+                const select = div.querySelector('#type');
                 select.innerHTML = options.join('');
             } else {
                 notify(r.status, r.message);
             }
          });
+    }
+
+    _getClientId() {
+        const shadow = this.shadowRoot;
+        const client = shadow.getElementById('client-id');
+        return client.value;
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this._getClientId();
+
+        const btnsave = shadow.querySelector('button.btn-save');
+        btnsave.addEventListener('click', function(e) {
+            const type = shadow.getElementById('type');
+            const name = shadow.getElementById('name');
+            const description = shadow.getElementById('description');
+            Accounts.add(client_id, type.value, name.value, description.value).then((r) => {
+                notify(r.status, r.message);             
+            });
+            e.preventDefault();
+        });
     }
 }
 customElements.define('account-editor', AccountEditor);
