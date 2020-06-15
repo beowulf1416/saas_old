@@ -14,6 +14,30 @@ table[role=treegrid] tr[aria-level="4"] > td:first-child {
     padding-left: 6ch;
 }
 
+table[role=treegrid] tr[aria-level="5"] > td:first-child {
+    padding-left: 8ch;
+}
+
+table[role=treegrid] tr[aria-level="6"] > td:first-child {
+    padding-left: 10ch;
+}
+
+table[role=treegrid] tr[aria-level="7"] > td:first-child {
+    padding-left: 12ch;
+}
+
+table[role=treegrid] tr[aria-level="8"] > td:first-child {
+    padding-left: 14ch;
+}
+
+table[role=treegrid] tr[aria-level="9"] > td:first-child {
+    padding-left: 16ch;
+}
+
+table[role=treegrid] tr[aria-level="10"] > td:first-child {
+    padding-left: 18ch;
+}
+
 tr.drag-start {
     opacity: 0.5;
 }
