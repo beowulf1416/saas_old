@@ -39,6 +39,7 @@ def includeme(config):
         '/api/inventory/items/substitutes/add'
     )
 
+    # warehouses
     config.add_route(
         'api.inventory.warehouses.add',
         '/api/inventory/warehouses/add'
@@ -47,4 +48,9 @@ def includeme(config):
     config.add_route(
         'api.inventory.warehouses.all',
         '/api/inventory/warehouses/all'
+    )
+
+    config.add_route(
+        'api.inventory.warehouses.filter',
+        '/api/inventory/warehouses/filter'
     )

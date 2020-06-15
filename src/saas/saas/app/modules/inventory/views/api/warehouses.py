@@ -80,3 +80,47 @@ def view_inventory_warehouses_all(request):
             'warehouses': warehouses
         }
     )
+
+
+@view_config(
+    route_name='api.inventory.warehouses.filter',
+    request_method='POST',
+    renderer='json'
+)
+def view_inventory_warehouses_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and Filter is required'
+        )
+
+    services = request.services()
+    warehouses = []
+    try:
+        warehouseStore = services['store.inventory.warehouses']
+        result = warehouseStore.filter(client_id, filter)
+        warehouses = [
+            {
+                'id': r[0],
+                'active': r[1],
+                'name': r[2],
+                'address': r[3]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} inventory warehouses found'.format(len(warehouses)),
+        body={
+            'warehouses': warehouses
+        }
+    )
