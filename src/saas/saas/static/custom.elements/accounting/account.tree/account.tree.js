@@ -27,6 +27,7 @@ class AccountTree extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.addAccounts = this.addAccounts.bind(this);
+        this._getClientId = this._getClientId.bind(this);
 
         this._attachEventHandlers();
     }
@@ -59,7 +60,7 @@ class AccountTree extends HTMLElement {
             </div><!-- .form-wrapper -->
             <div class="toolbar" role="toolbar">
                 <button type="button" class="btn btn-new" title="New Account">
-                    <span class="material-icons">crete_new_folder</span>
+                    <span class="material-icons">create_new_folder</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="table-wrapper">
@@ -92,9 +93,17 @@ class AccountTree extends HTMLElement {
         });
     }
 
+    _getClientId() {
+        const shadow = this.shadowRoot;
+        const client = shadow.getElementById('client-id');
+        return client.value;
+    }
+
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this._getClientId();
 
         const btnnew = shadow.querySelector('button.btn-new');
         btnnew.addEventListener('click', function(e) {
