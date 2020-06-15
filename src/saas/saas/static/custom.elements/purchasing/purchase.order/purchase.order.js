@@ -49,7 +49,7 @@ class PurchaseOrder extends HTMLElement {
 
                     <!-- delivery -->
                     <label for="warehouse">Delivery Instructions</label>
-                    <warehouse-selector client-id="${client-id}"></warehouse-selector>
+                    <warehouse-selector client-id="${client_id}"></warehouse-selector>
                 </form>
             </div><!-- .form-wrapper -->
         `;
@@ -57,3 +57,4 @@ class PurchaseOrder extends HTMLElement {
         container.appendChild(div);
     }
 }
+customElements.define('purchase-order', PurchaseOrder);
