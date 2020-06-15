@@ -22,6 +22,9 @@ class PurchaseOrder extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._getClientId = this._getClientId.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
     }
 
     _init(container) {
@@ -31,7 +34,7 @@ class PurchaseOrder extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
-                <button type="button" class="btn btn-save" title="Save">
+                <button id="btn-save" type="button" class="btn btn-save" title="Save">
                     <span class="material-icons">save</span>
                 </button>
             </div><!-- .toolbar -->
@@ -50,11 +53,58 @@ class PurchaseOrder extends HTMLElement {
                     <!-- delivery -->
                     <label for="warehouse">Delivery Instructions</label>
                     <warehouse-selector client-id="${client_id}"></warehouse-selector>
+
+                    <div class="table-wrapper">
+                        <table class="tbl-po-items">
+                            <caption>Purchase Order Items</caption>
+                            <colgroup>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>UOM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfooter>
+                                <tr>
+                                    <td>
+                                        <a id="link-add-item" class="link-add-item" title="Add Purchase Order Item" href="#">&plus;</a>
+                                    </td>
+                                </tr>
+                            </tfooter>
+                        </table>
+                    </div>,!-- .table-wrapper -->
                 </form>
             </div><!-- .form-wrapper -->
         `;
 
         container.appendChild(div);
+    }
+
+    _getClientId() {
+        const shadow = this.shadowRoot;
+        const client = shadow.getElementById('client-id');
+        return client.value;
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const save = shadow.getElementById('btn-save');
+        save.addEventListener('click', function(e) {
+            console.log('// TODO');
+        });
+
+        const add = shadow.getElementById('link-add-item');
+        add.addEventListener('click', function(e) {
+            console.log('// TODO');
+        });
     }
 }
 customElements.define('purchase-order', PurchaseOrder);
