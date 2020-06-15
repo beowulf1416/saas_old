@@ -49,5 +49,21 @@ class InventoryWarehouse {
         })
         .then((r) => r.json());
     }
+
+    static get(clientId = '', warehouseId = '') {
+        return fetch('/api/inventory/warehouses/get', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                warehouseId: warehouseId
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { InventoryWarehouse };
