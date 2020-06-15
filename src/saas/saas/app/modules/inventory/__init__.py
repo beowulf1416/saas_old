@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services import get_service
-from saas.app.modules.inventory.module import InventoryModule
+# from saas.app.modules.inventory.module import InventoryModule
 
 
 def includeme(config):
@@ -16,7 +16,7 @@ def includeme(config):
 
     services = get_service(None)
     modules = services['modules']
-    modules['inventory'] = InventoryModule()
+    # modules['inventory'] = InventoryModule()
 
     modules = services['modules']
     modules['inventory'] = {
@@ -50,10 +50,6 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/js/modules/inventory/items.js'
-            },
-            {
-                'type': 'module',
                 'script': '/static/custom.elements/inventory/items.explorer/items.explorer.js'
             },
             {
@@ -67,6 +63,14 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/inventory/warehouse.selector/warehouse.selector.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/inventory/warehouse.selector/warehouse.selector.view.js'
             },
             {
                 'external': 'true',
