@@ -42,8 +42,8 @@ class AccountTree extends HTMLElement {
         account_types.forEach((type) => {
             tbody.push(`
             <tbody id="${type}">
-                <tr class="header" role="row">
-                    <td colspan="2" aria-level="1"><span>${type}</span></td>
+                <tr class="header" role="row" aria-level="1" tab-index="-1">
+                    <th scope="row" colspan="2" aria-level="1"><span>${type}</span></th>
                 </tr>
             </tbody>
             `);
@@ -75,8 +75,8 @@ class AccountTree extends HTMLElement {
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Amount</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Amount</th>
                         </tr>
                     </thead>
                     ${tbodyall}
@@ -132,6 +132,7 @@ class AccountTree extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const tbodys = [];
         const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
         account_types.forEach((type) => {
             const tbody = shadow.querySelector(`table.tbl-accounts tbody#${type}`);
@@ -141,6 +142,24 @@ class AccountTree extends HTMLElement {
                     tbody.removeChild(tr);
                 }
             });
+
+            tbodys.push(tbody);
+        });
+
+        accounts.forEach((account) => {
+            const tr = document.createElement('tr');
+            tr.setAttribute('tabindex', -1);
+            tr.setAttribute('role', 'row');
+            tr.setAttribute('aria-level', account.level - 1);
+            tr.innerHTML = `
+                <td>
+                    <span>${account.name}</span>
+                </td>
+                <td></td>
+            `;
+
+            const tbody = tbodys[account.type_id - 1];
+            tbody.appendChild(tr);
         });
     }
 }

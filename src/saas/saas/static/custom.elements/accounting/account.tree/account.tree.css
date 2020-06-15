@@ -1,0 +1,15 @@
+table[role=treegrid] tr[aria-level="1"] > th {
+    text-align: start;
+}
+
+table[role=treegrid] tr[aria-level="2"] > td:first-child {
+    padding-left: 2ch;
+}
+
+table[role=treegrid] tr[aria-level="3"] > td:first-child {
+    padding-left: 4ch;
+}
+
+table[role=treegrid] tr[aria-level="4"] > td:first-child {
+    padding-left: 6ch;
+}
