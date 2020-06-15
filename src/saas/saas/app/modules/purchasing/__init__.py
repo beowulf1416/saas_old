@@ -25,6 +25,10 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/js/modules/purchasing/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/purchasing/purchase.order/purchase.order.js'
             }
         ]
     }
