@@ -9,9 +9,9 @@ create table if not exists receiving_items (
     constraint pk_receiving_items primary key (id),
     constraint fk_receiving_items_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
-    constraint fk_receiving_items_2 foreign key (receiveing_id)
+    constraint fk_receiving_items_2 foreign key (receiving_id)
         references inventory.receiving (id) on delete restrict on update restrict,
     constraint fk_receiving_items_3 foreign key (unit_id)
-        references common.uom (id) on delete restrict on update restrict
+        references common.uom (id) on delete restrict on update restrict,
     constraint chk_receiving_items_1 check (quantity > 0)
 );
