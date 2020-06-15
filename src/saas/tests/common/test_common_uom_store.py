@@ -35,3 +35,7 @@ class TestUOMStore(unittest.TestCase):
     def test_uom_quantity(self):
         result = self.uomStore.quantity()
         self.assertGreater(len(result), 0)
+
+    def test_uom_all(self):
+        result = self.uomStore.all()
+        self.assertGreater(len(result), 0)
