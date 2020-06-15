@@ -47,3 +47,13 @@ class TestInventoryWarehouseStore(unittest.TestCase):
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
+
+    def test_warehouse_get(self):
+        random_str = self.generate_random_str(10)
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        try:
+            warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+            warehouse = self.warehouseStore.get(client_id, warehouse_id)
+            self.assertEqual(warehouse_id, warehouse[0], '{0}'.format(warehouse))
+        except Exception as e:
+            self.fail(e)

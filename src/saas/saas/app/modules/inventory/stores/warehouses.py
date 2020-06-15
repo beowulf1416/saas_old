@@ -40,3 +40,12 @@ class WarehouseStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve warehouse records')
+
+    def get(self, clientId: UUID, warehouseId: UUID):
+        try:
+            [warehouse, ] = super(WarehouseStore, self).runProc('inventory.warehouses_get', 
+                [clientId, warehouseId])
+            return warehouse
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve warehouse records')
