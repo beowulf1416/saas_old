@@ -24,6 +24,7 @@ set schema 'inventory';
 \ir procs/warehouses/warehouse_add.sql
 \ir procs/warehouses/warehouses_all.sql
 \ir procs/warehouses/warehouses_filter.sql
+\ir procs/warehouses/warehouses_get.sql
 
 \ir procs/locations/location_add.sql
 
