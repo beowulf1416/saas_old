@@ -2,7 +2,9 @@
 
 function showInTab(id = '', label = '', content = '') {
     const tab = document.querySelector('tab-container');
-    tab.addTab(id, label, content);
+    if (tab) {
+        tab.addTab(id, label, content);
+    }
 }
 
 function showInView(label = '', content = '') {

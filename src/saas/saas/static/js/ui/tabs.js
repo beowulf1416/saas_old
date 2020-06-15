@@ -17,8 +17,14 @@ function tabs(elem) {
     });
 
     // set the first tab as active
-    elem.querySelector('[role=tabs] [role=tablist] a[role=tab]').classList.add('active');
-    elem.querySelector('[role=tabs] [role=tabpanel]').classList.add('active');
+    const tab = elem.querySelector('[role=tabs] [role=tablist] a[role=tab]');
+    if (tab) {
+        tab.classList.add('active');
+    }
+    const tp = elem.querySelector('[role=tabs] [role=tabpanel]');
+    if (tp) {
+        tp.classList.add('active');
+    }
 }
 
 export { tabs };
