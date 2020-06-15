@@ -45,3 +45,10 @@ class UOMStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve units of measure for quantity')
+
+    def all(self):
+        try:
+            return super(UOMStore, self).runProc('common.uom_all', [])
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve all units of measure')

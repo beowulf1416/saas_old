@@ -16,7 +16,7 @@ import json
 )
 def view_inventory_items_uom(request):
     params = request.json_body
-    dimension = params['dimension'] if 'dimension' in params else 'length'
+    dimension = params['dimension'] if 'dimension' in params else ''
 
     services = request.services()
     uoms = []
