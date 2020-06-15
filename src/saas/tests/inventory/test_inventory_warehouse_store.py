@@ -39,3 +39,11 @@ class TestInventoryWarehouseStore(unittest.TestCase):
             result = self.warehouseStore.all(client_id)
         except Exception as e:
             self.fail(e)
+
+    def test_warehouse_filter(self):
+        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        try:
+            result = self.warehouseStore.filter(client_id, '')
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
