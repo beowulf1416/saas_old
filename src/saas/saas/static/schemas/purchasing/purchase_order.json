@@ -23,6 +23,7 @@
             { "type": "null" }
         ]},
         "description": { "type": "string" },
+        "warehouseId": { "type": "string", "format": "uuid" },
         "items": {
             "type": "array",
             "items": { "$ref": "#/definitions/item" }
@@ -31,7 +32,8 @@
     "required": [
         "clientId",
         "purchaseOrderId",
-        "description"
+        "description",
+        "warehouseId"
     ],
     "additionalProperties": false
 }
