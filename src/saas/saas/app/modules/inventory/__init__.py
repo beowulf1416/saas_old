@@ -62,6 +62,10 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/inventory/warehouse.editor/warehouse.editor.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.js'
             },
             {
