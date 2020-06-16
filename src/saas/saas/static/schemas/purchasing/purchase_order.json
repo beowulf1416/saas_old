@@ -28,7 +28,11 @@
             { "type": "string", "format": "uuid" },
             { "type": "null" }
         ]},
-        "description": { "type": "string" }
+        "description": { "type": "string" },
+        "items": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/item" }
+        }
     },
     "required": [
         "clientId",
