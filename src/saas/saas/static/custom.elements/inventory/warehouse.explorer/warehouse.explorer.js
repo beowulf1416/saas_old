@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
+import { InventoryWarehouse } from '/static/js/modules/inventory/warehouses.js';
 class WarehouseExplorer extends HTMLElement {
 
     constructor() {
@@ -25,6 +26,7 @@ class WarehouseExplorer extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._getClientId = this._getClientId.bind(this);
+        this.addWarehouses = this.addWarehouses.bind(this);
 
         this._attachEventHandlers();
     }
@@ -47,7 +49,7 @@ class WarehouseExplorer extends HTMLElement {
                     <!-- .filter -->
                     <label for="filter">Warehouse</label>
                     <input type="search" id="filter" name="filter" class="form-input-search" title="Search for Warehouse" />
-                    <button type="button" class="btn btn-search" title="Search">
+                    <button id="btn-search" type="button" class="btn btn-search" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
@@ -56,11 +58,15 @@ class WarehouseExplorer extends HTMLElement {
                 <table class="tbl-warehouses">
                     <caption>Warehouses</caption>
                     <colgroup>
+                        <col class="col-edit">
+                        <col class="col-name">
+                        <col class="col-address">
                     </colgroup>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Name</th>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Address</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,9 +92,70 @@ class WarehouseExplorer extends HTMLElement {
 
         const client_id = self._getClientId();
 
+        const beginsearch = function(filter) {
+            InventoryWarehouse.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    self.addWarehouses(r.json.warehouses, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                beginsearch(filter.value);
+                e.preventDefault();
+            }
+        });
+
+        const btnsearch = shadow.getElementById('btn-search');
+        btnsearch.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
+
         const btnnew = shadow.getElementById('btn-new');
         btnnew.addEventListener('click', function(e) {
             showInTab('warehouse-editor', 'New Warehouse', `<warehouse-editor client-id="${client_id}"></warehouse-editor>`);
+        });
+    }
+
+    addWarehouses(warehouses = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = self._getClientId();
+
+        const tbody = shadow.querySelector('table.tbl-warehouses tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        warehouses.forEach((w) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a class="link-edit-warehouse" title="Edit Warehouse" href="#" data-name="${w.name}" data-id="${w.id}">
+                        <span class="material-icons">edit</span>
+                    </a>
+                </td>
+                <td>${w.name}</td>
+                <td>${w.address}</td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const edit = tr.querySelector('.link-edit-warehouse');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const id = edit.dataset.id;
+                const name = edit.dataset.name;
+                showInTab('warehouse-editor', `Warehouse ${name}`, 
+                    `<warehouse-editor client-id="${client_id}" warehouse-id="${id}"></warehouse-editor>`);
+            });
         });
     }
 }
