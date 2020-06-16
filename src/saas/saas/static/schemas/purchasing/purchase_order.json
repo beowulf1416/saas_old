@@ -2,12 +2,6 @@
     "$schema": "http://json-schema.org/schema#",
     "$id": "/static/schemas/purchasing/purchase_order.json",
     "definitions": {
-        "uom": {
-            "type": "object",
-            "properties": {
-                "id": { "type": "number" }
-            }
-        },
         "item": {
             "type": "object",
             "properties": {
@@ -17,7 +11,7 @@
                 ]},
                 "description": { "type": "string" },
                 "quantity": { "type": "number" },
-                "uom": { "$ref": "#/definitions/uom" }
+                "uom": { "type": "number" }
             }
         }
     },
@@ -36,7 +30,7 @@
     },
     "required": [
         "clientId",
-        "itemId",
+        "purchaseOrderId",
         "description"
     ],
     "additionalProperties": false
