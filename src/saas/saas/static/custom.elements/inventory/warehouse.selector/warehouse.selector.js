@@ -25,6 +25,7 @@ class WarehouseSelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.getWarehouseId = this.getWarehouseId.bind(this);
 
         this._attachEventHandlers();
     }
@@ -36,6 +37,8 @@ class WarehouseSelector extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+            <input type="hidden" id="warehouse-id" name="warehouse_id" value="${warehouse_id}" />
+
             <input type="text" id="selector" name="selector" class="form-input-selector" readonly />
             <button id="btn-warehouse" type="button" class="btn" title="Select Warehouse">...</button>
         `;
@@ -49,15 +52,19 @@ class WarehouseSelector extends HTMLElement {
         const client = shadow.getElementById('client-id');
         const client_id = client.value;
 
+        const warehouse = shadow.getElementById('warehouse-id');
+
         const btnwarehouse = shadow.getElementById('btn-warehouse');
         btnwarehouse.addEventListener('click', function(e) {
             const view = showInView('Warehouse Selector', `<warehouse-selector-view client-id="${client_id}"></warehouse-selector-view>`);
             view.addEventListener('selected', function(e) {
                 const warehouseId = e.detail.warehouseId;
+                warehouse.value = warehouseId;
                 InventoryWarehouse.get(client_id, warehouseId).then((r) => {
                     if (r.status == 'success') {
                         const warehouse = r.json.warehouse;
                         const selector = shadow.getElementById('selector');
+
                         selector.value = warehouse.name;
                     } else {
                         notify(r.status, r.message);
@@ -65,6 +72,13 @@ class WarehouseSelector extends HTMLElement {
                 });
             });
         });
+    }
+
+    getWarehouseId() {
+        const self = this;
+        const shadow = this.shadowRoot;
+        const warehouse = shadow.getElementById('warehouse-id');
+        return warehouse.value;
     }
 }
 customElements.define('warehouse-selector', WarehouseSelector);
