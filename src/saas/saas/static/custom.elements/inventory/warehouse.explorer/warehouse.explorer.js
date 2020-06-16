@@ -32,7 +32,7 @@ class WarehouseExplorer extends HTMLElement {
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
                 <button type="button" class="btn btn-new" title="New Warehouse">
-                    <span class="material-icons">new</span>
+                    <span class="material-icons">home_work</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
