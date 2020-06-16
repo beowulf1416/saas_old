@@ -27,8 +27,10 @@ class WarehouseEditor extends HTMLElement {
         this._getClientId = this._getClientId.bind(this);
         this._getWarehouseId = this._getWarehouseId.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._prefetch = this._prefetch.bind(this);
 
         this._attachEventHandlers();
+        this._prefetch();
     }
 
     _init(container) {
@@ -89,6 +91,29 @@ class WarehouseEditor extends HTMLElement {
                 notify(r.status, r.message);
             });
         });
+    }
+
+    _prefetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = self._getClientId();
+        const warehouse_id = self._getWarehouseId();
+        if (warehouse_id != '' && client_id != '') {
+            InventoryWarehouse.get(client_id, warehouse_id).then((r) => {
+                if (r.status == 'success') {
+                    const warehouse = r.json.warehouse;
+                    
+                    const name = shadow.getElementById('name');
+                    name.value = warehouse.name;
+
+                    const address = shadow.getElementById('address');
+                    address.value = warehouse.address;
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('warehouse-editor', WarehouseEditor);
