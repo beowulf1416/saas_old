@@ -1,6 +1,7 @@
 'use strict';
 import { Inventory } from '/static/js/modules/inventory/inventory.js';
 import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
+import { notify } from '/static/js/ui/ui.js';
 class PurchaseOrder extends HTMLElement {
 
     constructor() {
@@ -28,6 +29,7 @@ class PurchaseOrder extends HTMLElement {
         this._getPOId = this._getPOId.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._prefetch = this._prefetch.bind(this);
+        this._getWarehouseId = this._getWarehouseId.bind(this);
 
         this._attachEventHandlers();
         this._prefetch();
@@ -81,13 +83,13 @@ class PurchaseOrder extends HTMLElement {
                             </thead>
                             <tbody>
                             </tbody>
-                            <tfooter>
+                            <tfoot>
                                 <tr>
                                     <td>
                                         <a id="link-add-item" class="link-add-item" title="Add Purchase Order Item" href="#">&plus;</a>
                                     </td>
                                 </tr>
-                            </tfooter>
+                            </tfoot>
                         </table>
                     </div><!-- .table-wrapper -->
                 </form>
@@ -121,6 +123,12 @@ class PurchaseOrder extends HTMLElement {
         return po.value;
     }
 
+    _getWarehouseId() {
+        const shadow = this.shadowRoot;
+        const warehouse = shadow.querySelector('warehouse-selector');
+        return warehouse.getWarehouseId();
+    }
+
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
@@ -129,10 +137,11 @@ class PurchaseOrder extends HTMLElement {
         save.addEventListener('click', function(e) {
             const client_id = self._getClientId();
             const po_id = self._getPOId();
+            const warehouseId = self._getWarehouseId();
 
-            const description = shadow.getElementById('description');
+            const description = shadow.getElementById('description').value;
             
-            const trs = shadow.querySelectorAll('table.tbl-po-items tbody');
+            const trs = shadow.querySelectorAll('table.tbl-po-items tbody tr');
             const items = [];
             trs.forEach((tr) => {
                 const item_desc = tr.querySelector('.form-input-description').value;
@@ -141,8 +150,8 @@ class PurchaseOrder extends HTMLElement {
 
                 items.push({
                     description: item_desc,
-                    quantity: item_qty,
-                    uom: item_uom
+                    quantity: parseFloat(item_qty),
+                    uom: parseInt(item_uom)
                 });
             });
 
@@ -150,6 +159,7 @@ class PurchaseOrder extends HTMLElement {
                 clientId: client_id,
                 purchaseOrderId: po_id,
                 description: description,
+                warehouseId: warehouseId,
                 items: items
             }).then((r) => {
                 notify(r.status, r.message);
@@ -158,7 +168,7 @@ class PurchaseOrder extends HTMLElement {
 
         const add = shadow.getElementById('link-add-item');
         add.addEventListener('click', function(e) {
-            console.log('// TODO');
+            e.preventDefault();
 
             const uoms = self._uoms;
             const options = [];
@@ -187,7 +197,13 @@ class PurchaseOrder extends HTMLElement {
             const tbody = shadow.querySelector('table.tbl-po-items tbody');
             tbody.appendChild(tr);
 
-            e.preventDefault();
+            // event handlers
+            const remove = tr.querySelector('.link-remove-item');
+            remove.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                tbody.removeChild(remove);
+            });
         });
     }
 }
