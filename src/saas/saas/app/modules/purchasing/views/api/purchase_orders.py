@@ -9,7 +9,7 @@ import json
 
 
 @view_config(
-    route_name='api.purchasing.purchase.orders.add',
+    route_name='api.purchasing.purchase.orders.save',
     request_method='POST',
     renderer='json'
 )

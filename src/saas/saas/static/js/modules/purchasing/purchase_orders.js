@@ -10,9 +10,7 @@ class PurchaseOrders {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                order: order
-            })
+            body: JSON.stringify(order)
         })
         .then((r) => r.json());
     }
