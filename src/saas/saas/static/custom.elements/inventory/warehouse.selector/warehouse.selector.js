@@ -51,7 +51,7 @@ class WarehouseSelector extends HTMLElement {
 
         const btnwarehouse = shadow.getElementById('btn-warehouse');
         btnwarehouse.addEventListener('click', function(e) {
-            const view = showInView('warehouse-selector', `<warehouse-selector-view client-id="${client_id}"></warehouse-selector-view>`);
+            const view = showInView('Warehouse Selector', `<warehouse-selector-view client-id="${client_id}"></warehouse-selector-view>`);
             view.addEventListener('selected', function(e) {
                 const warehouseId = e.detail.warehouseId;
                 InventoryWarehouse.get(client_id, warehouseId).then((r) => {
