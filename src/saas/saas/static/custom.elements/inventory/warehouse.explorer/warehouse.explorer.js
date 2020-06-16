@@ -1,5 +1,5 @@
 'use strict';
-
+import { notify, showInTab } from '/static/js/ui/ui.js';
 class WarehouseExplorer extends HTMLElement {
 
     constructor() {
@@ -22,6 +22,11 @@ class WarehouseExplorer extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._getClientId = this._getClientId.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -31,7 +36,7 @@ class WarehouseExplorer extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
-                <button type="button" class="btn btn-new" title="New Warehouse">
+                <button id="btn-new" type="button" class="btn btn-new" title="New Warehouse">
                     <span class="material-icons">home_work</span>
                 </button>
             </div><!-- .toolbar -->
@@ -67,6 +72,24 @@ class WarehouseExplorer extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _getClientId() {
+        const shadow = this.shadowRoot;
+        const client = shadow.getElementById('client-id');
+        return client.value;
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = self._getClientId();
+
+        const btnnew = shadow.getElementById('btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('warehouse-editor', 'New Warehouse', `<warehouse-editor client-id="${client_id}"></warehouse-editor>`);
+        });
     }
 }
 customElements.define('warehouse-explorer', WarehouseExplorer);
