@@ -1,5 +1,6 @@
 'use strict';
 import { Inventory } from '/static/js/modules/inventory/inventory.js';
+import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
 class PurchaseOrder extends HTMLElement {
 
     constructor() {
@@ -126,13 +127,33 @@ class PurchaseOrder extends HTMLElement {
 
         const save = shadow.getElementById('btn-save');
         save.addEventListener('click', function(e) {
-            console.log('// TODO');
+            const client_id = self._getClientId();
             const po_id = self._getPOId();
-            if (po_id == '') {
 
-            } else {
+            const description = shadow.getElementById('description');
+            
+            const trs = shadow.querySelectorAll('table.tbl-po-items tbody');
+            const items = [];
+            trs.forEach((tr) => {
+                const item_desc = tr.querySelector('.form-input-description').value;
+                const item_qty = tr.querySelector('.form-input-qty').value;
+                const item_uom = tr.querySelector('.form-input-uom').value
 
-            }
+                items.push({
+                    description: item_desc,
+                    quantity: item_qty,
+                    uom: item_uom
+                });
+            });
+
+            PurchaseOrders.save({
+                clientId: client_id,
+                purchaseOrderId: po_id,
+                description: description,
+                items: items
+            }).then((r) => {
+                notify(r.status, r.message);
+            });
         });
 
         const add = shadow.getElementById('link-add-item');
@@ -157,7 +178,7 @@ class PurchaseOrder extends HTMLElement {
                 <td><input type="text" name="description" class="form-input-description" title="Description" placeholder="Description" /></td>
                 <td><input type="number" name="quantity" class="form-input-qty" title="Quantity" /></td>
                 <td>
-                    <select name="uom" class="form-class-uom" title="Unit of Measure">
+                    <select name="uom" class="form-input-uom" title="Unit of Measure">
                         ${optionsall}
                     </select>
                 </td>
