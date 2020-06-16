@@ -5,13 +5,13 @@
         "uom": {
             "type": "object",
             "properties": {
-                "id": { "type": "string" }
+                "id": { "type": "number" }
             }
         },
         "item": {
             "type": "object",
             "properties": {
-                "id": { "type": "string" },
+                "id": { "type": "string", "format": "uuid" },
                 "quantity": { "type": "number" },
                 "uom": { "$ref": "#/definitions/uom" }
             }
@@ -19,9 +19,9 @@
     },
     "type": "object",
     "properties": {
-        "clientId": { "type": "string" },
+        "clientId": { "type": "string", "format": "uuid"  },
         "itemId": { "anyOf": [
-            { "type": "string" },
+            { "type": "string", "format": "uuid" },
             { "type": "null" }
         ]},
         "name": { "type": "string" },
