@@ -71,8 +71,8 @@ class UsersTable extends HTMLElement {
                     <a title="Add User" id="addUser" class="nav-link link-add-user" href="#addUser">&plus;</a>
                 </th>
             `;
-            const tfooter = div.querySelector('table.tbl-users tfoot');
-            tfooter.appendChild(tr);
+            const tfoot = div.querySelector('table.tbl-users tfoot');
+            tfoot.appendChild(tr);
 
             const addUser = tr.querySelector('#addUser');
             addUser.addEventListener('click', function(e) {

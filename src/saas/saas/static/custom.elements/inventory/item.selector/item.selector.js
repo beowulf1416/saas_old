@@ -70,7 +70,7 @@ class ItemSelector extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td>
                                 <a class="link-assign-item" title="Assign Items" href="#">
@@ -78,7 +78,7 @@ class ItemSelector extends HTMLElement {
                                 </a>
                             </td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;

@@ -71,8 +71,8 @@ class WarehouseExplorer extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
-                    </tfooter>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;

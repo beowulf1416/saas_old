@@ -58,7 +58,7 @@ class RoleSelector extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td>
                                 <a class="link-assign-role" title="Assign Roles" href="#">
@@ -66,7 +66,7 @@ class RoleSelector extends HTMLElement {
                                 </a>
                             </td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;

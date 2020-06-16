@@ -69,11 +69,11 @@ class ClientUsers extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td><a title="Add User" class="link-user-add" href="#">&plus;</a></td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
                 <table class="tbl-roles">
                     <caption>Roles</caption>
@@ -87,11 +87,11 @@ class ClientUsers extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td><a title="Add Role" class="link-role-add" href="#">&plus;</a></td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;

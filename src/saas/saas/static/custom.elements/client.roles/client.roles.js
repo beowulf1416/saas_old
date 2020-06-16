@@ -78,11 +78,11 @@ class ClientRoles extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td><a title="Add Role" class="link-role-add" href="#">&plus;</a></td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
                 <table class="tbl-permissions">
                     <caption>Permissions</caption>
@@ -96,11 +96,11 @@ class ClientRoles extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td><a title="Add Permission" class="link-permission-add" href="#">&plus;</a></td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;

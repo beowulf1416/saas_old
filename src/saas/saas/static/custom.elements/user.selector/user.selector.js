@@ -57,7 +57,7 @@ class UserSelector extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             <td>
                                 <a class="link-assign-user" title="Assign Users" href="#">
@@ -65,7 +65,7 @@ class UserSelector extends HTMLElement {
                                 </a>
                             </td>
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .wrapper -->
         `;

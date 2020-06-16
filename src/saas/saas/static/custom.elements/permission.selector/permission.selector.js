@@ -65,11 +65,11 @@ class PermissionSelector extends HTMLElement {
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfooter>
+                    <tfoot>
                         <tr>
                             ${tdfooterall}
                         </tr>
-                    </tfooter>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
