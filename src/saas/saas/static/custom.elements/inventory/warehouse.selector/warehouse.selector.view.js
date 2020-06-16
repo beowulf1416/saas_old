@@ -119,8 +119,8 @@ class WarehouseSelectorView extends HTMLElement {
         warehouses.forEach((w) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><input type="radio" name="selected" class="form-input-radio" value="${w.id}" /></td>
-                <td><label for="${w.id}">${w.name}</label></td>
+                <td><input type="radio" id="id${w.id}" name="selected" class="form-input-radio" value="${w.id}" /></td>
+                <td><label for="id${w.id}">${w.name}</label></td>
             `;
 
             tbody.appendChild(tr);
