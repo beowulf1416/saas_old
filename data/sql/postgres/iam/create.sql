@@ -4,6 +4,8 @@
 create schema if not exists iam;
 set schema 'iam';
 
+\echo '** IAM **'
+
 
 /* tables */
 \ir tables/users.sql

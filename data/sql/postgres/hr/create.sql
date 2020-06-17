@@ -4,6 +4,7 @@
 create schema if not exists hr;
 set schema 'hr';
 
+\echo '** HR **'
 
 /** tables **/
 \ir tables/employees.sql

@@ -4,6 +4,7 @@
 create schema if not exists inventory;
 set schema 'inventory';
 
+\echo '** INVENTORY **'
 
 /** tables **/
 \ir tables/warehouses.sql

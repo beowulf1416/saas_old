@@ -5,6 +5,9 @@ create schema if not exists crm;
 set schema 'crm';
 
 
+\echo '** CRM **'
+
+
 \ir tables/organizations.sql
 
 \ir tables/people.sql

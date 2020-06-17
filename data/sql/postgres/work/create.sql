@@ -4,6 +4,7 @@
 create schema if not exists work;
 set schema 'work';
 
+\echo '** WORK **'
 
 /** tables **/
 
