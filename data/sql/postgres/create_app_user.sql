@@ -36,3 +36,8 @@ grant execute on all functions in schema hr to saas_app_usr;
 grant all privileges on all tables in schema inventory to saas_app_usr;
 grant usage on schema inventory to saas_app_usr;
 grant execute on all functions in schema inventory to saas_app_usr;
+
+/** purchasing **/
+grant all privileges on all tables in schema purchasing to saas_app_usr;
+grant usage on schema purchasing to saas_app_usr;
+grant execute on all functions in schema purchasing to saas_app_usr;
