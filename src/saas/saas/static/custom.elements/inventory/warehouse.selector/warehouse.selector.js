@@ -37,7 +37,7 @@ class WarehouseSelector extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-            <input type="hidden" id="warehouse-id" name="warehouse_id" value="${warehouse_id}" />
+            <input type="hidden" id="warehouse-id" name="warehouse_id" value="" />
 
             <input type="text" id="selector" name="selector" class="form-input-selector" readonly />
             <button id="btn-warehouse" type="button" class="btn" title="Select Warehouse">...</button>

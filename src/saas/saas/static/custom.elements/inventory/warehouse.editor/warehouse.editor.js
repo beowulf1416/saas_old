@@ -35,7 +35,7 @@ class WarehouseEditor extends HTMLElement {
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
-        const warehouse_id = this.getAttribute('warehouse-id');
+        const warehouse_id = this.hasAttribute('warehouse-id') ? this.getAttribute('warehouse-id') : '';
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
