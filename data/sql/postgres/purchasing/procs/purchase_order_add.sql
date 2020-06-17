@@ -16,7 +16,10 @@ begin
         p_client_id,
         p_description,
         p_warehouse_id
-    );
+    )
+    returning id into t_po_id;
+
+    return t_po_id;
 end
 $$
 language plpgsql;
