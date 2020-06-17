@@ -57,7 +57,20 @@ class PurchaseOrderStore(BaseStore):
                 #     item['uom']
                 # ))
             super(PurchaseOrderStore, self).commit(cn)
+
+            return purchase_order_id
         except Exception as e:
             super(PurchaseOrderStore, self).rollback(cn)
             log.error(e)
             raise Exception('Unable to save purchase order')
+
+    def filter(self, client_id: uuid, filter: str):
+        try:
+            result = super(PurchaseOrderStore, self).runProc('purchasing.purchase_orders_filter', [
+                client_id,
+                filter
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve purchase orders')
