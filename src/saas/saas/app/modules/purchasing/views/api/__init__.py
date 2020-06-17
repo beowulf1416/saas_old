@@ -9,3 +9,8 @@ def includeme(config):
         'api.purchasing.purchase.orders.save',
         '/api/purchasing/purchase/orders/save'
     )
+
+    config.add_route(
+        'api.purchasing.purchase.orders.filter',
+        '/api/purchasing/purchase/orders/filter'
+    )
