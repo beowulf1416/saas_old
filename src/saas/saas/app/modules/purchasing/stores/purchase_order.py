@@ -68,7 +68,7 @@ class PurchaseOrderStore(BaseStore):
         try:
             result = super(PurchaseOrderStore, self).runProc('purchasing.purchase_orders_filter', [
                 client_id,
-                filter
+                '%{0}%'.format(filter)
             ])
             return result
         except Exception as e:
