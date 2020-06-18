@@ -25,6 +25,7 @@ class PurchaseOrders extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._getClientId = this._getClientId.bind(this);
+        this.setPurchaseOrders = this.setPurchaseOrders.bind(this);
 
         this._attachEventHandlers();
     }
@@ -51,6 +52,24 @@ class PurchaseOrders extends HTMLElement {
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
+            <div class="table-wrapper">
+                <table class="tbl-po">
+                    <caption>Purchase Orders</caption>
+                    <colgroup>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div><!-- .table-wrapper -->
         `;
 
         container.appendChild(div);
@@ -69,7 +88,13 @@ class PurchaseOrders extends HTMLElement {
         const client_id = this._getClientId();
 
         const beginsearch = function(filter) {
-            console.log('// TODO');
+            PurchaseOrders.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    self.setPurchaseOrders(r.json.purchaseOrders, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         };
 
         const filter = shadow.getElementById('filter');
@@ -83,6 +108,36 @@ class PurchaseOrders extends HTMLElement {
         const btnfilter = shadow.getElementById('btn-filter');
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
+        });
+    }
+
+    setPurchaseOrders(orders = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = self._getClientId();
+
+        const tbody = shadow.querySelector('table.tbl-po tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        orders.forEach((o) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><a class="link-edit-pos" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
+                <td>${o.created_ts}</td>
+                <td>${o.description}</td>
+            `;
+            tbody.appendChild(tr);
+
+            // event handlers
+            const edit = tr.querySelector('.link-edit-post');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+                const po_id = edit.dataset.id;
+                showInTab('purchase-order', 'Purchase Order', `<purchase-order client-id="${client_id}" po-id="${po_id}"></purchase-order>`);
+            });
         });
     }
 }
