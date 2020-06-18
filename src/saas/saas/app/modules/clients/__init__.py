@@ -23,5 +23,21 @@ def includeme(config):
                 'icon': '<span class="material-icons">business</span>',
                 'template': 'saas.app.modules.clients:templates/module.html'
             }
+        ],
+        'views': [],
+        'css': [],
+        'js': [
+            {
+                'type': 'module',
+                'script': '/static/js/modules/clients/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/clients/organization.tree/organization.tree.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/clients/organization.editor/organization.editor.js'
+            }
         ]
     }
