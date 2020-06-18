@@ -10,6 +10,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.clients.organizations.update',
+        '/api/clients/organizations/update'
+    )
+
+    config.add_route(
         'api.clients.organizations.tree',
         '/api/clients/organizations/tree'
     )

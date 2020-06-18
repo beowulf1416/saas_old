@@ -12,13 +12,14 @@ import pyramid.httpexceptions as exception
 )
 def view_clients_organizations_add(request):
     params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
     name = params['name'] if 'name' in params else None
     description = params['description'] if 'description' in params else None
 
-    if name is None or description is None:
+    if client_id is None or name is None or description is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Organization name and description is required'
+            explanation='Client Id, Organization name and description is required'
         )
 
     session = request.session
@@ -39,6 +40,45 @@ def view_clients_organizations_add(request):
         detail='Client added',
         body={'message': 'Client Organization added'}
     )
+
+
+@view_config(
+    route_name='api.clients.organizations.update',
+    request_method='POST',
+    renderer='json'
+)
+def view_clients_organizations_update(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    org_id = params['organizationId'] if 'organizationId' in params else None
+    name = params['name'] if 'name' in params else None
+    description = params['description'] if 'description' in params else None
+
+    if client_id is None or org_id is None or name is None or description is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, Organization Id, name and description is required'
+        )
+
+    session = request.session
+    client_id = session['client']
+
+    services = request.services()
+    try:
+        orgStore = services['store.clients.organizations']
+        result = orgStore.update(client_id, org_id, name, description)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+        
+    raise exception.HTTPOk(
+        detail='Client Organization updated',
+        body={'message': 'Client Organization updated'}
+    )
+
 
 @view_config(
     route_name='api.clients.organizations.tree',
