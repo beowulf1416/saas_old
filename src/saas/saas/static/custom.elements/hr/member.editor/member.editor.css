@@ -1,0 +1,4 @@
+.form-member .form-group-name {
+    display: grid;
+    grid-template-columns: min-content auto min-content auto min-content auto;
+}

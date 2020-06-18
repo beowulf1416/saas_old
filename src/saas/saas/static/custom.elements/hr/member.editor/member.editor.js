@@ -38,6 +38,28 @@ class MemberEditor extends HTMLElement {
             <div class="form-wrapper">
                 <form class="form-member">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+
+                    <div class="form-group form-group-name">
+                        <!-- first name -->
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first_name" class="form-input-first" title="First Name" placeholder="First Name" />
+
+                        <!-- middle name -->
+                        <label for="middle-name">Middle Name</label>
+                        <input type="text" id="middle-name" name="middle_name" class="form-input-middle" title="Middle Name" placeholder="Middle Name" />
+
+                        <!-- last name -->
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last_name" class="form-input-last" title="Last Name" placeholder="Last Name" />
+                    </div><!-- .form-group -->
+
+                    <!-- prefix -->
+                    <label for="prefix">Prefix</label>
+                    <input type="text" id="prefix" name="prefix" class="form-input-prefix" title="Prefix" placeholder="Prefix" />
+
+                    <!-- suffix -->
+                    <label for="suffix">Suffix</label>
+                    <input type="suffix" id="suffix" name="suffix" class="form-input-suffix" title="Suffix" placeholder="Suffix" />
                 </form>
             </div><!-- .form-wrapper -->
         `;
