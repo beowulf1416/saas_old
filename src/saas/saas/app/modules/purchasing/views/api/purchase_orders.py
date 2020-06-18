@@ -84,6 +84,6 @@ def api_purchasing_po_filter(request):
     raise exception.HTTPOk(
         detail='{0} purchase orders found'.format(len(pos)),
         body={
-            'purchase_orders': pos
+            'purchaseOrders': pos
         }
     )
