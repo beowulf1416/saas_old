@@ -8,5 +8,5 @@ create table if not exists employee_orgs (
     constraint fk_employee_orgs_2 foreign key (org_id)
         references clients.organizations (id) on delete restrict on update restrict,
     constraint fk_employee_orgs_3 foreign key (employee_id)
-        references hr.employees (id) on delete restric on update restrict
+        references hr.employees (id) on delete restrict on update restrict
 );
