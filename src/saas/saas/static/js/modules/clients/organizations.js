@@ -33,5 +33,40 @@ class ClientOrganizations {
         })
         .then((r) => r.json());
     }
+
+    static add(clientId = '', name = '', description = '') {
+        return fetch('/api/clients/organizations/add', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                name: name,
+                description: description
+            })
+        })
+        .then((r) => r.json());
+    }
+
+    static update(clientId = '', organizationId = '', name = '', description = '') {
+        return fetch('/api/clients/organizations/update', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                clientId: clientId,
+                organizationId: organizationId,
+                name: name,
+                description: description
+            })
+        })
+        .then((r) => r.json());
+    }
 }
 export { ClientOrganizations };
