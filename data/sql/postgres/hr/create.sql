@@ -11,6 +11,7 @@ set schema 'hr';
 
 \ir tables/employees.sql
 \ir tables/employee_user.sql
+\ir tables/employee_orgs.sql
 \ir tables/employee_ids.sql
 
 
