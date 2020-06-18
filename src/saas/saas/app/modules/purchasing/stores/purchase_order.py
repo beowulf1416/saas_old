@@ -64,7 +64,7 @@ class PurchaseOrderStore(BaseStore):
             log.error(e)
             raise Exception('Unable to save purchase order')
 
-    def filter(self, client_id: uuid, filter: str):
+    def filter(self, client_id: UUID, filter: str):
         try:
             result = super(PurchaseOrderStore, self).runProc('purchasing.purchase_orders_filter', [
                 client_id,
