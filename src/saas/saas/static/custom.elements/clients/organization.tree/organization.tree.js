@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
+import { ClientOrganizations } from '/static/js/modules/clients/organizations.js';
 class OrganizationTree extends HTMLElement {
 
     constructor() {
@@ -24,6 +25,10 @@ class OrganizationTree extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setOrganizations = this.setOrganizations.bind(this);
+        this._refresh = this._refresh.bind(this);
+        
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -66,6 +71,94 @@ class OrganizationTree extends HTMLElement {
         const btnnew = shadow.getElementById('btn-new');
         btnnew.addEventListener('click', function(e) {
             showInTab('organization-editor', 'New Organization', `<organization-editor client-id="${client_id}"></organization-editor>`);
+        });
+
+        const btnrefresh = shadow.getElementById('btn-refresh');
+        btnrefresh.addEventListener('click', function(e) {
+            self._refresh();
+        });
+    }
+
+    setOrganizations(organizations = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const tbody = shadow.querySelector('table.tbl-org-tree');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        organizations.forEach((o) => {
+            const tr = document.createElement('tr');
+            tr.setAttribute('role', 'row');
+            tr.setAttribute('aria-level', o.level);
+            tr.setAttribute('aria-posinset', 1);
+            tr.setAttribute('aria-setsize', 1);
+            tr.setAttribute('aria-expanded', true);
+            tr.setAttribute('draggable', true);
+            tr.dataset.orgid = o.id;
+            tr.innerHTML = `
+                <td role="gridcell" data-level="${o.level}">
+                    <span>${o.name}</span>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            tr.addEventListener('dragstart', function(e) {
+                tr.classList.add('drag-start');
+                e.dataTransfer.setData('text/plain', JSON.stringify({
+                    id: tr.dataset.orgid
+                }));
+            });
+
+            tr.addEventListener('dragenter', function(e) {
+                tr.classList.add('drag-valid');
+            });
+
+            tr.addEventListener('dragexit', function(e) {
+                tr.classList.remove('drag-valid');
+            });
+
+            tr.addEventListener('dragover', function(e) {
+                e.preventDefault();
+
+                const starttr = shadow.querySelector('.drag-start');
+                starttr.classList.remove('drag-start');
+            });
+
+            tr.addEventListener('drop', function(e) {
+                e.preventDefault();
+
+                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+                const org_id = data.id;
+                const parent_org_id = tr.dataset.orgid;
+                ClientOrganizations.assignParentOrganization(
+                    client_id,
+                    org_id,
+                    parent_org_id
+                ).then((r) => {
+                    notify(r.status, r.message);
+                });
+            });
+        });
+    }
+
+    _refresh() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        ClientOrganizations.tree(client_id).then((r) => {
+            if (r.status == 'success') {
+                self.setOrganizations(r.json.organizations);
+            } else {
+                notify(r.status, r.message);
+            }
         });
     }
 }
