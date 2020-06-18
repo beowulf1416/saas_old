@@ -210,7 +210,6 @@ class AccountTree extends HTMLElement {
                 const data = JSON.parse(e.dataTransfer.getData('text/plain'));
                 if (data.typeid == tr.dataset.typeid) {
                     const tr_start = shadow.getElementById(data.id);
-                    console.log('dropped');
 
                     const parentAcctId = tr.dataset.acctid;
                     const acctId = tr_start.dataset.acctid;
