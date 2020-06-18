@@ -23,6 +23,15 @@ class OrganizationsStore(BaseStore):
             log.error(e)
             raise Exception('Unable to add organization to client')
 
+    def update(self, clientId: UUID, organizationId: UUID, name: str, description: str):
+        try:
+            super(OrganizationsStore, self).runProcTransactional(
+                'clients.organization_update', [clientId, organizationId, name, description])
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to update organization')
+
+
     def get(self, organizationId: UUID):
         ''' retrieve organization
         '''
