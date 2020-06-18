@@ -12,7 +12,7 @@ def includeme(config):
     modules['hr'] = {
         'navigators': [
             {
-                'id': 'Human Resources',
+                'id': 'hr',
                 'title': 'Human Resources',
                 'help': 'Manage Human Resources',
                 'icon': '<span class="material-icons">group</span>',
@@ -25,6 +25,14 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/js/modules/hr/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/hr/team.explorer/team.explorer.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/hr/member.editor/member.editor.js'
             }
         ]
     }
