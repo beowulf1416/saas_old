@@ -5,3 +5,4 @@ def includeme(config):
     log.info('including: saas.app.modules.common')
 
     config.include('saas.app.modules.common.stores')
+    config.include('saas.app.modules.common.views.api')
