@@ -1,7 +1,7 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
-import { Clients } from '/static/js/modules/admin/clients/clients.js';
-
+import { Clients } from '/static/js/modules/admin/clients.js';
+import { Common } from '/static/js/modules/common/common.js';
 class ClientEditor extends HTMLElement {
 
     constructor() {
@@ -26,8 +26,10 @@ class ClientEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandler = this._attachEventHandler.bind(this);
+        this._prefetch = this._prefetch.bind(this);
 
         this._attachEventHandler();
+        this._prefetch();
     }
 
     connectedCallback() {
@@ -94,7 +96,20 @@ class ClientEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-
+        Common.countries().then((r) => {
+            if (r.status == 'success') {
+                const countries = r.json.countries;
+                const select = shadow.getElementById('country');
+                countries.forEach((c) => {
+                    const o = document.createElement('option');
+                    o.value = c.id;
+                    o.text = c.name;
+                    select.appendChild(o);
+                });
+            } else {
+                notify(r.status, r.message);
+            }
+        });
     }
 
     _attachEventHandler() {
@@ -106,9 +121,10 @@ class ClientEditor extends HTMLElement {
             const client_id = shadow.getElementById('client_id');
             const name = shadow.getElementById('name');
             const address = shadow.getElementById('address');
+            const country = shadow.getElementById('country');
 
             if (client_id.value == '') {
-                Clients.add(name.value, address.value, '').then((r) => {
+                Clients.add(name.value, address.value, country.value).then((r) => {
                     if (r.status == 'success') {
                         client_id.value = r.json.clientId;
                     } else {
@@ -116,7 +132,7 @@ class ClientEditor extends HTMLElement {
                     }
                 });
             } else {
-                Clients.update(client_id.value, name.value, address.value).then((r) => {
+                Clients.update(client_id.value, name.value, address.value, country.value).then((r) => {
                     notify(r.status, r.message);
                 });
             }
