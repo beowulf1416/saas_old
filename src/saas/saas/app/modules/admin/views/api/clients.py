@@ -20,7 +20,13 @@ def api_clients_all(request):
         clientsStore = services['store.admin.clients']
         result = clientsStore.getAll()
         clients = [
-            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3] } 
+            { 
+                'id': c[0], 
+                'active': c[1], 
+                'name': c[2], 
+                'address': c[3],
+                'country_id': c[4]
+            } 
             for c in result
         ]
     except Exception as e:
@@ -44,17 +50,18 @@ def view_clients_add(request):
     params = request.json_body
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
+    country = params['countryId'] if 'countryId' in params else None
 
-    if name is None or address is None:
+    if name is None or address is None or country in None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client name and address is required'
+            explanation='Client, name, address and country Id is required'
         )
 
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        result = clientsStore.add(name, address)
+        result = clientsStore.add(name, address, country)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -81,17 +88,18 @@ def view_clients_update(request):
     client_id = params['clientId'] if 'clientId' in params else None
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
+    country = params['countryId'] if 'countryId' in params else None
 
     if client_id is None or name is None or address is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id name and address is required'
+            explanation='Client Id, name, address and country id is required'
         )
 
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        clientsStore.update(client_id, name, address)
+        clientsStore.update(client_id, name, address, country)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -143,7 +151,8 @@ def view_clients_get(request):
                 'id': client[0],
                 'active': client[1],
                 'name': client[2],
-                'address': client[3]
+                'address': client[3],
+                'country_id': client[4]
             }}
         )
 
@@ -203,7 +212,13 @@ def view_clients_filter(request):
         clientsStore = services['store.admin.clients']
         result = clientsStore.filter(filter)
         clients = [
-            { 'id': c[0], 'active': c[1], 'name': c[2], 'address': c[3] } 
+            { 
+                'id': c[0], 
+                'active': c[1], 
+                'name': c[2], 
+                'address': c[3],
+                'country_id': c[4]
+            } 
             for c in result
         ]
     except Exception as e:
