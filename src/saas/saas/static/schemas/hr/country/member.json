@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/hr/member.json",
+    "definitions": {},
+    "type": "object",
+    "properties": {
+        "clientId": { "type": "string", "format": "uuid" },
+        "memberId": { "anyOf": [
+            { "type": "string", "format": "uuid"},
+            { "type": "null" }
+        ]},
+        "prefix": { "type": "string" },
+        "suffix": { "type": "string" },
+        "first_name": { "type": "string" },
+        "middle_name": { "type": "string" },
+        "last_name": { "type": "string" }
+    },
+    "required": [
+        "clientId",
+        "memberId",
+        "first_name",
+        "last_name"
+    ],
+    "additionalProperties": false
+}
