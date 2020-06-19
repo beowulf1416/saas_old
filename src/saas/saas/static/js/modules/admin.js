@@ -1,12 +1,8 @@
 'use strict';
-import { AdminClientsService } from '/static/js/services/admin.clients.js';
 import { showInTab } from '/static/js/ui/ui.js';
 (function(){
-    const tab = document.querySelector('tab-container');
-
-    window.services = window.services ? window.services : {};
-    window.services['admin.clients'] = AdminClientsService;
-
+    console.log('admin actions');
+    
     window.actions = window.actions ? window.actions : {};
     window.actions['admin.clients'] = function() {
         showInTab('admin.clients', 'Clients', '<clients-table show-new show-edit></clients-table>');
