@@ -20,16 +20,18 @@ class ClientsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving all clients')
 
-    def add(self, name: str, address: str):
+    def add(self, name: str, address: str, country: int):
         try:
-            [(client_id, )] = super(ClientsStore, self).runProcTransactional('clients.client_add', [name, address])
+            [(client_id, )] = super(ClientsStore, self).runProcTransactional('clients.client_add', 
+                [name, address, country])
             return client_id
         except Exception as e:
             raise Exception('An error occured while adding a client')
 
-    def update(self, client_id: UUID, name: str, address: str):
+    def update(self, client_id: UUID, name: str, address: str, country: int):
         try:
-            super(ClientsStore, self).runProcTransactional('clients.client_update', [client_id, name, address])
+            super(ClientsStore, self).runProcTransactional('clients.client_update', 
+                [client_id, name, address, country])
         except Exception as e:
             raise Exception('An error occured while updating a client')
 
