@@ -13,7 +13,7 @@ class Clients {
         .then((r) => r.json());
     }
 
-    static add(name, address) {
+    static add(name, address, country) {
         return fetch('/api/clients/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -23,13 +23,14 @@ class Clients {
             },
             body: JSON.stringify({
                 name: name,
-                address: address
+                address: address,
+                countryId: country
             })
         })
         .then((r) => r.json());
     }
 
-    static update(clientId, name, address) {
+    static update(clientId, name, address, country) {
         return fetch('/api/clients/update', {
             method: 'POST',
             credentials: 'same-origin',
@@ -40,7 +41,8 @@ class Clients {
             body: JSON.stringify({
                 clientId: clientId,
                 name: name,
-                address: address
+                address: address,
+                countryId: country
             })
         })
         .then((r) => r.json());
