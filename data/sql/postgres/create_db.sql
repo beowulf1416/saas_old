@@ -33,8 +33,8 @@ create domain slug
 
 
 -- create schema and tables
-\ir clients/create.sql
 \ir common/create.sql
+\ir clients/create.sql
 \ir iam/create.sql
 \ir accounting/create.sql
 \ir crm/create.sql
@@ -43,8 +43,8 @@ create domain slug
 \ir purchasing/create.sql
 
 -- create functions and procedures
-\ir clients/sp.sql
 \ir common/sp.sql
+\ir clients/sp.sql
 \ir iam/sp.sql
 \ir accounting/sp.sql
 \ir crm/sp.sql

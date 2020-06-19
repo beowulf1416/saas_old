@@ -9,7 +9,7 @@ begin
     -- create default client
     select
         a into client_id
-    from clients.client_add('default', 'N/A') a;
+    from clients.client_add('default', 'N/A', 608) a;
     
     perform * from clients.client_set_active(client_id, true);
 end
