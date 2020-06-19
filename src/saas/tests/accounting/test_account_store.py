@@ -34,7 +34,7 @@ class TestAccountStore(unittest.TestCase):
 
 
     def test_account_add(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         random_name = self.generate_random_str(10)
 
         from saas.app.modules.accounting.models.account_types import AccountTypes
@@ -44,7 +44,7 @@ class TestAccountStore(unittest.TestCase):
             self.fail(e)
 
     def test_accounts_all(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.accountsStore.all(client_id)
             self.assertGreater(len(result), 0)
@@ -53,7 +53,7 @@ class TestAccountStore(unittest.TestCase):
 
 
     def test_assign_parent_account(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         random_name_1 = self.generate_random_str(10)
         random_name_2 = self.generate_random_str(10)
 
@@ -66,7 +66,7 @@ class TestAccountStore(unittest.TestCase):
             self.fail(e)
 
     def test_account_tree_all(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.accountsStore.getTree(client_id)
         except Exception as e:

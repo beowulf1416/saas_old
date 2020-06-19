@@ -29,21 +29,21 @@ class TestAdminRolesStore(unittest.TestCase):
 
     def test_get_all_roles(self):
         try:
-            (client_id, active, name, address) = self.clientStore.getDefaultClient()
+            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
             result = self.rolesStore.getAll(client_id)
         except Exception as e:
             self.fail(e)
 
     def test_add_role(self):
         try:
-            (client_id, active, name, address) = self.clientStore.getDefaultClient()
+            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
             random_name = self.generate_random_str(10)
             self.rolesStore.add(client_id, random_name)
         except Exception as e:
             self.fail(e)
 
     def test_add_role_not_unique(self):
-        (client_id, active, name, address) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
         random_name = self.generate_random_str(10)
         result = self.rolesStore.add(client_id, random_name)
         self.assertRaises(
@@ -55,7 +55,7 @@ class TestAdminRolesStore(unittest.TestCase):
 
     def test_set_active_role(self):
         try:
-            (client_id, active, name, address) = self.clientStore.getDefaultClient()
+            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
             random_name = self.generate_random_str(10)
             role_id = self.rolesStore.add(client_id, random_name)
             self.rolesStore.setActive(role_id, False)
@@ -64,7 +64,7 @@ class TestAdminRolesStore(unittest.TestCase):
 
     def test_role_filter(self):
         try:
-            (client_id, active, name, address) = self.clientStore.getDefaultClient()
+            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
             result = self.rolesStore.filter(client_id, 'every')
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:

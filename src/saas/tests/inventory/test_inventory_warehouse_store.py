@@ -27,21 +27,21 @@ class TestInventoryWarehouseStore(unittest.TestCase):
 
     def test_warehouse_add(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.warehouseStore.add(client_id, random_str, random_str)
         except Exception as e:
             self.fail(e)
 
     def test_warehouse_all(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.warehouseStore.all(client_id)
         except Exception as e:
             self.fail(e)
 
     def test_warehouse_filter(self):
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.warehouseStore.filter(client_id, '')
             self.assertGreater(len(result), 0, '{0}'.format(result))
@@ -50,7 +50,7 @@ class TestInventoryWarehouseStore(unittest.TestCase):
 
     def test_warehouse_get(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address)  = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
             warehouse = self.warehouseStore.get(client_id, warehouse_id)

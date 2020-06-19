@@ -17,5 +17,5 @@ class TestClientStore(unittest.TestCase):
         self.clientStore = ClientStore(self.mgr, 'default')
 
     def test_get_default_client(self):
-        (client_id, active, name, address) = self.clientStore.getDefaultClient()
+        (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
         self.assertEqual('default', name, '{0}'.format(name))
