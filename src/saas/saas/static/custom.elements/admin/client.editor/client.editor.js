@@ -1,6 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
-import { Clients } from '/static/js/helpers/clients/clients.js';
+import { Clients } from '/static/js/modules/admin/clients/clients.js';
 
 class ClientEditor extends HTMLElement {
 
@@ -9,7 +9,7 @@ class ClientEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/client.editor/client.editor.css');
+        style.setAttribute('href', '/static/custom.elements/admin/client.editor/client.editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -78,11 +78,23 @@ class ClientEditor extends HTMLElement {
                         <textarea id="address" name="address" class="form-input-address" title="Address" placeholder="Address">
                         </textarea>
                     </div><!-- .form-group -->
+
+                    <!-- country -->
+                    <label for="country">Country</label>
+                    <select id="country" name="country" title="Country">
+                    </select>
                 </form>
             </div><!-- .form-wrapper -->
         `;
 
         container.appendChild(div)
+    }
+
+    _prefetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+
     }
 
     _attachEventHandler() {

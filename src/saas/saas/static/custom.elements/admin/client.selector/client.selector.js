@@ -1,5 +1,5 @@
 'use strict';
-import { Clients } from '/static/js/helpers/clients/clients.js';
+import { Clients } from '/static/js/modules/admin/clients.js';
 import { notify } from '/static/js/ui/ui.js';
 
 class ClientSelector extends HTMLElement {

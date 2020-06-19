@@ -1,5 +1,5 @@
 'use strict';
-import { Roles } from '/static/js/helpers/roles.js';
+import { Roles } from '/static/js/modules/admin/roles.js';
 import { notify } from '/static/js/ui/ui.js';
 
 class RoleSelector extends HTMLElement {
@@ -9,7 +9,7 @@ class RoleSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/role.selector/role.selector.css');
+        style.setAttribute('href', '/static/custom.elements/admin/role.selector/role.selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

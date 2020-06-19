@@ -1,8 +1,8 @@
 'use strict';
 
 import { showInView, showInTab, notify } from '/static/js/ui/ui.js';
-import { Clients } from '/static/js/helpers/clients/clients.js';
-import { Roles } from '/static/js/helpers/roles.js';
+import { Clients } from '/static/js/modules/admin/clients.js';
+import { Roles } from '/static/js/modules/admin/roles.js';
 
 class ClientRoles extends HTMLElement {
 

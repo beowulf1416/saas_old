@@ -1,5 +1,5 @@
 'use strict';
-import { Users } from '/static/js/helpers/users.js';
+import { Users } from '/static/js/modules/admin/users.js';
 import { notify } from '/static/js/ui/ui.js';
 
 class UserSelector extends HTMLElement {
@@ -9,7 +9,7 @@ class UserSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/user.selector/user.selector.css');
+        style.setAttribute('href', '/static/custom.elements/admin/user.selector/user.selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

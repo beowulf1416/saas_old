@@ -1,6 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
-import { Permissions } from '/static/js/helpers/permissions.js';
+import { Permissions } from '/static/js/modules/admin/permissions.js';
 
 class PermissionSelector extends HTMLElement {
 
@@ -9,7 +9,7 @@ class PermissionSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/permission.selector/permission.selector.css');
+        style.setAttribute('href', '/static/custom.elements/admin/permission.selector/permission.selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
