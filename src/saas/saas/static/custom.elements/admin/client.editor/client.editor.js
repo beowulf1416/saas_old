@@ -47,6 +47,9 @@ class ClientEditor extends HTMLElement {
 
                         const address = shadow.getElementById('address');
                         address.value = client.address;
+
+                        const country = shadow.getElementById('country');
+                        country.value = client.country_id;
                     } else {
                         notify(r.status, r.message);
                     }
@@ -77,8 +80,7 @@ class ClientEditor extends HTMLElement {
                     <!-- address -->
                     <label for="address">Address</label>
                     <div class="form-group form-group-address">
-                        <textarea id="address" name="address" class="form-input-address" title="Address" placeholder="Address">
-                        </textarea>
+                        <textarea id="address" name="address" class="form-input-address" title="Address" placeholder="Address"></textarea>
                     </div><!-- .form-group -->
 
                     <!-- country -->
