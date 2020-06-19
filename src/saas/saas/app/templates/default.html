@@ -36,7 +36,7 @@
         </a>
     </div><!-- .navbar-brand -->
     <div class="navbar-menu">
-        <div class="navbar-item has-dropdown is-hoverable">
+        <div class="navbar-item">
             <a class="navbar-link">SAAS</a>
         </div><!-- .navbar-item -->
     </div><!-- .navbar-menu -->
@@ -83,37 +83,39 @@
 {% endblock header_right %}
 
 {% block sidebar_left %}
-{% if modules is defined %}
-    <div class="navigators">
-        <div class="tab-vertical vertical" role="tabs" aria-label="Navigators">
-            <ul class="nav-links" role="tablist">
+{% if email is defined %}
+    {% if modules is defined %}
+        <div class="navigators">
+            <div class="tab-vertical vertical" role="tabs" aria-label="Navigators">
+                <ul class="nav-links" role="tablist">
+                    {% for m, module in modules.items() %}
+                    {% for navigator in module.navigators %}
+                        <li>
+                            <a id="nav-{{ navigator.id }}"
+                                class="nav"
+                                title="{{ navigator.help }}"
+                                href="#"
+                                role="tab"
+                                aria-selected="false"
+                                aria-controls="{{ navigator.id }}">
+                                {{ navigator.icon | safe }}
+                                <span>{{ navigator.title }}</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    {% endfor %}
+                </ul><!-- .nav-links -->
+
                 {% for m, module in modules.items() %}
                 {% for navigator in module.navigators %}
-                    <li>
-                        <a id="nav-{{ navigator.id }}"
-                            class="nav"
-                            title="{{ navigator.help }}"
-                            href="#"
-                            role="tab"
-                            aria-selected="false"
-                            aria-controls="{{ navigator.id }}">
-                            {{ navigator.icon | safe }}
-                            <span>{{ navigator.title }}</span>
-                        </a>
-                    </li>
+                    <div id="{{ navigator.id  }}" class="tab-panel" role="tabpanel">
+                    {% include navigator.template %}
+                    </div><!-- .tab-panel -->
                 {% endfor %}
                 {% endfor %}
-            </ul><!-- .nav-links -->
-
-            {% for m, module in modules.items() %}
-            {% for navigator in module.navigators %}
-                <div id="{{ navigator.id  }}" class="tab-panel" role="tabpanel">
-                {% include navigator.template %}
-                </div><!-- .tab-panel -->
-            {% endfor %}
-            {% endfor %}
-        </div><!-- .tabs -->
-    </div><!-- .navigators -->
+            </div><!-- .tabs -->
+        </div><!-- .navigators -->
+    {% endif %}
 {% endif %}
 {% endblock sidebar_left %}
 
