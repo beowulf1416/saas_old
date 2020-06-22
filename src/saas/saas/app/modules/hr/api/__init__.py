@@ -13,3 +13,8 @@ def includeme(config):
         'api.hr.members.save',
         '/api/hr/members/save'
     )
+
+    config.add_route(
+        'api.hr.members.get',
+        '/api/hr/members/get'
+    )

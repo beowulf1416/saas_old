@@ -92,3 +92,48 @@ def api_members_filter(request):
             'members': members
         }
     )
+
+
+@view_config(
+    route_name='api.hr.members.get',
+    request_method='POST',
+    renderer='json'
+)
+def api_hr_members_get(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    member_id = params['memberId'] if 'memberId' in params else None
+
+    if client_id is None or member_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Member Id is required'
+        )
+
+    services = request.services()
+    membersStore = services['store.hr.members']
+    member = {}
+    try:
+        r = membersStore.get(client_id, member_id)
+        member = {
+                'id': r[0],
+                'firstName': r[1],
+                'middleName': r[2],
+                'lastName': r[3],
+                'prefix': r[4],
+                'suffix': r[5]
+            }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='member found',
+        body={
+            'member': member
+        }
+    )
+    
