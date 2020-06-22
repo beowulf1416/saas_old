@@ -27,8 +27,10 @@ class MemberEditor extends HTMLElement {
         this._getClientId = this._getClientId.bind(this);
         this._getMemberId = this._getMemberId.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._prefetch = this._prefetch.bind(this);
         
         this._attachEventHandlers();
+        this._prefetch();
     }
 
     _init(container) {
@@ -137,6 +139,28 @@ class MemberEditor extends HTMLElement {
                 notify.add(r.status, r.message);
             });
         });
+    }
+
+    _prefetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        if (this.hasAttribute('member-id')) {
+            const client_id = this._getClientId();
+            const member_id = this._getMemberId();
+
+            Members.get(client_id, member_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setMember(r.json.member);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
+    }
+
+    setMember(member = {}) {
+        console.log(member);
     }
 }
 customElements.define('member-editor', MemberEditor);
