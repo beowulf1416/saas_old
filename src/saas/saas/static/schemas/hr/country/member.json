@@ -5,21 +5,18 @@
     "type": "object",
     "properties": {
         "clientId": { "type": "string", "format": "uuid" },
-        "memberId": { "anyOf": [
-            { "type": "string", "format": "uuid"},
-            { "type": "null" }
-        ]},
+        "memberId": { "type": "string", "format": "uuid" },
         "prefix": { "type": "string" },
         "suffix": { "type": "string" },
-        "first_name": { "type": "string" },
-        "middle_name": { "type": "string" },
-        "last_name": { "type": "string" }
+        "firstName": { "type": "string" },
+        "middleName": { "type": "string" },
+        "lastName": { "type": "string" }
     },
     "required": [
         "clientId",
         "memberId",
-        "first_name",
-        "last_name"
+        "firstName",
+        "lastName"
     ],
     "additionalProperties": false
 }
