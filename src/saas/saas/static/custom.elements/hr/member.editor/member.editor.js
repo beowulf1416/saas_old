@@ -27,6 +27,8 @@ class MemberEditor extends HTMLElement {
         this._getClientId = this._getClientId.bind(this);
         this._getMemberId = this._getMemberId.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        
+        this._attachEventHandlers();
     }
 
     _init(container) {
