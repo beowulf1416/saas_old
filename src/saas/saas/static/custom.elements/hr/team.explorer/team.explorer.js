@@ -1,5 +1,6 @@
 'use strict';
 import { showInTab, notify } from '/static/js/ui/ui.js';
+import { Members } from '/static/js/modules/hr/members.js';
 class TeamExplorer extends HTMLElement {
 
     constructor() {
@@ -24,6 +25,7 @@ class TeamExplorer extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setMembers = this.setMembers.bind(this);
 
         this._attachEventHandlers();
     }
@@ -80,9 +82,77 @@ class TeamExplorer extends HTMLElement {
 
         const client_id = this.getAttribute('client-id');
 
+        const beginsearch = function(filter) {
+            Members.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    const members = r.json.members;
+                    self.setMembers(members, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                beginsearch(filter.value);
+            }
+        });
+
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
+
         const btnnew = shadow.getElementById('btn-new');
         btnnew.addEventListener('click', function(e) {
             showInTab('member-editor', 'New Member', `<member-editor client-id="${client_id}"></member-editor>`);
+        });
+    }
+
+    setMembers(members = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const tbody = shadow.querySelector('table.tbl-members tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        members.forEach((m) => {
+            const fname = m.firstName.replace(filter,`<strong>${filter}</strong>`);
+            const mname = m.middleName.replace(filter,`<strong>${filter}</strong>`);
+            const lname = m.lastName.replace(filter,`<strong>${filter}</strong>`);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a class="link-edit-member" title="Edit Member" href="#" data-id="${m.id}">
+                        <span class="material-icons">edit</span>
+                    </a>
+                </td>
+                <td>
+                    <div class="name">
+                        <span class="prefix">${m.prefix}</span>
+                        <span class="first-name">${fname}</span>
+                        <span class="middle-name">${mname}</span>
+                        <span class="last-name">${lname}</span>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            // event handlers
+            const edit = tr.querySelector('.link-edit-member');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+                const member_id = edit.dataset.id;
+                showInTab('member-editor', 'Member', `<member-editor client-id="${client_id}" member-id="${member_id}"></member-editor>`);
+            });
         });
     }
 }
