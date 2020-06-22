@@ -12,5 +12,12 @@ class Members {
             filter: filter
         });
     }
+
+    static get(clientId = '', memberId = '') {
+        return Util.fetch('/api/hr/members/get', {
+            clientId: clientId,
+            memberId: memberId
+        });
+    }
 }
 export { Members };
