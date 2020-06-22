@@ -13,7 +13,7 @@ import json
     request_method='POST',
     renderer='json'
 )
-def api_hr_members_filter(request):
+def api_hr_members_save(request):
     params = request.json_body
 
     services = request.services()
@@ -43,5 +43,52 @@ def api_hr_members_filter(request):
         detail='Member record created',
         body={
             'message': 'Member record created'
+        }
+    )
+
+
+@view_config(
+    route_name='api.hr.members.filter',
+    request_method='POST',
+    renderer='json'
+)
+def api_members_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and filter is required'
+        )
+
+    services = request.services()
+    membersStore = services['store.hr.members']
+    members = []
+    try:
+        result = membersStore.filter(client_id, filter)
+        members = [
+            {
+                'id': r[0],
+                'first_name': r[1],
+                'middle_name': r[2],
+                'last_name': r[3],
+                'prefix': r[4],
+                'suffix': r[5]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail=f'{len(members)} members found',
+        body={
+            'members': members
         }
     )
