@@ -35,3 +35,10 @@ class MembersStore(BaseStore):
             log.error(e)
             raise Exception('Unable to save Member record')
 
+    def filter(self, clientId: UUID, filter: str):
+        try:
+            result = super(MembersStore, self).runProc('hr.employees_filter', [clientId, f'%{filter}%'])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve HR members')
