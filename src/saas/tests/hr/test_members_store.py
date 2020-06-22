@@ -47,6 +47,26 @@ class TestHRMembersStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_get(self):
+        random_str = self.generate_random_str(10)
+        try:
+            client_id = self.defaultClient[0]
+            member_id = str(uuid.uuid4())
+
+            self.mStore.save({
+                'clientId': client_id,
+                'memberId': member_id,
+                'firstName': random_str,
+                'middleName': random_str,
+                'lastName': random_str,
+                'prefix': random_str,
+                'suffix': random_str
+            })
+            result = self.mStore.get(client_id, member_id)
+            self.assertEqual(result[0], member_id)
+        except Exception as e:
+            self.fail(e)
+
     def test_filter(self):
         random_str = self.generate_random_str(10)
         try:

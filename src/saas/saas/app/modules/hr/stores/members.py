@@ -42,3 +42,11 @@ class MembersStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve HR members')
+
+    def get(self, clientId: UUID, memberId: UUID):
+        try:
+            [result, ] = super(MembersStore, self).runProc('hr.employee_get', [clientId, memberId])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve HR Member')
