@@ -7,6 +7,7 @@ from saas.app.core.services import get_service
 def includeme(config):
     log.info('including: saas.app.modules.hr')
 
+    config.include('saas.app.modules.hr.stores')
     config.include('saas.app.modules.hr.api')
 
     services = get_service(None)
