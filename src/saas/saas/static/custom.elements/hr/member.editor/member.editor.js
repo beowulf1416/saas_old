@@ -1,5 +1,6 @@
 'use strict';
-
+import { notify } from '/static/js/ui/ui.js';
+import { Members } from '/static/js/modules/hr/members.js';
 class MemberEditor extends HTMLElement {
 
     constructor() {
@@ -22,10 +23,15 @@ class MemberEditor extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._getClientId = this._getClientId.bind(this);
+        this._getMemberId = this._getMemberId.bind(this);
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
     }
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
+        const member_id = this.hasAttribute('member-id') ? this.getAttribute('member-id') : uuidv4();
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -38,6 +44,7 @@ class MemberEditor extends HTMLElement {
             <div class="form-wrapper">
                 <form class="form-member">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+                    <input type="hidden" id="member-id" name="member_id" value="${member_id}" />
 
                     <fieldset>
                         <legend>Name</legend>
@@ -86,6 +93,48 @@ class MemberEditor extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _getClientId() {
+        const shadow = this.shadowRoot;
+        const client = shadow.getElementById('client-id');
+        return client.value;
+    }
+
+    _getMemberId() {
+        const shadow = this.shadowRoot;
+        const member = shadow.getElementById('member-id');
+        return member.value;
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this._getClientId();
+        const member_id = this._getMemberId();
+
+        const btnsave = shadow.getElementById('btn-save');
+        btnsave.addEventListener('click', function(e) {
+            const first_name = shadow.getElementById('first-name');
+            const middle_name = shadow.getElementById('middle-name');
+            const last_name = shadow.getElementById('last-name');
+            const prefix = shadow.getElementById('prefix');
+            const suffix = shadow.getElementById('suffix');
+
+            const member = {
+                clientId: client_id,
+                memberId: member_id,
+                firstName: first_name.value,
+                middleName: middle_name.value,
+                lastName: last_name.value,
+                prefix: prefix.value,
+                suffix: suffix.value
+            };
+            Members.save(member).then((r) => {
+                notify.add(r.status, r.message);
+            });
+        });
     }
 }
 customElements.define('member-editor', MemberEditor);
