@@ -35,6 +35,10 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom.elements/hr/member.editor/member.editor.js'
+            },
+            {
+                'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
+                'external': 'true'
             }
         ]
     }
