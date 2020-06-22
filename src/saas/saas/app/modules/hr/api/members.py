@@ -71,9 +71,9 @@ def api_members_filter(request):
         members = [
             {
                 'id': r[0],
-                'first_name': r[1],
-                'middle_name': r[2],
-                'last_name': r[3],
+                'firstName': r[1],
+                'middleName': r[2],
+                'lastName': r[3],
                 'prefix': r[4],
                 'suffix': r[5]
             }
