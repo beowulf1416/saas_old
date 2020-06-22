@@ -4,6 +4,7 @@
 set schema 'hr';
 
 /** functions **/
+\ir procs/employees/employee_save.sql
 
 
 
