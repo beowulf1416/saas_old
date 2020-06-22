@@ -26,7 +26,9 @@ class ConnectionManager(dict):
         if type == 'postgresql':
             log.debug('attempting to create postgresql connection')
             import psycopg2.pool
+            # import psycopg2.extras
             try:
+                # psycopg2.extras.register_uuid()
                 return psycopg2.pool.ThreadedConnectionPool(2, 10, 
                     "host='{0}' port='{1}' dbname='{2}' user='{3}' password='{4}'".format(
                             db['host'],
