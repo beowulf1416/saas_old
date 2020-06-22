@@ -130,6 +130,7 @@ def view_inventory_item_get(request):
         ]
         item['components'] = components
     except Exception as e:
+        log.error(e)
         raise exception.HTTPInternalServerError(
             detail=str(e),
             explanation=str(e)
