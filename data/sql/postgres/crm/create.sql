@@ -10,6 +10,8 @@ set schema 'crm';
 
 \ir tables/organizations.sql
 
+\ir tables/gender.sql
+
 \ir tables/people.sql
 \ir tables/contact_emails.sql
 \ir tables/contact_numbers.sql

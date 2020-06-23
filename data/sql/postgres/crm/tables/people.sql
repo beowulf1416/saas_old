@@ -8,10 +8,12 @@ create table if not exists people (
     first_name varchar(100),
     middle_name varchar(100),
     last_name varchar(100),
-    gender smallint,
+    gender_id smallint,
     constraint pk_people primary key (id),
     constraint u_people_1 unique (client_id, first_name, middle_name, last_name, prefix, suffix),
     constraint fk_people_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
+    constraint fk_people_2 foreign key (gender_id)
+        references crm.genders (id) on delete restrict on update restrict,
     constraint chk_people_1 check ( length(first_name || middle_name || last_name) > 0 )
 );
