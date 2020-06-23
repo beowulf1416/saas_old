@@ -115,14 +115,25 @@ def api_hr_members_get(request):
     member = {}
     try:
         r = membersStore.get(client_id, member_id)
-        member = {
-                'id': r[0],
-                'firstName': r[1],
-                'middleName': r[2],
-                'lastName': r[3],
-                'prefix': r[4],
-                'suffix': r[5]
+        result_ids = membersStore.get_ids(member_id)
+
+        identifiers = [
+            {
+                'idType': r[0],
+                'value': r[1]
             }
+            for r in result_ids
+        ]
+
+        member = {
+            'id': r[0],
+            'firstName': r[1],
+            'middleName': r[2],
+            'lastName': r[3],
+            'prefix': r[4],
+            'suffix': r[5],
+            'identifiers': identifiers
+        }
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
