@@ -1,5 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
+import { tabs } from '/static/js/ui/tabs.js';
 import { Members } from '/static/js/modules/hr/members.js';
 class MemberEditor extends HTMLElement {
 
@@ -9,6 +10,10 @@ class MemberEditor extends HTMLElement {
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/hr/member.editor/member.editor.css');
+
+        const style_tabs = document.createElement("link");
+        style_tabs.setAttribute('rel', 'stylesheet');
+        style_tabs.setAttribute('href', '/static/css/ui/tabs.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -21,6 +26,7 @@ class MemberEditor extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(style_tabs);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
@@ -28,6 +34,8 @@ class MemberEditor extends HTMLElement {
         this._getMemberId = this._getMemberId.bind(this);
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._prefetch = this._prefetch.bind(this);
+        this.setMember = this.setMember.bind(this);
+        this.setIds = this.setIds.bind(this);
         
         this._attachEventHandlers();
         this._prefetch();
@@ -50,53 +58,102 @@ class MemberEditor extends HTMLElement {
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
                     <input type="hidden" id="member-id" name="member_id" value="${member_id}" />
 
-                    <fieldset>
-                        <legend>Name</legend>
-                        <div class="form-group form-group-name">
-                            <!-- first name -->
-                            <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" name="first_name" class="form-input-first" title="First Name" placeholder="First Name" />
+                    <div class="tabs" role="tabs">
+                        <ul class="tab-list" role="tablist">
+                            <li><a role="tab" aria-controls="general">General</a></li>
+                            <li><a role="tab" aria-controls="identifiers">Identifiers</a></li>
+                            <li><a role="tab" aria-controls="chronology">Chronology</a></li>
+                        </ul><!-- .tab-list -->
+                        
+                        <!-- tab panels -->
+                        <div id="general" class="tab-panel" role="tabpanel">
+                            <fieldset>
+                                <legend>Name</legend>
+                                <div class="form-group form-group-name">
+                                    <!-- first name -->
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" name="first_name" class="form-input-first" title="First Name" placeholder="First Name" />
 
-                            <!-- middle name -->
-                            <label for="middle-name">Middle Name</label>
-                            <input type="text" id="middle-name" name="middle_name" class="form-input-middle" title="Middle Name" placeholder="Middle Name" />
+                                    <!-- middle name -->
+                                    <label for="middle-name">Middle Name</label>
+                                    <input type="text" id="middle-name" name="middle_name" class="form-input-middle" title="Middle Name" placeholder="Middle Name" />
 
-                            <!-- last name -->
-                            <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" name="last_name" class="form-input-last" title="Last Name" placeholder="Last Name" />
-                        </div><!-- .form-group -->
+                                    <!-- last name -->
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" name="last_name" class="form-input-last" title="Last Name" placeholder="Last Name" />
+                                </div><!-- .form-group -->
 
-                        <!-- prefix -->
-                        <label for="prefix">Prefix</label>
-                        <input type="text" id="prefix" name="prefix" class="form-input-prefix" title="Prefix" placeholder="Prefix" />
+                                <!-- prefix -->
+                                <label for="prefix">Prefix</label>
+                                <input type="text" id="prefix" name="prefix" class="form-input-prefix" title="Prefix" placeholder="Prefix" />
 
-                        <!-- suffix -->
-                        <label for="suffix">Suffix</label>
-                        <input type="suffix" id="suffix" name="suffix" class="form-input-suffix" title="Suffix" placeholder="Suffix" />
-                    </fieldset>
-                    <fieldset>
-                        <legend>Identifiers</legend>
-                        <label for="sss">SSS</label>
-                        <input type="text" id="sss" name="sss" class="form-input-sss" title="SSS" placeholder="SSS" />
+                                <!-- suffix -->
+                                <label for="suffix">Suffix</label>
+                                <input type="suffix" id="suffix" name="suffix" class="form-input-suffix" title="Suffix" placeholder="Suffix" />
+                            </fieldset>
+                        </div><!-- .tab-panel -->
 
-                        <label for="tin">TIN</label>
-                        <input type="text" id="tin" name="tin" class="form-input-tin" title="TIN" placeholder="TIN" />
-                    </fieldset>
-                    <fieldset>
-                        <legend>Dates</legend>
+                        <div id="identifiers" class="tab-panel" role="tabpanel">
+                            <div class="table-wrapper">
+                                <table class="tbl-ids">
+                                    <caption>Identifiers</caption>
+                                    <colgroup>
+                                        <col class="col-addremove">
+                                        <col class="col-type">
+                                        <col class="col-value">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <td>
+                                                <a class="link-add-id" href="#" title="Add Identifier">&plus;</a>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div><!-- .table-wrapper -->
+                        </div><!-- .tab-panel -->
 
-                        <div class="form-group form-group-hire-date">
-                            <!-- hire date -->
-                            <label for="hire-date">Hire Date</label>
-                            <input type="date" id="hire-date" name="hire_date" class="form-input-date-hire" title="Hire Date" />
-                        </div><!-- .form-group -->
-                    </fieldset>
-
+                        <div id="chronology" class="tab-panel" role="tabpanel">
+                            <div class="table-wrapper">
+                                <table class="tbl-dates">
+                                    <caption>Chronology</caption>
+                                    <colgroup>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <td>
+                                            <a class="link-add-id" href="#" title="Add Identifier">&plus;</a>
+                                        </td>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div><!-- .table-wrapper -->
+                        </div><!-- .tab-panel -->
+                    </div><!-- .tabs -->
                 </form>
             </div><!-- .form-wrapper -->
         `;
 
         container.appendChild(div);
+        tabs(container);
     }
 
     _getClientId() {
@@ -160,7 +217,19 @@ class MemberEditor extends HTMLElement {
     }
 
     setMember(member = {}) {
-        console.log(member);
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        shadow.getElementById('first-name').value = member.firstName;
+        shadow.getElementById('middle-name').value = member.middleName;
+        shadow.getElementById('last-name').value = member.lastName;
+        shadow.getElementById('prefix').value = member.prefix;
+        shadow.getElementById('suffix').value = member.suffix;
+    }
+
+    setIds(ids = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
     }
 }
 customElements.define('member-editor', MemberEditor);
