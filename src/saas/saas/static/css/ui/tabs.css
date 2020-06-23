@@ -8,6 +8,14 @@ div[role=tabs].vertical > ul[role=tablist] {
     list-style-type: none;
     display: flex;
     flex-direction: row;
+    margin: 0;
+}
+
+[role=tabs]:not(.vertical) > ul[role=tablist] > li {
+    padding: 4px;
+    border: 1px solid #B7B7B8;
+    margin-right: 4px;
+    box-shadow: 0 0 0.2em #B7B7B8;
 }
 
 [role=tabs] [role=tabpanel]:not(.active) {

@@ -22,6 +22,7 @@
     border-radius: 0 0.2em 0.2em 0.2em;
     box-shadow: 0 0 0.2em #B7B7B8;
     background: #EDEFF3;
+    padding: 0.5em;
 }
 
 .tabs [role=tab] {
