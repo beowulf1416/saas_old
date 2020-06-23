@@ -31,7 +31,8 @@ begin
         p_member_id,
         p_client_id,
         p_member_id
-    );
+    )
+    on conflict do nothing;
 end
 $$
 language plpgsql;
