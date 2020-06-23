@@ -113,7 +113,7 @@ class MemberEditor extends HTMLElement {
                                     <tfoot>
                                         <tr>
                                             <td>
-                                                <a class="link-add-id" href="#" title="Add Identifier">&plus;</a>
+                                                <a id="link-add-id" class="link-add-id" href="#" title="Add Identifier">&plus;</a>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -139,7 +139,7 @@ class MemberEditor extends HTMLElement {
                                     <tfoot>
                                     <tr>
                                         <td>
-                                            <a class="link-add-date" href="#" title="Add Date">&plus;</a>
+                                            <a id="link-add-date" class="link-add-date" href="#" title="Add Date">&plus;</a>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -194,9 +194,39 @@ class MemberEditor extends HTMLElement {
                 suffix: suffix.value
             };
 
+            const tbody = shadow.querySelector('table.tbl-ids tbody');
+
             Members.save(member).then((r) => {
                 notify.add(r.status, r.message);
             });
+        });
+
+        const linkaddid = shadow.getElementById('link-add-id');
+        linkaddid.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const opts = [];
+            self._id_types.forEach((t) => {
+                opts.push(`<option value="${t.id}">${t.name}</option>`);
+            });
+            const options = opts.join('');
+
+            const tbody = shadow.querySelector('table.tbl-ids tbody');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a class="link-remove-id" href="#" title="Remove Id">&minus;</a>
+                </td>
+                <td>
+                    <select class="form-input-type" title="Id Type">
+                        ${options}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="form-input-id" title="Identifier" placeholder="Id" />
+                </td>
+            `;
+            tbody.appendChild(tr);
         });
     }
 
