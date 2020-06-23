@@ -1,4 +1,4 @@
-create table if not exists gender (
+create table if not exists genders (
     id int not null,
     name varchar(30) not null,
     constraint pk_gender primary key (id),
