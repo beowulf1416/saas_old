@@ -23,6 +23,12 @@ div[role=tabs].vertical > ul[role=tablist] {
     box-shadow: 0 0 0.2em #B7B7B8;
 }
 
+[role=tabs]:not(.vertical) > ul[role=tablist] > li.active {
+    border: 1px solid #d1d1d1;
+    box-shadow: 0 0 0.2em #d1d1d1;
+    background-color: #d1d1d1;
+}
+
 [role=tabs] [role=tabpanel] {
     padding: 0.5em;
     box-shadow: 0 0 0.2em #B7B7B8;
