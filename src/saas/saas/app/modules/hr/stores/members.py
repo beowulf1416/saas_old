@@ -29,6 +29,14 @@ class MembersStore(BaseStore):
                 member['suffix']
             ])
 
+            id_types = member['identifiers']
+            for id_type in id_types:
+                c.callproc('crm.people_save_id', [ 
+                    member_id, 
+                    id_type['idType'],
+                    id_type['value']
+                ])
+
             super(MembersStore, self).commit(cn)
         except Exception as e:
             super(MembersStore, self).rollback(cn)
@@ -50,3 +58,11 @@ class MembersStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve HR Member')
+
+    def get_ids(self, memberId: UUID):
+        try:
+            result = super(MembersStore, self).runProc('crm.people_ids_all', [memberId, ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve member identifiers')

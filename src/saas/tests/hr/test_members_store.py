@@ -42,7 +42,17 @@ class TestHRMembersStore(unittest.TestCase):
                 'middleName': random_str,
                 'lastName': random_str,
                 'prefix': random_str,
-                'suffix': random_str
+                'suffix': random_str,
+                'identifiers': [
+                    {
+                        'idType': 1,
+                        'value': '123'
+                    },
+                    {
+                        'idType': 2,
+                        'value': '123'
+                    }
+                ]
             })
         except Exception as e:
             self.fail(e)
@@ -60,7 +70,17 @@ class TestHRMembersStore(unittest.TestCase):
                 'middleName': random_str,
                 'lastName': random_str,
                 'prefix': random_str,
-                'suffix': random_str
+                'suffix': random_str,
+                'identifiers': [
+                    {
+                        'idType': 1,
+                        'value': '123'
+                    },
+                    {
+                        'idType': 2,
+                        'value': '123'
+                    }
+                ]
             })
             result = self.mStore.get(client_id, member_id)
             self.assertEqual(result[0], member_id)
@@ -80,9 +100,50 @@ class TestHRMembersStore(unittest.TestCase):
                 'middleName': random_str,
                 'lastName': random_str,
                 'prefix': random_str,
-                'suffix': random_str
+                'suffix': random_str,
+                'identifiers': [
+                    {
+                        'idType': 1,
+                        'value': '123'
+                    },
+                    {
+                        'idType': 2,
+                        'value': '123'
+                    }
+                ]
             })
             result = self.mStore.filter(client_id, random_str)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
+
+
+    def test_get_ids(self):
+        random_str = self.generate_random_str(10)
+        try:
+            member_id = str(uuid.uuid4())
+
+            self.mStore.save({
+                'clientId': self.defaultClient[0],
+                'memberId': member_id,
+                'firstName': random_str,
+                'middleName': random_str,
+                'lastName': random_str,
+                'prefix': random_str,
+                'suffix': random_str,
+                'identifiers': [
+                    {
+                        'idType': 1,
+                        'value': '123'
+                    },
+                    {
+                        'idType': 2,
+                        'value': '123'
+                    }
+                ]
+            })
+
+            result = self.mStore.get_ids(member_id)
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
