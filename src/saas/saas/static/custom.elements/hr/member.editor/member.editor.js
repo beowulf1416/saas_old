@@ -184,6 +184,18 @@ class MemberEditor extends HTMLElement {
             const prefix = shadow.getElementById('prefix');
             const suffix = shadow.getElementById('suffix');
 
+            const ids = [];
+            const trs = shadow.querySelectorAll('table.tbl-ids tbody tr');
+            trs.forEach((tr) => {
+                const id_type = tr.querySelector('.form-input-type');
+                const id = tr.querySelector('.form-input-id');
+
+                ids.push({
+                    'idType': id_type.value,
+                    'value': id.value
+                })
+            });
+
             const member = {
                 clientId: client_id,
                 memberId: member_id,
@@ -191,10 +203,9 @@ class MemberEditor extends HTMLElement {
                 middleName: middle_name.value,
                 lastName: last_name.value,
                 prefix: prefix.value,
-                suffix: suffix.value
+                suffix: suffix.value,
+                identifiers: ids
             };
-
-            const tbody = shadow.querySelector('table.tbl-ids tbody');
 
             Members.save(member).then((r) => {
                 notify.add(r.status, r.message);
@@ -266,6 +277,39 @@ class MemberEditor extends HTMLElement {
         shadow.getElementById('last-name').value = member.lastName;
         shadow.getElementById('prefix').value = member.prefix;
         shadow.getElementById('suffix').value = member.suffix;
+
+        const opts = [];
+        self._id_types.forEach((t) => {
+            opts.push(`<option value="${t.id}">${t.name}</option>`);
+        });
+        const options = opts.join('');
+
+        const tbody = shadow.querySelector('table.tbl-ids tbody');
+        const identifiers = member.identifiers;
+        identifiers.forEach((id) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <a class="link-remove-id" href="#" title="Remove Id">&minus;</a>
+                </td>
+                <td>
+                    <select class="form-input-type" title="Id Type">
+                        ${options}
+                    </select>
+                </td>
+                <td>
+                    <input type="text" class="form-input-id" title="Identifier" placeholder="Id" />
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            const type = tr.querySelector('.form-input-type');
+            type.value = id.idType;
+
+            const value = tr.querySelector('.form-input-id');
+            value.value = id.value;
+        });
+
     }
 
     setIds(ids = []) {
