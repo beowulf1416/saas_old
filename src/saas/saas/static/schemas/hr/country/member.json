@@ -1,7 +1,20 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "$id": "/static/schemas/hr/member.json",
-    "definitions": {},
+    "definitions": {
+        "id": {
+            "type": "object",
+            "properties": {
+                "idType": { "type": "number" },
+                "value": { "type": "string" },
+                "operation": { "enum": [ "new", "remove", "update" ]}
+            },
+            "required": [
+                "idType",
+                "value"
+            ]
+        }
+    },
     "type": "object",
     "properties": {
         "clientId": { "type": "string", "format": "uuid" },
@@ -10,7 +23,11 @@
         "suffix": { "type": "string" },
         "firstName": { "type": "string" },
         "middleName": { "type": "string" },
-        "lastName": { "type": "string" }
+        "lastName": { "type": "string" },
+        "identifiers": {
+            "type": "array",
+            "ids": { "$ref": "#/definitions/id" }
+        }
     },
     "required": [
         "clientId",
