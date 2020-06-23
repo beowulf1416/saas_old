@@ -2,6 +2,7 @@
 import { notify } from '/static/js/ui/ui.js';
 import { tabs } from '/static/js/ui/tabs.js';
 import { Members } from '/static/js/modules/hr/members.js';
+import { IdTypes } from '/static/js/modules/hr/idtypes.js';
 class MemberEditor extends HTMLElement {
 
     constructor() {
@@ -138,7 +139,7 @@ class MemberEditor extends HTMLElement {
                                     <tfoot>
                                     <tr>
                                         <td>
-                                            <a class="link-add-id" href="#" title="Add Identifier">&plus;</a>
+                                            <a class="link-add-date" href="#" title="Add Date">&plus;</a>
                                         </td>
                                     </tr>
                                     </tfoot>
@@ -192,6 +193,7 @@ class MemberEditor extends HTMLElement {
                 prefix: prefix.value,
                 suffix: suffix.value
             };
+
             Members.save(member).then((r) => {
                 notify.add(r.status, r.message);
             });
@@ -201,6 +203,15 @@ class MemberEditor extends HTMLElement {
     _prefetch() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        IdTypes.all().then((r) => {
+            if (r.status == 'success') {
+                const types = r.json.types;
+                self._id_types = types;
+            } else {
+                notify(r.status, r.message);
+            }
+        });
 
         if (this.hasAttribute('member-id')) {
             const client_id = this._getClientId();
