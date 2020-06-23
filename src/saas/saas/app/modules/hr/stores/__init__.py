@@ -15,5 +15,5 @@ def includeme(config):
     mStore = MembersStore(mgr, 'default')
     services['store.hr.members'] = mStore
 
-    idStore = IdTypeStore(mgr, 'default')
+    idStore = IdTypesStore(mgr, 'default')
     services['store.hr.idtypes'] = idStore
