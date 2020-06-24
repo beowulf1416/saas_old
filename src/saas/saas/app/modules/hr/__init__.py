@@ -38,6 +38,10 @@ def includeme(config):
                 'script': '/static/custom.elements/hr/member.editor/member.editor.js'
             },
             {
+                'type': 'module',
+                'script': '/static/custom.elements/hr/time-entries/time-entries.js'
+            },
+            {
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
                 'external': 'true'
             }
