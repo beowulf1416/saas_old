@@ -10,6 +10,11 @@ import { showInTab } from '/static/js/ui/ui.js';
         console.log('hr.dashboard');
     }
 
+    window.actions['hr.shift.explorer'] = function() {
+        const client_id = window.clientId;
+        showInTab('shift-explorer', 'Shift Explorer', `<shift-explorer client-id="${client_id}"></shift-explorer>`);
+    }
+
     window.actions['hr.team.explorer'] = function() {
         const client_id = window.clientId;
         showInTab('team-explorer', 'Team Explorer', `<team-explorer client-id="${client_id}"></team-explorer>`);
