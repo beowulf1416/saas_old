@@ -3,7 +3,7 @@ create or replace function shifts_all (
 )
 returns table (
     id hr.shifts.id%type,
-    active hr.shifts.active.type,
+    active hr.shifts.active%type,
     created hr.shifts.created_ts%type,
     client_id clients.clients.id%type,
     name hr.shifts.name%type,
