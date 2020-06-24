@@ -52,6 +52,9 @@ class MemberSelector extends HTMLElement {
         const btnmember = shadow.getElementById('btn-member');
         btnmember.addEventListener('click', function(e) {
             const view = showInView('Members', `<member-selector-view client-id="${client_id}"></member-selector-view>`);
+            view.addEventListener('selected', function(e) {
+                console.log(e);
+            });
         });
     }
 }

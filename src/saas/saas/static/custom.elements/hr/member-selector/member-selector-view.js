@@ -1,5 +1,7 @@
 'use strict';
-
+import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
+import { Members } from '/static/js/modules/hr/members.js';
 class MemberSelectorView extends HTMLElement {
 
     constructor() {
@@ -22,6 +24,11 @@ class MemberSelectorView extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setMembers = this.setMembers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -57,6 +64,77 @@ class MemberSelectorView extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const beginsearch = function(filter) {
+            Members.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    const members = r.json.members;
+                    self.setMembers(members, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+
+                beginsearch(filter.value);
+            }
+        });
+
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
+    }
+
+    setMembers(members = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tbody = shadow.getElementById('tbl-members');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        members.forEach((m) => {
+            const id = 'id' + Util.generateId();
+            let name = `<span>${m.firstName}</span> <span>${m.middleName}</span> <span>${m.lastName}</span>`;
+            name = name.replaceAll(filter, `<strong>${filter}</strong>`);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Member" value="${m.id}" />
+                </td>
+                <td>
+                    <label for="${id}">${name}</label>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const selected = tr.querySelector(`#${id}`);
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        memberId: selected.value
+                    }
+                }));
+            });
+        });
     }
 }
 customElements.define('member-selector-view', MemberSelectorView);
