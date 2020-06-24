@@ -31,6 +31,14 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/hr/shift-editor/shift-editor.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/hr/shift-explorer/shift-explorer.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/hr/team.explorer/team.explorer.js'
             },
             {
