@@ -10,6 +10,17 @@ def includeme(config):
         '/api/hr/id/types'
     )
 
+    # shifts
+    config.add_route(
+        'api.hr.shifts.save',
+        '/api/hr/shifts/save'
+    )
+
+    config.add_route(
+        'api.hr.shifts.all',
+        '/api/hr/shifts/all'
+    )
+
     # members
     config.add_route(
         'api.hr.members.filter',
