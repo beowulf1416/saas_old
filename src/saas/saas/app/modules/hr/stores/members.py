@@ -29,6 +29,9 @@ class MembersStore(BaseStore):
                 member['suffix']
             ])
 
+            # remove ids before inserting new ones
+            c.callproc('crm.people_remove_ids', [member_id, ])
+
             id_types = member['identifiers']
             for id_type in id_types:
                 c.callproc('crm.people_save_id', [ 
