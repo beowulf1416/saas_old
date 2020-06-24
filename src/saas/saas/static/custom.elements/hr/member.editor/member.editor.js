@@ -308,6 +308,14 @@ class MemberEditor extends HTMLElement {
 
             const value = tr.querySelector('.form-input-id');
             value.value = id.value;
+
+            // event handlers
+            const remove = tr.querySelector('.link-remove-id');
+            remove.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parenttr = remove.parentElement.parentElement;
+                tbody.removeChild(parenttr);
+            });
         });
 
     }
