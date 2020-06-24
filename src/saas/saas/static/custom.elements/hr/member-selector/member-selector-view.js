@@ -110,7 +110,10 @@ class MemberSelectorView extends HTMLElement {
         members.forEach((m) => {
             const id = 'id' + Util.generateId();
             let name = `<span>${m.firstName}</span> <span>${m.middleName}</span> <span>${m.lastName}</span>`;
-            name = name.replaceAll(filter, `<strong>${filter}</strong>`);
+            if (filter != '') {
+                name = name.replaceAll(filter, `<strong>${filter}</strong>`);
+            }
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>

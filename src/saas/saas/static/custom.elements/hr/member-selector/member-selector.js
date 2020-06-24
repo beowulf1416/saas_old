@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInView } from '/static/js/ui/ui.js';
+import { Members } from '/static/js/modules/hr/members.js';
 class MemberSelector extends HTMLElement {
 
     constructor() {
@@ -53,7 +54,18 @@ class MemberSelector extends HTMLElement {
         btnmember.addEventListener('click', function(e) {
             const view = showInView('Members', `<member-selector-view client-id="${client_id}"></member-selector-view>`);
             view.addEventListener('selected', function(e) {
-                console.log(e);
+                const member_id = e.detail.memberId;
+                Members.get(client_id, member_id).then((r) => {
+                    if (r.status == 'success') {
+                        const member = r.json.member;
+
+                        const id = shadow.getElementById('member-id');
+                        id.value = member_id;
+
+                        const name = shadow.getElementById('member');
+                        name.value = `${member.firstName} ${member.middleName} ${member.lastName}`;
+                    }
+                });
             });
         });
     }
