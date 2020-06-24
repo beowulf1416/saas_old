@@ -14,4 +14,9 @@ import { showInTab } from '/static/js/ui/ui.js';
         const client_id = window.clientId;
         showInTab('team-explorer', 'Team Explorer', `<team-explorer client-id="${client_id}"></team-explorer>`);
     };
+
+    window.actions['hr.time.entries'] = function() {
+        const client_id = window.clientId;
+        showInTab('time-entries', 'Time Entries', `<time-entries client-id="${client_id}"></time-entries>`);
+    };
 })();
