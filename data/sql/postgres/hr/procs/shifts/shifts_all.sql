@@ -17,7 +17,6 @@ begin
         a.id,
         a.active,
         a.created_ts,
-        a.client_id,
         a.name,
         a.start_time,
         a.end_time
