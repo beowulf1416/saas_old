@@ -27,11 +27,14 @@ class TimeEntries extends HTMLElement {
     _init(container) {
         const self = this;
 
+        const client_id = this.getAttribute('client-id');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
                 <form id="form-times">
+                    <member-selector client-id="${client_id}"></member-selector>
                     <div class="table-wrapper">
                         <table id="tbl-times">
                             <caption>Time Entries</caption>
