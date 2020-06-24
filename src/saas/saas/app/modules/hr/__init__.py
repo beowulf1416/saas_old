@@ -39,6 +39,14 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/hr/member-selector/member-selector.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/hr/member-selector/member-selector-view.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/hr/time-entries/time-entries.js'
             },
             {
