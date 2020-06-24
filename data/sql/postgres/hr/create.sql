@@ -14,9 +14,7 @@ set schema 'hr';
 \ir tables/employee_orgs.sql
 \ir tables/employee_ids.sql
 
-
-/** functions **/
-
+\ir tables/shifts.sql
 
 
 set schema 'public';
