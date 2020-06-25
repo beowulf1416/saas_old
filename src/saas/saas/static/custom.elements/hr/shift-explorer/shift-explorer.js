@@ -111,6 +111,8 @@ class ShiftExplorer extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const tbody = shadow.querySelector('table#tbl-shifts tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
@@ -123,7 +125,7 @@ class ShiftExplorer extends HTMLElement {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>
-                    <a class="link-edit-shift" title="Edit Shift" href="#">
+                    <a class="link-edit-shift" title="Edit Shift" href="#" data-id="${id}">
                         <span class="material-icons">edit</span>
                     </a>
                 </td>
@@ -133,6 +135,12 @@ class ShiftExplorer extends HTMLElement {
             tbody.appendChild(tr);
 
             // event handlers
+            const edit = tr.querySelector('.link-edit-shift');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+                const shift_id = edit.dataset.id;
+                showInTab('shift-editor', 'Shift', `<shift-editor client-id="${client_id}" shift-id="${shift_id}"></shift-editor>`);
+            });
         });
     }
 }
