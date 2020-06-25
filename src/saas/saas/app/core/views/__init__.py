@@ -9,6 +9,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'user.profile',
+        '/profile'
+    )
+
+    config.add_route(
         'security.signout',
         '/security/signout'
     )

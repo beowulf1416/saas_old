@@ -14,11 +14,12 @@ from pyramid.renderers import render
     request_method='GET'
 )
 def view_default(request):
-    log.info('view_default')
+    # log.info('view_default')
     services = request.services()
 
     modules = services['modules']
 
+    # aggregate unique js
     scripts = {}
     for m, module in modules.items():
         if 'js' in module:
@@ -26,6 +27,8 @@ def view_default(request):
                 k = js['script']
                 scripts[k] = js
 
+    # aggregate js that have external = true
+    # and add to content-security-policy
     csp = {
         'scripts': []
     }
@@ -47,4 +50,13 @@ def view_default(request):
     permission='user.authenticated'
 )
 def view_dashboard(request):
+    return {}
+
+@view_config(
+    route_name='user.profile',
+    renderer='saas.app:templates/profile.html',
+    request_method='GET',
+    permission='user.authenticated'
+)
+def view_profile(request):
     return {}

@@ -64,7 +64,7 @@
                     <span class="material-icons">lock_open</span>
                 </a>
                 <div class="navbar-dropdown is-right">
-                    <a title="Profile" class="navbar-item" href="#">{{ email }}</a>
+                    <a title="Profile" class="navbar-item" href="/profile">{{ email }}</a>
                     <hr class="navbar-divider">
                     <a title="Sign Out" class="navbar-item" href="/security/signout">Sign Out</a>
                 </div><!-- .navbar-dropdown -->
@@ -158,8 +158,6 @@ import { showInTab, showInView } from '/static/js/ui/ui.js';
 
     tabs(document);
 
-    // const tab = document.querySelector('tab-container');
-    // tab.addTab('news', 'News', '<h1>This is the news');
     showInTab('news', 'News', '<h1>This is the news</h1>');
 
     document.querySelectorAll('[data-action]').forEach(elem => {

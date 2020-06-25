@@ -1,0 +1,19 @@
+{% extends "saas.app:templates/layout.html" %}
+
+{% block base_meta -%}
+<meta http-equiv="Content-Security-Policy" content="
+    default-src 'self'; 
+    child-src 'none';
+    style-src 'self' https://fonts.googleapis.com https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css;
+    font-src 'self' https://fonts.gstatic.com https://stackpath.bootstrapcdn.com;
+    img-src 'self' data: https://*;
+    script-src 'self' 'unsafe-inline' {% if csp is defined %}{% for js in csp.scripts %}{{ js }} {% endfor %}{%- endif %};">
+{%- endblock base_meta %}
+
+{% block links -%}
+<link rel="icon" type="image/ico" href="/static/img/favicon.ico">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="/static/css/default.css">
+<link rel="stylesheet" href="/static/css/ui/tabs.css">
+{%- endblock links %}
