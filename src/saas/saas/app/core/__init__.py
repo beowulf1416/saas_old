@@ -16,6 +16,10 @@ def includeme(config):
         return obj.isoformat()
     json_renderer.add_adapter(datetime.datetime, datetime_adapter)
 
+    def time_adapter(obj, request):
+        return obj.isoformat()
+    json_renderer.add_adapter(datetime.time, time_adapter)
+
     def decimal_adapter(obj, request):
         return str(obj)
     json_renderer.add_adapter(decimal.Decimal, decimal_adapter)
