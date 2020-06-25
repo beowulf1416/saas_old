@@ -10,6 +10,7 @@ set schema 'hr';
 
 \ir procs/shifts/shift_save.sql
 \ir procs/shifts/shifts_all.sql
+\ir procs/shifts/shifts_filter.sql
 
 
 set schema 'public';
