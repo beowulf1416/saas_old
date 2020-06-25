@@ -21,6 +21,11 @@ def includeme(config):
         '/api/hr/shifts/all'
     )
 
+    config.add_route(
+        'api.hr.shifts.filter',
+        '/api/hr/shifts/filter'
+    )
+
     # members
     config.add_route(
         'api.hr.members.filter',
