@@ -24,7 +24,7 @@ class ShiftEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.setShift = this.setShifts.bind(this);
+        this.setShift = this.setShift.bind(this);
 
         this._attachEventHandlers();
     }
@@ -72,7 +72,7 @@ class ShiftEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        
+
     }
 }
 customElements.define('shift-editor', ShiftEditor);
