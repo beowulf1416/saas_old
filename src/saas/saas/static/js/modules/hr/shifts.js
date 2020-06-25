@@ -17,5 +17,12 @@ class Shifts {
             clientId: clientId
         });
     }
+
+    static filter(clientId = '', filter = '') {
+        return Util.fetch('/api/hr/shifts/filter', {
+            clientId: clientId,
+            filter: filter
+        });
+    }
 }
 export { Shifts };
