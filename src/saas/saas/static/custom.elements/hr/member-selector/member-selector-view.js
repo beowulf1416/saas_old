@@ -102,7 +102,7 @@ class MemberSelectorView extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const tbody = shadow.getElementById('tbl-members');
+        const tbody = shadow.querySelector('table#tbl-members tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
