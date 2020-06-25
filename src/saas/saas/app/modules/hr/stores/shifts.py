@@ -33,3 +33,11 @@ class ShiftsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve shifts')
+
+    def filter(self, clientId: UUID, filter: str):
+        try:
+            result = super(ShiftsStore, self).runProc('hr.shifts_filter', [clientId, f'%{filter}%'])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to filter shifts')

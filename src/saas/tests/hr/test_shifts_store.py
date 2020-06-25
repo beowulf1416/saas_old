@@ -42,3 +42,10 @@ class TestHRShiftsStore(unittest.TestCase):
         self.store.save(self.defaultClient[0], shift_id, random_str, datetime.time(8), datetime.time(12))
         result = self.store.all(self.defaultClient[0])
         self.assertGreater(len(result), 0, '{0}'.format(result))
+
+    def test_filter(self):
+        random_str = self.generate_random_str(10)
+        shift_id = str(uuid.uuid4())
+        self.store.save(self.defaultClient[0], shift_id, random_str, datetime.time(8), datetime.time(12))
+        result = self.store.filter(self.defaultClient[0], random_str[2:8])
+        self.assertGreater(len(result), 0, '{0}'.format(result))
