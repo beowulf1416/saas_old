@@ -99,13 +99,16 @@ class TimeEntries extends HTMLElement {
 
             const id = Util.generateId();
 
-            let start_date = moment();
+            let start_date = new Date();
             const last_tr = shadow.querySelector('table#tbl-times tbody tr:last-child');
             if (last_tr != null) {
                 const out_date = last_tr.querySelector('.form-input-end-date');
-                start_date = moment(out_date.value).add(1, 'days');
+                start_date = new Date(out_date.value);
+                start_date = start_date.getDate() + 1;
             }
-            const last_date = start_date.format('dd/mm/yyyy');
+            const dateformat = new Intl.DateTimeFormat('en', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            const [ {value: month},,{value:day},,{value: year}] = dateformat.formatToParts(start_date);
+            const last_date = `${year}-${month}-${day}`;
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -129,6 +132,19 @@ class TimeEntries extends HTMLElement {
 
                 const parent_tr = remove.parentElement.parentElement;
                 tbody.removeChild(parent_tr);
+            });
+
+            const date_start = tr.querySelector('.form-input-start-date');
+            const date_end = tr.querySelector('.form-input-end-date');
+            date_start.addEventListener('change', function(e) {
+                console.log(date_start.value);
+                date_end.value = date_start.value;
+            });
+
+            const time_start = tr.querySelector('.form-input-start-time');
+            const time_end = tr.querySelector('.form-input-end-time');
+            time_end.addEventListener('change', function(e) {
+                console.log(time_end.value);
             });
         });
     }
