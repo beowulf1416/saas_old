@@ -13,5 +13,5 @@ create table if not exists employee_time_entries (
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_employee_time_entries_2 foreign key (employee_id)
         references hr.employees (id) on delete restrict on update restrict,
-    constraint chk_employee_time_entries_1 check (dt_start = dt_end)
+    constraint chk_employee_time_entries_1 check (dt_end > dt_start)
 );

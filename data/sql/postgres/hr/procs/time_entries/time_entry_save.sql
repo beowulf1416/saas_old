@@ -22,7 +22,7 @@ begin
         p_employee_id,
         p_start,
         p_end,
-        p_hours
+        (extract(epoch from p_end) - extract(epoch from p_start))/3600
     )
     on conflict (id) do nothing;
 end
