@@ -25,6 +25,7 @@ class MemberSelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.getSelectedMemberId = this.getSelectedMemberId.bind(this);
 
         this._attachEventHandlers();
     }
@@ -68,6 +69,14 @@ class MemberSelector extends HTMLElement {
                 });
             });
         });
+    }
+
+    getSelectedMemberId() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const member_id = shadow.getElementById('member-id');
+        return member_id.value;
     }
 }
 customElements.define('member-selector', MemberSelector);
