@@ -12,5 +12,7 @@ set schema 'hr';
 \ir procs/shifts/shifts_all.sql
 \ir procs/shifts/shifts_filter.sql
 
+\ir procs/time_entries/time_entry_save.sql
+\ir procs/time_entries/time_entries_get.sql
 
 set schema 'public';

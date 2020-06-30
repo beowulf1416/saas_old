@@ -16,5 +16,7 @@ set schema 'hr';
 
 \ir tables/shifts.sql
 
+\ir tables/employee_time_entries.sql
+
 
 set schema 'public';
