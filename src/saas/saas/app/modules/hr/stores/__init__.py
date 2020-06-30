@@ -6,6 +6,7 @@ from saas.app.core.services import get_service
 from saas.app.modules.hr.stores.members import MembersStore
 from saas.app.modules.hr.stores.id_types import IdTypesStore
 from saas.app.modules.hr.stores.shifts import ShiftsStore
+from saas.app.modules.hr.stores.time_entries import TimeEntriesStore
 
 def includeme(config):
     log.info('including: saas.app.modules.hr.stores')
@@ -21,3 +22,6 @@ def includeme(config):
 
     shifts = ShiftsStore(mgr, 'default')
     services['store.hr.shifts'] = shifts
+
+    entries = TimeEntriesStore(mgr, 'default')
+    services['store.hr.time.entries'] = entries
