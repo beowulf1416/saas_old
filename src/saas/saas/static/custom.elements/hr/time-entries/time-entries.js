@@ -1,6 +1,7 @@
 'use strict';
 import { Util } from '/static/js/util.js';
-class TimeEntries extends HTMLElement {
+import { TimeEntries } from '/static/js/modules/hr/time-entries.js';
+class TimeEntriesElement extends HTMLElement {
 
     constructor() {
         const self = super();
@@ -88,9 +89,27 @@ class TimeEntries extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
-            console.log('//TODO save');
+            const trs = shadow.querySelector('table#tbl-times tbody tr');
+            entries = [];
+            trs.forEach((tr) => {
+                const input_start_dt = tr.querySelector('.form-input-start-date');
+                const input_start_time = tr.querySelector('.form-input-start-time');
+                const input_end_dt = tr.querySelector('.form-input-end-date');
+                const input_end_time = tr.querySelector('.form-input-end-time');
+
+                const start = dayjs(`${input_start_dt.value} ${input_start_time.value}`).format();
+                const end = dayjs(`${input_end_dt.value} ${input_end_time.value}`).format();
+                entries.push({
+                    start: start,
+                    end: end
+                });
+            });
+            const member_selector = shadow.querySelector('member-selector');
+            TimeEntries.save(client_id, member_selector.getSelectedMemberId(), entries);
         });
 
         const addtimeentry = shadow.getElementById('link-add-time-entry');
@@ -153,4 +172,4 @@ class TimeEntries extends HTMLElement {
         });
     }
 }
-customElements.define('time-entries', TimeEntries);
+customElements.define('time-entries', TimeEntriesElement);
