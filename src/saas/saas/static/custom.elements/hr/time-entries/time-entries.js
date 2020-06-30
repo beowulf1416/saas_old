@@ -143,9 +143,12 @@ class TimeEntries extends HTMLElement {
             const time_start = tr.querySelector('.form-input-start-time');
             const time_end = tr.querySelector('.form-input-end-time');
             time_end.addEventListener('change', function(e) {
-                console.log(time_end.value);
+                const dt_start = dayjs(`${date_start.value} ${time_start.value}`);
+                const dt_end = dayjs(`${date_end.value} ${time_end.value}`);
+                const hours = dt_end.diff(dt_start, 'hour');
 
-                
+                const input_hours = tr.querySelector('.form-input-hours');
+                input_hours.value = hours;
             });
         });
     }

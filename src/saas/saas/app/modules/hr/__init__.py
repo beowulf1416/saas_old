@@ -60,6 +60,16 @@ def includeme(config):
             {
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
                 'external': 'true'
+            },
+            # {
+            #     'script': 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/locale/en-gb.min.js',
+            #     'external': 'true',
+            #     'integrity': 'sha256-sWNJBInW9QCXGSCxkMNQo4yvxn736utE1YIvgHGcWdM=',
+            #     'crossorigin': 'anonymous',
+            # }
+            {
+                'script': 'https://unpkg.com/dayjs@1.8.21/dayjs.min.js',
+                'external': 'true'
             }
         ]
     }
