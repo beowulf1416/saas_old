@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.stores.base import BaseStore
 
+import uuid
 from uuid import UUID
 import datetime
 # from typing import List
@@ -18,8 +19,8 @@ class TimeEntriesStore(BaseStore):
         cn = super(TimeEntriesStore, self).begin()
         try:
             c = cn.cursor()
-            for entry in entries:
-                entryId = entry['timeEntryId']
+            for entry in entries['entries']:
+                entryId = entry['timeEntryId'] if 'timeEntryId' in entry else str(uuid.uuid4())
                 c.callproc('hr.time_entry_save', [
                     clientId,
                     memberId,
