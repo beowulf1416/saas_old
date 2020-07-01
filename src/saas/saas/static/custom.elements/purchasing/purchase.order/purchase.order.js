@@ -1,5 +1,4 @@
 'use strict';
-import { Util } from '/static/js/util.js';
 import { Inventory } from '/static/js/modules/inventory/inventory.js';
 import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
 import { notify } from '/static/js/ui/ui.js';
@@ -38,7 +37,7 @@ class PurchaseOrder extends HTMLElement {
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
-        const po_id = this.hasAttribute('po-id') ? this.getAttribute('po-id') : '';
+        const po_id = this.hasAttribute('po-id') ? this.getAttribute('po-id') : uuidv4();
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
