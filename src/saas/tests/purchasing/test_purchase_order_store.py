@@ -4,6 +4,7 @@ from pyramid import testing
 
 import string
 import random
+import uuid
 
 
 class TestPurchaseOrderStore(unittest.TestCase):
@@ -31,8 +32,10 @@ class TestPurchaseOrderStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+        po_id = str(uuid.uuid4())
         order = {
             'clientId': client_id,
+            'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
             'items': [
@@ -43,8 +46,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 }
             ]
         }
-        po_id = self.poStore.save(order)
-        self.assertFalse(po_id is None)
+        self.poStore.save(order)
 
     def test_filter_po(self):
         try:
@@ -52,8 +54,10 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
             random_str = self.generate_random_str(10)
             warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+            po_id = str(uuid.uuid4())
             order = {
                 'clientId': client_id,
+                'purchaseOrderId': po_id,
                 'description': random_str,
                 'warehouseId': warehouse_id,
                 'items': [
@@ -64,7 +68,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                     }
                 ]
             }
-            po_id = self.poStore.save(order)
+            self.poStore.save(order)
 
             result = self.poStore.filter(client_id, '')
             self.assertGreater(len(result), 0, '{0}'.format(result))

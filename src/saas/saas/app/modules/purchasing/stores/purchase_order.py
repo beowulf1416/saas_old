@@ -16,25 +16,15 @@ class PurchaseOrderStore(BaseStore):
         cn = super(PurchaseOrderStore, self).begin()
         try:
             client_id = order['clientId']
-            purchase_order_id = order['purchaseOrderId'] if 'purchaseOrderId' in order else None
+            purchase_order_id = order['purchaseOrderId']
 
             c = cn.cursor()
-            if purchase_order_id is None:
-                # add
-                c.callproc('purchasing.purchase_order_add', [
-                    client_id,
-                    order['description'],
-                    order['warehouseId']
-                ])
-                [(purchase_order_id, ), ] = c.fetchall()
-            else:
-                # update
-                c.callproc('purchasing.purchase_order_update', [
-                    client_id,
-                    purchase_order_id,
-                    order['description'],
-                    order['warehouseId']
-                ])
+            c.callproc('purchasing.purchase_order_save', [
+                client_id,
+                purchase_order_id,
+                order['description'],
+                order['warehouseId']
+            ])
 
             c = cn.cursor()
             c.callproc('purchasing.purchase_order_items_remove', [client_id, purchase_order_id])
@@ -50,8 +40,6 @@ class PurchaseOrderStore(BaseStore):
                     item['uom']
                 ])
             super(PurchaseOrderStore, self).commit(cn)
-
-            return purchase_order_id
         except Exception as e:
             super(PurchaseOrderStore, self).rollback(cn)
             log.error(e)
