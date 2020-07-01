@@ -1,6 +1,7 @@
 'use strict';
 import { Util } from '/static/js/util.js';
 import { TimeEntries } from '/static/js/modules/hr/time-entries.js';
+import { notify } from '/static/js/ui/ui.js';
 class TimeEntriesElement extends HTMLElement {
 
     constructor() {
@@ -93,23 +94,27 @@ class TimeEntriesElement extends HTMLElement {
 
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
-            const trs = shadow.querySelector('table#tbl-times tbody tr');
-            entries = [];
+            const trs = shadow.querySelectorAll('table#tbl-times tbody tr');
+            const entries = [];
             trs.forEach((tr) => {
                 const input_start_dt = tr.querySelector('.form-input-start-date');
                 const input_start_time = tr.querySelector('.form-input-start-time');
                 const input_end_dt = tr.querySelector('.form-input-end-date');
                 const input_end_time = tr.querySelector('.form-input-end-time');
 
-                const start = dayjs(`${input_start_dt.value} ${input_start_time.value}`).format();
-                const end = dayjs(`${input_end_dt.value} ${input_end_time.value}`).format();
+                const start = dayjs(`${input_start_dt.value} ${input_start_time.value}`);
+                const end = dayjs(`${input_end_dt.value} ${input_end_time.value}`);
+                const hours = end.diff(start, 'hour');
                 entries.push({
-                    start: start,
-                    end: end
+                    start: start.format(),
+                    end: end.format(),
+                    hours: hours
                 });
             });
             const member_selector = shadow.querySelector('member-selector');
-            TimeEntries.save(client_id, member_selector.getSelectedMemberId(), entries);
+            TimeEntries.save(client_id, member_selector.getSelectedMemberId(), entries).then((r) => {
+                notify(r.status, r.message);
+            });
         });
 
         const addtimeentry = shadow.getElementById('link-add-time-entry');
