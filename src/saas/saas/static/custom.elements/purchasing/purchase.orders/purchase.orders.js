@@ -131,14 +131,14 @@ class PurchaseOrdersElement extends HTMLElement {
         orders.forEach((o) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><a class="link-edit-pos" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
+                <td><a class="link-edit-po" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
                 <td>${o.created_ts}</td>
                 <td>${o.description}</td>
             `;
             tbody.appendChild(tr);
 
             // event handlers
-            const edit = tr.querySelector('.link-edit-post');
+            const edit = tr.querySelector('.link-edit-po');
             edit.addEventListener('click', function(e) {
                 e.preventDefault();
                 const po_id = edit.dataset.id;
