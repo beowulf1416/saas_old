@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/hr/member.json",
+    "definitions": {
+        "entry": {
+            "type": "object",
+            "properties": {
+                "entryId": { "type": "string", "format": "uuid" },
+                "start": { "type": "string", "format": "date-time" },
+                "end": { "type": "string", "format": "date-time" },
+                "hours": { "type": "number" }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "clientId": { "type": "string", "format": "uuid" },
+        "memberId": { "type": "string", "format": "uuid"},
+        "entries": {
+            "type": "array",
+            "entry": {"$ref": "#/definitions/entry" }
+        }
+    },
+    "required": [
+        "clientId",
+        "memberId",
+        "entries"
+    ],
+    "additionalProperties": false
+}
