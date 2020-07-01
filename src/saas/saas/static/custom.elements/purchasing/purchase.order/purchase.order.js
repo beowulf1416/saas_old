@@ -1,4 +1,5 @@
 'use strict';
+import { Util } from '/static/js/util.js';
 import { Inventory } from '/static/js/modules/inventory/inventory.js';
 import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
 import { notify } from '/static/js/ui/ui.js';

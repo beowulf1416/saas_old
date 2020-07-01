@@ -1,6 +1,7 @@
 'use strict';
-
-class PurchaseOrders extends HTMLElement {
+import { notify, showInTab } from '/static/js/ui/ui.js';
+import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
+class PurchaseOrdersElement extends HTMLElement {
 
     constructor() {
         const self = super();
@@ -37,8 +38,8 @@ class PurchaseOrders extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
-                <button id="btn-filter" type="button" class="btn btn-new" title="New Purchase Order">
-                    <span class="material-icons">new</span>
+                <button id="btn-new-po" type="button" class="btn btn-new" title="New Purchase Order">
+                    <span class="material-icons">playlist_add</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
@@ -47,7 +48,7 @@ class PurchaseOrders extends HTMLElement {
 
                     <label for="filter">Purchase Orders</label>
                     <input type="search" id="filter" name="filter" title="Purchase Order" placeholder="Purchase Order" />
-                    <button type="button" class="btn btn-filter" title="Search">
+                    <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
@@ -109,6 +110,11 @@ class PurchaseOrders extends HTMLElement {
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
         });
+
+        const btnnew = shadow.getElementById('btn-new-po');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('purchase-order', 'New Purchase Order', `<purchase-order client-id="${client_id}"></purchase-order>`);
+        });
     }
 
     setPurchaseOrders(orders = [], filter = '') {
@@ -141,4 +147,4 @@ class PurchaseOrders extends HTMLElement {
         });
     }
 }
-customElements.define('purchase-orders', PurchaseOrders);
+customElements.define('purchase-orders', PurchaseOrdersElement);
