@@ -11,7 +11,7 @@ class SchemaValidator(object):
         self._schemas = {}
 
     def validate(self, schema_file: str, instance: object):
-        try:
+        # try:
             schema = ''
             if schema_file in self._schemas:
                 schema = self._schemas[schema_file]
@@ -21,8 +21,8 @@ class SchemaValidator(object):
                     schema = json.loads(data)
                     
             jsonschema.validate(instance, schema)
-        except ValidationError as e:
-            log.error(e)
-            raise Exception(e.message)
+        # except ValidationError as e:
+        #     log.error(e)
+        #     raise Exception(e.message)
 
     
