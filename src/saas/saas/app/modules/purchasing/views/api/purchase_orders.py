@@ -22,7 +22,7 @@ def api_purchasing_po_add(request):
     try:
         validator.validate(
             instance = params,
-            schema_file = '/purchasing/purchase_order.json'
+            schema_file = 'purchasing/purchase_order.json'
         )
         poStore.save(params)
     except ValidationError as e:
