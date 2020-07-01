@@ -12,6 +12,6 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions['purchasing.orders'] = function() {
         const client_id = window.clientId;
-        showInTab('purchase-order', 'Purchase Order', `<purchase-order client-id="${client_id}"></purchase-order>`);
+        showInTab('purchase-orders', 'Purchase Orders', `<purchase-orders client-id="${client_id}"></purchase-orders>`);
     };
 })();
