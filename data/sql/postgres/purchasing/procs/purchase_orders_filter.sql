@@ -5,7 +5,7 @@ create or replace function purchase_orders_filter (
 returns table (
     id purchasing.purchase_orders.id%type,
     created_ts purchasing.purchase_orders.created_ts%type,
-    description purchasing.purchage_orders.description%type
+    description purchasing.purchase_orders.description%type
 )
 as $$
 begin
