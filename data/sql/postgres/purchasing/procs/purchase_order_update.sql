@@ -11,7 +11,7 @@ begin
         description = p_description,
         warehouse_id = p_warehouse_id
     where client_id = p_client_id
-        and po_id = p_po_id;
+        and id = p_po_id;
 end
 $$
 language plpgsql;
