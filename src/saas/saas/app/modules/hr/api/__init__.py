@@ -41,3 +41,9 @@ def includeme(config):
         'api.hr.members.get',
         '/api/hr/members/get'
     )
+
+    # time entries
+    config.add_route(
+        'api.hr.time.entries.save',
+        '/api/hr/time/entries/save'
+    )
