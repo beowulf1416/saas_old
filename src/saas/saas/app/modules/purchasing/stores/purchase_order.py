@@ -20,14 +20,6 @@ class PurchaseOrderStore(BaseStore):
 
             c = cn.cursor()
             if purchase_order_id is None:
-                # update
-                c.callproc('purchasing.purchase_order_update', [
-                    client_id,
-                    purchase_order_id,
-                    order['description'],
-                    order['warehouseId']
-                ])
-            else:
                 # add
                 c.callproc('purchasing.purchase_order_add', [
                     client_id,
@@ -35,6 +27,14 @@ class PurchaseOrderStore(BaseStore):
                     order['warehouseId']
                 ])
                 [(purchase_order_id, ), ] = c.fetchall()
+            else:
+                # update
+                c.callproc('purchasing.purchase_order_update', [
+                    client_id,
+                    purchase_order_id,
+                    order['description'],
+                    order['warehouseId']
+                ])
 
             c = cn.cursor()
             c.callproc('purchasing.purchase_order_items_remove', [client_id, purchase_order_id])
@@ -49,13 +49,6 @@ class PurchaseOrderStore(BaseStore):
                     item['quantity'],
                     item['uom']
                 ])
-                # c.execute("select * from purchasing.purchase_order_item_add('{0}'::uuid,'{1}'::uuid,'{2}'::text,{3}::numeric,{4})".format(
-                #     client_id,
-                #     purchase_order_id,
-                #     item['description'],
-                #     item['quantity'],
-                #     item['uom']
-                # ))
             super(PurchaseOrderStore, self).commit(cn)
 
             return purchase_order_id
