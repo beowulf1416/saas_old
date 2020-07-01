@@ -18,10 +18,7 @@
     "type": "object",
     "properties": {
         "clientId": { "type": "string", "format": "uuid" },
-        "purchaseOrderId": { "anyOf": [
-            { "type": "string", "format": "uuid" },
-            { "type": "null" }
-        ]},
+        "purchaseOrderId": { "type": "string", "format": "uuid" },
         "description": { "type": "string" },
         "warehouseId": { "type": "string", "format": "uuid" },
         "items": {
