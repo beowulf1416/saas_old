@@ -16,7 +16,24 @@ class Util {
             },
             body: JSON.stringify(params)
         })
-        .then((r) => r.json());
+        .then((r) => {
+            if (r.ok) {
+                return r.json();
+            } else {
+                console.error(r);
+                return {
+                    status: 'error',
+                    message: r.statusText
+                } 
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            return {
+                status: 'error',
+                message: error
+            };
+        });
     }
 }
 export { Util };
