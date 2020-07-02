@@ -3,6 +3,8 @@ import { showInView, notify } from '/static/js/ui/ui.js';
 import { InventoryWarehouse } from '/static/js/modules/inventory/warehouses.js';
 class WarehouseSelector extends HTMLElement {
 
+    static get observedAttributes() { return ['warehouse-id']; }
+
     constructor() {
         const self = super();
 
@@ -26,6 +28,7 @@ class WarehouseSelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.getWarehouseId = this.getWarehouseId.bind(this);
+        this._setWarehouse = this._setWarehouse.bind(this);
 
         this._attachEventHandlers();
     }
@@ -39,7 +42,7 @@ class WarehouseSelector extends HTMLElement {
             <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
             <input type="hidden" id="warehouse-id" name="warehouse_id" value="" />
 
-            <input type="text" id="selector" name="selector" class="form-input-selector" readonly />
+            <input type="text" id="selector" name="selector" class="form-input-selector" placeholder="Select Warehouse" readonly />
             <button id="btn-warehouse" type="button" class="btn" title="Select Warehouse">...</button>
         `;
 
@@ -63,9 +66,10 @@ class WarehouseSelector extends HTMLElement {
                 InventoryWarehouse.get(client_id, warehouseId).then((r) => {
                     if (r.status == 'success') {
                         const warehouse = r.json.warehouse;
-                        const selector = shadow.getElementById('selector');
+                        // const selector = shadow.getElementById('selector');
 
-                        selector.value = warehouse.name;
+                        // selector.value = warehouse.name;
+                        self._setWarehouse(warehouse);
                     } else {
                         notify(r.status, r.message);
                     }
@@ -79,6 +83,33 @@ class WarehouseSelector extends HTMLElement {
         const shadow = this.shadowRoot;
         const warehouse = shadow.getElementById('warehouse-id');
         return warehouse.value;
+    }
+
+    _setWarehouse(w = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const selector = shadow.getElementById('selector');
+        selector.value = w.name;
+
+        const input_warehouse = shadow.getElementById('warehouse-id');
+        input_warehouse.value = w.id;
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        const self = this;
+
+        if (name == 'warehouse-id') {
+            const client_id = this.getAttribute('client-id');
+            InventoryWarehouse.get(client_id, newValue).then((r) => {
+                if (r.status == 'success') {
+                    const warehouse = r.json.warehouse;
+                    self._setWarehouse(warehouse);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('warehouse-selector', WarehouseSelector);
