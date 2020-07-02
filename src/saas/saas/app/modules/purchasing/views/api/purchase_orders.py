@@ -69,7 +69,7 @@ def api_purchasing_po_filter(request):
         pos = [
             {
                 'id': r[0],
-                'created_ts': r[1],
+                'created': r[1],
                 'description': r[2]
             }
             for r in result
@@ -109,11 +109,12 @@ def api_purchasing_po_get(request):
     poStore = services['store.purchasing.po']
     po = {}
     try:
-        r = poStore.get(client_id, filter)
+        r = poStore.get(client_id, po_id)
         po = {
             'id': r[0],
-            'created_ts': r[1],
-            'description': r[2]
+            'created': r[1],
+            'description': r[2],
+            'warehouseId': r[3]
         }
     except Exception as e:
         log.error(e)
