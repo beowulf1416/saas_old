@@ -73,4 +73,4 @@ class TestHRShiftsStore(unittest.TestCase):
             'hours': 5
         })
 
-        self.store.save(client_id, member_id, entries)
+        self.store.save(client_id, member_id, { 'entries': entries })
