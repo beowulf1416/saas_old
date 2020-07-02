@@ -87,3 +87,44 @@ def api_purchasing_po_filter(request):
             'purchaseOrders': pos
         }
     )
+
+@view_config(
+    route_name='api.purchasing.purchase.orders.get',
+    request_method='POST',
+    renderer='json'
+)
+def api_purchasing_po_get(request):
+    params = request.json_body
+
+    client_id = params['clientId'] if 'clientId' in params else None
+    po_id = params['purchaseOrderId'] if 'purchaseOrderId' in params else None
+
+    if client_id is None or po_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Purchase Order Id is required'
+        )
+
+    services = request.services()
+    poStore = services['store.purchasing.po']
+    po = {}
+    try:
+        r = poStore.get(client_id, filter)
+        po = {
+            'id': r[0],
+            'created_ts': r[1],
+            'description': r[2]
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='purchase order found',
+        body={
+            'purchaseOrder': po
+        }
+    )
