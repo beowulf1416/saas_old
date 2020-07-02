@@ -109,12 +109,23 @@ def api_purchasing_po_get(request):
     poStore = services['store.purchasing.po']
     po = {}
     try:
+        result = poStore.get_items(client_id, po_id)
+        items = [
+            {
+                'description': r[0],
+                'quantity': r[1],
+                'unit_id': r[2]
+            }
+            for r in result
+        ]
+
         r = poStore.get(client_id, po_id)
         po = {
             'id': r[0],
             'created': r[1],
             'description': r[2],
-            'warehouseId': r[3]
+            'warehouseId': r[3],
+            'items': items
         }
     except Exception as e:
         log.error(e)
