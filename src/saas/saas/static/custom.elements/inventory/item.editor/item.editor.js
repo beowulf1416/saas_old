@@ -304,7 +304,7 @@ class ItemEditor extends HTMLElement {
 
         const substitutes = shadow.getElementById('item-substitutes');
         substitutes.addEventListener('addItem', function(e) {
-            const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+            const selector = showInView('Select Items', `<item-selector-view client-id="${client_id}"></item-selector-view>`);
             selector.addEventListener('assign', function(e) {
                 const itemIds = e.detail.itemIds;
                 itemIds.forEach((itemId) => {
@@ -323,7 +323,7 @@ class ItemEditor extends HTMLElement {
 
         const components = shadow.getElementById('item-components');
         components.addEventListener('addItem', function(e) {
-            const selector = showInView('Select Items', `<item-selector client-id="${client_id}"></item-selector>`);
+            const selector = showInView('Select Items', `<item-selector-view client-id="${client_id}"></item-selector-view>`);
             selector.addEventListener('assign', function(e) {
                 InventoryItem.get(itemId).then((r) => {
                     if (r.status == 'success') {
