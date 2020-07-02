@@ -1,5 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
 import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
 class PurchaseOrderSelectorView extends HTMLElement {
 
@@ -77,11 +78,27 @@ class PurchaseOrderSelectorView extends HTMLElement {
                 }
             });
         };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+
+                beginsearch(filter.value);
+            }
+        });
+
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
     }
 
     setPurchaseOrders(orders = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
 
         const tbody = shadow.querySelector('table#tbl-orders tbody');
         while(tbody.firstChild) {
@@ -89,18 +106,32 @@ class PurchaseOrderSelectorView extends HTMLElement {
         }
 
         orders.forEach((po) => {
+            const id = 'id' + Util.generateId();
+            const po_desc = po.description.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>
-                    <input type="radio" name="selected" class="form-input-selected" title="Select Purchase Order" value="${po.id}" />
+                    <input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Purchase Order" value="${po.id}" />
                 </td>
-                <td></td>
+                <td>
+                    <label for="${id}">${po_desc}</label>
+                </td>
             `;
 
             tbody.appendChild(tr);
-        });
 
-        // event handlers
+            // event handlers
+            const selected = tr.querySelector('.form-input-selected');
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        purchaseOrderId: selected.value
+                    }
+                }));
+            });
+        });
     }
 }
 customElements.define('purchase-order-selector-view', PurchaseOrderSelectorView);

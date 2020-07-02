@@ -1,5 +1,6 @@
 'use strict';
 import { showInView } from '/static/js/ui/ui.js';
+import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
 class PurchaseOrderSelector extends HTMLElement {
 
     constructor() {
@@ -23,6 +24,7 @@ class PurchaseOrderSelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setPurchaseOrder = this.setPurchaseOrder.bind(this);
 
         this._attachEventHandlers();
     }
@@ -35,7 +37,7 @@ class PurchaseOrderSelector extends HTMLElement {
         div.innerHTML = `
             <input type="hidden" id="purchase-order-id" name="purchase_order_id" value="" />
 
-            <input type="text" id="purchase-order-ref" name="purchase_order_ref" value="" title="Purchase Order Reference" placeholder="Purchase Order Reference" />
+            <input type="text" id="purchase-order-ref" name="purchase_order_ref" value="" title="Purchase Order Reference" placeholder="Purchase Order Reference" readonly />
             <button type="button" id="btn-select" class="btn btn-select" title="Select Purchase Order">...</button>
         `;
 
@@ -50,8 +52,31 @@ class PurchaseOrderSelector extends HTMLElement {
 
         const btnselect = shadow.getElementById('btn-select');
         btnselect.addEventListener('click', function(e) {
-            showInView('Purchase Order Selector', `<purchase-order-selector-view client-id=${client_id}"></purchase-order-selector-view>`)
+            const selector = showInView('Purchase Order Selector', `<purchase-order-selector-view client-id="${client_id}"></purchase-order-selector-view>`)
+            selector.addEventListener('selected', function(e) {
+                const purchaseOrderId = e.detail.purchaseOrderId;
+
+                PurchaseOrders.get(client_id, purchaseOrderId).then((r) => {
+                    if (r.status == 'success') {
+                        const order = r.json.purchaseOrder;
+                        self.setPurchaseOrder(order);
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            });
         });
+    }
+
+    setPurchaseOrder(order = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const input_id = shadow.getElementById('purchase-order-id');
+        input_id.value = order.id;
+
+        const input_ref = shadow.getElementById('purchase-order-ref');
+        input_ref.value = order.description;
     }
 }
 customElements.define('purchase-order-selector', PurchaseOrderSelector);
