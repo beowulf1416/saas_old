@@ -1,0 +1,4 @@
+.form-purchase-order fieldset {
+    display: grid;
+    grid-template-columns: min-content auto;
+}

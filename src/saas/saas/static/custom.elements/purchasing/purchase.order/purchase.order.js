@@ -57,17 +57,27 @@ class PurchaseOrder extends HTMLElement {
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
                     <input type="hidden" id="po-id" name="po_id" value="${po_id}" />
 
-                    <!-- date -->
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" class="form-input-date" value="${dayjs().format('YYYY-MM-DD')}" />
+                    <fieldset>
+                        <!-- description -->
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" class="form-input-textarea" placeholder="Description"></textarea>
 
-                    <!-- description -->
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" class="form-input-textarea"></textarea>
+                        <!-- date -->
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" class="form-input-date" value="${dayjs().format('YYYY-MM-DD')}" />
+                    </fieldset>
 
-                    <!-- delivery -->
-                    <label for="warehouse">Delivery Instructions</label>
-                    <warehouse-selector client-id="${client_id}"></warehouse-selector>
+                    <fieldset>
+                        <legend>Delivery</legend>
+
+                        <!-- warehouse -->
+                        <label for="warehouse">Warehouse</label>
+                        <warehouse-selector client-id="${client_id}" show-address></warehouse-selector>
+
+                        <!-- instructions -->
+                        <label for="instructions">Instructions</label>
+                        <textarea id="instructions" name="instructions" class="form-input-instructions" placeholder="Instructions"></textarea>
+                    </fieldset>
 
                     <div class="table-wrapper">
                         <table id="tbl-po-items" class="tbl-po-items">
