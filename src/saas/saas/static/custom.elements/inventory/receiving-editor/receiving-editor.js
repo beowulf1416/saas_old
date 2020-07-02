@@ -34,7 +34,10 @@ class ReceivingEditor extends HTMLElement {
                 <form class="form-receiving">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
 
-                    <!--  -->
+                    <fieldset>
+                        <legend>Purchase Order</legend>
+                        <purchase-order-selector client-id="${client_id}"></purchase-order-selector>
+                    </fieldset>
                 </form>
             </div><!-- .form-wrapper -->
         `;
@@ -43,4 +46,3 @@ class ReceivingEditor extends HTMLElement {
     }
 }
 customElements.define('receiving-editor', ReceivingEditor);
-export { ReceivingEditor };

@@ -77,6 +77,14 @@ def includeme(config):
                 'script': 'static/custom.elements/inventory/warehouse.selector/warehouse.selector.view.js'
             },
             {
+                'type': 'module',
+                'script': 'static/custom.elements/inventory/receiving-dashboard/receiving-dashboard.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/inventory/receiving-editor/receiving-editor.js'
+            },
+            {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
             }

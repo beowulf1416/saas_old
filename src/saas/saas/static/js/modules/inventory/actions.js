@@ -10,7 +10,8 @@ import { showInTab } from '/static/js/ui/ui.js';
     };
 
     window.actions['inventory.transactions.receiving'] = function() {
-        console.log('// TODO inventory.transactions.receiving');
+        const client_id = window.clientId;
+        showInTab('receiving-dashboard', 'Receiving', `<receiving-dashboard client-id="${client_id}"></receiving-dashboard>`);
     };
 
     window.actions['inventory.warehouses'] = function() {
