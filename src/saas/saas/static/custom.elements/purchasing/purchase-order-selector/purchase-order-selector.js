@@ -77,6 +77,14 @@ class PurchaseOrderSelector extends HTMLElement {
 
         const input_ref = shadow.getElementById('purchase-order-ref');
         input_ref.value = order.description;
+
+        self.dispatchEvent(new CustomEvent('change', {
+            bubbles: true,
+            cancelable: true,
+            detail: {
+                order: order
+            }
+        }));
     }
 }
 customElements.define('purchase-order-selector', PurchaseOrderSelector);
