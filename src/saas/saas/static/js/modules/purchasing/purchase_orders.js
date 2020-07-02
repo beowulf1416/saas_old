@@ -12,5 +12,12 @@ class PurchaseOrders {
             filter: filter
         })
     }
+
+    static get(clientId = '', purchaseOrderId = '') {
+        return Util.fetch('/api/purchasing/purchase/orders/get', {
+            clientId: clientId,
+            purchaseOrderId: purchaseOrderId
+        });
+    }
 }
 export { PurchaseOrders };
