@@ -132,7 +132,7 @@ class PurchaseOrdersElement extends HTMLElement {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><a class="link-edit-po" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
-                <td>${o.created_ts}</td>
+                <td>${o.created}</td>
                 <td>${o.description}</td>
             `;
             tbody.appendChild(tr);
