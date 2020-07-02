@@ -6,6 +6,7 @@ set schema 'purchasing';
 
 \ir procs/purchase_order_item_add.sql
 \ir procs/purchase_order_items_remove.sql
+\ir procs/purchase_order_items_get.sql
 
 
 set schema 'public';
