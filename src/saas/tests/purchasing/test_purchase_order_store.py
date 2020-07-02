@@ -40,6 +40,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'instructions': random_str,
             'items': [
                 {
                     'description': random_str,
@@ -62,6 +63,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 'purchaseOrderId': po_id,
                 'description': random_str,
                 'warehouseId': warehouse_id,
+                'instructions': random_str,
                 'items': [
                     {
                         'description': random_str,
@@ -88,6 +90,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'instructions': random_str,
             'items': [
                 {
                     'description': random_str,
@@ -114,6 +117,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'instructions': random_str,
             'items': [
                 {
                     'description': random_str,
