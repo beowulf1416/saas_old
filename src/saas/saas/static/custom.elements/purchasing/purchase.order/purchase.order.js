@@ -30,14 +30,18 @@ class PurchaseOrder extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._prefetch = this._prefetch.bind(this);
         this._getWarehouseId = this._getWarehouseId.bind(this);
+        this.setPurchaseOrder = this.setPurchaseOrder.bind(this);
 
         this._attachEventHandlers();
         this._prefetch();
     }
 
     _init(container) {
+        const self = this;
+
         const client_id = this.getAttribute('client-id');
         const po_id = this.hasAttribute('po-id') ? this.getAttribute('po-id') : uuidv4();
+        self._is_new = !this.hasAttribute('po-id');
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -54,7 +58,7 @@ class PurchaseOrder extends HTMLElement {
 
                     <!-- date -->
                     <label for="date">Date</label>
-                    <input type="date" id="date" name="date" class="form-input-date" />
+                    <input type="date" id="date" name="date" class="form-input-date" value="${dayjs().format('YYYY-MM-DD')}" />
 
                     <!-- description -->
                     <label for="description">Description</label>
@@ -102,6 +106,9 @@ class PurchaseOrder extends HTMLElement {
     _prefetch() {
         const self = this;
 
+        const client_id = this._getClientId();
+        const po_id = this._getPOId();
+
         Inventory.uoms().then((r) => {
             if (r.status == 'success') {
                 self._uoms = r.json.uoms;
@@ -109,6 +116,16 @@ class PurchaseOrder extends HTMLElement {
                 notify(r.status, r.message);
             }
         });
+
+        if (!self._is_new) {
+            PurchaseOrders.get(client_id, po_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setPurchaseOrder(r.json.purchaseOrder);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 
     _getClientId() {
@@ -205,6 +222,22 @@ class PurchaseOrder extends HTMLElement {
                 tbody.removeChild(remove);
             });
         });
+    }
+
+    setPurchaseOrder(po = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const input_date = shadow.getElementById('date');
+        input_date.value = dayjs(po.created).format('YYYY-MM-DD');
+
+        const input_desc = shadow.getElementById('description');
+        input_desc.value = po.description;
+
+        const warehouse_selector = shadow.querySelector('warehouse-selector');
+        warehouse_selector.setAttribute('warehouse-id', po.warehouseId);
+
+        console.log(po);
     }
 }
 customElements.define('purchase-order', PurchaseOrder);
