@@ -31,6 +31,7 @@ class PurchaseOrder extends HTMLElement {
         this._prefetch = this._prefetch.bind(this);
         this._getWarehouseId = this._getWarehouseId.bind(this);
         this.setPurchaseOrder = this.setPurchaseOrder.bind(this);
+        this.setItems = this.setItems.bind(this);
 
         this._attachEventHandlers();
         this._prefetch();
@@ -69,7 +70,7 @@ class PurchaseOrder extends HTMLElement {
                     <warehouse-selector client-id="${client_id}"></warehouse-selector>
 
                     <div class="table-wrapper">
-                        <table class="tbl-po-items">
+                        <table id="tbl-po-items" class="tbl-po-items">
                             <caption>Purchase Order Items</caption>
                             <colgroup>
                                 <col class="col-remove">
@@ -237,7 +238,57 @@ class PurchaseOrder extends HTMLElement {
         const warehouse_selector = shadow.querySelector('warehouse-selector');
         warehouse_selector.setAttribute('warehouse-id', po.warehouseId);
 
-        console.log(po);
+        self.setItems(po.items);
+    }
+
+    setItems(items = []) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const uoms = self._uoms;
+
+        const tbody = shadow.querySelector('table#tbl-po-items tbody');
+        items.forEach((item) => {
+            const selected_unit = item.unit_id;
+
+            const options = [];
+            uoms.forEach((u) => {
+                let selected = '';
+                if (u.id == selected_unit) {
+                    selected = 'selected';
+                }
+
+                if (u.symbol) {
+                    options.push(`<option value="${u.id}" ${selected}>${u.name} (${u.symbol})</option>`);
+                } else {
+                    options.push(`<option value="${u.id}" ${selected}>${u.name} </option>`);
+                }
+            });
+            const optionsall = options.join('');
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><a class="link-remove-item" title="Remove" href="#">&minus;</a></td>
+                <td><input type="text" name="description" class="form-input-description" title="Description" placeholder="Description" value="${item.description}"/></td>
+                <td><input type="number" name="quantity" class="form-input-qty" title="Quantity" value="${item.quantity}" /></td>
+                <td>
+                    <select name="uom" class="form-input-uom" title="Unit of Measure" value="">
+                        ${optionsall}
+                    </select>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const remove = tr.querySelector('.link-remove-item');
+            remove.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const parent_tr = remove.parentElement.parentElement;
+                tbody.removeChild(parent_tr);
+            });
+        });
     }
 }
 customElements.define('purchase-order', PurchaseOrder);
