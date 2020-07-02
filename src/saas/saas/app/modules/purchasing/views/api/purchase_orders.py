@@ -125,6 +125,7 @@ def api_purchasing_po_get(request):
             'created': r[1],
             'description': r[2],
             'warehouseId': r[3],
+            'instructions': r[4],
             'items': items
         }
     except Exception as e:

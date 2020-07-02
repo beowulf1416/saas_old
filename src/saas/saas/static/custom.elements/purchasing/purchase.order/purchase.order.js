@@ -168,6 +168,7 @@ class PurchaseOrder extends HTMLElement {
             const warehouseId = self._getWarehouseId();
 
             const description = shadow.getElementById('description').value;
+            const instructions = shadow.getElementById('instructions').value
             
             const trs = shadow.querySelectorAll('table.tbl-po-items tbody tr');
             const items = [];
@@ -188,6 +189,7 @@ class PurchaseOrder extends HTMLElement {
                 purchaseOrderId: po_id,
                 description: description,
                 warehouseId: warehouseId,
+                instructions: instructions,
                 items: items
             }).then((r) => {
                 notify(r.status, r.message);
@@ -247,6 +249,9 @@ class PurchaseOrder extends HTMLElement {
 
         const warehouse_selector = shadow.querySelector('warehouse-selector');
         warehouse_selector.setAttribute('warehouse-id', po.warehouseId);
+
+        const input_instructions = shadow.getElementById('instructions');
+        input_instructions.value = po.instructions;
 
         self.setItems(po.items);
     }
