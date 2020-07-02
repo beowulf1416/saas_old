@@ -58,6 +58,10 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom.elements/inventory/item.selector/item-selector-view.js' 
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom.elements/inventory/item.editor/item.editor.js'
             },
             {
