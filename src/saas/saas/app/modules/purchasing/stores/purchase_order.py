@@ -23,7 +23,8 @@ class PurchaseOrderStore(BaseStore):
                 client_id,
                 purchase_order_id,
                 order['description'],
-                order['warehouseId']
+                order['warehouseId'],
+                order['instructions']
             ])
 
             c = cn.cursor()
