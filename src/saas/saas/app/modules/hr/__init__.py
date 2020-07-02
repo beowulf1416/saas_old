@@ -67,8 +67,12 @@ def includeme(config):
             #     'integrity': 'sha256-sWNJBInW9QCXGSCxkMNQo4yvxn736utE1YIvgHGcWdM=',
             #     'crossorigin': 'anonymous',
             # }
+            # {
+            #     'script': 'https://unpkg.com/dayjs@1.8.21/dayjs.min.js',
+            #     'external': 'true'
+            # },
             {
-                'script': 'https://unpkg.com/dayjs@1.8.21/dayjs.min.js',
+                'script': 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.8.28/dayjs.min.js',
                 'external': 'true'
             }
         ]
