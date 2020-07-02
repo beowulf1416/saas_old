@@ -35,15 +35,25 @@ class WarehouseSelector extends HTMLElement {
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
+        const show_address = this.hasAttribute('show-address');
+
+        const address = this.hasAttribute('show-address') ? `
+            <label for="address">Address</label>
+            <textarea id="address" name="address" title="Warehouse Address" readonly></textarea>
+        ` : '';
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-            <input type="hidden" id="warehouse-id" name="warehouse_id" value="" />
+            <form class="form-warehouse">
+                <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+                <input type="hidden" id="warehouse-id" name="warehouse_id" value="" />
 
-            <input type="text" id="selector" name="selector" class="form-input-selector" placeholder="Select Warehouse" readonly />
-            <button id="btn-warehouse" type="button" class="btn" title="Select Warehouse">...</button>
+                <input type="text" id="selector" name="selector" class="form-input-selector" placeholder="Select Warehouse" readonly />
+                <button id="btn-warehouse" type="button" class="btn" title="Select Warehouse">...</button>
+
+                ${address}
+            </form>
         `;
 
         container.appendChild(div);
@@ -94,6 +104,11 @@ class WarehouseSelector extends HTMLElement {
 
         const input_warehouse = shadow.getElementById('warehouse-id');
         input_warehouse.value = w.id;
+
+        const input_address = shadow.getElementById('address');
+        if (input_address) {
+            input_address.value = w.address;
+        }
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
