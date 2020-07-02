@@ -36,6 +36,14 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': 'static/custom.elements/purchasing/purchase.orders/purchase.orders.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector-view.js'
             }
         ]
     }

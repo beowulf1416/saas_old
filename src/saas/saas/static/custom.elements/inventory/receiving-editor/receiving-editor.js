@@ -3,7 +3,6 @@
 class ReceivingEditor extends HTMLElement {
 
     constructor() {
-
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
