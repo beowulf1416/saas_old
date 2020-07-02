@@ -102,3 +102,29 @@ class TestPurchaseOrderStore(unittest.TestCase):
             self.assertEqual(result[0], po_id, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
+
+
+    def test_get_items(self):
+        client_id = self.defaultClient[0]
+        random_str = self.generate_random_str(10)
+        warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+        po_id = str(uuid.uuid4())
+        order = {
+            'clientId': client_id,
+            'purchaseOrderId': po_id,
+            'description': random_str,
+            'warehouseId': warehouse_id,
+            'items': [
+                {
+                    'description': random_str,
+                    'quantity': 1,
+                    'uom': 1
+                }
+            ]
+        }
+        self.poStore.save(order)
+        try:
+            result = self.poStore.get_items(client_id, po_id)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)

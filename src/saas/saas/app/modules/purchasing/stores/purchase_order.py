@@ -66,3 +66,14 @@ class PurchaseOrderStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve purchase order')
+
+    def get_items(self, client_id: UUID, order_id: UUID):
+        try:
+            result = super(PurchaseOrderStore, self).runProc('purchasing.purchase_order_items_get', [
+                client_id,
+                order_id
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve purchase order items')
