@@ -4,7 +4,8 @@ create table if not exists organizations (
     created_ts timestamp with time zone not null default(now() at time zone 'utc'),
     client_id uuid not null,
     name varchar(200) not null,
-    description text,
+    address text,
+    country_id int not null,
     constraint pk_organizations primary key (id),
     constraint u_organizations_1 unique (client_id, name),
     constraint fk_organizations_1 foreign key (client_id)
