@@ -2,7 +2,6 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services import get_service
-# from saas.app.modules.inventory.module import InventoryModule
 
 
 def includeme(config):
@@ -15,9 +14,6 @@ def includeme(config):
     config.include('saas.app.modules.inventory.views.transactions')
 
     services = get_service(None)
-    modules = services['modules']
-    # modules['inventory'] = InventoryModule()
-
     modules = services['modules']
     modules['inventory'] = {
         'navigators': [
