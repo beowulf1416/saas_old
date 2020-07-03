@@ -58,6 +58,14 @@ class ItemSelector extends HTMLElement {
                         const item = r.json.item;
                         const display = shadow.getElementById('display');
                         display.value = item.name;
+
+                        self.dispatchEvent(new CustomEvent('change', {
+                            bubbles: true,
+                            cancelable: true,
+                            detail: {
+                                item: item
+                            }
+                        }));
                     } else {
                         notify(r.status, r.message);
                     }
