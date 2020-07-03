@@ -5,13 +5,14 @@
         "item": {
             "type": "object",
             "properties": {
-                "id": { "anyOf": [
-                    { "type": "string", "format": "uuid" },
-                    { "type": "null" }
-                ]},
+                "id": { "type": "string", "format": "uuid" },
                 "description": { "type": "string" },
                 "quantity": { "type": "number" },
-                "uom": { "type": "number" }
+                "uom": { "type": "number" },
+                "status": { "anyOf": [
+                    { "type": "string", "enum": ["new", "remove"] },
+                    { "type": "null" }
+                ]}
             }
         }
     },
