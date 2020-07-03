@@ -1,4 +1,4 @@
-create or replace function purchase_order_item_add (
+create or replace function purchase_order_item_update (
     p_client_id clients.clients.id%type,
     p_po_id purchasing.purchase_orders.id%type,
     p_id purchasing.purchase_order_items.id%type,
@@ -9,21 +9,13 @@ create or replace function purchase_order_item_add (
 returns void
 as $$
 begin
-    insert into purchasing.purchase_order_items (
-        id,
-        client_id,
-        po_id,
-        description,
-        quantity,
-        unit_id
-    ) values (
-        p_id,
-        p_client_id,
-        p_po_id,
-        p_description,
-        p_qty,
-        p_unit_id
-    );
+    update purchasing.purchase_order_items set
+        description = p_description,
+        quantity = p_qty,
+        unit_id = p_unit_id
+    where client_id = p_client_id
+        and po_id = p_po_id
+        and id = p_id;
 end
 $$
 language plpgsql;
