@@ -112,10 +112,11 @@ def api_purchasing_po_get(request):
         result = poStore.get_items(client_id, po_id)
         items = [
             {
-                'description': r[0],
-                'quantity': r[1],
-                'unit_id': r[2],
-                'unit': r[3]
+                'id': r[0],
+                'description': r[1],
+                'quantity': r[2],
+                'unit_id': r[3],
+                'unit': r[4]
             }
             for r in result
         ]
