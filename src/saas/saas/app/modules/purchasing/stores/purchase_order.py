@@ -47,15 +47,13 @@ class PurchaseOrderStore(BaseStore):
                         item['id']
                     ])
                 else:
-                    c.callproc('purchasing.purchase_order_items_update', [
-                        c.callproc('purchasing.purchase_order_item_update', [
-                            client_id,
-                            purchase_order_id,
-                            item['id'],
-                            item['description'],
-                            item['quantity'],
-                            item['uom']
-                        ])
+                    c.callproc('purchasing.purchase_order_item_update', [
+                        client_id,
+                        purchase_order_id,
+                        item['id'],
+                        item['description'],
+                        item['quantity'],
+                        item['uom']
                     ])
             super(PurchaseOrderStore, self).commit(cn)
         except Exception as e:
