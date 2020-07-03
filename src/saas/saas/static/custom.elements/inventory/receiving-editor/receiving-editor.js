@@ -52,6 +52,13 @@ class ReceivingEditor extends HTMLElement {
                         <table id="tbl-items">
                             <caption>Items</caption>
                             <colgroup>
+                                <col class="addremove">
+                                <col class="description">
+                                <col class="quantity">
+                                <col class="unit">
+                                <col class="item">
+                                <col class="actual-qty">
+                                <col class="expiry">
                             </colgroup>
                             <thead>
                                 <tr>
@@ -61,6 +68,7 @@ class ReceivingEditor extends HTMLElement {
                                     <th scope="col">Unit</th>
                                     <th scope="col">Item</th>
                                     <th scope="col">Actual Quantity</th>
+                                    <th scope="col">Expiry</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -128,6 +136,7 @@ class ReceivingEditor extends HTMLElement {
                 </td>
                 <td><item-selector client-id="${client_id}"></item-selector></td>
                 <td><input type="number" name="quantity" class="form-input-quantity" title="Actual Quantity Received" /></td>
+                <td class="item-expiry><input type="date" name="expiry" class="form-input-expiry" title="Expiry Date" /></td>
             `;
 
             const tbody = shadow.querySelector('table#tbl-items tbody');
@@ -140,6 +149,13 @@ class ReceivingEditor extends HTMLElement {
 
                 const parent_tr = remove.parentElement.parentElement;
                 tbody.removeChild(parent_tr);
+            });
+
+            const selector = tr.querySelector('item-selector');
+            selector.addEventListener('change', function(e) {
+                const item = e.detail.item;
+
+
             });
         });
     }
@@ -159,6 +175,9 @@ class ReceivingEditor extends HTMLElement {
             const tr = document.createElement('tr');
             tr.classList.add('po-item');
             tr.dataset.id = item.id;
+
+            const perishable = item.perishable;
+
             tr.innerHTML = `
                 <td><a class="link-remove-item" href="#" title="Remove Item">&minus;</a></td>
                 <td class="item-description">${item.description}</td>
@@ -166,6 +185,7 @@ class ReceivingEditor extends HTMLElement {
                 <td class="item-unit" data-unitid="${item.unit_id}">${item.unit}</td>
                 <td class="item-id"><item-selector client-id="${client_id}"></item-selector></td>
                 <td class="item-actual-qty"><input type="number" name="quantity" class="form-input-quantity" title="Actual Quantity Received" /></td>
+                <td class="item-expiry"><input type="date" name="expiry" class="form-input-expiry" title="Expiry Date" /></td>
             `;
 
             tbody.appendChild(tr);
@@ -177,6 +197,13 @@ class ReceivingEditor extends HTMLElement {
 
                 const parent_tr = remove.parentElement.parentElement;
                 parent_tr.classList.toggle('remove');
+            });
+
+            const selector = tr.querySelector('item-selector');
+            selector.addEventListener('change', function(e) {
+                const item = e.detail.item;
+
+
             });
         });
     }

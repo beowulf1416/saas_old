@@ -2,6 +2,11 @@
     border-collapse: collapse;
 }
 
+.form-receiving table#tbl-items .expiry {
+    display: none;
+    background-color: #ffe8d4;
+}
+
 .form-receiving table#tbl-items tbody tr.remove {
     background-color: red;
 }
