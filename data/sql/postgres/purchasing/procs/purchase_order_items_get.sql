@@ -3,6 +3,7 @@ create or replace function purchase_order_items_get (
     p_order_id purchasing.purchase_orders.id%type
 )
 returns table (
+    id purchasing.purchase_order_items.id%type,
     description purchasing.purchase_order_items.description%type,
     quantity purchasing.purchase_order_items.quantity%type,
     unit_id purchasing.purchase_order_items.unit_id%type,
@@ -12,6 +13,7 @@ as $$
 begin
     return query
     select
+        a.id,
         a.description,
         a.quantity,
         a.unit_id,
