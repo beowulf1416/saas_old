@@ -43,9 +43,11 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'instructions': random_str,
             'items': [
                 {
+                    'id': str(uuid.uuid4()),
                     'description': random_str,
                     'quantity': 1,
-                    'uom': 1
+                    'uom': 1,
+                    'status': 'new'
                 }
             ]
         }
@@ -66,9 +68,11 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 'instructions': random_str,
                 'items': [
                     {
+                        'id': str(uuid.uuid4()),
                         'description': random_str,
                         'quantity': 1,
-                        'uom': 1
+                        'uom': 1,
+                        'status': 'new'
                     }
                 ]
             }
@@ -93,9 +97,11 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'instructions': random_str,
             'items': [
                 {
+                    'id': str(uuid.uuid4()),
                     'description': random_str,
                     'quantity': 1,
-                    'uom': 1
+                    'uom': 1,
+                    'status': 'new'
                 }
             ]
         }
@@ -120,9 +126,11 @@ class TestPurchaseOrderStore(unittest.TestCase):
             'instructions': random_str,
             'items': [
                 {
+                    'id': str(uuid.uuid4()),
                     'description': random_str,
                     'quantity': 1,
-                    'uom': 1
+                    'uom': 1,
+                    'status': 'new'
                 }
             ]
         }

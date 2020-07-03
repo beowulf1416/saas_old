@@ -28,18 +28,35 @@ class PurchaseOrderStore(BaseStore):
             ])
 
             c = cn.cursor()
-            c.callproc('purchasing.purchase_order_items_remove', [client_id, purchase_order_id])
-
-            c = cn.cursor()
             items = order['items']
             for item in items:
-                c.callproc('purchasing.purchase_order_item_add', [
-                    client_id,
-                    purchase_order_id,
-                    item['description'],
-                    item['quantity'],
-                    item['uom']
-                ])
+                status = item['status'] if 'status' in item else None
+                if status == 'new':
+                    c.callproc('purchasing.purchase_order_item_add', [
+                        client_id,
+                        purchase_order_id,
+                        item['id'],
+                        item['description'],
+                        item['quantity'],
+                        item['uom']
+                    ])
+                elif status == 'remove':
+                    c.callproc('purchasing.purchase_order_item_remove', [
+                        client_id,
+                        purchase_order_id,
+                        item['id']
+                    ])
+                else:
+                    c.callproc('purchasing.purchase_order_items_update', [
+                        c.callproc('purchasing.purchase_order_item_update', [
+                            client_id,
+                            purchase_order_id,
+                            item['id'],
+                            item['description'],
+                            item['quantity'],
+                            item['uom']
+                        ])
+                    ])
             super(PurchaseOrderStore, self).commit(cn)
         except Exception as e:
             super(PurchaseOrderStore, self).rollback(cn)
