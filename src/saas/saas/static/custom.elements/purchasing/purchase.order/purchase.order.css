@@ -2,3 +2,11 @@
     display: grid;
     grid-template-columns: min-content auto;
 }
+
+.form-purchase-order table#tbl-po-items {
+    border-collapse: collapse;
+}
+
+.form-purchase-order table#tbl-po-items tbody tr.remove {
+    background: red;
+}
