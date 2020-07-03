@@ -1,6 +1,7 @@
 'use strict';
 import { InventoryItem } from '/static/js/modules/inventory/items.js';
 import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
 class ItemSelectorView extends HTMLElement {
 
     constructor() {
@@ -61,23 +62,14 @@ class ItemSelectorView extends HTMLElement {
                     </colgroup>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>SKU</th>
-                            <th>UPC</th>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">SKU</th>
+                            <th scope="col">UPC</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <td>
-                                <a class="link-assign-item" title="Assign Items" href="#">
-                                    <span class="material-icons">assignment_return</span>
-                                </a>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -121,23 +113,6 @@ class ItemSelectorView extends HTMLElement {
             beginsearch(filter.value);
             e.preventDefault();
         });
-
-        const assign = shadow.querySelector('.link-assign-item');
-        assign.addEventListener('click', function(e) {
-            const item_ids = [];
-            const selected = shadow.querySelectorAll('table.tbl-items tbody .form-input-check:checked');
-            selected.forEach((s) => {
-                item_ids.push(s.value);
-            });
-
-            self.dispatchEvent(new CustomEvent('assign', {
-                bubbles: true,
-                cancelable: true,
-                detail: {
-                    itemIds: item_ids
-                }
-            }));
-        });
     }
 
     setItems(items = [], filter = '') {
@@ -150,21 +125,34 @@ class ItemSelectorView extends HTMLElement {
         }
 
         items.forEach((item) => {
+            const id = 'id' + Util.generateId();
             const item_name = item.name.replace(filter, `<strong>${filter}</strong>`);
             const item_sku = item.sku.replace(filter, `<strong>${filter}</strong>`);
             const item_upc = item.upc.replace(filter, `<strong>${filter}</strong>`);
             
             const td = [];
-            td.push(`<td><input type="checkbox" name="selected" class="form-input-check" title="Select Item" value="${item.id}" />`);
-            td.push(`<td>${item_name}</td>`);
-            td.push(`<td>${item_sku}</td>`);
-            td.push(`<td>${item_upc}</td>`);
+            td.push(`<td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Item" value="${item.id}" />`);
+            td.push(`<td><label for="${id}">${item_name}</label></td>`);
+            td.push(`<td><label for="${id}">${item_sku}</label></td>`);
+            td.push(`<td><label for="${id}">${item_upc}</label></td>`);
             const tdall = td.join('');
 
             const tr = document.createElement('tr');
             tr.innerHTML = `${tdall}`;
 
             tbody.appendChild(tr);
+
+            // event handlers
+            const selected = tr.querySelector('.form-input-selected');
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('change', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        itemId: selected.value
+                    }
+                }));
+            });
         });
     }
 }

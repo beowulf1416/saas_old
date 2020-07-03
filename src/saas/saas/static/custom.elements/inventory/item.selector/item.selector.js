@@ -49,7 +49,17 @@ class ItemSelector extends HTMLElement {
         btnselect.addEventListener('click', function(e) {
             const selector = showInView('Select Item', `<item-selector-view client-id="${client_id}"></item-selector-view>`);
             selector.addEventListener('change', function(e) {
-                console.log(e);
+                const item_id = e.detail.itemId;
+
+                InventoryItem.get(item_id).then((r) => {
+                    if (r.status == 'success') {
+                        const item = r.json.item;
+                        const display = shadow.getElementById('display');
+                        display.value = item.name;
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
             });
         });
     }
