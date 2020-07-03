@@ -1,8 +1,8 @@
 create or replace function time_entries_get (
     p_client_id clients.clients.id%type,
     p_employee_id hr.employees.id%type,
-    p_start datetime,
-    p_end datetime
+    p_start timestamp without time zone,
+    p_end timestamp without time zone
 )
 returns table (
     id hr.employee_time_entries.id%type,
