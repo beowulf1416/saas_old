@@ -60,6 +60,7 @@ class WarehouseSelector extends HTMLElement {
     }
 
     _attachEventHandlers() {
+        const self = this;
         const shadow = this.shadowRoot;
 
         const client = shadow.getElementById('client-id');
