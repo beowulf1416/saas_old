@@ -173,15 +173,35 @@ class PurchaseOrder extends HTMLElement {
             const trs = shadow.querySelectorAll('table.tbl-po-items tbody tr');
             const items = [];
             trs.forEach((tr) => {
+                const item_id = tr.dataset.id;
                 const item_desc = tr.querySelector('.form-input-description').value;
                 const item_qty = tr.querySelector('.form-input-qty').value;
                 const item_uom = tr.querySelector('.form-input-uom').value
 
-                items.push({
-                    description: item_desc,
-                    quantity: parseFloat(item_qty),
-                    uom: parseInt(item_uom)
-                });
+                if (tr.classList.contains('remove')) {
+                    items.push({
+                        id: item_id,
+                        description: item_desc,
+                        quantity: parseFloat(item_qty),
+                        uom: parseInt(item_uom),
+                        status: "remove"
+                    });
+                } else if (tr.classList.contains('new')) {
+                    items.push({
+                        id: item_id,
+                        description: item_desc,
+                        quantity: parseFloat(item_qty),
+                        uom: parseInt(item_uom),
+                        status: "new"
+                    });
+                } else {
+                    items.push({
+                        id: item_id,
+                        description: item_desc,
+                        quantity: parseFloat(item_qty),
+                        uom: parseInt(item_uom)
+                    });
+                }
             });
 
             PurchaseOrders.save({
@@ -213,6 +233,8 @@ class PurchaseOrder extends HTMLElement {
             const optionsall = options.join('');
             
             const tr = document.createElement('tr');
+            tr.classList.add('new');
+            tr.dataset.id = uuidv4();
             tr.innerHTML = `
                 <td><a class="link-remove-item" title="Remove" href="#">&minus;</a></td>
                 <td><input type="text" name="description" class="form-input-description" title="Description" placeholder="Description" /></td>
@@ -232,7 +254,8 @@ class PurchaseOrder extends HTMLElement {
             remove.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                tbody.removeChild(remove);
+                const parent_tr = remove.parentElement.parentElement;
+                tbody.removeChild(tr);
             });
         });
     }
@@ -282,6 +305,7 @@ class PurchaseOrder extends HTMLElement {
             const optionsall = options.join('');
 
             const tr = document.createElement('tr');
+            tr.dataset.id = item.id;
             tr.innerHTML = `
                 <td><a class="link-remove-item" title="Remove" href="#">&minus;</a></td>
                 <td><input type="text" name="description" class="form-input-description" title="Description" placeholder="Description" value="${item.description}"/></td>
@@ -301,7 +325,7 @@ class PurchaseOrder extends HTMLElement {
                 e.preventDefault();
 
                 const parent_tr = remove.parentElement.parentElement;
-                tbody.removeChild(parent_tr);
+                parent_tr.classList.toggle('remove');
             });
         });
     }
