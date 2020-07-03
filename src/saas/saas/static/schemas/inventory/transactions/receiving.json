@@ -5,10 +5,28 @@
         "item": {
             "type": "object",
             "properties": {
-                "item_id": { "type": "string", "format": "uuid" },
+                "id": {
+                    "description": "purchase order item id", 
+                    "type": "string", 
+                    "format": "uuid" 
+                },
+                "itemId": {
+                    "description": "inventory item id", 
+                    "type": "string", 
+                    "format": "uuid" 
+                },
                 "quantity": { "type": "number" },
-                "unit_id": { "type": "number" }
-            }
+                "unitId": { "type": "number" },
+                "expiry": { "type": "string", "format": "date" },
+                "status": { "type": "string", "enum": ["new","remove"] }
+            },
+            "required": [
+                "id",
+                "itemId",
+                "quantity",
+                "unitId"
+            ],
+            "additionalProperties": false
         }
     },
     "type": "object",
