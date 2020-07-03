@@ -28,11 +28,12 @@ class ItemSelector extends HTMLElement {
         const self = this;
 
         const client_id = this.getAttribute('client-id');
+        self._item_id = this.hasAttribute('item-id') ? this.getAttribute('item-id') : '';
 
         const wrapper = document.createElement('div');
         wrapper.classList.add('wrapper');
         wrapper.innerHTML = `
-            <input type="text" id="display" name="display" class="form-input-display" title="Item Selector" placeholder="Select Item" value="" />
+            <input type="text" id="display" name="display" class="form-input-display" title="Item Selector" placeholder="Select Item" value="" readonly />
             <button type="button" id="btn-select" title="Select Item">...</button> 
         `;
 
@@ -50,6 +51,7 @@ class ItemSelector extends HTMLElement {
             const selector = showInView('Select Item', `<item-selector-view client-id="${client_id}"></item-selector-view>`);
             selector.addEventListener('change', function(e) {
                 const item_id = e.detail.itemId;
+                self._item_id = item_id;
 
                 InventoryItem.get(item_id).then((r) => {
                     if (r.status == 'success') {
@@ -62,6 +64,11 @@ class ItemSelector extends HTMLElement {
                 });
             });
         });
+    }
+
+    value() {
+        const self = this;
+        return self._item_id;
     }
 }
 customElements.define('item-selector', ItemSelector);
