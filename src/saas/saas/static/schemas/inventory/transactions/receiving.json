@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/inventory/transactions/receiving.json",
+    "definitions": {
+        "item": {
+            "type": "object",
+            "properties": {
+                "item_id": { "type": "string", "format": "uuid" },
+                "quantity": { "type": "number" },
+                "unit_id": { "type": "number" }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "clientId": { "type": "string", "format": "uuid" },
+        "purchaseOrderId": { "type": "string", "format": "uuid" },
+        "items": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/item" }
+        }
+    },
+    "required": [
+        "clientId",
+        "purchaseOrderId",
+        "items"
+    ],
+    "additionalProperties": false
+}
