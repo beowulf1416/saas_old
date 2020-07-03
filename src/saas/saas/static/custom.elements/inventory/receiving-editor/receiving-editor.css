@@ -1,0 +1,7 @@
+.form-receiving table#tbl-items {
+    border-collapse: collapse;
+}
+
+.form-receiving table#tbl-items tbody tr.remove {
+    background-color: red;
+}

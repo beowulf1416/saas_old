@@ -6,7 +6,7 @@ class ReceivingEditor extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.css');
+        style.setAttribute('href', '/static/custom.elements/inventory/receiving-editor/receiving-editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -83,10 +83,13 @@ class ReceivingEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
             const trs = shadow.querySelectorAll('table#tbl-items tbody tr');
             trs.forEach((tr) => {
+                const id = tr.dataset.id;
                 if (tr.classList.contains('po-item')) {
                     const description = tr.querySelector('.item-description').innerText;
                     const unit_id = tr.querySelector('.item-unit').dataset.unitid;
@@ -97,7 +100,7 @@ class ReceivingEditor extends HTMLElement {
                 }
             });
 
-            
+
         });
 
         const selector = shadow.querySelector('purchase-order-selector');
@@ -112,7 +115,32 @@ class ReceivingEditor extends HTMLElement {
         additem.addEventListener('click', function(e) {
             e.preventDefault();
 
-            console.log('//TODO');
+            const tr = document.createElement('tr');
+            tr.classList.add('new');
+            tr.dataset.id = uuidv4();
+            tr.innerHTML = `
+                <td><a class="link-remove-item" href="#" title="Remove Item">&minus;</a></td>
+                <td><input type="text" name="description" class="form-input-description" title="Item Description" placeholder="Description" /></td>
+                <td><input type="number" name="quantity" class="form-input-quantity" title="Quantity" /></td>
+                <td>
+                    <select name="unit" class="form-input-unit" title="Unit of Measure">
+                    </select>
+                </td>
+                <td><item-selector client-id="${client_id}"></item-selector></td>
+                <td><input type="number" name="quantity" class="form-input-quantity" title="Actual Quantity Received" /></td>
+            `;
+
+            const tbody = shadow.querySelector('table#tbl-items tbody');
+            tbody.appendChild(tr);
+
+            // event handlers
+            const remove = tr.querySelector('.link-remove-item');
+            remove.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const parent_tr = remove.parentElement.parentElement;
+                tbody.removeChild(parent_tr);
+            });
         });
     }
 
@@ -130,6 +158,7 @@ class ReceivingEditor extends HTMLElement {
         items.forEach((item) => {
             const tr = document.createElement('tr');
             tr.classList.add('po-item');
+            tr.dataset.id = item.id;
             tr.innerHTML = `
                 <td><a class="link-remove-item" href="#" title="Remove Item">&minus;</a></td>
                 <td class="item-description">${item.description}</td>
@@ -147,7 +176,7 @@ class ReceivingEditor extends HTMLElement {
                 e.preventDefault();
 
                 const parent_tr = remove.parentElement.parentElement;
-                tbody.removeChild(parent_tr);
+                parent_tr.classList.toggle('remove');
             });
         });
     }
