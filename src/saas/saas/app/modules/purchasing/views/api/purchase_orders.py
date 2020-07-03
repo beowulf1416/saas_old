@@ -114,7 +114,8 @@ def api_purchasing_po_get(request):
             {
                 'description': r[0],
                 'quantity': r[1],
-                'unit_id': r[2]
+                'unit_id': r[2],
+                'unit': r[3]
             }
             for r in result
         ]
