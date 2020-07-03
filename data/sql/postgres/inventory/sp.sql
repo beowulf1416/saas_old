@@ -28,4 +28,6 @@ set schema 'inventory';
 
 \ir procs/locations/location_add.sql
 
+\ir procs/vendors/vendor_add.sql
+
 set schema 'public';
