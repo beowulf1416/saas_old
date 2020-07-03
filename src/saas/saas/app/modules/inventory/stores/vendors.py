@@ -24,3 +24,14 @@ class VendorStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add vendor')
+
+    def filter(self, client_id: UUID, filter: str):
+        try:
+            result = super(VendorStore, self).runProc('inventory.vendors_filter', [
+                client_id,
+                f'%{filter}%'
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve vendors')
