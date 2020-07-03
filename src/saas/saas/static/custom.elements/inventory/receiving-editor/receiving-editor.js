@@ -34,6 +34,11 @@ class ReceivingEditor extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" id="btn-save" class="btn btn-save" title="Save">
+                    <span class="material-icons">save</span>
+                </button>
+            </div>
             <div class="form-wrapper">
                 <form class="form-receiving">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
@@ -78,10 +83,28 @@ class ReceivingEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const btnsave = shadow.getElementById('btn-save');
+        btnsave.addEventListener('click', function(e) {
+            const trs = shadow.querySelectorAll('table#tbl-items tbody tr');
+            trs.forEach((tr) => {
+                if (tr.classList.contains('po-item')) {
+                    const description = tr.querySelector('.item-description').innerText;
+                    const unit_id = tr.querySelector('.item-unit').dataset.unitid;
+                    const item_id = tr.querySelector('.item-id item-selector').value();
+                    const qty = tr.querySelector('.item-actual-qty').innerText;
+                } else {
+                    console.log('//TODO');
+                }
+            });
+
+            
+        });
+
         const selector = shadow.querySelector('purchase-order-selector');
         selector.addEventListener('change', function(e) {
             const order = e.detail.order;
 
+            self._order_id = order.id;
             self.setItems(order.items);
         });
 
@@ -106,16 +129,26 @@ class ReceivingEditor extends HTMLElement {
 
         items.forEach((item) => {
             const tr = document.createElement('tr');
+            tr.classList.add('po-item');
             tr.innerHTML = `
                 <td><a class="link-remove-item" href="#" title="Remove Item">&minus;</a></td>
-                <td>${item.description}</td>
-                <td>${item.quantity}</td>
-                <td>${item.unit_id}</td>
-                <td><item-selector client-id="${client_id}"></item-selector></td>
-                <td></td>
+                <td class="item-description">${item.description}</td>
+                <td class="item-qty">${item.quantity}</td>
+                <td class="item-unit" data-unitid="${item.unit_id}">${item.unit}</td>
+                <td class="item-id"><item-selector client-id="${client_id}"></item-selector></td>
+                <td class="item-actual-qty"><input type="number" name="quantity" class="form-input-quantity" title="Actual Quantity Received" /></td>
             `;
 
             tbody.appendChild(tr);
+
+            // event handlers
+            const remove = tr.querySelector('.link-remove-item');
+            remove.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const parent_tr = remove.parentElement.parentElement;
+                tbody.removeChild(parent_tr);
+            });
         });
     }
 }
