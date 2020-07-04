@@ -17,7 +17,7 @@ import json
 def api_inventory_vendor_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
-    vendor_id = params['vendorId'] if 'vendorId' in paramse else None
+    vendor_id = params['vendorId'] if 'vendorId' in params else None
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
     country_id = params['countryId'] if 'countryId' in params else None
