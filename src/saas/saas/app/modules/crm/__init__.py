@@ -25,6 +25,10 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/js/modules/crm/actions.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/crm/organization-explorer/organization-explorer.js'
             }
         ]
     }
