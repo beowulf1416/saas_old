@@ -1,11 +1,12 @@
 'use strict';
+import { notify, showInTab } from '/static/js/ui/ui.js';
 class OrganizationExplorer extends HTMLElement {
 
     constructor() {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/organization-explorer/organization-explorer.css');
+        style.setAttribute('href', '/static/custom.elements/crm/organization-explorer/organization-explorer.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -76,7 +77,7 @@ class OrganizationExplorer extends HTMLElement {
 
         const btnnew = shadow.getElementById('btn-new');
         btnnew.addEventListener('click', function(e) {
-            console.log('//TODO');
+            showInTab('crm-organization-editor', 'New Organization', `<crm-organization-editor client-id="${client_id}"></crm-organization-editor>`)
         });
     }
 
