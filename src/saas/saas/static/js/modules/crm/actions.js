@@ -11,7 +11,7 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions['crm.organizations'] = function() {
         const client_id = window.clientId;
-        console.log('crm.organizations');
+        showInTab('organization-explorer', 'Organizations', `<organization-explorer client-id="${client_id}"></organization-explorer>`);
     };
 
     window.actions['crm.people'] = function() {
