@@ -65,3 +65,8 @@ def includeme(config):
         'api.inventory.vendors.add',
         '/api/inventory/vendors/add'
     )
+
+    config.add_route(
+        'api.inventory.vendors.filter',
+        '/api/inventory/vendors/filter'
+    )

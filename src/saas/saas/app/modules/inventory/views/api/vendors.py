@@ -45,3 +45,46 @@ def api_inventory_vendor_add(request):
             'message': 'vendor record created'
         }
     )
+
+
+@view_config(
+    route_name='api.inventory.vendors.filter',
+    request_method='POST',
+    renderer='json'
+)
+def api_inventory_vendors_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and filter is required'
+        )
+
+    services = request.services()
+    vendorStore = services['store.inventory.vendors']
+    vendors = []
+    try:
+        result = vendorStore.filter(client_id, filter)
+        vendors = [
+            {
+                'id': r[0],
+                'name': r[1]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail=f'{len(vendors)} vendors found',
+        body={
+            'vendors': vendors
+        }
+    )
