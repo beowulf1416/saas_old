@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
+import { Vendors } from '/static/js/modules/inventory/vendors.js';
 class VendorExplorer extends HTMLElement {
 
     constructor() {
@@ -23,6 +24,7 @@ class VendorExplorer extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setVendors = this.setVendors.bind(this);
 
         this._attachEventHandlers();
     }
@@ -74,7 +76,13 @@ class VendorExplorer extends HTMLElement {
         const client_id = this.getAttribute('client-id');
 
         const beginsearch = function(filter) {
-            console.log('//TODo beginsearch');
+            Vendors.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    self.setVendors(r.json.vendors, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         };
 
         const filter = shadow.getElementById('filter');
@@ -93,6 +101,38 @@ class VendorExplorer extends HTMLElement {
         const btnnew = shadow.getElementById('btn-new');
         btnnew.addEventListener('click', function(e) {
             showInTab('vendor-editor', 'New Vendor', `<vendor-editor client-id="${client_id}"></vendor-editor>`);
+        });
+    }
+
+    setVendors(vendors = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const tbody = shadow.querySelector('table#tbl-vendors tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        vendors.forEach((v) => {
+            const vendor_name = v.name.replace(filter, `<strong>${filter}</strong>`);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><a class="link-edit" title="Edit Vendor" href="#" data-id="${v.id}"><span class="material-icons">edit</span></a></td>
+                <td>${vendor_name}</td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const edit = tr.querySelector('.link-edit');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const vendor_id = edit.dataset.id;
+                showInTab('vendor-editor', 'Edit Vendor', `<vendor-editor client-id="${client_id}" vendor-id="${vendor_id}"></vendor-editor>`)
+            });
         });
     }
 }

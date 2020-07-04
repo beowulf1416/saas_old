@@ -11,5 +11,12 @@ class Vendors {
             countryId: countryId
         });
     }
+
+    static filter(clientId = '', filter = '') {
+        return Util.fetch('/api/inventory/vendors/filter', {
+            clientId: clientId,
+            filter: filter
+        });
+    }
 }
 export { Vendors };
