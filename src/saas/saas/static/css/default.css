@@ -90,3 +90,8 @@ html {
 .view-wrapper .view-header span {
     font-size: 1em;
 }
+
+
+[role="toolbar"] .group {
+    margin: 4px;
+}
