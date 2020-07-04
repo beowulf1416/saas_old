@@ -35,3 +35,15 @@ class VendorStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve vendors')
+
+    def get(self, client_id: UUID, vendor_id: UUID):
+        try:
+            [result, ] = super(VendorStore, self).runProc('inventory.vendor_get', [
+                client_id,
+                vendor_id
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve vendor')
+        
