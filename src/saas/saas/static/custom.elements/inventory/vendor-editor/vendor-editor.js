@@ -1,4 +1,6 @@
 'use strict';
+import { notify } from '/static/js/ui/ui.js';
+import { Vendors } from '/static/js/modules/hr/vendors.js';
 class VendorEditor extends HTMLElement {
 
     constructor() {
@@ -27,6 +29,8 @@ class VendorEditor extends HTMLElement {
     }
 
     _init(container) {
+        const vendor_id = this.hasAttribute('vendor-id') ? this.getAttribute('vendor-id') : uuidv4();
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
@@ -37,6 +41,8 @@ class VendorEditor extends HTMLElement {
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form id="form-vendor">
+                    <input type="hidden" id="vendor-id" name="vendor_id" value="${vendor_id}" />
+
                     <!-- name -->
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" class="form-input-name" title="Name" placeholder="Name" />
@@ -60,10 +66,30 @@ class VendorEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
             console.log('//TODO save');
+
+            const vendor_id = self._getVendorId();
+
+            const name = shadow.getElementById('name');
+            const address = shadow.getElementById('address');
+            const country = shadow.getElementById('country');
+            Vendors.add(client_id, vendor_id, name.value, address.value, country.value).then((r) => {
+                notify(r.status, r.message);
+            });
+
         });
+    }
+
+    _getVendorId() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const vendor = shadow.getElementById('vendor-id');
+        return vendor.value;
     }
 }
 customElements.define('vendor-editor', VendorEditor);
