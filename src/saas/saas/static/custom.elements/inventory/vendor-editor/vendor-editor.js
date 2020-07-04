@@ -42,6 +42,11 @@ class VendorEditor extends HTMLElement {
                 <button type="button" id="btn-save" class="btn btn-save" title="Save">
                     <span class="material-icons">save</span>
                 </button>
+                <div class="group">
+                    <button type="button" id="btn-new-contact" class="btn btn-add-contact" title="Add New Contact">
+                        <span class="material-icons">person_add</span>
+                    </button>
+                </div><!-- .group -->
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form id="form-vendor">
@@ -74,8 +79,6 @@ class VendorEditor extends HTMLElement {
 
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
-            console.log('//TODO save');
-
             const vendor_id = self._getVendorId();
 
             const name = shadow.getElementById('name');
@@ -85,6 +88,13 @@ class VendorEditor extends HTMLElement {
                 notify(r.status, r.message);
             });
 
+        });
+
+        const btnaddcontact = shadow.getElementById('btn-new-contact');
+        btnaddcontact.addEventListener('click', function(e) {
+            const vendor_id = self._getVendorId();
+
+            console.log('//TODO');
         });
     }
 
