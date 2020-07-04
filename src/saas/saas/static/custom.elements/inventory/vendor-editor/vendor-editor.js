@@ -1,6 +1,8 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
 import { Vendors } from '/static/js/modules/inventory/vendors.js';
+import { Common } from '/static/js/modules/common/common.js';
+import { Clients } from '/static/js/modules/clients/clients.js';
 class VendorEditor extends HTMLElement {
 
     constructor() {
@@ -24,8 +26,10 @@ class VendorEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._prefetch = this._prefetch.bind(this);
 
         this._attachEventHandlers();
+        this._prefetch();
     }
 
     _init(container) {
@@ -90,6 +94,42 @@ class VendorEditor extends HTMLElement {
 
         const vendor = shadow.getElementById('vendor-id');
         return vendor.value;
+    }
+
+    _prefetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+        const is_new = this.hasAttribute('vendor-id');
+
+        Clients.get(client_id).then((r) => {
+            if (r.status == 'success') {
+                const client = r.json.client;
+                const country_id = client.country_id;
+
+                Common.countries().then((r) => {
+                    if (r.status == 'success') {
+                        const countries = r.json.countries;
+                        const options = [];
+                        countries.forEach((c) => {
+                            if (country_id == c.id) {
+                                options.push(`<option value="${c.id}" selected>${c.name}</option>`);
+                            } else {
+                                options.push(`<option value="${c.id}">${c.name}</option>`);
+                            }
+                        });
+                        const optionsall = options.join();
+                        const select = shadow.getElementById('country');
+                        select.innerHTML = optionsall;
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
+            } else {
+                notify(r.status, r.message);
+            }
+        });
     }
 }
 customElements.define('vendor-editor', VendorEditor);
