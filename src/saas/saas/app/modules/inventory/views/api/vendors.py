@@ -88,3 +88,44 @@ def api_inventory_vendors_filter(request):
             'vendors': vendors
         }
     )
+
+@view_config(
+    route_name='api.inventory.vendors.get',
+    request_method='POST',
+    renderer='json'
+)
+def api_inventory_vendor_get(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    vendor_id = params['vendorId'] if 'vendorId' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and filter is required'
+        )
+
+    services = request.services()
+    vendorStore = services['store.inventory.vendors']
+    vendor = {}
+    try:
+        r = vendorStore.get(client_id, vendor_id)
+        vendor = {
+            'id': r[0],
+            'name': r[1],
+            'address': r[2],
+            'country_id': r[3]
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='vendor found',
+        body={
+            'vendor': vendor
+        }
+    )
