@@ -18,5 +18,12 @@ class Vendors {
             filter: filter
         });
     }
+
+    static get(clientId = '', vendorId = '') {
+        return Util.fetch('/api/inventory/vendors/get', {
+            clientId: clientId,
+            vendorId: vendorId
+        })
+    }
 }
 export { Vendors };
