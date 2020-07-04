@@ -16,6 +16,6 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions['crm.people'] = function() {
         const client_id = window.clientId;
-        console.log('crm.people');
+        showInTab('contact-explorer', 'Contacts', `<contact-explorer client-id="${client_id}"><contact-explorer>`);
     };
 })();
