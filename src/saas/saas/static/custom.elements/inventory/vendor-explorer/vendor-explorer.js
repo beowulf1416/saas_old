@@ -9,6 +9,10 @@ class VendorExplorer extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/inventory/vendor-explorer/vendor-explorer.css');
 
+        const common = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/default.css');
+
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
         google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -20,6 +24,7 @@ class VendorExplorer extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(common);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
