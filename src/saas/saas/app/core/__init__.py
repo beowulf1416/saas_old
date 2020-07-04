@@ -29,6 +29,7 @@ def includeme(config):
     config.include('saas.app.core.services')
     config.include('saas.app.core.stores')
     config.include('saas.app.core.views')
+    config.include('saas.app.core.views.api')
 
     config.include('saas.app.modules.common')
     config.include('saas.app.modules.admin')
