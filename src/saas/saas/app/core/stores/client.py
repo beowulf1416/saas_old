@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.stores.base import BaseStore
 
+from uuid import UUID
 
 class ClientStore(BaseStore):
 
@@ -21,7 +22,7 @@ class ClientStore(BaseStore):
             log.error(e)
             raise Exception('Unable to retrieve default client')
 
-    def getClient(self, client_id: str):
+    def getClient(self, client_id: UUID):
         '''returns the specified client
             return value is a tuple containing (client_id, active, name, address)
         '''
