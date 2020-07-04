@@ -101,7 +101,7 @@ class VendorEditor extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
-        const is_new = this.hasAttribute('vendor-id');
+        const is_new = !this.hasAttribute('vendor-id');
 
         Clients.get(client_id).then((r) => {
             if (r.status == 'success') {
@@ -113,7 +113,7 @@ class VendorEditor extends HTMLElement {
                         const countries = r.json.countries;
                         const options = [];
                         countries.forEach((c) => {
-                            if (country_id == c.id) {
+                            if (country_id == c.id && is_new) {
                                 options.push(`<option value="${c.id}" selected>${c.name}</option>`);
                             } else {
                                 options.push(`<option value="${c.id}">${c.name}</option>`);
@@ -130,6 +130,27 @@ class VendorEditor extends HTMLElement {
                 notify(r.status, r.message);
             }
         });
+
+        if (!is_new) {
+            const vendor_id = this.getAttribute('vendor-id');
+
+            Vendors.get(client_id, vendor_id).then((r) => {
+                if (r.status == 'success') {
+                    const vendor = r.json.vendor;
+
+                    const name = shadow.getElementById('name');
+                    name.value = vendor.name;
+
+                    const address = shadow.getElementById('address');
+                    address.value = vendor.address;
+
+                    const country = shadow.getElementById('country');
+                    country.value = vendor.country_id;
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('vendor-editor', VendorEditor);
