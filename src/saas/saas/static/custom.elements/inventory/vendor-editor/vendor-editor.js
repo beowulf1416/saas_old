@@ -1,6 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
-import { Vendors } from '/static/js/modules/hr/vendors.js';
+import { Vendors } from '/static/js/modules/inventory/vendors.js';
 class VendorEditor extends HTMLElement {
 
     constructor() {
