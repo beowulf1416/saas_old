@@ -1,0 +1,4 @@
+form#form-organization {
+    display: grid;
+    grid-template-columns: min-content auto;
+}
