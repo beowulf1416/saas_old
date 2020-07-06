@@ -79,6 +79,12 @@ class PurchaseOrder extends HTMLElement {
                         <textarea id="instructions" name="instructions" class="form-input-instructions" placeholder="Instructions"></textarea>
                     </fieldset>
 
+                    <fieldset>
+                        <legend>Vendor Details</legend>
+                        <label for="vendor">Vendor</label>
+                        <crm-organization-selector client-id="${client_id}"></crm-organization-selector>
+                    </fieldset>
+
                     <div class="table-wrapper">
                         <table id="tbl-po-items" class="tbl-po-items">
                             <caption>Purchase Order Items</caption>
