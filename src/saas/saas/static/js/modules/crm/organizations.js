@@ -12,5 +12,12 @@ class Organizations {
         });
     }
 
+    static filter(clientId = '', filter = '') {
+        return Util.fetch('/api/crm/organizations/filter', {
+            clientId: clientId,
+            filter: filter
+        })
+    }
+
 }
 export { Organizations };
