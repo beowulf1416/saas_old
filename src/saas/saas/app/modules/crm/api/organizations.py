@@ -45,3 +45,45 @@ def api_crm_organizations_save(request):
             'message': 'Organization saved'
         }
     )
+
+@view_config(
+    route_name='api.crm.organizations.filter',
+    request_method='POST',
+    renderer='json'
+)
+def api_crm_organizations_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id or filter is required'
+        )
+
+    services = request.services()
+    orgStore = services['store.crm.organizations']
+    organizations = []
+    try:
+        result = orgStore.filter(client_id, filter)
+        organizations = [
+            {
+                'id': r[0],
+                'name': r[1]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail=f'{len(organizations)} organizations found',
+        body={
+            'organizations': organizations
+        }
+    )

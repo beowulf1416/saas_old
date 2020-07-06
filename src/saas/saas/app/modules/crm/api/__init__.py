@@ -8,3 +8,8 @@ def includeme(config):
         'api.crm.organizations.save',
         '/api/crm/organizations/save'
     )
+
+    config.add_route(
+        'api.crm.organizations.filter',
+        '/api/crm/organizations/filter'
+    )
