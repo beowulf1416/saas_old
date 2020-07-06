@@ -28,6 +28,7 @@ class OrganizationEditor extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._prefetch = this._prefetch.bind(this);
         this._getOrganizationId = this._getOrganizationId.bind(this);
+        this.setOrganization = this.setOrganization.bind(this);
 
         this._attachEventHandlers();
         this._prefetch();
@@ -138,7 +139,28 @@ class OrganizationEditor extends HTMLElement {
         if (!is_new) {
             const org_id = this.getAttribute('org-id');
 
+            Organizations.get(client_id, org_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setOrganization(r.json.organization)
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         }
+    }
+
+    setOrganization(org = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const input_name = shadow.getElementById('name');
+        input_name.value = org.name;
+
+        const input_address = shadow.getElementById('address');
+        input_address.value = org.address;
+
+        const input_country = shadow.getElementById('country');
+        input_country.value = org.country_id;
     }
 }
 customElements.define('crm-organization-editor', OrganizationEditor);

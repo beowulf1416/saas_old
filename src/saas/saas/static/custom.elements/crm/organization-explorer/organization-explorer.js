@@ -133,7 +133,7 @@ class OrganizationExplorer extends HTMLElement {
             edit.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                showInTab('organization-editor', 'Edit Organization', `<organization-editor client-id="${client_id}" org-id="${edit.dataset.id}"></organization-editor>`);
+                showInTab('crm-organization-editor', 'Edit Organization', `<crm-organization-editor client-id="${client_id}" org-id="${edit.dataset.id}"></crm-organization-editor>`);
             });
         });
     }
