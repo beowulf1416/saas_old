@@ -19,5 +19,11 @@ class Organizations {
         })
     }
 
+    static get(clientId = '', organizationId = '') {
+        return Util.fetch('/api/crm/organizations/get', {
+            clientId: clientId,
+            organizationId: organizationId
+        })
+    }
 }
 export { Organizations };
