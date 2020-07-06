@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
+import { Organizations } from '/static/js/modules/crm/organizations.js';
 class OrganizationExplorer extends HTMLElement {
 
     constructor() {
@@ -46,6 +47,25 @@ class OrganizationExplorer extends HTMLElement {
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
+            <div class="table-wrapper">
+                <table id="tbl-orgs">
+                    <caption>Organizations</caption>
+                    <colgroup>
+                        <col class="edit">
+                        <col class="name">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                    </tfoot>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div><!-- .table-wrapper -->
         `;
 
         container.appendChild(div);
@@ -58,7 +78,13 @@ class OrganizationExplorer extends HTMLElement {
         const client_id = this.getAttribute('client-id');
 
         const beginsearch = function(filter) {
-            console.log('// TODO');
+            Organizations.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    self.setOrganizations(r.json.organizations, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
         };
 
         const filter = shadow.getElementById('filter');
@@ -66,13 +92,13 @@ class OrganizationExplorer extends HTMLElement {
             if (e.keyCode == 13) {
                 e.preventDefault();
 
-                beginsearch(client_id, filter.value);
+                beginsearch(filter.value);
             }
         });
 
         const btnfilter = shadow.getElementById('btn-filter');
         btnfilter.addEventListener('click', function(e) {
-            beginsearch(client_id, filter.value);
+            beginsearch(filter.value);
         });
 
         const btnnew = shadow.getElementById('btn-new');
@@ -85,7 +111,31 @@ class OrganizationExplorer extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
 
+        const tbody = shadow.querySelector('table#tbl-orgs tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        orgs.forEach((o) => {
+            const tr = document.createElement('tr');
+            const org_name = o.name.replace(filter, `<strong>${filter}</strong>`);
+            tr.innerHTML = `
+                <td><a class="link-edit" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
+                <td>${org_name}</td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const edit = tr.querySelector('.link-edit');
+            edit.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                showInTab('organization-editor', 'Edit Organization', `<organization-editor client-id="${client_id}" org-id="${edit.dataset.id}"></organization-editor>`);
+            });
+        });
     }
 }
 customElements.define('organization-explorer', OrganizationExplorer);
