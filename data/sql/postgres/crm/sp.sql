@@ -12,6 +12,7 @@ set schema 'crm';
 \ir procs/people/people_ids_all.sql
 
 \ir procs/organizations/organization_save.sql
+\ir procs/organizations/organization_filter.sql
 
 
 set schema 'public';
