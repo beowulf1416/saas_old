@@ -40,3 +40,21 @@ class TestOrganizationStore(unittest.TestCase):
             random_str,
             country_id
         )
+
+    def test_filter(self):
+        client_id = self.defaultClient[0]
+        country_id = self.defaultClient[4]
+        org_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+        self.orgStore.save(
+            client_id,
+            org_id,
+            random_str,
+            random_str,
+            country_id
+        )
+        try:
+            result = self.orgStore.filter(client_id, random_str[2:5])
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)

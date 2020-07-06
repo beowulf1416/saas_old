@@ -24,3 +24,14 @@ class OrganizationStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to save crm organization')
+
+    def filter(self, client_id: UUID, filter: str):
+        try:
+            result = super(OrganizationStore, self).runProc('crm.organization_filter', [
+                client_id,
+                f'%{filter}%'
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve filtered list of crm organizations')
