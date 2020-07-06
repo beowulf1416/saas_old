@@ -35,3 +35,15 @@ class OrganizationStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve filtered list of crm organizations')
+
+
+    def get(self, client_id: UUID, org_id: UUID):
+        try:
+            [result, ] = super(OrganizationStore, self).runProc('crm.organization_get', [
+                client_id,
+                org_id
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve crm organization')
