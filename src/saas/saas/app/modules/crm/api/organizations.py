@@ -87,3 +87,45 @@ def api_crm_organizations_filter(request):
             'organizations': organizations
         }
     )
+
+
+@view_config(
+    route_name='api.crm.organizations.get',
+    request_method='POST',
+    renderer='json'
+)
+def api_crm_organizations_get(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    org_id = params['organizationId'] if 'organizationId' in params else None
+
+    if client_id is None or org_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and Organization Id is required'
+        )
+
+    services = request.services()
+    orgStore = services['store.crm.organizations']
+    organization = {}
+    try:
+        r = orgStore.get(client_id, org_id)
+        organization = {
+            'id': r[0],
+            'name': r[1],
+            'address': r[2],
+            'country_id': r[3]
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='organization found',
+        body={
+            'organization': organization
+        }
+    )
