@@ -10,14 +10,14 @@ import logging
 log = logging.getLogger(__name__)
 
 
-class TestInventoryVendorStore(unittest.TestCase):
+class TestPurchasingVendorStore(unittest.TestCase):
 
     def setUp(self):
         self.config = testing.setUp()
 
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.client import ClientStore
-        from saas.app.modules.inventory.stores.vendors import VendorStore
+        from saas.app.modules.purchasing.stores.vendors import VendorStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'

@@ -16,7 +16,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
         from saas.app.core.stores.client import ClientStore
         from saas.app.modules.purchasing.stores.purchase_order import PurchaseOrderStore
         from saas.app.modules.inventory.stores.warehouses import WarehouseStore
-        from saas.app.modules.inventory.stores.vendors import VendorStore
+        from saas.app.modules.purchasing.stores.vendors import VendorStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
