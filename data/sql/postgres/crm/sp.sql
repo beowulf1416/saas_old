@@ -15,5 +15,8 @@ set schema 'crm';
 \ir procs/organizations/organization_filter.sql
 \ir procs/organizations/organization_get.sql
 
+\ir procs/tags/tag_add.sql
+\ir procs/tags/tag_organization_add.sql
+
 
 set schema 'public';
