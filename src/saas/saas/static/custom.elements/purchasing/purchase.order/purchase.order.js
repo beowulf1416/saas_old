@@ -87,7 +87,7 @@ class PurchaseOrder extends HTMLElement {
                     <fieldset>
                         <legend>Vendor Details</legend>
                         <label for="vendor">Vendor</label>
-                        <crm-organization-selector client-id="${client_id}" show-address></crm-organization-selector>
+                        <vendor-selector client-id="${client_id}" show-address></vendor-selector>
                     </fieldset>
 
                     <div class="table-wrapper">
