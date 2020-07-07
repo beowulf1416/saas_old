@@ -59,19 +59,3 @@ def includeme(config):
         'api.inventory.warehouses.get',
         '/api/inventory/warehouses/get'
     )
-
-    # vendors
-    config.add_route(
-        'api.inventory.vendors.add',
-        '/api/inventory/vendors/add'
-    )
-
-    config.add_route(
-        'api.inventory.vendors.filter',
-        '/api/inventory/vendors/filter'
-    )
-
-    config.add_route(
-        'api.inventory.vendors.get',
-        '/api/inventory/vendors/get'
-    )

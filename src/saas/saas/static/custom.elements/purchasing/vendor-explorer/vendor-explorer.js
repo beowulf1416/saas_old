@@ -1,13 +1,13 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
-import { Vendors } from '/static/js/modules/inventory/vendors.js';
+import { Vendors } from '/static/js/modules/purchasing/vendors.js';
 class VendorExplorer extends HTMLElement {
 
     constructor() {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/vendor-explorer/vendor-explorer.css');
+        style.setAttribute('href', '/static/custom.elements/purchasing/vendor-explorer/vendor-explorer.css');
 
         const common = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');

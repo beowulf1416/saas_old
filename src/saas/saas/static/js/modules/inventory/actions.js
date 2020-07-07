@@ -23,9 +23,4 @@ import { showInTab } from '/static/js/ui/ui.js';
         const client_id = window.clientId;
         console.log('// TODO inventory.locations');
     };
-
-    window.actions['inventory.vendors'] = function() {
-        const client_id = window.clientId;
-        showInTab('inventory-vendors', 'Vendors', `<vendor-explorer client-id="${client_id}"><vendor-explorer>`);
-    };
 })();

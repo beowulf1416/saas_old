@@ -14,4 +14,9 @@ import { showInTab } from '/static/js/ui/ui.js';
         const client_id = window.clientId;
         showInTab('purchase-orders', 'Purchase Orders', `<purchase-orders client-id="${client_id}"></purchase-orders>`);
     };
+
+    window.actions['purchasing.vendors'] = function() {
+        const client_id = window.clientId;
+        showInTab('purchasing-vendors', 'Vendors', `<vendor-explorer client-id="${client_id}"><vendor-explorer>`);
+    }
 })();

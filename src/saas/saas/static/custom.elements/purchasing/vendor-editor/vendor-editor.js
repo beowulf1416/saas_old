@@ -1,6 +1,6 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
-import { Vendors } from '/static/js/modules/inventory/vendors.js';
+import { Vendors } from '/static/js/modules/purchasing/vendors.js';
 import { Common } from '/static/js/modules/common/common.js';
 import { Clients } from '/static/js/modules/clients/clients.js';
 class VendorEditor extends HTMLElement {
@@ -9,7 +9,7 @@ class VendorEditor extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/vendor-editor/vendor-editor.css');
+        style.setAttribute('href', '/static/custom.elements/purchasing/vendor-editor/vendor-editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

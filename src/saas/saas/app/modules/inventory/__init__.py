@@ -85,14 +85,6 @@ def includeme(config):
                 'script': 'static/custom.elements/inventory/receiving-editor/receiving-editor.js'
             },
             {
-                'type': 'module',
-                'script': 'static/custom.elements/inventory/vendor-explorer/vendor-explorer.js'
-            },
-            {
-                'type': 'module',
-                'script': 'static/custom.elements/inventory/vendor-editor/vendor-editor.js'
-            },
-            {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
             }
