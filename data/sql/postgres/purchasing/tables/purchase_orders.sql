@@ -11,5 +11,5 @@ create table if not exists purchase_orders (
     constraint fk_purchase_orders_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_purchase_orders_2 foreign key (vendor_id)
-        references inventory.vendors (id) on delete restrict on update restrict
+        references purchasing.vendors (id) on delete restrict on update restrict
 );

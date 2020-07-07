@@ -28,9 +28,5 @@ set schema 'inventory';
 
 \ir procs/locations/location_add.sql
 
-\ir procs/vendors/vendor_add.sql
-\ir procs/vendors/vendors_filter.sql
-\ir procs/vendors/vendor_get.sql
-
 
 set schema 'public';

@@ -1,6 +1,6 @@
 create or replace function vendor_add (
     p_client_id clients.clients.id%type,
-    p_vendor_id inventory.vendors.id%type,
+    p_vendor_id purchasing.vendors.id%type,
     p_name crm.organizations.name%type,
     p_address crm.organizations.address%type,
     p_country_id crm.organizations.country_id%type
@@ -17,7 +17,7 @@ begin
         p_country_id
     );
 
-    insert into inventory.vendors (
+    insert into purchasing.vendors (
         id,
         client_id,
         org_id

@@ -14,7 +14,7 @@ class VendorStore(BaseStore):
 
     def add(self, client_id: UUID, vendor_id: UUID, name: str, address: str, country_id: int):
         try:
-            super(VendorStore, self).runProcTransactional('inventory.vendor_add', [
+            super(VendorStore, self).runProcTransactional('purchasing.vendor_add', [
                 client_id,
                 vendor_id,
                 name,
@@ -27,7 +27,7 @@ class VendorStore(BaseStore):
 
     def filter(self, client_id: UUID, filter: str):
         try:
-            result = super(VendorStore, self).runProc('inventory.vendors_filter', [
+            result = super(VendorStore, self).runProc('purchasing.vendors_filter', [
                 client_id,
                 f'%{filter}%'
             ])
@@ -38,7 +38,7 @@ class VendorStore(BaseStore):
 
     def get(self, client_id: UUID, vendor_id: UUID):
         try:
-            [result, ] = super(VendorStore, self).runProc('inventory.vendor_get', [
+            [result, ] = super(VendorStore, self).runProc('purchasing.vendor_get', [
                 client_id,
                 vendor_id
             ])

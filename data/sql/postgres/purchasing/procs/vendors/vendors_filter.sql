@@ -3,7 +3,7 @@ create or replace function vendors_filter (
     p_filter text
 )
 returns table (
-    id inventory.vendors.id%type,
+    id purchasing.vendors.id%type,
     name crm.organizations.name%type
 )
 as $$
@@ -12,7 +12,7 @@ begin
     select
         a.id,
         b.name
-    from inventory.vendors a
+    from purchasing.vendors a
         inner join crm.organizations b on a.org_id = b.id
     where b.name like p_filter;
 end

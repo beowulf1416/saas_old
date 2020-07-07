@@ -13,7 +13,6 @@ set schema 'inventory';
 \ir tables/categories.sql
 \ir tables/groups.sql
 \ir tables/attributes.sql
-\ir tables/vendors.sql
 
 \ir tables/items.sql
 \ir tables/item_substitutes.sql
@@ -26,7 +25,7 @@ set schema 'inventory';
 \ir tables/item_transaction_meta.sql
 \ir tables/item_transaction_details.sql
 
-\ir tables/item_vendors.sql
+-- \ir tables/item_vendors.sql
 
 \ir tables/receiving.sql
 \ir tables/receiving_items.sql
