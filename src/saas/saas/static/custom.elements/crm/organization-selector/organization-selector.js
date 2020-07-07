@@ -61,6 +61,18 @@ class OrganizationSelector extends HTMLElement {
 
                 display.value = org.name;
                 self._org_id = org.id;
+
+                Organizations.get(client_id, org.id).then((r) => {
+                    if (r.status == 'success') {
+                        const input_address = shadow.getElementById('address');
+                        if (input_address) {
+                            const org_full = r.json.organization;
+                            input_address.value = org_full.address;
+                        }
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });
             });
         });
     }
