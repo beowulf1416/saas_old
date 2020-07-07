@@ -7,7 +7,7 @@ returns table (
     created_ts accounting.accounts.created_ts%type,
     type_id accounting.accounts.type_id%type,
     name accounting.accounts.name%type,
-    description accounting.accountes.description%type
+    description accounting.accounts.description%type
 )
 as $$
 begin
