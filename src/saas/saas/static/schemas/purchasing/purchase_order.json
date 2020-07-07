@@ -22,6 +22,7 @@
         "purchaseOrderId": { "type": "string", "format": "uuid" },
         "description": { "type": "string" },
         "warehouseId": { "type": "string", "format": "uuid" },
+        "vendorId": { "type": "string", "format": "uuid" },
         "instructions": { "anyOf": [
             { "type": "string" },
             { "type": "null" }
