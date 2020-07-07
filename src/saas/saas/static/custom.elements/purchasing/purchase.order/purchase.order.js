@@ -279,6 +279,9 @@ class PurchaseOrder extends HTMLElement {
         const warehouse_selector = shadow.querySelector('warehouse-selector');
         warehouse_selector.setAttribute('warehouse-id', po.warehouseId);
 
+        const vendor_selector = shadow.querySelector('crm-organization-selector');
+        vendor_selector.setAttribute('org-id', po.vendorId);
+
         const input_instructions = shadow.getElementById('instructions');
         input_instructions.value = po.instructions;
 
