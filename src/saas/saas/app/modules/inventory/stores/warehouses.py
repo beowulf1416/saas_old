@@ -12,10 +12,11 @@ class WarehouseStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(WarehouseStore, self).__init__(manager, name)
 
-    def add(self, clientId: UUID, name: str, address: str):
+    def add(self, clientId: UUID, warehouseId: UUID, name: str, address: str):
         try:
             [(warehouse_id, )] = super(WarehouseStore, self).runProcTransactional('inventory.warehouse_add', [
                 clientId,
+                warehouseId,
                 name,
                 address
             ])
