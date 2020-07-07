@@ -13,19 +13,20 @@ import pyramid.httpexceptions as exception
 def view_inventory_warehouses_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
+    warehouse_id = params['warehouseId'] if 'warehouseId' in params else None
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else ''
 
     if client_id is None or name is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameter',
-            explanation='Client Id and Name is required'
+            explanation='Client Id, Warehouse Id and Name is required'
         )
 
     services = request.services()
     try:
         warehouseStore = services['store.inventory.warehouses']
-        warehouseStore.add(client_id, name, address)
+        warehouseStore.add(client_id, warehouse_id, name, address)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
