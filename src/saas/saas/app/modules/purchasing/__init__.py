@@ -52,6 +52,14 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': 'static/custom.elements/purchasing/vendor-editor/vendor-editor.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/purchasing/vendor-selector/vendor-selector.js'
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom.elements/purchasing/vendor-selector-view/vendor-selector-view.js'
             }
         ]
     }
