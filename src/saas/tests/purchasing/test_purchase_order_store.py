@@ -16,6 +16,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
         from saas.app.core.stores.client import ClientStore
         from saas.app.modules.purchasing.stores.purchase_order import PurchaseOrderStore
         from saas.app.modules.inventory.stores.warehouses import WarehouseStore
+        from saas.app.modules.inventory.stores.vendors import VendorStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
@@ -23,7 +24,8 @@ class TestPurchaseOrderStore(unittest.TestCase):
         self.clientStore = ClientStore(self.mgr, 'default')
         self.poStore = PurchaseOrderStore(self.mgr, 'default')
         self.warehouseStore = WarehouseStore(self.mgr, 'default')
-
+        self.vendorStore = VendorStore(self.mgr, 'default')
+        
         self.defaultClient = self.clientStore.getDefaultClient()
 
     def generate_random_str(self, length: int):
@@ -33,13 +35,20 @@ class TestPurchaseOrderStore(unittest.TestCase):
     def test_save_po(self):
         random_str = self.generate_random_str(10)
         (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
-        warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+
+        warehouse_id = str(uuid.uuid4())
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+
+        vendor_id = str(uuid.uuid4())
+        vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+
         po_id = str(uuid.uuid4())
         order = {
             'clientId': client_id,
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'vendorId': vendor_id,
             'instructions': random_str,
             'items': [
                 {
@@ -58,13 +67,19 @@ class TestPurchaseOrderStore(unittest.TestCase):
             (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
 
             random_str = self.generate_random_str(10)
-            warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+            warehouse_id = str(uuid.uuid4())
+            self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+
+            vendor_id = str(uuid.uuid4())
+            vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+
             po_id = str(uuid.uuid4())
             order = {
                 'clientId': client_id,
                 'purchaseOrderId': po_id,
                 'description': random_str,
                 'warehouseId': warehouse_id,
+                'vendorId': vendor_id,
                 'instructions': random_str,
                 'items': [
                     {
@@ -86,14 +101,23 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
     def test_get(self):
         client_id = self.defaultClient[0]
+        country_id = self.defaultClient[4]
         random_str = self.generate_random_str(10)
-        warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+
+        warehouse_id = str(uuid.uuid4())
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+
+        vendor_id = str(uuid.uuid4())
+        vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+
         po_id = str(uuid.uuid4())
+        
         order = {
             'clientId': client_id,
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'vendorId': vendor_id,
             'instructions': random_str,
             'items': [
                 {
@@ -115,14 +139,22 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
     def test_get_items(self):
         client_id = self.defaultClient[0]
+        country_id = self.defaultClient[4]
         random_str = self.generate_random_str(10)
-        warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+
+        warehouse_id = str(uuid.uuid4())
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        
+        vendor_id = str(uuid.uuid4())
+        vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+
         po_id = str(uuid.uuid4())
         order = {
             'clientId': client_id,
             'purchaseOrderId': po_id,
             'description': random_str,
             'warehouseId': warehouse_id,
+            'vendorId': vendor_id,
             'instructions': random_str,
             'items': [
                 {
