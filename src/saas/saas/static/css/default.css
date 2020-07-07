@@ -93,7 +93,10 @@ html {
     font-size: 1em;
 }
 
+
 [role="toolbar"] {
+    display: flex;
+    flex-direction: row;
     margin: 4px;
 }
 
