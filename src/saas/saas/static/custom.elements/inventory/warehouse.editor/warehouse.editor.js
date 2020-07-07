@@ -35,7 +35,7 @@ class WarehouseEditor extends HTMLElement {
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
-        const warehouse_id = this.hasAttribute('warehouse-id') ? this.getAttribute('warehouse-id') : '';
+        const warehouse_id = this.hasAttribute('warehouse-id') ? this.getAttribute('warehouse-id') : uuidv4();
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -87,7 +87,7 @@ class WarehouseEditor extends HTMLElement {
 
             const name = shadow.getElementById('name');
             const address = shadow.getElementById('address');
-            InventoryWarehouse.add(client_id, name.value, address.value).then((r) => {
+            InventoryWarehouse.add(client_id, warehouse_id, name.value, address.value).then((r) => {
                 notify(r.status, r.message);
             });
         });
