@@ -178,6 +178,9 @@ class PurchaseOrder extends HTMLElement {
             const po_id = self._getPOId();
             const warehouseId = self._getWarehouseId();
 
+            const input_vendor = shadow.querySelector('crm-organization-selector');
+            const vendor_id = input_vendor.getAttribute('org-id');
+
             const description = shadow.getElementById('description').value;
             const instructions = shadow.getElementById('instructions').value
             
@@ -220,6 +223,7 @@ class PurchaseOrder extends HTMLElement {
                 purchaseOrderId: po_id,
                 description: description,
                 warehouseId: warehouseId,
+                vendorId: vendor_id,
                 instructions: instructions,
                 items: items
             }).then((r) => {
