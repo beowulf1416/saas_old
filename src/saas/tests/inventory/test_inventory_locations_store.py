@@ -4,6 +4,7 @@ from pyramid import testing
 
 import string
 import random
+import uuid
 from uuid import UUID
 
 
@@ -31,8 +32,9 @@ class TestInventoryItemsStore(unittest.TestCase):
     def test_location_add(self):
         random_str = self.generate_random_str(10)
         (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+        warehouse_id = str(uuid.uuid4())
         try:
-            warehouse_id = self.warehouseStore.add(client_id, random_str, random_str)
+            self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
             location_id = self.locationStore.add(
                 client_id, 
                 warehouse_id,
