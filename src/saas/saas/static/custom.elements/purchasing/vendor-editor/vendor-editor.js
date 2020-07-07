@@ -90,7 +90,7 @@ class VendorEditor extends HTMLElement {
             const address = shadow.getElementById('address');
             const country = shadow.getElementById('country');
             Vendors.add(client_id, vendor_id, name.value, address.value, country.value).then((r) => {
-                notify(r.status, r.message);
+                notify(r.status, r.message, 3000);
             });
 
         });
