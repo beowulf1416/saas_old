@@ -29,6 +29,10 @@ class OrganizationSelector extends HTMLElement {
         this._attachEventHandlers();
     }
 
+    static get observedAttributes() { 
+        return ['org-id']; 
+    }
+
     _init(container) {
         const show_address = this.hasAttribute('show-address');
 
@@ -75,6 +79,32 @@ class OrganizationSelector extends HTMLElement {
                 });
             });
         });
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        if (name == 'org-id') {
+            self._org_id = this.getAttribute('org-id');
+
+            Organizations.get(client_id, self._org_id).then((r) => {
+                if (r.status == 'success') {
+                    const org = r.json.organization;
+                    const display = shadow.getElementById('display');
+                    display.value = org.name;
+
+                    const input_address = shadow.getElementById('address');
+                    if (input_address) {
+                        input_address.value = org.address;
+                    }
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('crm-organization-selector', OrganizationSelector);
