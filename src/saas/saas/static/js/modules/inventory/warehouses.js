@@ -2,7 +2,7 @@
 
 class InventoryWarehouse {
     
-    static add(clientId = '', name = '', address = '') {
+    static add(clientId = '', warehouseId = '', name = '', address = '') {
         return fetch('/api/inventory/warehouses/add', {
             method: 'POST',
             credentials: 'same-origin',
@@ -12,6 +12,7 @@ class InventoryWarehouse {
             },
             body: JSON.stringify({
                 clientId: clientId,
+                warehouseId: warehouseId,
                 name: name,
                 address: address
             })
