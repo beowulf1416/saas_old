@@ -47,11 +47,11 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/vendor-explorer/vendor-explorer.js'
+                'script': 'static/custom.elements/purchasing/vendor-explorer/vendor-explorer.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/vendor-editor/vendor-editor.js'
+                'script': 'static/custom.elements/purchasing/vendor-editor/vendor-editor.js'
             }
         ]
     }
