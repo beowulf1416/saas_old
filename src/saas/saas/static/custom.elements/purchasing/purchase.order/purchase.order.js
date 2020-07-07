@@ -11,6 +11,10 @@ class PurchaseOrder extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/purchasing/purchase.order/purchase.order.css');
 
+        const style_default = document.createElement("link");
+        style_default.setAttribute('rel', 'stylesheet');
+        style_default.setAttribute('href', '/static/css/default.css');
+
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
         google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -22,6 +26,7 @@ class PurchaseOrder extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(style_default);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 

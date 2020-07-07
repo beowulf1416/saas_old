@@ -1,4 +1,6 @@
 /** common styles **/
+@import url(https://fonts.googleapis.com/icon?family=Material+Icon)
+
 html {
     background-color: #ebedf0;
     height: 100%;
@@ -91,7 +93,10 @@ html {
     font-size: 1em;
 }
 
+[role="toolbar"] {
+    margin: 4px;
+}
 
 [role="toolbar"] .group {
-    margin: 4px;
+    margin-left: 2px;
 }
