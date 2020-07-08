@@ -12,13 +12,12 @@ class OrganizationsStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(OrganizationsStore, self).__init__(manager, name)
 
-    def add(self, clientId: UUID, name: str, description: str):
+    def add(self, clientId: UUID, organizationId: UUID, name: str, description: str):
         '''add organization to client
         '''
         try:
-            [(result, )] = super(OrganizationsStore, self).runProcTransactional(
-                'clients.organization_add', [clientId, name, description])
-            return result
+            super(OrganizationsStore, self).runProcTransactional(
+                'clients.organization_add', [clientId, organizationId, name, description])
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add organization to client')

@@ -31,9 +31,9 @@ class RolesStore(BaseStore):
             raise Exception('Unable to filter roles')
 
 
-    def add(self, clientId: UUID, name: str):
+    def add(self, clientId: UUID, roleId: UUID, name: str):
         try:
-            [(role_id, )] = super(RolesStore, self).runProcTransactional('iam.role_add', [clientId, name])
+            [(role_id, )] = super(RolesStore, self).runProcTransactional('iam.role_add', [clientId, roleId, name])
             return role_id
         except Exception as e:
             log.error(e)
