@@ -10,6 +10,11 @@ import { showInTab } from '/static/js/ui/ui.js';
         console.log('purchasing.dashboard');
     };
 
+    window.actions['purchasing.quotations'] = function() {
+        const client_id = window.clientId;
+        console.log('purchasing.quotations');
+    };
+
     window.actions['purchasing.orders'] = function() {
         const client_id = window.clientId;
         showInTab('purchase-orders', 'Purchase Orders', `<purchase-orders client-id="${client_id}"></purchase-orders>`);
