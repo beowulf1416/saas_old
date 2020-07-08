@@ -178,8 +178,8 @@ class PurchaseOrder extends HTMLElement {
             const po_id = self._getPOId();
             const warehouseId = self._getWarehouseId();
 
-            const input_vendor = shadow.querySelector('crm-organization-selector');
-            const vendor_id = input_vendor.getAttribute('org-id');
+            const input_vendor = shadow.querySelector('vendor-selector');
+            const vendor_id = input_vendor.getAttribute('vendor-id');
 
             const description = shadow.getElementById('description').value;
             const instructions = shadow.getElementById('instructions').value
@@ -288,8 +288,8 @@ class PurchaseOrder extends HTMLElement {
         const warehouse_selector = shadow.querySelector('warehouse-selector');
         warehouse_selector.setAttribute('warehouse-id', po.warehouseId);
 
-        const vendor_selector = shadow.querySelector('crm-organization-selector');
-        vendor_selector.setAttribute('org-id', po.vendorId);
+        const vendor_selector = shadow.querySelector('vendor-selector');
+        vendor_selector.setAttribute('vendor-id', po.vendorId);
 
         const input_instructions = shadow.getElementById('instructions');
         input_instructions.value = po.instructions;
