@@ -1,4 +1,6 @@
 'use strict';
+import { Util } from '/static/js/util.js';
+import { Vendors } from '/static/js/modules/purchasing/vendors.js';
 class VendorSelectorView extends HTMLElement {
 
     constructor() {
@@ -20,6 +22,11 @@ class VendorSelectorView extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setVendors = this.setVendors.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -55,6 +62,76 @@ class VendorSelectorView extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const beginsearch = function(filter) {
+            Vendors.filter(client_id, filter).then((r) => {
+                if (r.status == 'success') {
+                    const vendors = r.json.vendors;
+                    self.setVendors(vendors, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+
+                beginsearch(filter.value);
+            }
+        });
+
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function(e) {
+            beginsearch(filter.value);
+        });
+    }
+
+    setVendors(vendors = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tbody = shadow.querySelector('table#tbl-vendors tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        vendors.forEach((v) => {
+            const id = 'id' + Util.generateId();
+            const vendor_name = v.name.replace(filter, `<strong>${filter}</strong>`);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Vendor" value="${v.id}" /></td>
+                <td><label for="${id}">${vendor_name}</label></td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const select = tr.querySelector('.form-input-selected');
+            select.addEventListener('change', function(e) {
+                e.preventDefault();
+
+                self.dispatchEvent(new CustomEvent('change', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        vendor: {
+                            id: select.value
+                        }
+                    }
+                }));
+            });
+        });
     }
 }
 customElements.define('vendor-selector-view', VendorSelectorView);
