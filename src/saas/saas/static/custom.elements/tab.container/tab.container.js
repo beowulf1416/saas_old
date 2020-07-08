@@ -49,6 +49,9 @@ class TabContainer extends HTMLElement {
             const atab = shadow.querySelector('a[role=tab][aria-selected=true]');
             if (atab != null) {
                 atab.setAttribute('aria-selected', 'false');
+                
+                const parent_li = atab.parentElement;
+                parent_li.classList.remove('active');
             }
 
             const ptab = shadow.querySelector('div.tab-panel.active');
@@ -59,6 +62,9 @@ class TabContainer extends HTMLElement {
             const selectedTab = shadow.querySelector(`a#link-${id}`);
             if (selectedTab != null) {
                 selectedTab.setAttribute('aria-selected', true);
+
+                const parent_li = selectedTab.parentElement;
+                parent_li.classList.add('active');
             }
 
             const selectedPanel = shadow.getElementById(`tabpanel-${id}`);
@@ -79,8 +85,21 @@ class TabContainer extends HTMLElement {
             // check if tab already exists
             const existingTab = shadow.getElementById(`link-${id}`);
             if (existingTab == null) {
+                const tab = shadow.querySelector('.tabs [role=tablist] .tab-link[aria-selected=true]');
+                if (tab != null) {
+                    tab.setAttribute('aria-selected', 'false');
+
+                    const parent_li = tab.parentElement;
+                    parent_li.classList.remove('active');
+                }
+
+                const tp = shadow.querySelector('.tabs [role=tabpanel].active');
+                if (tp != null) {
+                    tp.classList.remove('active');
+                }
+
                 const li = document.createElement('li');
-                li.classList.add('list-item');
+                li.classList.add('list-item', 'active');
                 li.innerHTML = `
                     <a  id="link-${id}"
                         class="tab-link"
@@ -111,24 +130,17 @@ class TabContainer extends HTMLElement {
                     </div><!-- .content-wrapper -->
                 `;
 
-                const tab = shadow.querySelector('.tabs [role=tablist] .tab-link[aria-selected=true]');
-                if (tab != null) {
-                    tab.setAttribute['aria-selected', 'false'];
-                }
-
-                const tp = shadow.querySelector('.tabs [role=tabpanel].active');
-                if (tp != null) {
-                    tp.classList.remove('active');
-                }
-
                 ul.appendChild(li);
                 tabs.appendChild(div);
 
                 const a = li.querySelector('a.tab-link');
                 a.addEventListener('click', function(e) {
+                    e.preventDefault();
+
                     const tab = shadow.querySelector('.tabs [role=tablist] .tab-link[aria-selected=true]');
                     if (tab != null) {
                         tab.setAttribute('aria-selected', 'false');
+                        tab.parentElement.classList.remove('active');
                     }
 
                     let tp = shadow.querySelector('.tabs [role=tabpanel].active');
@@ -137,6 +149,7 @@ class TabContainer extends HTMLElement {
                     }
 
                     a.setAttribute('aria-selected', 'true');
+                    a.parentElement.classList.add('active');
                     const aria_controls = a.getAttribute('aria-controls');
                     tp = shadow.getElementById(aria_controls);
                     tp.classList.add('active'); 
@@ -144,6 +157,8 @@ class TabContainer extends HTMLElement {
 
                 const close = li.querySelector('a.tab-link-close');
                 close.addEventListener('click', function(e) {
+                    e.preventDefault();
+
                     const tp_id = close.getAttribute('aria-controls');
                     const tp = shadow.getElementById(tp_id);
 

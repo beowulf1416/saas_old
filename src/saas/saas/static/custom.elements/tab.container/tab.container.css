@@ -13,6 +13,10 @@
     box-shadow: 0 0 0.2em #B7B7B8;
 }
 
+.tabs [role=tablist] .list-item.active {
+    background-color: #B7B7B8;
+}
+
 .tabs [role=tabpanel]:not(.active) {
     display: none;
 }
@@ -31,7 +35,7 @@
 }
 
 .tabs [role=tab][aria-selected=true] {
-    background: #E9EEF6;
+    background: #B7B7B8;
 }
 
 .tabs .tab-link-close .material-icons {
