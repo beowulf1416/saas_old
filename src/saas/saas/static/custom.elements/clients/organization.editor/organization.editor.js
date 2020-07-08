@@ -29,7 +29,6 @@ class OrganizationEditor extends HTMLElement {
 
     _init(container) {
         const client_id = this.getAttribute('client-id');
-        const org_id = this.hasAttribute('organization-id') ? this.getAttribute('organization-id') : '';
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -42,7 +41,6 @@ class OrganizationEditor extends HTMLElement {
             <div class="form-wrapper">
                 <form class="form-organization">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-                    <input type="hidden" id="organization-id" name="organization_id" value="${org_id}" />
 
                     <!-- name -->
                     <label for="name">Name</label>
@@ -63,15 +61,16 @@ class OrganizationEditor extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
-        const org_id = this.hasAttribute('organization-id') ? this.getAttribute('organization-id') : '';
+        const org_id = this.hasAttribute('organization-id') ? this.getAttribute('organization-id') : uuidv4();
+        const is_new = !this.hasAttribute('organization-id');
 
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
             const name = shadow.getElementById('name');
             const description = shadow.getElementById('description');
 
-            if (org_id == '') {
-                ClientOrganizations.add(client_id, name.nodeValue, description.value).then((r) => {
+            if (is_new) {
+                ClientOrganizations.add(client_id, org_id, name.nodeValue, description.value).then((r) => {
                     notify(r.status, r.message);
                 });
             } else {
