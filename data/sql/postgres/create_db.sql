@@ -41,6 +41,7 @@ create domain slug
 \ir hr/create.sql
 \ir inventory/create.sql
 \ir purchasing/create.sql
+\ir work/create.sql
 
 -- create functions and procedures
 \ir common/sp.sql
@@ -51,5 +52,6 @@ create domain slug
 \ir hr/sp.sql
 \ir inventory/sp.sql
 \ir purchasing/sp.sql
+\ir work/sp.sql
 
 set schema 'public';
