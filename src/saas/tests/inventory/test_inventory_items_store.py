@@ -4,7 +4,7 @@ from pyramid import testing
 
 import string
 import random
-
+import uuid
 
 class TestInventoryItemsStore(unittest.TestCase):
 
@@ -20,6 +20,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         })
         self.itemsStore = ItemsStore(self.mgr, 'default')
         self.clientStore = ClientStore(self.mgr, 'default')
+        self.client = self.clientStore.getDefaultClient()
 
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
@@ -27,11 +28,13 @@ class TestInventoryItemsStore(unittest.TestCase):
 
     def test_item_add(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+        client_id = self.client[0]
+        item_id = str(uuid.uuid4())
         try:
-            item_id = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id,
                     'name': random_str,
                     'description': random_str,
                     'make': random_str,
@@ -57,11 +60,13 @@ class TestInventoryItemsStore(unittest.TestCase):
 
     def test_item_get(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+        client_id = self.client[0]
+        item_id = str(uuid.uuid4())
         try:
-            item_id = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id,
                     'name': random_str,
                     'description': random_str,
                     'make': random_str,
@@ -89,11 +94,13 @@ class TestInventoryItemsStore(unittest.TestCase):
 
     def test_item_update(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+        client_id = self.client[0]
+        item_id = str(uuid.uuid4())
         try:
-            item_id = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id,
                     'name': random_str,
                     'description': random_str,
                     'make': random_str,
@@ -143,13 +150,16 @@ class TestInventoryItemsStore(unittest.TestCase):
             self.fail(e)
 
     def test_item_add_substitute(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -170,9 +180,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -194,18 +205,21 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addSubstitute(client_id, item_id_1, item_id_2)
+            self.itemsStore.addSubstitute(client_id, item_id1, item_id2)
         except Exception as e:
             self.fail(e)
 
     def test_item_substitutes(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -226,9 +240,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -250,21 +265,24 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addSubstitute(client_id, item_id_1, item_id_2)
+            self.itemsStore.addSubstitute(client_id, item_id1, item_id2)
 
-            result = self.itemsStore.substitutes(client_id, item_id_1)
+            result = self.itemsStore.substitutes(client_id, item_id1)
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
 
     def test_item_add_component(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -285,9 +303,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -309,18 +328,21 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 1, 1, 1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 1, 1, 1)
         except Exception as e:
             self.fail(e)
 
     def test_unique_component(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -341,9 +363,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -365,19 +388,22 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 1, 1, 1)
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 2, 1, 1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 1, 1, 1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 2, 1, 1)
         except Exception as e:
             self.fail(e)
 
     def test_item_components(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -398,9 +424,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -422,20 +449,23 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 1, 1, 1)
-            result = self.itemsStore.components(client_id, item_id_1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 1, 1, 1)
+            result = self.itemsStore.components(client_id, item_id1)
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
 
     def test_item_unique_component(self):
+        client_id = self.client[0]
+        item_id1 = str(uuid.uuid4())
+        item_id2 = str(uuid.uuid4())
         item_1 = self.generate_random_str(10)
         item_2 = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
-            item_id_1 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id1,
                     'name': item_1,
                     'description': item_1,
                     'make': item_1,
@@ -456,9 +486,10 @@ class TestInventoryItemsStore(unittest.TestCase):
                     'hazardous': False
                 }
             )
-            item_id_2 = self.itemsStore.add(
+            self.itemsStore.add(
                 {
                     'clientId': client_id,
+                    'itemId': item_id2,
                     'name': item_2,
                     'description': item_2,
                     'make': item_2,
@@ -480,7 +511,7 @@ class TestInventoryItemsStore(unittest.TestCase):
                 }
             )
 
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 1, 1, 1)
-            self.itemsStore.addComponent(client_id, item_id_1, item_id_2, 2, 1, 1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 1, 1, 1)
+            self.itemsStore.addComponent(client_id, item_id1, item_id2, 2, 1, 1)
         except Exception as e:
             self.fail(e)

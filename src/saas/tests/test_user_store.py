@@ -72,4 +72,4 @@ class TestUserStore(unittest.TestCase):
         client_id = client[0]
 
         result = self.userStore.userHasPermission(user_id, client_id, 'user.authenticated')
-        self.assertEqual(True, result, '{0}'.format(result))
+        self.assertEqual(True, result, '{0} {1}'.format(result, email))

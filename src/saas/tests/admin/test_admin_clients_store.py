@@ -4,6 +4,7 @@ from pyramid import testing
 
 import string
 import random
+import uuid
 
 
 class TestAdminClientStore(unittest.TestCase):
@@ -31,15 +32,17 @@ class TestAdminClientStore(unittest.TestCase):
 
     def test_add_client(self):
         random_name = self.generate_random_str(10)
+        client_id = str(uuid.uuid4())
         try:
-            self.clientStore.add(random_name, random_name, 608)
+            self.clientStore.add(client_id, random_name, random_name, 608)
         except Exception as e:
             self.fail(e)
 
     def test_update_client(self):
         random_name = self.generate_random_str(10)
+        client_id = str(uuid.uuid4())
         try:
-            client_id = self.clientStore.add(random_name, random_name, 608)
+            self.clientStore.add(client_id, random_name, random_name, 608)
             self.clientStore.update(client_id, random_name, random_name, 608)
         except Exception as e:
             self.fail(e)
@@ -47,10 +50,13 @@ class TestAdminClientStore(unittest.TestCase):
 
     def test_add_client_not_unique(self):
         random_name = self.generate_random_str(10)
-        self.clientStore.add(random_name, random_name, 608)
+        client_id = str(uuid.uuid4())
+        self.clientStore.add(client_id, random_name, random_name, 608)
+        client_id2 = str(uuid.uuid4())
         self.assertRaises(
             Exception,
             self.clientStore.add,
+            client_id2,
             random_name,
             random_name,
             random_name,
@@ -59,25 +65,18 @@ class TestAdminClientStore(unittest.TestCase):
 
     def test_get_client(self):
         random_name = self.generate_random_str(10)
-        client_id = self.clientStore.add(random_name, random_name, 608)
+        client_id = str(uuid.uuid4())
+        self.clientStore.add(client_id, random_name, random_name, 608)
         try:
             client = self.clientStore.get(client_id)
             self.assertEqual(client_id, client[0], '{0}'.format(client))
         except Exception as e:
             self.fail(e)
 
-    # def test_get_client_by_urlname(self):
-    #     random_name = self.generate_random_str(10)
-    #     client_id = self.clientStore.add(random_name, random_name, random_name)
-    #     try:
-    #         client = self.clientStore.getByUrlName(random_name)
-    #         self.assertEqual(client_id, client[0], '{0}'.format(client))
-    #     except Exception as e:
-    #         self.fail(e)
-
     def test_set_active(self):
         random_name = self.generate_random_str(10)
-        client_id = self.clientStore.add(random_name, random_name, 608)
+        client_id = str(uuid.uuid4())
+        self.clientStore.add(client_id, random_name, random_name, 608)
         try:
             self.clientStore.setActive(client_id, False)
         except Exception as e:
