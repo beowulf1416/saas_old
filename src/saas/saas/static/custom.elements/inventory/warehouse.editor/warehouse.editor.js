@@ -10,6 +10,10 @@ class WarehouseEditor extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom.elements/inventory/warehouse.editor/warehouse.editor.css');
 
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
+
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
         google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -21,6 +25,7 @@ class WarehouseEditor extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(default_style);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
