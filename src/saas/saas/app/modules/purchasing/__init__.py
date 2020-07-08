@@ -59,7 +59,7 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/vendor-selector-view/vendor-selector-view.js'
+                'script': 'static/custom.elements/purchasing/vendor-selector/vendor-selector-view.js'
             }
         ]
     }
