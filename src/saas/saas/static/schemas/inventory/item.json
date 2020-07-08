@@ -20,10 +20,7 @@
     "type": "object",
     "properties": {
         "clientId": { "type": "string", "format": "uuid"  },
-        "itemId": { "anyOf": [
-            { "type": "string", "format": "uuid" },
-            { "type": "null" }
-        ]},
+        "itemId": { "type": "string", "format": "uuid" },
         "name": { "type": "string" },
         "description": { "type": "string" },
         "sku": { "type": "string" },

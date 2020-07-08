@@ -1,0 +1,43 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/work/project.json",
+    "definitions": {
+        "task": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "start": { "type": "string", "format": "date" },
+                "end": { "type": "string", "format": "date" },
+                "actual_start": { "type": "string", "format": "date" },
+                "actual_end": { "type": "string", "format": "date" },
+                "status": { "anyOf": [
+                    { "type": "string", "enum": ["new", "remove"] },
+                    { "type": "null" }
+                ]},
+                "tasks": {
+                    "type": "array",
+                    "task": { "$ref": "#/definitions/item" }
+                }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "clientId": { "type": "string", "format": "uuid" },
+        "projectId": { "type": "string", "format": "uuid" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "tasks": {
+            "type": "array",
+            "task": { "$ref": "#/definitions/task" }
+        }
+    },
+    "required": [
+        "clientId",
+        "projectId",
+        "name"
+    ],
+    "additionalProperties": true
+}
