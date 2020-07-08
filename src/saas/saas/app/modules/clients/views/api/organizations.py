@@ -13,13 +13,14 @@ import pyramid.httpexceptions as exception
 def view_clients_organizations_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
+    organization_id = params['organizationId'] if 'organizationId' in params else None
     name = params['name'] if 'name' in params else None
     description = params['description'] if 'description' in params else None
 
-    if client_id is None or name is None or description is None:
+    if client_id is None or organization_id is None or  name is None or description is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id, Organization name and description is required'
+            explanation='Client Id, Organization Id, Name and Description is required'
         )
 
     session = request.session
@@ -28,7 +29,7 @@ def view_clients_organizations_add(request):
     services = request.services()
     try:
         orgStore = services['store.clients.organizations']
-        result = orgStore.add(client_id, name, description)
+        result = orgStore.add(client_id, organization_id, name, description)
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
