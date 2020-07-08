@@ -17,9 +17,8 @@ begin
     from clients.client_default() a;
 
     -- create sysadmin role
-    select
-        a into t_sysad_role_id
-    from iam.role_add(default_client_id, 'system administrator') a;
+    t_sysad_role_id := public.gen_random_uuid();
+    perform * from iam.role_add(default_client_id,  t_sysad_role_id, 'system administrator');
     perform * from iam.role_set_active(t_sysad_role_id, true);
 
     -- give all permissions to sysad role
@@ -29,7 +28,7 @@ begin
         a.id,
         default_client_id
     from iam.permissions a
-    on conflict do nothing;  
+    on conflict do nothing;
 end
 $$
 language plpgsql;

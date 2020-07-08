@@ -19,4 +19,5 @@ begin
     where a.id = p_org_id;
 end
 $$
-language plpgsql;
+language plpgsql
+stable;

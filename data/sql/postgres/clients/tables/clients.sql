@@ -2,7 +2,7 @@
  * client management
  */
 create table if not exists clients (
-    id uuid not null default public.gen_random_uuid(),
+    id uuid not null,
     active boolean not null default false,
     created_ts timestamp with time zone not null default(now() at time zone 'utc'),
     name varchar(200) not null,

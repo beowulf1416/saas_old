@@ -7,9 +7,15 @@ declare
     client_id clients.clients.id%type;
 begin
     -- create default client
-    select
-        a into client_id
-    from clients.client_add('default', 'N/A', 608) a;
+    client_id := public.gen_random_uuid();
+    perform
+        *
+    from clients.client_add(
+        client_id,
+        'default', 
+        'N/A', 
+        608
+    );
     
     perform * from clients.client_set_active(client_id, true);
 end

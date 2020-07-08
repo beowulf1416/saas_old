@@ -3,6 +3,7 @@
  */
 create or replace function item_add (
     p_client_id inventory.items.client_id%type,
+    p_item_id inventory.items.id%type,
     p_name inventory.items.name%type,
     p_desc inventory.items.description%type,
     p_make inventory.items.make%type,
@@ -22,13 +23,12 @@ create or replace function item_add (
     p_perishable items.perishable%type,
     p_hazardous items.hazardous%type
 )
-returns inventory.items.id%type
+returns void
 as $$
-declare
-    tmp_id inventory.items.id%type;
 begin
     insert into inventory.items (
         client_id,
+        id,
         name,
         description,
         make,
@@ -49,6 +49,7 @@ begin
         hazardous
     ) values (
         p_client_id,
+        p_item_id,
         p_name,
         p_desc,
         p_make,
@@ -67,10 +68,7 @@ begin
         p_weight_unit_id,
         p_perishable,
         p_hazardous
-    )
-    returning id into tmp_id;
-    
-    return tmp_id;
+    );
 end
 $$
 language plpgsql;
