@@ -13,7 +13,11 @@
             "properties": {
                 "id": { "type": "string", "format": "uuid" },
                 "quantity": { "type": "number" },
-                "uom": { "$ref": "#/definitions/uom" }
+                "uom": { "$ref": "#/definitions/uom" },
+                "status": { "anyOf": [
+                    { "type": "string", "enum": ["new", "remove"] },
+                    { "type": "null" }
+                ]}
             }
         }
     },
