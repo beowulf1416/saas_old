@@ -1,8 +1,9 @@
 'use strict';
-import { notify } from '/static/js/ui/ui.js';
+import { notify, showInView } from '/static/js/ui/ui.js';
 import { Vendors } from '/static/js/modules/purchasing/vendors.js';
 import { Common } from '/static/js/modules/common/common.js';
 import { Clients } from '/static/js/modules/clients/clients.js';
+import { Organizations } from '/static/js/modules/crm/organizations.js';
 class VendorEditor extends HTMLElement {
 
     constructor() {
@@ -48,6 +49,9 @@ class VendorEditor extends HTMLElement {
                     <span class="material-icons">save</span>
                 </button>
                 <div class="group">
+                    <button type="button" id="btn-copy-org" class="btn btn-copy-org" title="Copy CRM Organization">
+                        <span class="material-icons">business</span>
+                    </button>
                     <button type="button" id="btn-new-contact" class="btn btn-add-contact" title="Add New Contact">
                         <span class="material-icons">person_add</span>
                     </button>
@@ -80,6 +84,7 @@ class VendorEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const is_new = !this.hasAttribute('vendor-id');
         const client_id = this.getAttribute('client-id');
 
         const btnsave = shadow.getElementById('btn-save');
@@ -89,11 +94,50 @@ class VendorEditor extends HTMLElement {
             const name = shadow.getElementById('name');
             const address = shadow.getElementById('address');
             const country = shadow.getElementById('country');
-            Vendors.add(client_id, vendor_id, name.value, address.value, country.value).then((r) => {
-                notify(r.status, r.message, 3000);
-            });
-
+            if (is_new) {
+                if (self._organization_id) {
+                    Vendors.assignOrganization(client_id, vendor_id, self._organization_id).then((r) => {
+                        notify(r.status, r.message, 3000);
+                    });
+                } else {
+                    Vendors.add(client_id, vendor_id, name.value, address.value, country.value).then((r) => {
+                        notify(r.status, r.message, 3000);
+                    });
+                }
+            } else {
+                Vendors.update(client_id, vendor_id, name.value, address.value, country.value).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            }
         });
+
+        const btncopyorg = shadow.getElementById('btn-copy-org');
+        if (btncopyorg) {
+            btncopyorg.addEventListener('click', function(e) {
+                const selector = showInView('Select Organization', `<crm-organization-selector-view client-id="${client_id}"></crm-organization-selector-view>`);
+                selector.addEventListener('change', function(e) {
+                    const organization = e.detail.organization;
+
+                    Organizations.get(client_id, organization.id).then((r) => {
+                        if (r.status == 'success') {
+                            const organization = r.json.organization;
+                            self._organization_id = organization.id;
+
+                            const name = shadow.getElementById('name');
+                            name.value = organization.name;
+
+                            const address = shadow.getElementById('address');
+                            address.value = organization.address;
+
+                            const country = shadow.getElementById('country');
+                            country.value = organization.country_id;
+                        } else {
+                            notify(r.status, r.message);
+                        }
+                    });
+                });
+            });
+        }
 
         const btnaddcontact = shadow.getElementById('btn-new-contact');
         btnaddcontact.addEventListener('click', function(e) {
