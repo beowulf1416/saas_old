@@ -116,6 +116,7 @@ class VendorEditor extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
+        const vendor_id = this.getAttribute('vendor-id');
         const is_new = !this.hasAttribute('vendor-id');
 
         Clients.get(client_id).then((r) => {
@@ -134,38 +135,38 @@ class VendorEditor extends HTMLElement {
                                 options.push(`<option value="${c.id}">${c.name}</option>`);
                             }
                         });
-                        const optionsall = options.join();
+                        const optionsall = options.join('');
                         const select = shadow.getElementById('country');
                         select.innerHTML = optionsall;
                     } else {
                         notify(r.status, r.message);
+                    }
+                }).then((r) => {
+                    if (!is_new) {
+                        const vendor_id = this.getAttribute('vendor-id');
+            
+                        Vendors.get(client_id, vendor_id).then((r) => {
+                            if (r.status == 'success') {
+                                const vendor = r.json.vendor;
+            
+                                const name = shadow.getElementById('name');
+                                name.value = vendor.name;
+            
+                                const address = shadow.getElementById('address');
+                                address.value = vendor.address;
+            
+                                const country = shadow.getElementById('country');
+                                country.value = vendor.country_id;
+                            } else {
+                                notify(r.status, r.message);
+                            }
+                        });
                     }
                 });
             } else {
                 notify(r.status, r.message);
             }
         });
-
-        if (!is_new) {
-            const vendor_id = this.getAttribute('vendor-id');
-
-            Vendors.get(client_id, vendor_id).then((r) => {
-                if (r.status == 'success') {
-                    const vendor = r.json.vendor;
-
-                    const name = shadow.getElementById('name');
-                    name.value = vendor.name;
-
-                    const address = shadow.getElementById('address');
-                    address.value = vendor.address;
-
-                    const country = shadow.getElementById('country');
-                    country.value = vendor.country_id;
-                } else {
-                    notify(r.status, r.message);
-                }
-            });
-        }
     }
 }
 customElements.define('vendor-editor', VendorEditor);
