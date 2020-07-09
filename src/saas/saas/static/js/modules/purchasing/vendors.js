@@ -12,6 +12,24 @@ class Vendors {
         });
     }
 
+    static update(clientId = '', vendorId = '', name = '', address = '', countryId = '') {
+        return Util.fetch('/api/purchasing/vendors/update', {
+            clientId: clientId,
+            vendorId: vendorId,
+            name: name,
+            address: address,
+            countryId: countryId
+        });
+    }
+
+    static assignOrganization(clientId = '', vendorId = '', organizationId = '') {
+        return Util.fetch('/api/purchasing/vendors/assign', {
+            clientId: clientId,
+            vendorId: vendorId,
+            organizationId: organizationId
+        });
+    }
+
     static filter(clientId = '', filter = '') {
         return Util.fetch('/api/purchasing/vendors/filter', {
             clientId: clientId,
