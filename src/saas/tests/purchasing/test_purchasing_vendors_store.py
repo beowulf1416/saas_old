@@ -18,6 +18,7 @@ class TestPurchasingVendorStore(unittest.TestCase):
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.client import ClientStore
         from saas.app.modules.purchasing.stores.vendors import VendorStore
+        from saas.app.modules.crm.stores.organizations import OrganizationStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
@@ -25,6 +26,7 @@ class TestPurchasingVendorStore(unittest.TestCase):
         self.clientStore = ClientStore(self.mgr, 'default')
         self.defaultClient = self.clientStore.getDefaultClient()
         self.vStore = VendorStore(self.mgr, 'default')
+        self.orgStore = OrganizationStore(self.mgr, 'default')
 
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
@@ -38,6 +40,18 @@ class TestPurchasingVendorStore(unittest.TestCase):
             self.vStore.add(client_id, org_id, random_str, random_str, 1)
         except Exception as e:
             self.fail(e)
+
+    def test_assign_organization(self):
+        client_id = self.defaultClient[0]
+        random_str = self.generate_random_str(10)
+        vendor_id = str(uuid.uuid4())
+        organization_id = str(uuid.uuid4())
+        try:
+            self.orgStore.save(client_id, organization_id, random_str, random_str, 608)
+            self.vStore.assignOrganization(client_id, vendor_id, organization_id)
+        except Exception as e:
+            self.fail(e)
+
 
     def test_filter(self):
         client_id = self.defaultClient[0]
