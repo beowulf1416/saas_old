@@ -9,7 +9,7 @@ class AccountEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/accounting/account.editor/account.editor.css');
+        style.setAttribute('href', '/static/custom-elements/accounting/account-editor/account-editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

@@ -32,11 +32,11 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/accounting/account.tree/account.tree.js'
+                'script': '/static/custom-elements/accounting/account-tree/account-tree.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/accounting/account.editor/account.editor.js'
+                'script': '/static/custom-elements/accounting/account-editor/account-editor.js'
             }
         ]
     }
