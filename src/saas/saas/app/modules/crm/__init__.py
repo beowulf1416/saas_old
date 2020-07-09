@@ -28,23 +28,27 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/crm/organization-explorer/organization-explorer.js'
+                'script': '/static/custom-elements/crm/organization-explorer/organization-explorer.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/crm/organization-editor/organization-editor.js'
+                'script': '/static/custom-elements/crm/organization-editor/organization-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/crm/organization-selector/organization-selector.js'
+                'script': '/static/custom-elements/crm/organization-selector/organization-selector.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/crm/organization-selector/organization-selector-view.js'
+                'script': '/static/custom-elements/crm/organization-selector/organization-selector-view.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/crm/contact-explorer/contact-explorer.js'
+                'script': '/static/custom-elements/crm/contact-explorer/contact-explorer.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/crm/tag-editor/tag-editor.js'
             }
         ]
     }

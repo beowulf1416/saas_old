@@ -1,19 +1,17 @@
 'use strict';
-import { Util } from '/static/js/util.js';
-import { notify } from '/static/js/ui/ui.js';
+import { notify, showInTab } from '/static/js/ui/ui.js';
 import { Organizations } from '/static/js/modules/crm/organizations.js';
-class OrganizationSelectorView extends HTMLElement {
+class OrganizationExplorer extends HTMLElement {
 
     constructor() {
         const self = super();
-
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/crm/organization-selector/organization-selector-view.css');
+        style.setAttribute('href', '/static/custom-elements/crm/organization-explorer/organization-explorer.css');
 
-        const common = document.createElement("link");
-        common.setAttribute('rel', 'stylesheet');
-        common.setAttribute('href', '/static/css/default.css');
+        const google_web_fonts = document.createElement("link");
+        google_web_fonts.setAttribute('rel', 'stylesheet');
+        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,7 +20,7 @@ class OrganizationSelectorView extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(common);
+        shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
@@ -35,25 +33,30 @@ class OrganizationSelectorView extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" id="btn-new" class="btn btn-new" title="New Organization">
+                    <span class="material-icons">business</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form id="form-filter">
-                    <label for="filter">Organization</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Organization" placeholder="Organization" />
+                    <label for="filter">Organizations</label>
+                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Organizations" placeholder="Search" />
                     <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table id="tbl-organizations">
+                <table id="tbl-orgs">
                     <caption>Organizations</caption>
                     <colgroup>
-                        <col class="select">
+                        <col class="edit">
                         <col class="name">
                     </colgroup>
                     <thead>
                         <tr>
-                            <td scope="col"></td>
+                            <th scope="col"></th>
                             <th scope="col">Name</th>
                         </tr>
                     </thead>
@@ -64,7 +67,7 @@ class OrganizationSelectorView extends HTMLElement {
                 </table>
             </div><!-- .table-wrapper -->
         `;
-        
+
         container.appendChild(div);
     }
 
@@ -79,22 +82,28 @@ class OrganizationSelectorView extends HTMLElement {
                 if (r.status == 'success') {
                     self.setOrganizations(r.json.organizations, filter);
                 } else {
-                    notify(r.status, r.message, 3000);
+                    notify(r.status, r.message);
                 }
             });
         };
 
         const filter = shadow.getElementById('filter');
         filter.addEventListener('keyup', function(e) {
-            if (e.keyCode == 13) {}
-            e.preventDefault();
+            if (e.keyCode == 13) {
+                e.preventDefault();
 
-            beginsearch(filter.value);
+                beginsearch(filter.value);
+            }
         });
 
         const btnfilter = shadow.getElementById('btn-filter');
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
+        });
+
+        const btnnew = shadow.getElementById('btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('crm-organization-editor', 'New Organization', `<crm-organization-editor client-id="${client_id}"></crm-organization-editor>`)
         });
     }
 
@@ -102,39 +111,31 @@ class OrganizationSelectorView extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const tbody = shadow.querySelector('table#tbl-organizations tbody');
+        const client_id = this.getAttribute('client-id');
+
+        const tbody = shadow.querySelector('table#tbl-orgs tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
         orgs.forEach((o) => {
-            const id = 'id' + Util.generateId();
-            const org_name = o.name.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
+            const org_name = o.name.replace(filter, `<strong>${filter}</strong>`);
             tr.innerHTML = `
-                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Organization" value="${o.id}" data-name="${o.name}" /></td>
-                <td><label for="${id}">${org_name}</label></td>
+                <td><a class="link-edit" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
+                <td>${org_name}</td>
             `;
 
             tbody.appendChild(tr);
 
             // event handlers
-            const select = tr.querySelector('.form-input-selected');
-            select.addEventListener('change', function(e) {
+            const edit = tr.querySelector('.link-edit');
+            edit.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                self.dispatchEvent(new CustomEvent('change', {
-                    bubbles: true,
-                    cancelable: true,
-                    detail: {
-                        organization: {
-                            id: select.value,
-                            name: select.dataset.name
-                        }
-                    }
-                }));
+                showInTab('crm-organization-editor', 'Edit Organization', `<crm-organization-editor client-id="${client_id}" org-id="${edit.dataset.id}"></crm-organization-editor>`);
             });
         });
     }
 }
-customElements.define('crm-organization-selector-view', OrganizationSelectorView);
+customElements.define('organization-explorer', OrganizationExplorer);

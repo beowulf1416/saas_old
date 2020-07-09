@@ -8,7 +8,7 @@ class OrganizationSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/crm/organization-selector/organization-selector.css');
+        style.setAttribute('href', '/static/custom-elements/crm/organization-selector/organization-selector.css');
 
         const common = document.createElement("link");
         common.setAttribute('rel', 'stylesheet');

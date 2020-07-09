@@ -5,7 +5,7 @@ class ContactExplorer extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/crm/contact-explorer/contact-explorer.css');
+        style.setAttribute('href', '/static/custom-elements/crm/contact-explorer/contact-explorer.css');
         
         const common = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
