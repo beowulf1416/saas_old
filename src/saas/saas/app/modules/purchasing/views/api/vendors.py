@@ -83,6 +83,40 @@ def api_purchasing_vendor_update(request):
         }
     )
 
+@view_config(
+    route_name='api.purchasing.vendors.assign',
+    request_method='POST',
+    renderer='json'
+)
+def api_purchasing_vendor_update(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    vendor_id = params['vendorId'] if 'vendorId' in params else None
+    organization_id = params['organizationId'] if 'organizationId' in params else None
+
+    if client_id is None or vendor_id is None or organization_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id, Vendor Id and Organization Id is required'
+        )
+
+    services = request.services()
+    vendorStore = services['store.purchasing.vendors']
+    try:
+        vendorStore.assignOrganization(client_id, vendor_id, organization_id)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='vendor record created',
+        body={
+            'message': 'vendor record created'
+        }
+    )
 
 @view_config(
     route_name='api.purchasing.vendors.filter',
