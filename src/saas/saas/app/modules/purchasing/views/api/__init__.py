@@ -28,6 +28,16 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.purchasing.vendors.update',
+        '/api/purchasing/vendors/update'
+    )
+
+    config.add_route(
+        'api.purchasing.vendors.assign',
+        '/api/purchasing/vendors/assign'
+    )
+
+    config.add_route(
         'api.purchasing.vendors.filter',
         '/api/purchasing/vendors/filter'
     )
