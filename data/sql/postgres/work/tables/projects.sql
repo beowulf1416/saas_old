@@ -5,6 +5,8 @@ create table if not exists projects (
     client_id uuid not null,
     name varchar(300) not null,
     description text,
+    planned_start_ts timestamp without time zone,
+    planned_end_ts timestamp without time zone,
     constraint pk_projects primary key (id),
     constraint fk_projects_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict
