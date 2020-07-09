@@ -5,6 +5,7 @@ create table if not exists vendors (
     client_id uuid not null,
     org_id uuid not null,
     constraint pk_vendors primary key (id),
+    constraint u_vendors_1 unique (org_id),
     constraint fk_vendors_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_vendors_2 foreign key (org_id)
