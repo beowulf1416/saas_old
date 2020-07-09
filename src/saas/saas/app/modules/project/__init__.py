@@ -29,5 +29,13 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/js/modules/project/actions.js'
             },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/project/project-explorer/project-explorer.js'
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom.elements/project/project-editor/project-editor.js'
+            },
         ]
     }
