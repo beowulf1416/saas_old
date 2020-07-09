@@ -8,7 +8,7 @@ class GISEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/gis/gis.editor/gis.editor.css');
+        style.setAttribute('href', '/static/custom-elements/gis/gis-editor/gis-editor.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');

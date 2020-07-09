@@ -27,7 +27,7 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/gis/gis.editor/gis.editor.js'
+                'script': '/static/custom-elements/gis/gis-editor/gis-editor.js'
             }
         ]
     }
