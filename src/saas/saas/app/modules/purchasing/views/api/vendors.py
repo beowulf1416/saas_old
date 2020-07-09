@@ -25,7 +25,7 @@ def api_purchasing_vendor_add(request):
     if client_id is None or vendor_id is None or name is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameter',
-            explanation='Client Id and name is required'
+            explanation='Client Id, Vendor Id and Name is required'
         )
 
     services = request.services()
@@ -43,6 +43,43 @@ def api_purchasing_vendor_add(request):
         detail='vendor record created',
         body={
             'message': 'vendor record created'
+        }
+    )
+
+@view_config(
+    route_name='api.purchasing.vendors.update',
+    request_method='POST',
+    renderer='json'
+)
+def api_purchasing_vendor_update(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    vendor_id = params['vendorId'] if 'vendorId' in params else None
+    name = params['name'] if 'name' in params else None
+    address = params['address'] if 'address' in params else None
+    country_id = params['countryId'] if 'countryId' in params else None
+
+    if client_id is None or vendor_id is None or name is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id, Vendor Id and Name is required'
+        )
+
+    services = request.services()
+    vendorStore = services['store.purchasing.vendors']
+    try:
+        vendorStore.update(client_id, vendor_id, name, address, country_id)
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='vendor record updated',
+        body={
+            'message': 'vendor record updated'
         }
     )
 
