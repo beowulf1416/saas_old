@@ -8,7 +8,7 @@ class OrganizationEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/clients/organization.editor/organization.editor.css');
+        style.setAttribute('href', '/static/custom-elements/clients/organization-editor/organization-editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

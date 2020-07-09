@@ -33,11 +33,11 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/clients/organization.tree/organization.tree.js'
+                'script': '/static/custom-elements/clients/organization-tree/organization-tree.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/clients/organization.editor/organization.editor.js'
+                'script': '/static/custom-elements/clients/organization-editor/organization-editor.js'
             }
         ]
     }
