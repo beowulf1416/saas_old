@@ -9,7 +9,7 @@ class UserSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/admin/user.selector/user.selector.css');
+        style.setAttribute('href', '/static/custom-elements/admin/user-selector/user-selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

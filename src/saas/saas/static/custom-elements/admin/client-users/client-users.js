@@ -10,7 +10,7 @@ class ClientUsers extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/admin/client.users/client.users.css');
+        style.setAttribute('href', '/static/custom-elements/admin/client-users/client-users.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

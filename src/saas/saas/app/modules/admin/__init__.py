@@ -47,39 +47,39 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/client.editor/client.editor.js'
+                'script': '/static/custom-elements/admin/client-editor/client-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/clients.table/clients.table.js'
+                'script': '/static/custom-elements/admin/clients-table/clients-table.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/client.roles/client.roles.js'
+                'script': '/static/custom-elements/admin/client-roles/client-roles.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/client.selector/client.selector.js'
+                'script': '/static/custom-elements/admin/client-selector/client-selector.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/role.editor/role.editor.js'
+                'script': '/static/custom-elements/admin/role-editor/role-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/role.selector/role.selector.js'
+                'script': '/static/custom-elements/admin/role-selector/role-selector.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/permission.selector/permission.selector.js'
+                'script': '/static/custom-elements/admin/permission-selector/permission-selector.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/client.users/client.users.js'
+                'script': '/static/custom-elements/admin/client-users/client-users.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/admin/user.selector/user.selector.js'
+                'script': '/static/custom-elements/admin/user-selector/user-selector.js'
             }
         ]
     }

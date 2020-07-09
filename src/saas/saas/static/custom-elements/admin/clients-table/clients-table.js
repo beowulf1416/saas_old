@@ -9,7 +9,7 @@ class ClientsTable extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/admin/clients.table/clients.table.css');
+        style.setAttribute('href', '/static/custom-elements/admin/clients-table/clients-table.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
