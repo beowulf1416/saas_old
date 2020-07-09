@@ -50,6 +50,10 @@ class ProjectEditor extends HTMLElement {
                     <!-- description -->
                     <label for="description">Description</label>
                     <textarea id="description" name="description" class="form-input-description" title="Description"></textarea>
+
+                    <!-- active -->
+                    <input type="checkbox" id="active" name="active" class="form-input-active" title="Project Status" />
+                    <label for="active">Active</label>
                 </form>
             </div><!-- .form-wrapper -->
         `;
