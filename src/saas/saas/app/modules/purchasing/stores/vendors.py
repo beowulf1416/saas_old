@@ -25,6 +25,19 @@ class VendorStore(BaseStore):
             log.error(e)
             raise Exception('Unable to add vendor')
 
+    def update(self, client_id: UUID, vendor_id: UUID, name: str, address: str, country_id: int):
+        try:
+            super(VendorStore, self).runProcTransactional('purchasing.vendor_update', [
+                client_id,
+                vendor_id,
+                name,
+                address,
+                country_id
+            ])
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to add vendor')
+
     def assignOrganization(self, client_id: UUID, vendor_id: UUID, organization_id: UUID):
         try:
             super(VendorStore, self).runProcTransactional('purchasing.vendor_assign_org', [

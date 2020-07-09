@@ -35,11 +35,23 @@ class TestPurchasingVendorStore(unittest.TestCase):
     def test_add(self):
         client_id = self.defaultClient[0]
         random_str = self.generate_random_str(10)
-        org_id = str(uuid.uuid4())
+        vendor_id = str(uuid.uuid4())
         try:
-            self.vStore.add(client_id, org_id, random_str, random_str, 1)
+            self.vStore.add(client_id, vendor_id, random_str, random_str, 1)
         except Exception as e:
             self.fail(e)
+
+    def test_update(self):
+        client_id = self.defaultClient[0]
+        random_str = self.generate_random_str(10)
+        vendor_id = str(uuid.uuid4())
+        try:
+            self.vStore.add(client_id, vendor_id, random_str, random_str, 1)
+            random_str = self.generate_random_str(10)
+            self.vStore.update(client_id, vendor_id, random_str, random_str, 608)
+        except Exception as e:
+            self.fail(e)
+
 
     def test_assign_organization(self):
         client_id = self.defaultClient[0]
