@@ -5,11 +5,12 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions = window.actions ? window.actions : {};
     window.actions['project.dashboard'] = function() {
+        const client_id = window.clientId;
         console.log('project.dashboard');
     };
 
     window.actions['project.projects'] = function() {
         const client_id = window.clientId;
-        console.log('project.projects');
+        showInTab('project-explorer', 'Projects', `<project-explorer client-id="${client_id}"></project-explorer>`);
     };
 })();
