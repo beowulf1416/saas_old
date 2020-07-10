@@ -7,7 +7,7 @@ class NotificationList extends HTMLElement {
 
         const style = document.createElement('link');
         style.rel = "stylesheet";
-        style.href = "/static/custom.elements/notification.list/notification.list.css";
+        style.href = "/static/custom-elements/notification-list/notification-list.css";
 
         const bulma = document.createElement('link');
         bulma.rel = "stylesheet";
