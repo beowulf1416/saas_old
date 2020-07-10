@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 def includeme(config):
-    log.info('including: saas.app.modules.inventory.views.api')
+    log.info('including: saas.app.modules.inventory.api')
 
     config.add_route(
         'api.inventory.uom.all',

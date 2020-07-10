@@ -10,8 +10,6 @@ def includeme(config):
     config.include('saas.app.modules.inventory.stores')
     config.include('saas.app.modules.inventory.api')
 
-    config.include('saas.app.modules.inventory.views.transactions')
-
     services = get_service(None)
     modules = services['modules']
     modules['inventory'] = {

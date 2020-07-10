@@ -3,7 +3,7 @@ log = logging.getLogger(__name__)
 
 
 def includeme(config):
-    log.info('including: saas.app.modules.purchasing.views.api')
+    log.info('including: saas.app.modules.purchasing.api')
 
     # purchase orders
     config.add_route(
