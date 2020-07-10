@@ -1,14 +1,15 @@
 'use strict';
-import { showInTab, notify } from '/static/js/ui/ui.js';
+import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
 import { Members } from '/static/js/modules/hr/members.js';
-class TeamExplorer extends HTMLElement {
+class MemberSelectorView extends HTMLElement {
 
     constructor() {
         const self = super();
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/hr/team.explorer/team.explorer.css');
+        style.setAttribute('href', '/static/custom-elements/hr/member-selector/member-selector-view.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -31,33 +32,22 @@ class TeamExplorer extends HTMLElement {
     }
 
     _init(container) {
-        const client_id = this.getAttribute('client-id');
-
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <div class="toolbar" role="toolbar">
-                <button id="btn-new" type="button" class="btn btn-new" title="New Team Member">
-                    <span class="material-icons">person_add</span>
-                </button>
-            </div><!-- .toolbar -->
             <div class="form-wrapper">
-                <form class="form-filter">
-                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-
-                    <label for="filter">Filter</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" />
-                    <button id="btn-filter" type="button" class="btn btn-filter" title="Search">
-                        <span class="material-icons">search</span>
-                    </button>
-                </form>
+                <label for="filter">Member</label>
+                <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Member" placeholder="Member" />
+                <button type="button" id="btn-filter" class="btn btn-filter title="Search">
+                    <span class="material-icons">search</span>
+                </button> 
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table class="tbl-members">
-                    <caption>Team Members</caption>
+                <table id="tbl-members">
+                    <caption>Members</caption>
                     <colgroup>
-                        <col class="col-edit">
-                        <col class="col-name">
+                        <col class="select">
+                        <col class="name">
                     </colgroup>
                     <thead>
                         <tr>
@@ -65,10 +55,10 @@ class TeamExplorer extends HTMLElement {
                             <th scope="col">Name</th>
                         </tr>
                     </thead>
-                    <tbody>
-                    </tbody>
                     <tfoot>
                     </tfoot>
+                    <tbody>
+                    </tbody>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -97,6 +87,7 @@ class TeamExplorer extends HTMLElement {
         filter.addEventListener('keyup', function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
+
                 beginsearch(filter.value);
             }
         });
@@ -105,55 +96,48 @@ class TeamExplorer extends HTMLElement {
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
         });
-
-        const btnnew = shadow.getElementById('btn-new');
-        btnnew.addEventListener('click', function(e) {
-            showInTab('member-editor', 'New Member', `<member-editor client-id="${client_id}"></member-editor>`);
-        });
     }
 
     setMembers(members = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = this.getAttribute('client-id');
-
-        const tbody = shadow.querySelector('table.tbl-members tbody');
+        const tbody = shadow.querySelector('table#tbl-members tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
         members.forEach((m) => {
-            const fname = m.firstName.replace(filter,`<strong>${filter}</strong>`);
-            const mname = m.middleName.replace(filter,`<strong>${filter}</strong>`);
-            const lname = m.lastName.replace(filter,`<strong>${filter}</strong>`);
+            const id = 'id' + Util.generateId();
+            let name = `<span>${m.firstName}</span> <span>${m.middleName}</span> <span>${m.lastName}</span>`;
+            if (filter != '') {
+                name = name.replaceAll(filter, `<strong>${filter}</strong>`);
+            }
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>
-                    <a class="link-edit-member" title="Edit Member" href="#" data-id="${m.id}">
-                        <span class="material-icons">edit</span>
-                    </a>
+                    <input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Member" value="${m.id}" />
                 </td>
                 <td>
-                    <div class="name">
-                        <span class="prefix">${m.prefix}</span>
-                        <span class="first-name">${fname}</span>
-                        <span class="middle-name">${mname}</span>
-                        <span class="last-name">${lname}</span>
-                    </div>
+                    <label for="${id}">${name}</label>
                 </td>
             `;
+
             tbody.appendChild(tr);
 
             // event handlers
-            const edit = tr.querySelector('.link-edit-member');
-            edit.addEventListener('click', function(e) {
-                e.preventDefault();
-                const member_id = edit.dataset.id;
-                showInTab('member-editor', 'Member', `<member-editor client-id="${client_id}" member-id="${member_id}"></member-editor>`);
+            const selected = tr.querySelector(`#${id}`);
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        memberId: selected.value
+                    }
+                }));
             });
         });
     }
 }
-customElements.define('team-explorer', TeamExplorer);
+customElements.define('member-selector-view', MemberSelectorView);

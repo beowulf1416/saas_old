@@ -10,7 +10,7 @@ class MemberEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/hr/member.editor/member.editor.css');
+        style.setAttribute('href', '/static/custom-elements/hr/member-editor/member-editor.css');
 
         const style_tabs = document.createElement("link");
         style_tabs.setAttribute('rel', 'stylesheet');

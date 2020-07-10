@@ -31,46 +31,36 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/shift-editor/shift-editor.js'
+                'script': '/static/custom-elements/hr/shift-editor/shift-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/shift-explorer/shift-explorer.js'
+                'script': '/static/custom-elements/hr/shift-explorer/shift-explorer.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/team.explorer/team.explorer.js'
+                'script': '/static/custom-elements/hr/team-explorer/team-explorer.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/member.editor/member.editor.js'
+                'script': '/static/custom-elements/hr/member-editor/member-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/member-selector/member-selector.js'
+                'script': '/static/custom-elements/hr/member-selector/member-selector.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/member-selector/member-selector-view.js'
+                'script': '/static/custom-elements/hr/member-selector/member-selector-view.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/hr/time-entries/time-entries.js'
+                'script': '/static/custom-elements/hr/time-entries/time-entries.js'
             },
             {
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
                 'external': 'true'
             },
-            # {
-            #     'script': 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/locale/en-gb.min.js',
-            #     'external': 'true',
-            #     'integrity': 'sha256-sWNJBInW9QCXGSCxkMNQo4yvxn736utE1YIvgHGcWdM=',
-            #     'crossorigin': 'anonymous',
-            # }
-            # {
-            #     'script': 'https://unpkg.com/dayjs@1.8.21/dayjs.min.js',
-            #     'external': 'true'
-            # },
             {
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.8.28/dayjs.min.js',
                 'external': 'true'

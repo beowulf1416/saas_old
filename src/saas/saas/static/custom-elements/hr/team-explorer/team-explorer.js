@@ -1,14 +1,14 @@
-'use script';
-import { notify, showInTab } from '/static/js/ui/ui.js';
-import { Shifts } from '/static/js/modules/hr/shifts.js';
-class ShiftExplorer extends HTMLElement {
+'use strict';
+import { showInTab, notify } from '/static/js/ui/ui.js';
+import { Members } from '/static/js/modules/hr/members.js';
+class TeamExplorer extends HTMLElement {
 
     constructor() {
         const self = super();
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/hr/shift-explorer/shift-explorer.css');
+        style.setAttribute('href', '/static/custom-elements/hr/team-explorer/team-explorer.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -25,33 +25,39 @@ class ShiftExplorer extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.setShifts = this.setShifts.bind(this);
+        this.setMembers = this.setMembers.bind(this);
 
         this._attachEventHandlers();
     }
 
     _init(container) {
+        const client_id = this.getAttribute('client-id');
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
-                <button type="button" id="btn-new" class="btn btn-new" title="New Shift">
-                    <span class="material-icons">note_add</span>
+                <button id="btn-new" type="button" class="btn btn-new" title="New Team Member">
+                    <span class="material-icons">person_add</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
-                <form id="form-filter">
-                    <label for="filter">Shift</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Shift" placeholder="Shift" />
-                    <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
+                <form class="form-filter">
+                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+
+                    <label for="filter">Filter</label>
+                    <input type="search" id="filter" name="filter" class="form-input-filter" />
+                    <button id="btn-filter" type="button" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table id="tbl-shifts">
-                    <caption>Shifts</caption>
+                <table class="tbl-members">
+                    <caption>Team Members</caption>
                     <colgroup>
+                        <col class="col-edit">
+                        <col class="col-name">
                     </colgroup>
                     <thead>
                         <tr>
@@ -59,10 +65,10 @@ class ShiftExplorer extends HTMLElement {
                             <th scope="col">Name</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                    </tfoot>
                     <tbody>
                     </tbody>
+                    <tfoot>
+                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -76,16 +82,11 @@ class ShiftExplorer extends HTMLElement {
 
         const client_id = this.getAttribute('client-id');
 
-        const btnnew = shadow.getElementById('btn-new');
-        btnnew.addEventListener('click', function(e) {
-            showInTab('shift-editor', 'New Shift', `<shift-editor client-id="${client_id}"></shift-editor>`);
-        });
-
         const beginsearch = function(filter) {
-            Shifts.filter(client_id, filter).then((r) => {
+            Members.filter(client_id, filter).then((r) => {
                 if (r.status == 'success') {
-                    const shifts = r.json.shifts;
-                    self.setShifts(shifts, filter);
+                    const members = r.json.members;
+                    self.setMembers(members, filter);
                 } else {
                     notify(r.status, r.message);
                 }
@@ -96,7 +97,6 @@ class ShiftExplorer extends HTMLElement {
         filter.addEventListener('keyup', function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
-
                 beginsearch(filter.value);
             }
         });
@@ -105,43 +105,55 @@ class ShiftExplorer extends HTMLElement {
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
         });
+
+        const btnnew = shadow.getElementById('btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('member-editor', 'New Member', `<member-editor client-id="${client_id}"></member-editor>`);
+        });
     }
 
-    setShifts(shifts = [], filter = '') {
+    setMembers(members = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
 
-        const tbody = shadow.querySelector('table#tbl-shifts tbody');
+        const tbody = shadow.querySelector('table.tbl-members tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
-        shifts.forEach((s) => {
-            const id = s.id;
-            const name = s.name;
+        members.forEach((m) => {
+            const fname = m.firstName.replace(filter,`<strong>${filter}</strong>`);
+            const mname = m.middleName.replace(filter,`<strong>${filter}</strong>`);
+            const lname = m.lastName.replace(filter,`<strong>${filter}</strong>`);
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>
-                    <a class="link-edit-shift" title="Edit Shift" href="#" data-id="${id}">
+                    <a class="link-edit-member" title="Edit Member" href="#" data-id="${m.id}">
                         <span class="material-icons">edit</span>
                     </a>
                 </td>
-                <td>${name}</td>
+                <td>
+                    <div class="name">
+                        <span class="prefix">${m.prefix}</span>
+                        <span class="first-name">${fname}</span>
+                        <span class="middle-name">${mname}</span>
+                        <span class="last-name">${lname}</span>
+                    </div>
+                </td>
             `;
-
             tbody.appendChild(tr);
 
             // event handlers
-            const edit = tr.querySelector('.link-edit-shift');
+            const edit = tr.querySelector('.link-edit-member');
             edit.addEventListener('click', function(e) {
                 e.preventDefault();
-                const shift_id = edit.dataset.id;
-                showInTab('shift-editor', 'Shift', `<shift-editor client-id="${client_id}" shift-id="${shift_id}"></shift-editor>`);
+                const member_id = edit.dataset.id;
+                showInTab('member-editor', 'Member', `<member-editor client-id="${client_id}" member-id="${member_id}"></member-editor>`);
             });
         });
     }
 }
-customElements.define('shift-explorer', ShiftExplorer);
+customElements.define('team-explorer', TeamExplorer);

@@ -8,7 +8,7 @@ class MemberSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/hr/member-selector/member-selector.css');
+        style.setAttribute('href', '/static/custom-elements/hr/member-selector/member-selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
