@@ -7,7 +7,7 @@ class ProjectExplorer extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/project/project-explorer/project-explorer.css');
+        style.setAttribute('href', '/static/custom-elements/project/project-explorer/project-explorer.css');
 
         const style_default = document.createElement("link");
         style_default.setAttribute('rel', 'stylesheet');

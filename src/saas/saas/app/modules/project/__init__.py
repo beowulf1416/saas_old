@@ -31,11 +31,11 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/project/project-explorer/project-explorer.js'
+                'script': '/static/custom-elements/project/project-explorer/project-explorer.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/project/project-editor/project-editor.js'
+                'script': '/static/custom-elements/project/project-editor/project-editor.js'
             },
         ]
     }

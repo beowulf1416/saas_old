@@ -6,7 +6,7 @@ class ProjectEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/project/project-editor/project-editor.css');
+        style.setAttribute('href', '/static/custom-elements/project/project-editor/project-editor.css');
 
         const style_default = document.createElement("link");
         style_default.setAttribute('rel', 'stylesheet');
