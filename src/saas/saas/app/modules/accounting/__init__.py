@@ -7,8 +7,7 @@ def includeme(config):
     log.info('including: saas.app.modules.accounting')
 
     config.include('saas.app.modules.accounting.stores')
-    config.include('saas.app.modules.accounting.views')
-    config.include('saas.app.modules.accounting.views.api')
+    config.include('saas.app.modules.accounting.api')
 
     services = get_service(None)
 
