@@ -9,7 +9,7 @@ class PurchaseOrder extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/purchase.order/purchase.order.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/purchase-order/purchase-order.css');
 
         const style_default = document.createElement("link");
         style_default.setAttribute('rel', 'stylesheet');

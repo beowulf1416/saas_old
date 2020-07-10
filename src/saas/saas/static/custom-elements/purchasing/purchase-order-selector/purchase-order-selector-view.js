@@ -1,14 +1,14 @@
 'use strict';
-import { notify, showInTab } from '/static/js/ui/ui.js';
+import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
 import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
-class PurchaseOrdersElement extends HTMLElement {
+class PurchaseOrderSelectorView extends HTMLElement {
 
     constructor() {
         const self = super();
-
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/warehouse.selector/warehouse.selector.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/purchase-order-selector/purchase-order-selector-view.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -25,50 +25,37 @@ class PurchaseOrdersElement extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this._getClientId = this._getClientId.bind(this);
         this.setPurchaseOrders = this.setPurchaseOrders.bind(this);
 
         this._attachEventHandlers();
     }
 
     _init(container) {
-        const client_id = this.getAttribute('client-id');
-
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <div class="toolbar" role="toolbar">
-                <button id="btn-new-po" type="button" class="btn btn-new" title="New Purchase Order">
-                    <span class="material-icons">playlist_add</span>
-                </button>
-            </div><!-- .toolbar -->
             <div class="form-wrapper">
-                <form class="form-po-filter">
-                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-
-                    <label for="filter">Purchase Orders</label>
-                    <input type="search" id="filter" name="filter" title="Purchase Order" placeholder="Purchase Order" />
+                <form id="form-po-selector">
+                    <label for="filter">Purchase Order</label>
+                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Purchase Order Filter" placeholder="Search" />
                     <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table class="tbl-po">
+                <table id="tbl-orders">
                     <caption>Purchase Orders</caption>
                     <colgroup>
                     </colgroup>
                     <thead>
                         <tr>
                             <th scope="col"></th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Description</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfoot>
-                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -76,17 +63,11 @@ class PurchaseOrdersElement extends HTMLElement {
         container.appendChild(div);
     }
 
-    _getClientId() {
-        const shadow = this.shadowRoot;
-        const client = shadow.getElementById('client-id');
-        return client.value;
-    }
-
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = this._getClientId();
+        const client_id = this.getAttribute('client-id');
 
         const beginsearch = function(filter) {
             PurchaseOrders.filter(client_id, filter).then((r) => {
@@ -101,8 +82,9 @@ class PurchaseOrdersElement extends HTMLElement {
         const filter = shadow.getElementById('filter');
         filter.addEventListener('keyup', function(e) {
             if (e.keyCode == 13) {
-                beginsearch(filter.value);
                 e.preventDefault();
+
+                beginsearch(filter.value);
             }
         });
 
@@ -110,41 +92,46 @@ class PurchaseOrdersElement extends HTMLElement {
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
         });
-
-        const btnnew = shadow.getElementById('btn-new-po');
-        btnnew.addEventListener('click', function(e) {
-            showInTab('purchase-order', 'New Purchase Order', `<purchase-order client-id="${client_id}"></purchase-order>`);
-        });
     }
 
     setPurchaseOrders(orders = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = self._getClientId();
+        const client_id = this.getAttribute('client-id');
 
-        const tbody = shadow.querySelector('table.tbl-po tbody');
+        const tbody = shadow.querySelector('table#tbl-orders tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
-        orders.forEach((o) => {
+        orders.forEach((po) => {
+            const id = 'id' + Util.generateId();
+            const po_desc = po.description.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><a class="link-edit-po" title="Edit" href="#" data-id="${o.id}"><span class="material-icons">edit</span></a></td>
-                <td>${dayjs(o.created).format('MM/DD/YYYY')}</td>
-                <td>${o.description}</td>
+                <td>
+                    <input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Purchase Order" value="${po.id}" />
+                </td>
+                <td>
+                    <label for="${id}">${po_desc}</label>
+                </td>
             `;
+
             tbody.appendChild(tr);
 
             // event handlers
-            const edit = tr.querySelector('.link-edit-po');
-            edit.addEventListener('click', function(e) {
-                e.preventDefault();
-                const po_id = edit.dataset.id;
-                showInTab('purchase-order', 'Purchase Order', `<purchase-order client-id="${client_id}" po-id="${po_id}"></purchase-order>`);
+            const selected = tr.querySelector('.form-input-selected');
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        purchaseOrderId: selected.value
+                    }
+                }));
             });
         });
     }
 }
-customElements.define('purchase-orders', PurchaseOrdersElement);
+customElements.define('purchase-order-selector-view', PurchaseOrderSelectorView);

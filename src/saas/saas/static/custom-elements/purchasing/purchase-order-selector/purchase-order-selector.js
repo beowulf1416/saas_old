@@ -7,7 +7,7 @@ class PurchaseOrderSelector extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/purchase-order-selector/purchase-order-selector.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

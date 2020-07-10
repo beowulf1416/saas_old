@@ -31,35 +31,35 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/purchase.order/purchase.order.js'
+                'script': 'static/custom-elements/purchasing/purchase-order/purchase-order.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/purchase.orders/purchase.orders.js'
+                'script': 'static/custom-elements/purchasing/purchase-orders/purchase-orders.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector.js'
+                'script': 'static/custom-elements/purchasing/purchase-order-selector/purchase-order-selector.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector-view.js'
+                'script': 'static/custom-elements/purchasing/purchase-order-selector/purchase-order-selector-view.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/vendor-explorer/vendor-explorer.js'
+                'script': 'static/custom-elements/purchasing/vendor-explorer/vendor-explorer.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/vendor-editor/vendor-editor.js'
+                'script': 'static/custom-elements/purchasing/vendor-editor/vendor-editor.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/vendor-selector/vendor-selector.js'
+                'script': 'static/custom-elements/purchasing/vendor-selector/vendor-selector.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/purchasing/vendor-selector/vendor-selector-view.js'
+                'script': 'static/custom-elements/purchasing/vendor-selector/vendor-selector-view.js'
             }
         ]
     }

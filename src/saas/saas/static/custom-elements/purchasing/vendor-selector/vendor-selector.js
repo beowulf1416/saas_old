@@ -7,7 +7,7 @@ class VendorSelector extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/vendor-selector/vendor-selector.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/vendor-selector/vendor-selector.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');

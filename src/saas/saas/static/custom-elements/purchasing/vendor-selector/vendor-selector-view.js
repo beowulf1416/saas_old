@@ -1,14 +1,13 @@
 'use strict';
-import { notify } from '/static/js/ui/ui.js';
 import { Util } from '/static/js/util.js';
-import { PurchaseOrders } from '/static/js/modules/purchasing/purchase_orders.js';
-class PurchaseOrderSelectorView extends HTMLElement {
+import { Vendors } from '/static/js/modules/purchasing/vendors.js';
+class VendorSelectorView extends HTMLElement {
 
     constructor() {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/purchase-order-selector/purchase-order-selector-view.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/vendor-selector-view/vendor-selector-view.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -25,7 +24,7 @@ class PurchaseOrderSelectorView extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.setPurchaseOrders = this.setPurchaseOrders.bind(this);
+        this.setVendors = this.setVendors.bind(this);
 
         this._attachEventHandlers();
     }
@@ -35,23 +34,25 @@ class PurchaseOrderSelectorView extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
-                <form id="form-po-selector">
-                    <label for="filter">Purchase Order</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Purchase Order Filter" placeholder="Search" />
+                <form id="form-filter">
+                    <label for="filter">Vendor</label>
+                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Vendor" placeholder="Vendor" />
                     <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table id="tbl-orders">
-                    <caption>Purchase Orders</caption>
+                <table id="tbl-vendors">
+                    <caption>Vendors</caption>
                     <colgroup>
+                        <col class="select">
+                        <col class="name">
                     </colgroup>
                     <thead>
                         <tr>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            <td scope="col"></td>
+                            <th scope="col">Name</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,9 +71,10 @@ class PurchaseOrderSelectorView extends HTMLElement {
         const client_id = this.getAttribute('client-id');
 
         const beginsearch = function(filter) {
-            PurchaseOrders.filter(client_id, filter).then((r) => {
+            Vendors.filter(client_id, filter).then((r) => {
                 if (r.status == 'success') {
-                    self.setPurchaseOrders(r.json.purchaseOrders, filter);
+                    const vendors = r.json.vendors;
+                    self.setVendors(vendors, filter);
                 } else {
                     notify(r.status, r.message);
                 }
@@ -94,44 +96,42 @@ class PurchaseOrderSelectorView extends HTMLElement {
         });
     }
 
-    setPurchaseOrders(orders = [], filter = '') {
+    setVendors(vendors = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = this.getAttribute('client-id');
-
-        const tbody = shadow.querySelector('table#tbl-orders tbody');
+        const tbody = shadow.querySelector('table#tbl-vendors tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
-        orders.forEach((po) => {
+        vendors.forEach((v) => {
             const id = 'id' + Util.generateId();
-            const po_desc = po.description.replace(filter, `<strong>${filter}</strong>`);
+            const vendor_name = v.name.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>
-                    <input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Purchase Order" value="${po.id}" />
-                </td>
-                <td>
-                    <label for="${id}">${po_desc}</label>
-                </td>
+                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Vendor" value="${v.id}" /></td>
+                <td><label for="${id}">${vendor_name}</label></td>
             `;
 
             tbody.appendChild(tr);
 
             // event handlers
-            const selected = tr.querySelector('.form-input-selected');
-            selected.addEventListener('change', function(e) {
-                self.dispatchEvent(new CustomEvent('selected', {
+            const select = tr.querySelector('.form-input-selected');
+            select.addEventListener('change', function(e) {
+                e.preventDefault();
+
+                self.dispatchEvent(new CustomEvent('change', {
                     bubbles: true,
                     cancelable: true,
                     detail: {
-                        purchaseOrderId: selected.value
+                        vendor: {
+                            id: select.value
+                        }
                     }
                 }));
             });
         });
     }
 }
-customElements.define('purchase-order-selector-view', PurchaseOrderSelectorView);
+customElements.define('vendor-selector-view', VendorSelectorView);

@@ -1,13 +1,17 @@
 'use strict';
-import { Util } from '/static/js/util.js';
+import { notify, showInTab } from '/static/js/ui/ui.js';
 import { Vendors } from '/static/js/modules/purchasing/vendors.js';
-class VendorSelectorView extends HTMLElement {
+class VendorExplorer extends HTMLElement {
 
     constructor() {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/vendor-selector-view/vendor-selector-view.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/vendor-explorer/vendor-explorer.css');
+
+        const common = document.createElement("link");
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', '/static/css/default.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -20,6 +24,7 @@ class VendorSelectorView extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(common);
         shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
@@ -33,10 +38,15 @@ class VendorSelectorView extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" id="btn-new" class="btn btn-new" title="New">
+                    <span class="material-icons">business</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form id="form-filter">
                     <label for="filter">Vendor</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search for Vendor" placeholder="Vendor" />
+                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Search" placeholder="Search Vendors" />
                     <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
@@ -46,15 +56,15 @@ class VendorSelectorView extends HTMLElement {
                 <table id="tbl-vendors">
                     <caption>Vendors</caption>
                     <colgroup>
-                        <col class="select">
-                        <col class="name">
                     </colgroup>
                     <thead>
                         <tr>
-                            <td scope="col"></td>
+                            <th scope="col"></th>
                             <th scope="col">Name</th>
                         </tr>
                     </thead>
+                    <tfoot>
+                    </tfoot>
                     <tbody>
                     </tbody>
                 </table>
@@ -73,8 +83,7 @@ class VendorSelectorView extends HTMLElement {
         const beginsearch = function(filter) {
             Vendors.filter(client_id, filter).then((r) => {
                 if (r.status == 'success') {
-                    const vendors = r.json.vendors;
-                    self.setVendors(vendors, filter);
+                    self.setVendors(r.json.vendors, filter);
                 } else {
                     notify(r.status, r.message);
                 }
@@ -85,7 +94,6 @@ class VendorSelectorView extends HTMLElement {
         filter.addEventListener('keyup', function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
-
                 beginsearch(filter.value);
             }
         });
@@ -94,11 +102,18 @@ class VendorSelectorView extends HTMLElement {
         btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
         });
+
+        const btnnew = shadow.getElementById('btn-new');
+        btnnew.addEventListener('click', function(e) {
+            showInTab('vendor-editor', 'New Vendor', `<vendor-editor client-id="${client_id}"></vendor-editor>`);
+        });
     }
 
     setVendors(vendors = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
 
         const tbody = shadow.querySelector('table#tbl-vendors tbody');
         while(tbody.firstChild) {
@@ -106,32 +121,24 @@ class VendorSelectorView extends HTMLElement {
         }
 
         vendors.forEach((v) => {
-            const id = 'id' + Util.generateId();
             const vendor_name = v.name.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Vendor" value="${v.id}" /></td>
-                <td><label for="${id}">${vendor_name}</label></td>
+                <td><a class="link-edit" title="Edit Vendor" href="#" data-id="${v.id}"><span class="material-icons">edit</span></a></td>
+                <td>${vendor_name}</td>
             `;
 
             tbody.appendChild(tr);
 
             // event handlers
-            const select = tr.querySelector('.form-input-selected');
-            select.addEventListener('change', function(e) {
+            const edit = tr.querySelector('.link-edit');
+            edit.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                self.dispatchEvent(new CustomEvent('change', {
-                    bubbles: true,
-                    cancelable: true,
-                    detail: {
-                        vendor: {
-                            id: select.value
-                        }
-                    }
-                }));
+                const vendor_id = edit.dataset.id;
+                showInTab('vendor-editor', 'Edit Vendor', `<vendor-editor client-id="${client_id}" vendor-id="${vendor_id}"></vendor-editor>`)
             });
         });
     }
 }
-customElements.define('vendor-selector-view', VendorSelectorView);
+customElements.define('vendor-explorer', VendorExplorer);

@@ -10,7 +10,7 @@ class VendorEditor extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/purchasing/vendor-editor/vendor-editor.css');
+        style.setAttribute('href', '/static/custom-elements/purchasing/vendor-editor/vendor-editor.css');
 
         const style_default = document.createElement("link");
         style_default.setAttribute('rel', 'stylesheet');
