@@ -1,15 +1,15 @@
 'use strict';
-import { InventoryItem } from '/static/js/modules/inventory/items.js';
 import { notify } from '/static/js/ui/ui.js';
-import { Util } from '/static/js/util.js';
-class ItemSelectorView extends HTMLElement {
+import { InventoryWarehouse }  from '/static/js/modules/inventory/warehouses.js';
+
+class WarehouseSelectorView extends HTMLElement {
 
     constructor() {
         const self = super();
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/item.selector/item-selector-view.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/warehouse-selector/warehouse-selector-view.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -26,46 +26,39 @@ class ItemSelectorView extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.setItems = this.setItems.bind(this);
         this._getClientId = this._getClientId.bind(this);
+        this.setWarehouses = this.setWarehouses.bind(this);
 
         this._attachEventHandlers();
     }
 
     _init(container) {
-        const self = this;
-
         const client_id = this.getAttribute('client-id');
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
-                <form class="form-item-selector">
+                <form class="form-warehouse-filter">
                     <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-                    <!-- .filter -->
-                    <label for="filter">Item</label>
-                    <input type="search" id="filter" name="filter" class="form-input-search" title="Search for Item" placeholder="Item" />
-                    <button type="button" class="btn btn-search">
+
+                    <!-- filter -->
+                    <label for="filter">Warehouse</label>
+                    <input type="search" id="filter" name="filter" class="form-input-filter" />
+                    <button id="btn-filter" type="button" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
-                <table class="tbl-items">
-                    <caption>Items</caption>
+                <table class="tbl-warehouses">
+                    <caption>Warehouses</caption>
                     <colgroup>
-                        <col class="col-select">
-                        <col class="col-name">
-                        <col class="col-sku">
-                        <col class="col-upc">
                     </colgroup>
                     <thead>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col">Name</th>
-                            <th scope="col">SKU</th>
-                            <th scope="col">UPC</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,8 +72,8 @@ class ItemSelectorView extends HTMLElement {
 
     _getClientId() {
         const shadow = this.shadowRoot;
-
         const client = shadow.getElementById('client-id');
+
         return client.value;
     }
 
@@ -91,9 +84,9 @@ class ItemSelectorView extends HTMLElement {
         const client_id = this._getClientId();
 
         const beginsearch = function(filter) {
-            InventoryItem.find(client_id, filter, 10, 1).then((r) => {
+            InventoryWarehouse.filter(client_id, filter).then((r) => {
                 if (r.status == 'success') {
-                    self.setItems(r.json.items, filter);
+                    self.setWarehouses(r.json.warehouses, filter);
                 } else {
                     notify(r.status, r.message);
                 }
@@ -108,52 +101,42 @@ class ItemSelectorView extends HTMLElement {
             }
         });
 
-        const btnsearch = shadow.querySelector('button.btn-search');
-        btnsearch.addEventListener('click', function(e) {
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function(e) {
             beginsearch(filter.value);
-            e.preventDefault();
         });
     }
 
-    setItems(items = [], filter = '') {
+    setWarehouses(warehouses = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const tbody = shadow.querySelector('table.tbl-items tbody');
+        const tbody = shadow.querySelector('table.tbl-warehouses tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
         }
 
-        items.forEach((item) => {
-            const id = 'id' + Util.generateId();
-            const item_name = item.name.replace(filter, `<strong>${filter}</strong>`);
-            const item_sku = item.sku.replace(filter, `<strong>${filter}</strong>`);
-            const item_upc = item.upc.replace(filter, `<strong>${filter}</strong>`);
-            
-            const td = [];
-            td.push(`<td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Item" value="${item.id}" />`);
-            td.push(`<td><label for="${id}">${item_name}</label></td>`);
-            td.push(`<td><label for="${id}">${item_sku}</label></td>`);
-            td.push(`<td><label for="${id}">${item_upc}</label></td>`);
-            const tdall = td.join('');
-
+        warehouses.forEach((w) => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `${tdall}`;
+            tr.innerHTML = `
+                <td><input type="radio" id="id${w.id}" name="selected" class="form-input-radio" value="${w.id}" /></td>
+                <td><label for="id${w.id}">${w.name}</label></td>
+            `;
 
             tbody.appendChild(tr);
 
             // event handlers
-            const selected = tr.querySelector('.form-input-selected');
-            selected.addEventListener('change', function(e) {
-                self.dispatchEvent(new CustomEvent('change', {
+            const check = tr.querySelector('.form-input-radio');
+            check.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('selected', {
                     bubbles: true,
                     cancelable: true,
                     detail: {
-                        itemId: selected.value
+                        warehouseId: check.value
                     }
                 }));
             });
         });
     }
 }
-customElements.define('item-selector-view', ItemSelectorView);
+customElements.define('warehouse-selector-view', WarehouseSelectorView);

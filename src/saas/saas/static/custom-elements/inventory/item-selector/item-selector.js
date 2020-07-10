@@ -8,7 +8,7 @@ class ItemSelector extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/item.selector/item-selector.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/item-selector/item-selector.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');

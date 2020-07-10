@@ -46,43 +46,43 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/items.explorer/items.explorer.js'
+                'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/item.selector/item-selector.js' 
+                'script': '/static/custom-elements/inventory/item-selector/item-selector.js' 
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/item.selector/item-selector-view.js' 
+                'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js' 
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/item.editor/item.editor.js'
+                'script': '/static/custom-elements/inventory/item.editor/item-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/warehouse.editor/warehouse.editor.js'
+                'script': '/static/custom-elements/inventory/warehouse-editor/warehouse-editor.js'
             },
             {
                 'type': 'module',
-                'script': '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.js'
+                'script': '/static/custom-elements/inventory/warehouse-explorer/warehouse-explorer.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/warehouse.selector/warehouse.selector.js'
+                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/warehouse.selector/warehouse.selector.view.js'
+                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector-view.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/receiving-dashboard/receiving-dashboard.js'
+                'script': 'static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js'
             },
             {
                 'type': 'module',
-                'script': 'static/custom.elements/inventory/receiving-editor/receiving-editor.js'
+                'script': 'static/custom-elements/inventory/receiving-editor/receiving-editor.js'
             },
             {
                 'external': 'true',

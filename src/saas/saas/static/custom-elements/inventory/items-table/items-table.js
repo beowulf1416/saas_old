@@ -11,7 +11,7 @@ class ItemsTable extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/items.table/items.table.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/items-table/items-table.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');

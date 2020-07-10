@@ -1,15 +1,15 @@
 'use strict';
-import { notify, showInTab } from '/static/js/ui/ui.js';
 import { InventoryItem } from '/static/js/modules/inventory/items.js';
-
-class ItemsExplorer extends HTMLElement {
+import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
+class ItemSelectorView extends HTMLElement {
 
     constructor() {
         const self = super();
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/items.explorer/items.explorer.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/item-selector/item-selector-view.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
@@ -41,38 +41,35 @@ class ItemsExplorer extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
-                <div class="toolbar" role="toolbar">
-                    <button type="button" class="btn btn-item-new" title="New Item">
-                        <span class="material-icons">widgets</span>
-                    </button> 
-                </div><!-- .toolbar -->
-                <form class="form-item-search">
-                    <input type="hidden" id="client_id" value="${client_id}" />
-                    <!-- filter -->
+                <form class="form-item-selector">
+                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
+                    <!-- .filter -->
                     <label for="filter">Item</label>
                     <input type="search" id="filter" name="filter" class="form-input-search" title="Search for Item" placeholder="Item" />
-                    <button type="button" class="btn btn-search" title="Search">
+                    <button type="button" class="btn btn-search">
                         <span class="material-icons">search</span>
                     </button>
                 </form>
-            </div><!-- form-wrapper -->
+            </div><!-- .form-wrapper -->
             <div class="table-wrapper">
                 <table class="tbl-items">
                     <caption>Items</caption>
                     <colgroup>
+                        <col class="col-select">
+                        <col class="col-name">
+                        <col class="col-sku">
+                        <col class="col-upc">
                     </colgroup>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>SKU</th>
-                            <th>UPC</th>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                            <th scope="col">SKU</th>
+                            <th scope="col">UPC</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfoot>
-                    </tfoot>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -81,10 +78,9 @@ class ItemsExplorer extends HTMLElement {
     }
 
     _getClientId() {
-        const self = this;
         const shadow = this.shadowRoot;
 
-        const client = shadow.getElementById('client_id');
+        const client = shadow.getElementById('client-id');
         return client.value;
     }
 
@@ -92,7 +88,7 @@ class ItemsExplorer extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = self._getClientId();
+        const client_id = this._getClientId();
 
         const beginsearch = function(filter) {
             InventoryItem.find(client_id, filter, 10, 1).then((r) => {
@@ -117,19 +113,11 @@ class ItemsExplorer extends HTMLElement {
             beginsearch(filter.value);
             e.preventDefault();
         });
-
-        const btnitemnew = shadow.querySelector('button.btn-item-new');
-        btnitemnew.addEventListener('click', function(e) {
-            showInTab('inventory-item', 'New Item', `<item-editor client-id="${client_id}"></item-editor>`);
-            e.preventDefault();
-        });
     }
 
     setItems(items = [], filter = '') {
         const self = this;
         const shadow = this.shadowRoot;
-
-        const client_id = self._getClientId();
 
         const tbody = shadow.querySelector('table.tbl-items tbody');
         while(tbody.firstChild) {
@@ -137,15 +125,16 @@ class ItemsExplorer extends HTMLElement {
         }
 
         items.forEach((item) => {
+            const id = 'id' + Util.generateId();
             const item_name = item.name.replace(filter, `<strong>${filter}</strong>`);
             const item_sku = item.sku.replace(filter, `<strong>${filter}</strong>`);
             const item_upc = item.upc.replace(filter, `<strong>${filter}</strong>`);
-
+            
             const td = [];
-            td.push(`<td><a class="link-edit-item" title="Edit Item" href="#" data-itemid="${item.id}"><span class="material-icons">edit</a></td>`);
-            td.push(`<td>${item_name}</td>`);
-            td.push(`<td>${item_sku}</td>`);
-            td.push(`<td>${item_upc}</td>`);
+            td.push(`<td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Item" value="${item.id}" />`);
+            td.push(`<td><label for="${id}">${item_name}</label></td>`);
+            td.push(`<td><label for="${id}">${item_sku}</label></td>`);
+            td.push(`<td><label for="${id}">${item_upc}</label></td>`);
             const tdall = td.join('');
 
             const tr = document.createElement('tr');
@@ -154,14 +143,17 @@ class ItemsExplorer extends HTMLElement {
             tbody.appendChild(tr);
 
             // event handlers
-            const edititem = tr.querySelector('.link-edit-item');
-            edititem.addEventListener('click', function(e) {
-                const item_id = edititem.dataset.itemid;
-                showInTab(`inventory.item.${item_id}`, 'Item', `<item-editor client-id="${client_id}" item-id="${item_id}"></item-editor>`);
-                e.preventDefault();
+            const selected = tr.querySelector('.form-input-selected');
+            selected.addEventListener('change', function(e) {
+                self.dispatchEvent(new CustomEvent('change', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        itemId: selected.value
+                    }
+                }));
             });
         });
     }
 }
-customElements.define('items-explorer', ItemsExplorer);
-export { ItemsExplorer };
+customElements.define('item-selector-view', ItemSelectorView);

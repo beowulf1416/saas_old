@@ -8,7 +8,7 @@ class WarehouseEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/warehouse.editor/warehouse.editor.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/warehouse-editor/warehouse-editor.css');
 
         const default_style = document.createElement("link");
         default_style.setAttribute('rel', 'stylesheet');

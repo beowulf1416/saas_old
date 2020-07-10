@@ -8,7 +8,7 @@ class WarehouseExplorer extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/warehouse.explorer/warehouse.explorer.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/warehouse-explorer/warehouse-explorer.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');

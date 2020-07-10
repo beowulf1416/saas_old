@@ -1,7 +1,7 @@
 'use strict';
 import { Inventory } from '/static/js/modules/inventory/inventory.js';
 import { InventoryItem } from '/static/js/modules/inventory/items.js';
-import { ItemsTable } from '/static/custom.elements/inventory/items.table/items.table.js';
+import { ItemsTable } from '/static/custom-elements/inventory/items-table/items-table.js';
 
 import { tabs } from '/static/js/ui/tabs.js';
 import { notify, showInView } from '/static/js/ui/ui.js';
@@ -13,15 +13,15 @@ class ItemEditor extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/item.editor/item.editor.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/item-editor/item-editor.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
         google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
 
-        const tb = document.createElement("link");
-        tb.setAttribute('rel', 'stylesheet');
-        tb.setAttribute('href', '/static/css/toolbar.css');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const tabs = document.createElement("link");
         tabs.setAttribute('rel', 'stylesheet');
@@ -35,7 +35,7 @@ class ItemEditor extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
         shadow.appendChild(google_web_fonts);
-        shadow.appendChild(tb);
+        shadow.appendChild(default_style);
         shadow.appendChild(tabs);
         shadow.appendChild(div);
 

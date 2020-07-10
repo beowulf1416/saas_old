@@ -6,7 +6,7 @@ class ReceivingDashboard extends HTMLElement {
         const self = super();
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom.elements/inventory/receiving-dashboard/receiving-dashboard.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.css');
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
