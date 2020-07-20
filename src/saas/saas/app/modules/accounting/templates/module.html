@@ -3,17 +3,8 @@
     <div class="module-acctg menu">
         <ul class="menu-list">
             <li><a title="Chart of Accounts" data-action="accounting.accounts">Accounts</a></li>
+            <li><a title="Accounting Journal" data-action="accounting.journals">Journal</a></li>
+            <li><a title="Trial Balance" data-action="accounting.trial_balance">Trial Balance</a></li>
         </ul><!-- .menu-list -->
     </div><!-- .module-acctg -->
 </div><!-- .module-acctg-wrapper -->
-<script type="module">
-'use script';
-(function(){
-    const tab = document.querySelector('tab-container');
-
-    window.actions = window.actions ? window.actions : {};
-    window.actions['accounting.accounts'] = function(){
-        console.log('accounting.accounts');
-    };
-})();
-</script>
