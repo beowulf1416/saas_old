@@ -135,7 +135,7 @@
 {% block base_body_scripts -%}
 {% if scripts is defined %}
 {%- for k,js in scripts.items() -%}
-<script {% if js.type %}type="{{ js.type }}"{% endif %} src="{{ js.script }}" {% if js.integrity %}integrity="{{ js.integrity }}"{% endif %} {% if js.crossorigin -%}crossorigin="{{ js.crossorigin }}"{%- endif -%}></script>
+<script {% if js.type %}type="{{ js.type }}"{% endif %} {% if js.async %}async{% endif %} src="{{ js.script }}" {% if js.integrity %}integrity="{{ js.integrity }}"{% endif %} {% if js.crossorigin -%}crossorigin="{{ js.crossorigin }}"{%- endif -%}></script>
 {% endfor %}
 {% endif %}
 
