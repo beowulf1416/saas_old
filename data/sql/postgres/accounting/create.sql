@@ -13,5 +13,8 @@ set schema 'accounting';
 \ir tables/account_tree.sql
 \ir tables/account_balances.sql
 
+\ir tables/transactions.sql
+\ir tables/transaction_items.sql
+
 
 set schema 'public';
