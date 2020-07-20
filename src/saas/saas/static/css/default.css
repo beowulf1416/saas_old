@@ -94,6 +94,7 @@ html {
 }
 
 
+/** toolbar **/
 [role="toolbar"] {
     display: flex;
     flex-direction: row;
@@ -102,4 +103,10 @@ html {
 
 [role="toolbar"] .group {
     margin-left: 2px;
+}
+
+/** signin page **/
+.wrapper-signins {
+    width: 30%;
+    margin: auto;
 }
