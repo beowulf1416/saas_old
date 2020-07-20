@@ -27,15 +27,28 @@ def includeme(config):
         'js': [
             {
                 'type': 'module',
-                'script': '/static/js/modules/accounting/actions.js'
+                'script': '/static/js/modules/accounting/actions.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/accounting/account-tree/account-tree.js'
+                'script': '/static/custom-elements/accounting/account-tree/account-tree.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/accounting/account-editor/account-editor.js'
+                'script': '/static/custom-elements/accounting/account-editor/account-editor.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/accounting/accounting-journal/accounting-journal.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/accounting/accounting-journals/accounting-journals.js',
+                'async': True
             }
         ]
     }
