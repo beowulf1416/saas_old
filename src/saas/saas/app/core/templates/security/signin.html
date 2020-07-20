@@ -5,10 +5,12 @@ Sign In
 {% endblock title %}
 
 {% block content %}
-<h1>Supported Sign Ins</h1>
-<ul>
-    <li>
-        <a title="Google" class="link link-google" href="{{ google_oauth_url }}">Google</a>
-    </li>
-</ul>
+<div class="wrapper-signins">
+    <h1>Supported Sign Ins</h1>
+    <ul>
+        <li>
+            <a title="Google" class="link link-google" href="{{ google_oauth_url }}">Google</a>
+        </li>
+    </ul>
+</div><!-- .wrapper -->
 {% endblock content %}
