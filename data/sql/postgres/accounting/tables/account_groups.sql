@@ -6,6 +6,8 @@ create table if not exists account_groups (
     name varchar(100) not null,
     description text,
     constraint pk_account_groups primary key (id),
+    constraint u_account_groups_1 unique (client_id, name),
     constraint fk_account_groups_1 foreign key (client_id)
-        references clients.clients (id) on delete restrict on update restrict
+        references clients.clients (id) on delete restrict on update restrict,
+    constraint chk_account_groups_1 check (name <> '')
 );

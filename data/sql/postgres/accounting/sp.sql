@@ -15,6 +15,8 @@ set schema 'accounting';
 \ir procs/accounts/account_get_children.sql
 \ir procs/accounts/account_tree_all.sql
 
+\ir procs/groups/account_group_add.sql
+
 
 
 set schema 'public';
