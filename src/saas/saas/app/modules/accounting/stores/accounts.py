@@ -78,3 +78,14 @@ class AccountsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve account tree')
+
+    def filter(self, clientId: UUID, filter: str):
+        try:
+            result = super(AccountsStore, self).runProc('accounting.accounts_filter', [
+                clientId,
+                f'%{filter}%'
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve accounts filtered')

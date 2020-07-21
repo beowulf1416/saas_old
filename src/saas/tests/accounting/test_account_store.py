@@ -20,6 +20,8 @@ class TestAccountStore(unittest.TestCase):
         })
         self.clientStore = ClientStore(self.mgr, 'default')
         self.accountsStore = AccountsStore(self.mgr, 'default')
+
+        self.defaultClient = self.clientStore.getDefaultClient()
     
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
@@ -69,5 +71,17 @@ class TestAccountStore(unittest.TestCase):
         (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
         try:
             result = self.accountsStore.getTree(client_id)
+        except Exception as e:
+            self.fail(e)
+
+    def test_account_filter(self):
+        client_id = self.defaultClient[0]
+        random_name = self.generate_random_str(10)
+
+        from saas.app.modules.accounting.models.account_types import AccountTypes
+        try:
+            result = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name, random_name)
+            result = self.accountsStore.filter(client_id, random_name[1:len(random_name)-1])
+            self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
