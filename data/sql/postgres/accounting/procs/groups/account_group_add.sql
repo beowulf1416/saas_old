@@ -18,6 +18,17 @@ begin
         p_name,
         p_description
     );
+
+    -- account group tree
+    insert into accounting.account_group_tree (
+        client_id,
+        group_id,
+        path
+    ) values (
+        p_client_id,
+        p_group_id,
+        text2ltree('root.' || replace(p_group_id::text, '-', '_'))
+    );
 end
 $$
 language plpgsql;
