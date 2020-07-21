@@ -4,6 +4,10 @@ log = logging.getLogger(__name__)
 from saas.app.core.services.connection import ConnectionManager
 
 
+class StoreException(Exception):
+    pass
+
+
 class BaseStore(object):
 
     def __init__(self, manager: ConnectionManager, name: str):
@@ -18,7 +22,7 @@ class BaseStore(object):
             return c.fetchall()
         except Exception as e:
             log.error(e)
-            raise e
+            raise StoreException(e)
         finally:
             self._mgr.returnConnection(self._name, cn)
 
@@ -32,7 +36,7 @@ class BaseStore(object):
         except Exception as e:
             cn.rollback()
             log.error(e)
-            raise e
+            raise StoreException(e)
         finally:
             self._mgr.returnConnection(self._name, cn)
 
@@ -44,7 +48,7 @@ class BaseStore(object):
             return c.fetchall()
         except Exception as e:
             log.error(e)
-            raise e
+            raise StoreException(e)
         finally:
             self._mgr.returnConnection(self._name, cn)
 
@@ -58,7 +62,7 @@ class BaseStore(object):
         except Exception as e:
             cn.rollback()
             log.error(e)
-            raise e
+            raise StoreException(e)
         finally:
             self._mgr.returnConnection(self._name, cn)
 
