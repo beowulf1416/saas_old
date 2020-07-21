@@ -23,3 +23,14 @@ class GroupStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException(e)
+
+    def assignParent(self, client_id: UUID, group_id: UUID, parent_group_id: UUID):
+        try:
+            super(GroupStore, self).runProcTransactional('accounting.account_group_assign_parent', [
+                client_id,
+                group_id,
+                parent_group_id
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException(e)

@@ -40,3 +40,19 @@ class TestAccountGroupStore(unittest.TestCase):
             self.groupStore.add(client_id, group_id, random_str, random_str)
         except StoreException as e:
             self.fail(e)
+
+    def test_assign_parent(self):
+        client_id = self.defaultClient[0]
+
+        group_id_1 = str(uuid.uuid4())
+        random_str_1 = self.generate_random_str(10)
+
+        group_id_2 = str(uuid.uuid4())
+        random_str_2 = self.generate_random_str(10)
+        try:
+            self.groupStore.add(client_id, group_id_1, random_str_1, random_str_1)
+            self.groupStore.add(client_id, group_id_2, random_str_2, random_str_2)
+
+            self.groupStore.assignParent(client_id, group_id_1, group_id_2)
+        except StoreException as e:
+            self.fail(e)
