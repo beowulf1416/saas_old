@@ -56,3 +56,11 @@ class TestAccountGroupStore(unittest.TestCase):
             self.groupStore.assignParent(client_id, group_id_1, group_id_2)
         except StoreException as e:
             self.fail(e)
+
+    def test_tree(self):
+        client_id = self.defaultClient[0]
+        try:
+            result = self.groupStore.tree(client_id)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except StoreException as e:
+            self.fail(e)

@@ -34,3 +34,13 @@ class GroupStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException(e)
+
+    def tree(self, client_id: UUID):
+        try:
+            result = super(GroupStore, self).runProc('accounting.account_group_tree', [
+                client_id,
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise StoreException
