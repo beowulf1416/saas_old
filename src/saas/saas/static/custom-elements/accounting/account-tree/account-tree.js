@@ -11,9 +11,9 @@ class AccountTree extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/accounting/account-tree/account-tree.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,7 +22,7 @@ class AccountTree extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
@@ -61,8 +61,11 @@ class AccountTree extends HTMLElement {
                 </form>
             </div><!-- .form-wrapper -->
             <div class="toolbar" role="toolbar">
-                <button type="button" class="btn btn-new" title="New Account">
+                <button type="button" id="btn-new-acct" class="btn btn-new" title="New Account">
                     <span class="material-icons">create_new_folder</span>
+                </button>
+                <button type="button" id="btn-new-group" class="btn btn-new-group" title="New Account Group">
+                    <span class="material-icons">folder</span>
                 </button>
                 <button type="button" class="btn btn-refresh" title="Refresh">
                     <span class="material-icons">refresh</span>
@@ -105,6 +108,11 @@ class AccountTree extends HTMLElement {
         btnnew.addEventListener('click', function(e) {
             showInTab('accounting-account-editor', 'New Account', `<account-editor client-id="${client_id}"></account-editor>`);
             e.preventDefault();
+        });
+
+        const btnnewgroup = shadow.getElementById('btn-new-group');
+        btnnewgroup.addEventListener('click', function() {
+            showInTab('account-account-group', 'New Account Group', `<account-group client-id="${client_id}"></account-group>`);
         });
 
         const btnrefresh = shadow.querySelector('button.btn-refresh');
