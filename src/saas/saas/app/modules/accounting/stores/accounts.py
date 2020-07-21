@@ -23,19 +23,11 @@ class AccountsStore(BaseStore):
             log.error(e)
             raise Exception('An error occured while retrieving account types')
 
-    def add(self, clientId: UUID, typeId: AccountTypes, name: str, description: str):
+    def add(self, client_id: UUID, account_id: UUID, type_id: AccountTypes, name: str, description: str):
         '''add an account record for a specified client
         '''
         try:
-            [accountId, ] = super(AccountsStore, self).executeTransactional(
-                "select * from accounting.account_add('{0}', {1}::smallint, '{2}', '{3}')".format(
-                    clientId,
-                    typeId,
-                    name,
-                    description
-                )
-            )
-            return accountId
+            super(AccountsStore, self).executeTransactional(f"select * from accounting.account_add('{client_id}','{account_id}',{type_id}::smallint,'{name}','{description}')")
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add account')
@@ -89,3 +81,6 @@ class AccountsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve accounts filtered')
+
+    def assignGroup(self, client_id: UUID, account_id: UUID, group_id: UUID):
+        pass
