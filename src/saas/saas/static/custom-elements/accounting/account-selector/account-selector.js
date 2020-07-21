@@ -28,6 +28,16 @@ class AccountSelector extends HTMLElement {
         this._attachEventHandlers();
     }
 
+    static get observedAttributes() { 
+        return ['account-id']; 
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name == 'account-id') {
+            self._account_id = this.getAttribute('account-id');
+        }
+    }
+
     _init(container) {
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -52,7 +62,8 @@ class AccountSelector extends HTMLElement {
             const selector = showInView('Select Account', `<account-selector-view client-id="${client_id}"></account-selector-view>`);
             selector.addEventListener('selected', function(e) {
                 const account = e.detail.account;
-
+                
+                self.setAttribute('account-id', account.id);
                 input_display.value = account.name;
             });
         });
