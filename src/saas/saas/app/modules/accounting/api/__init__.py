@@ -45,3 +45,8 @@ def includeme(config):
         'api.accounting.groups.add',
         '/api/accounting/groups/add'
     )
+
+    config.add_route(
+        'api.accounting.groups.tree',
+        '/api/accounting/groups/tree'
+    )
