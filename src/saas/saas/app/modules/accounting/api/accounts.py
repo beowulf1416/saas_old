@@ -217,3 +217,47 @@ def view_accounting_account_tree(request):
             'accounts': accounts
         }
     )
+
+
+@view_config(
+    route_name='api.accounting.accounts.filter',
+    request_method='POST',
+    renderer='json'
+)
+def view_accounting_accounts_filter(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    filter = params['filter'] if 'filter' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id and filter is required'
+        )
+
+    services = request.services()
+    accounts = []
+    try:
+        accountStore = services['store.accounting.accounts']
+        result = accountStore.filter(client_id, filter)
+        accounts = [
+            { 
+                'id': r[0], 
+                'type_id': r[1], 
+                'name': r[2], 
+                'description': r[3]
+            }
+            for r in result
+        ]
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} accounts found'.format(len(accounts)),
+        body={
+            'accounts': accounts
+        }
+    )

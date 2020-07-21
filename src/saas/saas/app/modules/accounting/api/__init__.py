@@ -33,3 +33,8 @@ def includeme(config):
         'api.accounting.account.tree',
         '/api/accounting/accounts/tree'
     )
+
+    config.add_route(
+        'api.accounting.accounts.filter',
+        '/api/accounting/accounts/filter'
+    )
