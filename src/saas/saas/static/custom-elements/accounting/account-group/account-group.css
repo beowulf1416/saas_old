@@ -1,0 +1,4 @@
+#form-account-group {
+    display: grid;
+    grid-template-columns: min-content auto;
+}

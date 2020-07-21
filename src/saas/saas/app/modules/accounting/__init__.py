@@ -59,6 +59,11 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/accounting/account-selector/account-selector-view.js',
                 'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/accounting/account-group/account-group.js',
+                'async': True
             }
         ]
     }
