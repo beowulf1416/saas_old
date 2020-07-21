@@ -10,7 +10,7 @@ class AccountingJournal extends HTMLElement {
 
         const default_style = document.createElement("link");
         default_style.setAttribute('rel', 'stylesheet');
-        default_style.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -21,6 +21,10 @@ class AccountingJournal extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(default_style);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -54,7 +58,7 @@ class AccountingJournal extends HTMLElement {
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <td></td>
+                                    <td><a id="link-add" class="link-add" title="Add" href="#">&plus;</a></td>
                                     <td>Total</td>
                                     <td></td>
                                 </tr>
@@ -67,6 +71,42 @@ class AccountingJournal extends HTMLElement {
             </div><!-- .form-wrapper -->
         `;
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const btnsave = shadow.getElementById('btn-save');
+        btnsave.addEventListener('click', function() {
+            console.log('save');
+        });
+
+        const linkadd = shadow.getElementById('link-add');
+        linkadd.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><a class="link-remove" title="Remove" href="#">&minus;</a></td>
+                <td><account-selector client-id="${client_id}"></account-selector></td>
+                <td><input type="number" name="amount" title="Amount" /></td>
+            `;
+
+            const tbody = shadow.querySelector('table#tbl-entries tbody');
+            tbody.appendChild(tr);
+
+            // event handlers
+            const linkremove = tr.querySelector('.link-remove');
+            linkremove.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const parent_tr = linkremove.parentElement.parentElement;
+                parent_tr.classList.toggle('remove');
+            });
+        });
     }
 }
 customElements.define('accounting-journal', AccountingJournal);

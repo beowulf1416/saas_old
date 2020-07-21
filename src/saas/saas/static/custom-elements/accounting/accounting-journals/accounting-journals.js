@@ -1,4 +1,5 @@
 'use strict';
+import { notify, showInTab } from '/static/js/ui/ui.js';
 class AccountingJournals extends HTMLElement {
 
     constructor() {
@@ -10,7 +11,7 @@ class AccountingJournals extends HTMLElement {
 
         const default_style = document.createElement("link");
         default_style.setAttribute('rel', 'stylesheet');
-        default_style.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -21,6 +22,10 @@ class AccountingJournals extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(default_style);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -29,7 +34,7 @@ class AccountingJournals extends HTMLElement {
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
                 <button type="button" id="btn-new" class="btn btn-new" title="New Journal Entry">
-                    <span class="material-icons">new</span>
+                    <span class="material-icons">post_add</span>
                 </button>
             </div><!-- .toolbar -->
             <div class="form-wrapper">
@@ -61,7 +66,20 @@ class AccountingJournals extends HTMLElement {
                 </table>
             </div><!-- .table-wrapper -->
         `;
+
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const btnnew = shadow.getElementById('btn-new');
+        btnnew.addEventListener('click', function() {
+            showInTab('accounting-journal', 'New Journal Entry', `<accounting-journal client-id="${client_id}"></accounting-journal>`);
+        });
     }
 }
 customElements.define('accounting-journals', AccountingJournals);
