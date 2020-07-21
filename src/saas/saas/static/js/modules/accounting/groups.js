@@ -10,5 +10,11 @@ class Groups {
             description: description
         })
     }
+
+    static tree(clientId = '') {
+        return Util.fetch('/api/accounting/groups/tree', {
+            clientId: clientId
+        });
+    }
 }
 export { Groups };
