@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 from saas.app.core.services import get_service
 
 from saas.app.modules.accounting.stores.accounts import AccountsStore
+from saas.app.modules.accounting.stores.groups import GroupStore
 
 
 def includeme(config):
@@ -12,5 +13,5 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    accountsStore = AccountsStore(mgr, 'default')
-    services['store.accounting.accounts'] = accountsStore
+    services['store.accounting.accounts'] = AccountsStore(mgr, 'default')
+    services['store.accounting.groups'] = GroupStore(mgr, 'default')
