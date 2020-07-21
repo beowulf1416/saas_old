@@ -55,7 +55,7 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/item.editor/item-editor.js'
+                'script': '/static/custom-elements/inventory/item-editor/item-editor.js'
             },
             {
                 'type': 'module',
