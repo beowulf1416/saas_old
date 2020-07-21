@@ -243,9 +243,10 @@ def view_accounting_accounts_filter(request):
         accounts = [
             { 
                 'id': r[0], 
-                'type_id': r[1], 
-                'name': r[2], 
-                'description': r[3]
+                'active': r[1],
+                'type_id': r[2], 
+                'name': r[3], 
+                'description': r[4]
             }
             for r in result
         ]
