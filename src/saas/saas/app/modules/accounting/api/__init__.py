@@ -4,6 +4,7 @@ log = logging.getLogger(__name__)
 def includeme(config):
     log.info('including: saas.app.modules.accounting.api')
 
+    # accounts
     config.add_route(
         'api.accounting.accounts.types',
         '/api/accounting/accounts/types'
@@ -37,4 +38,10 @@ def includeme(config):
     config.add_route(
         'api.accounting.accounts.filter',
         '/api/accounting/accounts/filter'
+    )
+
+    # groups
+    config.add_route(
+        'api.accounting.groups.add',
+        '/api/accounting/groups/add'
     )
