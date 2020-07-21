@@ -1,67 +1,39 @@
 'use strict';
-
+import { Util } from '/static/js/util.js';
 class Accounts {
     static getAccountTypes() {
-        return fetch('/api/accounting/accounts/types', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/accounting/accounts/types', {});
     }
 
     static add(clientId, typeId, name, description, parentAccountId) {
-        return fetch('/api/accounting/accounts/add', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                typeId: typeId,
-                name: name,
-                description: description,
-                parentAccountId: parentAccountId
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/accounting/accounts/add', {
+            clientId: clientId,
+            typeId: typeId,
+            name: name,
+            description: description,
+            parentAccountId: parentAccountId
+        });
     }
 
     static getTree(clientId) {
-        return fetch('/api/accounting/accounts/tree', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/accounting/accounts/tree', {
+            clientId: clientId
+        });
     }
 
     static assignParent(clientId, accountId, parentAccountId) {
-        return fetch('/api/accounting/accounts/parent/assign', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                accountId: accountId,
-                parentAccountId: parentAccountId
-            })
+        return Util.fetch('/api/accounting/accounts/parent/assign', {
+            clientId: clientId,
+            accountId: accountId,
+            parentAccountId: parentAccountId
+        });
+    }
+
+    static filter(clientId = '', filter = '') {
+        return Util.fetch('/api/accounting/accounts/filter', {
+            clientId: clientId,
+            filter: filter
         })
-        .then((r) => r.json());
     }
 }
 export { Accounts };
