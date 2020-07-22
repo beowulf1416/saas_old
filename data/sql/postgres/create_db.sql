@@ -36,6 +36,7 @@ create domain slug
 \ir common/create.sql
 \ir clients/create.sql
 \ir iam/create.sql
+\ir documents/create.sql
 \ir accounting/create.sql
 \ir crm/create.sql
 \ir hr/create.sql
