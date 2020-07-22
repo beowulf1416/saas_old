@@ -14,11 +14,6 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    countryStore = CountryStore(mgr, 'default')
-    services['stores.common.countries'] = countryStore
-
-    currencyStore = CurrencyStore(mgr, 'default')
-    services['stores.common.currencies'] = currencyStore
-
-    uomStore = UOMStore(mgr, 'default')
-    services['stores.common.uom'] = uomStore
+    services['stores.common.countries'] = CountryStore(mgr, 'default')
+    services['stores.common.currencies'] = CurrencyStore(mgr, 'default')
+    services['stores.common.uom'] = UOMStore(mgr, 'default')

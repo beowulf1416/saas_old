@@ -16,3 +16,12 @@ class CurrencyStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve all currencies')
+
+    def filter(self, filter: str):
+        try:
+            return super(CurrencyStore, self).runProc('common.currencies_filter', [
+                f'%{filter}%',
+            ])
+        except Exception as e:
+            log.error(e)
+            raise Exception('Unable to retrieve currencies')
