@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$id": "/static/schemas/accounting/account_journal.json",
+    "definitions": {
+        "entry": {
+            "type": "object",
+            "properties": {
+                "accountId": { "type": "string", "format": "uuid" },
+                "debit": { "type": "number" },
+                "credit": { "type": "number" }
+            }
+        }
+    },
+    "type": "object",
+    "properties": {
+        "clientId": { "type": "string", "format": "uuid" },
+        "journalId": { "type": "string", "format": "uuid" },
+        "description": { "type": "string" },
+        "currencyId": { "type": "number" },
+        "entries": {
+            "type": "array",
+            "entry": { "$ref": "#/defintions/entry" }
+        }
+    },
+    "required": [
+        "clientId",
+        "journalId",
+        "description",
+        "entries"
+    ],
+    "additionalProperties": false
+}
