@@ -8,3 +8,8 @@ def includeme(config):
         'api.common.countries',
         '/api/common/countries'
     )
+
+    config.add_route(
+        'api.common.currencies',
+        '/api/common/currencies'
+    )
