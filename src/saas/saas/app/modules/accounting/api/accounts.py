@@ -42,21 +42,21 @@ def view_accounting_accounts_types(request):
 def view_accounting_accounts_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
+    account_id = params['accountId'] if 'accountId' in params else None
     type_id = params['typeId'] if 'typeId' in params else None
     name = params['name'] if 'name' in params else None
     description = params['description'] if 'description' in params else None
-    parent = params['parentAccountId'] if 'parentAccountId' in params else None
 
-    if client_id is None or name is None:
+    if client_id is None or account_id is None or type_id is None or name is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id, Account Type Id and Name is required'
+            explanation='Client Id, Account Id, Type Id and Name is required'
         )
 
     services = request.services()
     try:
         accountStore = services['store.accounting.accounts']
-        accountStore.add(client_id, type_id, name, description)
+        accountStore.add(client_id, account_id, type_id, name, description)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
