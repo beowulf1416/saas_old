@@ -1,7 +1,7 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
 import { Accounts } from '/static/js/modules/accounting/accounts.js';
-
+import { Util } from '/static/js/util.js';
 class AccountEditor extends HTMLElement {
 
     constructor() {
@@ -11,9 +11,9 @@ class AccountEditor extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/accounting/account-editor/account-editor.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,7 +22,7 @@ class AccountEditor extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._getClientId = this._getClientId.bind(this);
@@ -90,15 +90,22 @@ class AccountEditor extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this._getClientId();
+        const account_id = this.getAttribute('account-id');
 
         const btnsave = shadow.querySelector('button.btn-save');
         btnsave.addEventListener('click', function(e) {
             const type = shadow.getElementById('type');
             const name = shadow.getElementById('name');
             const description = shadow.getElementById('description');
-            Accounts.add(client_id, type.value, name.value, description.value).then((r) => {
-                notify(r.status, r.message);             
-            });
+
+            if (account_id) {
+                console.log('//TODO account update');
+            } else {
+                const tmp_account_id = Util.generate_uuid();
+                Accounts.add(client_id, tmp_account_id, type.value, name.value, description.value).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            }
             e.preventDefault();
         });
     }
