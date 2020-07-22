@@ -1,4 +1,6 @@
-create or replace function currencies_all ()
+create or replace function currencies_filter (
+    p_filter common.currencies.name%type
+)
 returns table (
     id int,
     name varchar(100),
@@ -13,7 +15,8 @@ begin
         a.name,
         a.currency,
         a.symbol
-    from common.currencies a;
+    from common.currencies a
+    where a.name like p_filter;
 end
 $$
 language plpgsql
