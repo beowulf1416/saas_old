@@ -5,13 +5,13 @@ class Accounts {
         return Util.fetch('/api/accounting/accounts/types', {});
     }
 
-    static add(clientId, typeId, name, description, parentAccountId) {
+    static add(clientId = '', accountId = '', typeId = '', name = '', description = '', parentAccountId = '') {
         return Util.fetch('/api/accounting/accounts/add', {
             clientId: clientId,
+            accountId: accountId,
             typeId: typeId,
             name: name,
-            description: description,
-            parentAccountId: parentAccountId
+            description: description
         });
     }
 
