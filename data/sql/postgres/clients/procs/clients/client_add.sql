@@ -79,6 +79,18 @@ begin
         'root', 
         'root account group'
     );
+
+    insert into accounting.account_group_tree (
+        client_id,
+        group_id,
+        parent_group_id,
+        path
+    ) values (
+        p_client_id,
+        t_account_group_id,
+        t_account_group_id,
+        text2ltree('root')
+    );
 end
 $$
 language plpgsql;
