@@ -16,7 +16,7 @@ begin
         a.currency,
         a.symbol
     from common.currencies a
-    where a.name like p_filter;
+    where a.name ilike p_filter;
 end
 $$
 language plpgsql
