@@ -14,8 +14,10 @@ class Common {
         // .then((r) => r.json());
     }
 
-    static currencies() {
-        return Util.fetch('/api/common/currencies', {});
+    static currencies(filter = '') {
+        return Util.fetch('/api/common/currencies', {
+            filter: filter
+        });
     }
 }
 export { Common };
