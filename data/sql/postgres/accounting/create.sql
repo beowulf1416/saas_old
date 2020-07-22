@@ -1,10 +1,10 @@
 /**
  * accounting
  */
+\echo '** ACCOUNTING **'
+
 create schema if not exists accounting;
 set schema 'accounting';
-
-\echo '** ACCOUNTING **'
 
 /** tables **/
 \ir tables/account_types.sql
