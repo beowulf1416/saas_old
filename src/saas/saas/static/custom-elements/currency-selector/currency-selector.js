@@ -28,6 +28,16 @@ class CurrencySelector extends HTMLElement {
         this._attachEventHandlers();
     }
 
+    static get observedAttributes() { 
+        return ['currency-id']; 
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name == 'currency-id') {
+            self._currency_id = this.getAttribute('currency-id');
+        }
+    }
+
     _init(container) {
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -44,11 +54,16 @@ class CurrencySelector extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const input_display = shadow.getElementById('display');
+
         const btnselect = shadow.getElementById('btn-select');
         btnselect.addEventListener('click', function() {
             const selector = showInView('Select Currency', `<currency-selector-view></currency-selector-view>`);
             selector.addEventListener('selected', function(e) {
-                console.log('//TODO currency selected');
+                const currency = e.detail.currency;
+
+                input_display.value = currency.name;
+                self.setAttribute('currency-id', currency.id);
             });
         });
     }

@@ -1,5 +1,7 @@
 'use strict';
 import { Common } from '/static/js/modules/common/common.js';
+import { notify } from '/static/js/ui/ui.js';
+import { Util } from '/static/js/util.js';
 class CurrencySelectorView extends HTMLElement {
 
     constructor() {
@@ -24,6 +26,7 @@ class CurrencySelectorView extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.setCurrencies = this.setCurrencies.bind(this);
 
         this._attachEventHandlers();
     }
@@ -68,6 +71,73 @@ class CurrencySelectorView extends HTMLElement {
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const beginsearch = function(filter) {
+            Common.currencies(filter).then((r) => {
+                if (r.status == 'success') {
+                    self.setCurrencies(r.json.currencies, filter);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        };
+
+        const filter = shadow.getElementById('filter');
+        filter.addEventListener('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+
+                beginsearch(filter.value);
+            }
+        });
+
+        const btnfilter = shadow.getElementById('btn-filter');
+        btnfilter.addEventListener('click', function() {
+            beginsearch(filter.value);
+        });
+    }
+
+    setCurrencies(currencies = [], filter = '') {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tbody = shadow.querySelector('table#tbl-currencies tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
+
+        currencies.forEach((c) => {
+            const id = 'id' + Util.generateId();
+            const currency_name = c.name.replace(filter, `<strong>${filter}</strong>`);
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Currency" value="${c.id}" data-name="${c.name}" data-currency="${c.currency}" data-symbol="${c.symbol}" /></td>
+                <td><label for="${id}">${currency_name}</label></td>
+                <td><label for="${id}">${c.currency}</label></td>
+            `;
+
+            tbody.appendChild(tr);
+
+            // event handlers
+            const selected = tr.querySelector('.form-input-selected');
+            selected.addEventListener('change', function(e) {
+                e.preventDefault();
+
+                self.dispatchEvent(new CustomEvent('selected', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        currency: {
+                            id: selected.value,
+                            name: selected.dataset.name,
+                            currency: selected.dataset.currency,
+                            symbol: selected.dataset.symbol
+                        }
+                    }
+                }));
+            });
+        });
     }
 }
 customElements.define('currency-selector-view', CurrencySelectorView);
