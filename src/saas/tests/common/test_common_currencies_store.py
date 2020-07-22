@@ -19,3 +19,7 @@ class TestCurrencyStore(unittest.TestCase):
     def test_countries_all(self):
         result = self.currencyStore.all()
         self.assertGreater(len(result), 0)
+
+    def test_currencies_filter(self):
+        result = self.currencyStore.filter('pes')
+        self.assertGreater(len(result), 0, '{0}'.format(result))
