@@ -35,5 +35,9 @@ class Util {
             };
         });
     }
+
+    static generate_uuid() {
+        return uuidv4();
+    }
 }
 export { Util };
