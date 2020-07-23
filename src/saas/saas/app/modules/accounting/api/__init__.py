@@ -50,3 +50,14 @@ def includeme(config):
         'api.accounting.groups.tree',
         '/api/accounting/groups/tree'
     )
+
+    # journals
+    config.add_route(
+        'api.accounting.journals.reference.add',
+        '/api/accounting/journals/reference/add'
+    )
+
+    config.add_route(
+        'api.accounting.journals.add',
+        '/api/accounting/journals/add'
+    )
