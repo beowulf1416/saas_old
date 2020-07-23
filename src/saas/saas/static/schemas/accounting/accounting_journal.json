@@ -9,6 +9,15 @@
                 "debit": { "type": "number" },
                 "credit": { "type": "number" }
             }
+        },
+        "file": {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string", "format": "uuid" },
+                "filename": { "type": "string" },
+                "type": { "type": "string" },
+                "size": { "type": "number" }
+            }
         }
     },
     "type": "object",
@@ -20,6 +29,10 @@
         "entries": {
             "type": "array",
             "entry": { "$ref": "#/defintions/entry" }
+        },
+        "files": {
+            "type": "array",
+            "file": { "$ref": "#/definitions/file" }
         }
     },
     "required": [
