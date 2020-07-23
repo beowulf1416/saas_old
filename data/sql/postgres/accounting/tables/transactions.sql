@@ -5,10 +5,13 @@ create table if not exists transactions (
     created_year smallint not null default extract(year from now()),
     posted_ts timestamp without time zone,
     client_id uuid not null,
-    particulars text not null,
-    constraint pk_transactions primary key (created_year, id),
-    constraint fk_transactions foreign key (client_id)
-        references clients.clients (id) on delete restrict on update restrict
+    currency_id int not null,
+    description text not null,
+    constraint pk_transactions primary key (created_year, client_id, id),
+    constraint fk_transactions_1 foreign key (client_id)
+        references clients.clients (id) on delete restrict on update restrict,
+    constraint fk_transactions_2 foreign key (currency_id)
+        references common.currencies (id) on delete restrict on update restrict
 )
 partition by range (created_year);
 

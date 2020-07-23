@@ -1,6 +1,7 @@
 create or replace function transaction_add (
     p_client_id clients.clients.id%type,
     p_transaction_id accounting.transactions.id%type,
+    p_currency_id accounting.transactions.currency_id%type,
     p_description accounting.transactions.description%type
 )
 returns void
