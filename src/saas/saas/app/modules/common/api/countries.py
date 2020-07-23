@@ -8,7 +8,8 @@ import pyramid.httpexceptions as exception
 @view_config(
     route_name='api.common.countries',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_common_countries(request):
     services = request.services()
