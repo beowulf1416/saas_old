@@ -25,16 +25,18 @@ class TestAdminUsersStore(unittest.TestCase):
         self.rolesStore = RolesStore(self.mgr, 'default')
         self.usersStore = UsersStore(self.mgr, 'default')
 
+        self.defaultClient = self.clientStore.getDefaultClient()
+
     def test_client_get_users(self):
         try:
-            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
+            client_id = self.defaultClient[0]
             users = self.usersStore.getAllClientUsers(client_id)
         except Exception as e:
             self.fail(e)
 
     def test_client_get_roles(self):
         try:
-            (client_id, active, name, address, country_id) = self.clientStore.getDefaultClient()
+            client_id = self.defaultClient[0]
             users = self.usersStore.getAllClientUsers(client_id)
             user_id = users[0][0]
             roles = self.usersStore.clientRoles(client_id, user_id)

@@ -34,7 +34,8 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
     def test_save_po(self):
         random_str = self.generate_random_str(10)
-        (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+        client_id = self.defaultClient[0]
+        country_id = self.defaultClient[4]
 
         warehouse_id = str(uuid.uuid4())
         self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
@@ -64,7 +65,8 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
     def test_filter_po(self):
         try:
-            (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
+            client_id = self.defaultClient[0]
+            country_id = self.defaultClient[4]
 
             random_str = self.generate_random_str(10)
             warehouse_id = str(uuid.uuid4())

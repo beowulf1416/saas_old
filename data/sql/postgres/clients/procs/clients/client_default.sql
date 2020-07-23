@@ -18,7 +18,8 @@ begin
         a.active,
         a.name,
         a.address,
-        a.country_id
+        a.country_id,
+        a.currency_id
     from clients.clients a
     where a.name = 'default';
 end

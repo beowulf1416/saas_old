@@ -33,17 +33,21 @@ class TestAdminClientStore(unittest.TestCase):
     def test_add_client(self):
         random_name = self.generate_random_str(10)
         client_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
         try:
-            self.clientStore.add(client_id, random_name, random_name, 608)
+            self.clientStore.add(client_id, random_name, random_name, country_id, currency_id)
         except Exception as e:
             self.fail(e)
 
     def test_update_client(self):
         random_name = self.generate_random_str(10)
         client_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
         try:
-            self.clientStore.add(client_id, random_name, random_name, 608)
-            self.clientStore.update(client_id, random_name, random_name, 608)
+            self.clientStore.add(client_id, random_name, random_name, country_id, currency_id)
+            self.clientStore.update(client_id, random_name, random_name, country_id, currency_id)
         except Exception as e:
             self.fail(e)
 
@@ -51,7 +55,9 @@ class TestAdminClientStore(unittest.TestCase):
     def test_add_client_not_unique(self):
         random_name = self.generate_random_str(10)
         client_id = str(uuid.uuid4())
-        self.clientStore.add(client_id, random_name, random_name, 608)
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
+        self.clientStore.add(client_id, random_name, random_name, country_id, currency_id)
         client_id2 = str(uuid.uuid4())
         self.assertRaises(
             Exception,
@@ -60,13 +66,16 @@ class TestAdminClientStore(unittest.TestCase):
             random_name,
             random_name,
             random_name,
-            608
+            country_id,
+            currency_id
         )
 
     def test_get_client(self):
         random_name = self.generate_random_str(10)
         client_id = str(uuid.uuid4())
-        self.clientStore.add(client_id, random_name, random_name, 608)
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
+        self.clientStore.add(client_id, random_name, random_name, country_id, currency_id)
         try:
             client = self.clientStore.get(client_id)
             self.assertEqual(client_id, client[0], '{0}'.format(client))
@@ -76,7 +85,9 @@ class TestAdminClientStore(unittest.TestCase):
     def test_set_active(self):
         random_name = self.generate_random_str(10)
         client_id = str(uuid.uuid4())
-        self.clientStore.add(client_id, random_name, random_name, 608)
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
+        self.clientStore.add(client_id, random_name, random_name, country_id, currency_id)
         try:
             self.clientStore.setActive(client_id, False)
         except Exception as e:

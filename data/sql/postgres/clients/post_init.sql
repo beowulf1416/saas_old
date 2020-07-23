@@ -14,7 +14,8 @@ begin
         client_id,
         'default', 
         'N/A', 
-        608
+        608,
+        108
     );
     
     perform * from clients.client_set_active(client_id, true);
