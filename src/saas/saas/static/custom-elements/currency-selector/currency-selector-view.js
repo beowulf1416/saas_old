@@ -83,7 +83,7 @@ class CurrencySelectorView extends HTMLElement {
         };
 
         const filter = shadow.getElementById('filter');
-        filter.addEventListener('keyup', function(e) {
+        filter.addEventListener('keydown', function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
 
