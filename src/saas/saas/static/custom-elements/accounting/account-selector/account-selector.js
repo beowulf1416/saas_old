@@ -24,6 +24,7 @@ class AccountSelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.value = this.value.bind(this);
 
         this._attachEventHandlers();
     }
@@ -62,11 +63,16 @@ class AccountSelector extends HTMLElement {
             const selector = showInView('Select Account', `<account-selector-view client-id="${client_id}"></account-selector-view>`);
             selector.addEventListener('selected', function(e) {
                 const account = e.detail.account;
-                
-                self.setAttribute('account-id', account.id);
+
                 input_display.value = account.name;
+                self.setAttribute('account-id', account.id);
             });
         });
+    }
+
+    value() {
+        const self = this;
+        return self._account_id;
     }
 }
 customElements.define('account-selector', AccountSelector);
