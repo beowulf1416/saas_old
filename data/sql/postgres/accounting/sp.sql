@@ -19,6 +19,12 @@ set schema 'accounting';
 \ir procs/groups/account_group_assign_parent.sql
 \ir procs/groups/account_group_tree.sql
 
+\ir procs/transactions/transaction_add.sql
+\ir procs/transactions/transaction_update.sql
+
+\ir procs/transactions/transaction_item_add.sql
+\ir procs/transactions/transaction_item_update.sql
+\ir procs/transactions/transaction_item_remove.sql
 
 
 set schema 'public';
