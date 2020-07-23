@@ -97,6 +97,15 @@ class AccountingJournal extends HTMLElement {
                             </table>
                         </div><!-- .table-wrapper -->
                     </fieldset>
+
+                    <input type="file" 
+                        id="file" 
+                        name="file" 
+                        class="form-input-file sr-only" 
+                        title="Add File Reference"
+                        accept="image/*,.pdf,.txt,.doc,.docx,.xl*,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        multiple 
+                    />
                 </form>
             </div><!-- .form-wrapper -->
         `;
@@ -128,17 +137,33 @@ class AccountingJournal extends HTMLElement {
             });
 
             const files = [];
-            shadow.querySelectorAll('.form-input-file').forEach((n) => {
-                for(let i = 0; i < n.files.length; i++) {
-                    const f = n.files[i];
-                    files.push({
-                        id: Util.generateUUID(),
-                        filename: f.name,
-                        type: f.type,
-                        size: f.size
-                    });
-                }
+            const refs = shadow.querySelectorAll('table#tbl-refs tbody tr');
+            refs.forEach((ref) => {
+                const filename = ref.dataset.filename;
+                const type = ref.dataset.type;
+                const size = ref.dataset.size;
+                const data = ref.dataset.url;
+
+                files.push({
+                    id: Util.generateUUID(),
+                    filename: filename,
+                    type: type,
+                    size: size,
+                    data: data
+                })
             });
+            // shadow.querySelectorAll('.form-input-file').forEach((n) => {
+            //     for(let i = 0; i < n.files.length; i++) {
+            //         const f = n.files[i];
+
+            //         files.push({
+            //             id: Util.generateUUID(),
+            //             filename: f.name,
+            //             type: f.type,
+            //             size: f.size
+            //         });
+            //     }
+            // });
 
             Journal.add({
                 clientId: client_id,
@@ -180,25 +205,55 @@ class AccountingJournal extends HTMLElement {
         linkaddref.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><a class="link-remove-reference" title="Remove Reference" href="#">&minus;</a></td>
-                <td><input type="file" class="form-input-file" title="Select File" multiple /></td>
-            `;
+            const input_file = shadow.getElementById('file');
+            input_file.click();
+        });
 
-            const tbody = shadow.querySelector('table#tbl-refs tbody');
-            tbody.appendChild(tr);
+        const input_file = shadow.getElementById('file');
+        input_file.addEventListener('change', function() {
+            const selected = input_file.files;
+            if (selected.length > 0) {
+                const read_file = function(file) {
 
-            // event handler
-            const linkremoveref = tr.querySelector('.link-remove-reference');
-            linkremoveref.addEventListener('click', function(e) {
-                e.preventDefault();
+                    const filename = file.name;
+                    const type = file.type;
+                    const size = file.size;
 
-                const parent_tr = linkremoveref.parentElement.parentElement;
-                tbody.removeChild(parent_tr);
-            });
+                    const reader = new FileReader();
+                    reader.addEventListener('load', function() {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><a class="link-remove-ref" title="Remove File" href="#">&minus;</a></td>
+                            <td>
+                                <img src="${reader.result}" alt="${filename}" height="100px" width="100px"  />
+                                <span>${filename}</span>
+                            </td>
+                        `;
+                        tr.dataset.filename = filename;
+                        tr.dataset.type = type;
+                        tr.dataset.size = size;
+                        tr.dataset.url = reader.result;
 
-            // const input_file = tr.querySelector('.form-input-file');
+                        const tbody = shadow.querySelector('table#tbl-refs tbody');
+                        tbody.appendChild(tr);
+
+                        // event handlers
+                        const linkremoveref = tr.querySelector('.link-remove-ref');
+                        linkremoveref.addEventListener('click', function(e) {
+                            e.preventDefault();
+
+                            const parent_tr = linkremoveref.parentElement.parentElement;
+                            tbody.removeChild(parent_tr);
+                        });
+                    });
+                    reader.readAsDataURL(file);
+                };
+
+                for(let i = 0; i < selected.length; i++) {
+                    const file = selected[i];
+                    read_file(file);
+                }
+            }
         });
     }
 }
