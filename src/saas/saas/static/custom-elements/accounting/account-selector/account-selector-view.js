@@ -36,10 +36,10 @@ class AccountSelectorView extends HTMLElement {
         div.classList.add('wrapper');
         div.innerHTML = `
             <div class="form-wrapper">
-                <form id="form-filter">
+                <form id="form-filter" role="search">
                     <!-- filter -->
                     <label for="filter">Account</label>
-                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Find Account" placeholder="Account" />
+                    <input type="search" id="filter" name="filter" class="form-input-filter" title="Find Account" placeholder="Account" aria-label="Search for Account" />
                     <button type="button" id="btn-filter" class="btn btn-filter" title="Search">
                         <span class="material-icons">search</span>
                     </button>
@@ -85,6 +85,7 @@ class AccountSelectorView extends HTMLElement {
 
         const filter = shadow.getElementById('filter');
         filter.addEventListener('keyup', function(e) {
+            console.log(e.keyCode);
             if (e.keyCode == 13) {
                 e.preventDefault();
 
@@ -96,6 +97,11 @@ class AccountSelectorView extends HTMLElement {
         btnfilter.addEventListener('click', function() {
             beginsearch(filter.value);
         });
+
+        // shadow.getElementById('form-filter').addEventListener('submit', function(e) {
+        //     console.log('submit');
+        //     e.preventDefault();
+        // });
     }
 
     setAccounts(accounts = [], filter = '') {
