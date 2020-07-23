@@ -7,7 +7,8 @@ returns table (
     active clients.clients.active%type,
     name clients.clients.name%type,
     address clients.clients.address%type,
-    country_id clients.clients.country_id%type
+    country_id clients.clients.country_id%type,
+    currency_id clients.clients.currency_id%type
 )
 as $$
 begin
