@@ -5,6 +5,7 @@ from saas.app.core.services import get_service
 
 from saas.app.modules.accounting.stores.accounts import AccountsStore
 from saas.app.modules.accounting.stores.groups import GroupStore
+from saas.app.modules.accounting.stores.transactions import TransactionStore
 
 
 def includeme(config):
@@ -15,3 +16,4 @@ def includeme(config):
 
     services['store.accounting.accounts'] = AccountsStore(mgr, 'default')
     services['store.accounting.groups'] = GroupStore(mgr, 'default')
+    services['store.accounting.transactions'] = TransactionStore(mgr, 'default')
