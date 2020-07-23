@@ -24,6 +24,7 @@ class CurrencySelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.value = this.value.bind(this);
 
         this._attachEventHandlers();
     }
@@ -66,6 +67,11 @@ class CurrencySelector extends HTMLElement {
                 self.setAttribute('currency-id', currency.id);
             });
         });
+    }
+
+    value() {
+        const self = this;
+        return self._currency_id;
     }
 }
 customElements.define('currency-selector', CurrencySelector);
