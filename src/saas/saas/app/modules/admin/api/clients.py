@@ -25,7 +25,8 @@ def api_clients_all(request):
                 'active': c[1], 
                 'name': c[2], 
                 'address': c[3],
-                'country_id': c[4]
+                'country_id': c[4],
+                'currency_id': c[5]
             } 
             for c in result
         ]
@@ -50,9 +51,10 @@ def view_clients_add(request):
     params = request.json_body
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
-    country = params['countryId'] if 'countryId' in params else None
+    country_id = params['countryId'] if 'countryId' in params else None
+    currency_id = params['currencyId'] if 'currencyId' in params else None
 
-    if name is None or address is None or country in None:
+    if name is None or address is None or country_id is None or currency_id is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
             explanation='Client, name, address and country Id is required'
@@ -61,7 +63,7 @@ def view_clients_add(request):
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        result = clientsStore.add(name, address, country)
+        result = clientsStore.add(name, address, country_id)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -88,18 +90,19 @@ def view_clients_update(request):
     client_id = params['clientId'] if 'clientId' in params else None
     name = params['name'] if 'name' in params else None
     address = params['address'] if 'address' in params else None
-    country = params['countryId'] if 'countryId' in params else None
-
-    if client_id is None or name is None or address is None:
+    country_id = params['countryId'] if 'countryId' in params else None
+    currency_id = params['currencyId'] if 'currencyId' in params else None
+    
+    if client_id is None or name is None or address is None or country_id is None or currency_id is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id, name, address and country id is required'
+            explanation='Client Id, name, address, country id and currency id is required'
         )
 
     services = request.services()
     try:
         clientsStore = services['store.admin.clients']
-        clientsStore.update(client_id, name, address, country)
+        clientsStore.update(client_id, name, address, country_id, currency_id)
     except Exception as e:
         raise exception.HTTPInternalServerError(
             detail=str(e),
@@ -152,7 +155,8 @@ def view_clients_get(request):
                 'active': client[1],
                 'name': client[2],
                 'address': client[3],
-                'country_id': client[4]
+                'country_id': client[4],
+                'currency_id': client[5]
             }}
         )
 
@@ -217,7 +221,8 @@ def view_clients_filter(request):
                 'active': c[1], 
                 'name': c[2], 
                 'address': c[3],
-                'country_id': c[4]
+                'country_id': c[4],
+                'currency_id': c[5]
             } 
             for c in result
         ]
