@@ -101,7 +101,7 @@ class AccountEditor extends HTMLElement {
             if (account_id) {
                 console.log('//TODO account update');
             } else {
-                const tmp_account_id = Util.generate_uuid();
+                const tmp_account_id = Util.generateUUID();
                 Accounts.add(client_id, tmp_account_id, type.value, name.value, description.value).then((r) => {
                     notify(r.status, r.message, 3000);
                 });

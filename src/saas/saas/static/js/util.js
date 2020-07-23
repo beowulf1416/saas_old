@@ -36,7 +36,7 @@ class Util {
         });
     }
 
-    static generate_uuid() {
+    static generateUUID() {
         return uuidv4();
     }
 }
