@@ -115,7 +115,7 @@ def api_accounting_transactions_filter(request):
         )
 
     raise exception.HTTPOk(
-        detail=f'{len(transations)} transaction found',
+        detail=f'{len(transactions)} transaction found',
         body={
             'transactions': transactions
         }
