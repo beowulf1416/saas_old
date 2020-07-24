@@ -5,7 +5,7 @@ create or replace function transaction_attachment_add (
     p_filename accounting.transaction_attachments.filename%type,
     p_type accounting.transaction_attachments.filetype%type,
     p_size accounting.transaction_attachments.filesize%type,
-    p_data accounting.transaction_attachments.data
+    p_data accounting.transaction_attachments.data%type
 )
 returns void
 as $$
