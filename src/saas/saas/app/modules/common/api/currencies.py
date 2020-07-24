@@ -47,3 +47,45 @@ def api_common_currencies(request):
             'currencies': currencies
         }
     )
+
+@view_config(
+    route_name='api.common.currencies.get',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_common_currencies_get(request):
+    params = request.json_body
+    currency_id = params['currencyId'] if 'currencyId' in params else None
+
+    if currency_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Currency Id is required'
+        )
+
+    services = request.services()
+    store = services['stores.common.currencies']
+    currency = {}
+    try:
+        result = store.get(currency_id)
+        r = result[0]
+        currency = {
+            'id': r[0],
+            'name': r[1],
+            'currency': r[2],
+            'symbol': r[3]
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Currency found',
+        body={
+            'currency': currency
+        }
+    )

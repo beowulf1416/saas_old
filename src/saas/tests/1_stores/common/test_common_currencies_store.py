@@ -23,3 +23,8 @@ class TestCurrencyStore(unittest.TestCase):
     def test_currencies_filter(self):
         result = self.currencyStore.filter('pes')
         self.assertGreater(len(result), 0, '{0}'.format(result))
+
+    def test_currencies_get(self):
+        currency_id = 108 # philippine peso
+        result = self.currencyStore.get(currency_id)
+        self.assertGreater(len(result), 0, '{0}'.format(result))
