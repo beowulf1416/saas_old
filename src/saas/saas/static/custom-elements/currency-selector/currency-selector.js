@@ -29,15 +29,17 @@ class CurrencySelector extends HTMLElement {
         this._attachEventHandlers();
     }
 
-    static get observedAttributes() { 
-        return ['currency-id']; 
-    }
+    // static get observedAttributes() { 
+    //     return ['currency-id']; 
+    // }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (name == 'currency-id') {
-            self._currency_id = this.getAttribute('currency-id');
-        }
-    }
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //     if (name == 'currency-id') {
+    //         console.log('update currency id');
+    //         self._currency_id = this.getAttribute('currency-id');
+    //         console.log(self._currency_id);
+    //     }
+    // }
 
     _init(container) {
         const div = document.createElement('div');
@@ -70,8 +72,7 @@ class CurrencySelector extends HTMLElement {
     }
 
     value() {
-        const self = this;
-        return self._currency_id;
+        return this.getAttribute('currency-id');
     }
 }
 customElements.define('currency-selector', CurrencySelector);

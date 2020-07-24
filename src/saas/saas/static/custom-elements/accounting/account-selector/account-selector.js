@@ -29,15 +29,15 @@ class AccountSelector extends HTMLElement {
         this._attachEventHandlers();
     }
 
-    static get observedAttributes() { 
-        return ['account-id']; 
-    }
+    // static get observedAttributes() { 
+    //     return ['account-id']; 
+    // }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (name == 'account-id') {
-            self._account_id = this.getAttribute('account-id');
-        }
-    }
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //     if (name == 'account-id') {
+    //         self._account_id = this.getAttribute('account-id');
+    //     }
+    // }
 
     _init(container) {
         const div = document.createElement('div');
@@ -71,8 +71,7 @@ class AccountSelector extends HTMLElement {
     }
 
     value() {
-        const self = this;
-        return self._account_id;
+        return this.getAttribute('account-id');
     }
 }
 customElements.define('account-selector', AccountSelector);
