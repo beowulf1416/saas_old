@@ -143,21 +143,7 @@ def api_accounting_transactions_get(request):
     transaction = {}
 
     try:
-        result = store.get(client_id, filter)
-        if len(result) > 0:
-            r = result[0]
-            transaction = {
-                'transaction_id': r[0],
-                'created': r[1],
-                'posted': r[2],
-                'currency_id': r[3],
-                'description': r[4]
-            }
-
-        raise exception.HTTPInternalServerError(
-            detail = 'Transaction not found',
-            explanation = 'Transaction not found'
-        )
+        transaction = store.get(client_id, transaction_id)
     except StoreException as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
