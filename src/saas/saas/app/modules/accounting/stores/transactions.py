@@ -186,3 +186,14 @@ class TransactionStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException(e)
+
+    def filter(self, client_id: UUID, filter: str):
+        try:
+            result = super(TransactionStore, self).runProc('accounting.transactions_filter', [
+                client_id,
+                f'%{filter}%'
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise StoreException(e)

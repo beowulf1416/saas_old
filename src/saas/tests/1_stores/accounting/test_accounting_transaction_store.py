@@ -195,3 +195,11 @@ class TestTransactionStore(unittest.TestCase):
             self.assertEqual(result['transactionId'], transaction_id, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
+
+    def test_filter(self):
+        client_id = self.defaultClient[0]
+        try:
+            result = self.transactionStore.filter(client_id, '')
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
