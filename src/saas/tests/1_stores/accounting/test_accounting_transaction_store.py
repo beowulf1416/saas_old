@@ -54,16 +54,25 @@ class TestTransactionStore(unittest.TestCase):
             'currencyId': currency_id,
             'entries': [
                 {
-                    'itemId': str(uuid.uuid4()),
+                    'id': str(uuid.uuid4()),
                     'accountId': account_id_1,
                     'debit': 100,
                     'credit': 0
                 },
                 {
-                    'itemId': str(uuid.uuid4()),
+                    'id': str(uuid.uuid4()),
                     'accountId': account_id_2,
                     'debit': 0,
                     'credit': 100
+                }
+            ],
+            'attachments': [
+                {
+                    'id': str(uuid.uuid4()),
+                    'filename': f'{account_name_1}.pdf',
+                    'type': 'document/pdf',
+                    'size': '100',
+                    'data': '1234567890'
                 }
             ]
         }

@@ -33,10 +33,23 @@ class TransactionStore(BaseStore):
                 c.callproc('accounting.transaction_item_add', [
                     client_id,
                     transaction_id,
-                    e['itemId'],
+                    e['id'],
                     e['accountId'],
                     e['debit'],
                     e['credit']
+                ])
+
+            # process transaction attachments
+            attachments = transaction['attachments'] if 'attachments' in transaction else []
+            for a in attachments:
+                c.callproc('accounting.transaction_attachment_add', [
+                    client_id,
+                    transaction_id,
+                    a['id'],
+                    a['filename'],
+                    a['type'],
+                    a['size'],
+                    a['data']
                 ])
 
             super(TransactionStore, self).commit(cn)
@@ -71,7 +84,7 @@ class TransactionStore(BaseStore):
                         c.callproc('accounting.transaction_item_update', [
                             client_id,
                             transaction_id,
-                            e['itemId'],
+                            e['id'],
                             e['accountId'],
                             e['debit'],
                             e['credit']
@@ -80,17 +93,41 @@ class TransactionStore(BaseStore):
                         c.callproc('accounting.transaction_item_remove', [
                             client_id,
                             transaction_id,
-                            e['itemId']
+                            e['id']
                         ])
                 else:
                     c.callproc('accounting.transaction_item_add', [
                         client_id,
                         transaction_id,
-                        e['itemId'],
+                        e['id'],
                         e['accountId'],
                         e['debit'],
                         e['credit']
                     ])
+            
+            # process transaction attachments
+            attachments = transaction['attachments'] if 'attachments' in transaction else []
+            for a in attachments:
+                status = a['status'] if 'status' in a else None
+
+                if status:
+                    if status == 'remove':
+                        c.callproc('accounting.transaction_attachment_remove', [
+                            client_id,
+                            transaction_id,
+                            a['id']
+                        ])
+                else:
+                    c.callproc('accounting.transaction_attachment_add', [
+                        client_id,
+                        transaction_id,
+                        a['id'],
+                        a['filename'],
+                        a['type'],
+                        a['size'],
+                        a['data']
+                    ])
+
 
             super(TransactionStore, self).commit(cn)
         except Exception as e:
