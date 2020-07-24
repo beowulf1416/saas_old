@@ -10,10 +10,12 @@ begin
     insert into accounting.transactions (
         client_id,
         id,
+        currency_id,
         description
     ) values (
         p_client_id,
         p_transaction_id,
+        p_currency_id,
         p_description
     );
 end
