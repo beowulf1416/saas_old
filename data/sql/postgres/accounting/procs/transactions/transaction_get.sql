@@ -11,6 +11,7 @@ returns table (
 )
 as $$
 begin
+    return query
     select
         a.id,
         a.currency_id,
