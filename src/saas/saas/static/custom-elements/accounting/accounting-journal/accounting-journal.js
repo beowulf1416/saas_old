@@ -1,5 +1,5 @@
 'use strict';
-import { Journal } from '/static/js/modules/accounting/journal.js';
+import { Transaction } from '/static/js/modules/accounting/transaction.js';
 import { notify } from '/static/js/ui/ui.js';
 import { Util } from '/static/js/util.js';
 class AccountingJournal extends HTMLElement {
@@ -26,9 +26,21 @@ class AccountingJournal extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._fetchData = this._fetchData.bind(this);
 
         this._attachEventHandlers();
+        this._fetchData();
     }
+    
+    // static get observedAttributes() { 
+    //     return ['transaction-id']; 
+    // }
+
+    // attributeChangedCallback(name, oldValue, newValue) {
+    //     if (name == 'transaction-id') {
+    //         self._account_id = this.getAttribute('account-id');
+    //     }
+    // }
 
     _init(container) {
         const div = document.createElement('div');
@@ -125,14 +137,17 @@ class AccountingJournal extends HTMLElement {
 
             const entries = [];
             shadow.querySelectorAll('table#tbl-entries tbody tr').forEach((tr) => {
+                const transaction_item_id = tr.dataset.id;
+
                 const input_acct = tr.querySelector('account-selector');
                 const input_debit = tr.querySelector('.form-input-debit');
                 const input_credit = tr.querySelector('.form-input-credit');
 
                 entries.push({
+                    id: transaction_item_id,
                     accountId: input_acct.value(),
-                    debit: input_debit.value,
-                    credit: input_credit.value
+                    debit: parseFloat(input_debit.value),
+                    credit: parseFloat(input_credit.value)
                 });
             });
 
@@ -152,28 +167,33 @@ class AccountingJournal extends HTMLElement {
                     data: data
                 })
             });
-            // shadow.querySelectorAll('.form-input-file').forEach((n) => {
-            //     for(let i = 0; i < n.files.length; i++) {
-            //         const f = n.files[i];
 
-            //         files.push({
-            //             id: Util.generateUUID(),
-            //             filename: f.name,
-            //             type: f.type,
-            //             size: f.size
-            //         });
-            //     }
-            // });
+            const transaction_id = this.getAttribute('transaction-id');
+            if (transaction_id) {
+                Transaction.update({
+                    clientId: client_id,
+                    transactionId: transaction_id,
+                    description: input_desc.value,
+                    currencyId: parseInt(input_currency.value()),
+                    entries: entries,
+                    attachments: files
+                }).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            } else {
+                const tmp_transaction_id = uuidv4();
 
-            Journal.add({
-                clientId: client_id,
-                description: input_desc.value,
-                currencyId: input_currency.value(),
-                entries: entries,
-                files: files
-            }).then((r) => {
-                notify(r.status, r.message, 3000);
-            });
+                Transaction.add({
+                    clientId: client_id,
+                    transactionId: tmp_transaction_id,
+                    description: input_desc.value,
+                    currencyId: parseInt(input_currency.value()),
+                    entries: entries,
+                    attachments: files
+                }).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            }
         });
 
         const linkadd = shadow.getElementById('link-add');
@@ -181,6 +201,7 @@ class AccountingJournal extends HTMLElement {
             e.preventDefault();
 
             const tr = document.createElement('tr');
+            tr.dataset.id = Util.generateUUID();
             tr.innerHTML = `
                 <td><a class="link-remove" title="Remove" href="#">&minus;</a></td>
                 <td><account-selector client-id="${client_id}"></account-selector></td>
@@ -255,6 +276,13 @@ class AccountingJournal extends HTMLElement {
                 }
             }
         });
+    }
+
+    _fetchData() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const transaction_id = this.getAttribute('transaction-id');
     }
 }
 customElements.define('accounting-journal', AccountingJournal);
