@@ -27,5 +27,8 @@ set schema 'accounting';
 \ir procs/transactions/transaction_item_update.sql
 \ir procs/transactions/transaction_item_remove.sql
 
+\ir procs/transactions/transaction_attachment_add.sql
+\ir procs/transactions/transaction_attachment_remove.sql
+
 
 set schema 'public';

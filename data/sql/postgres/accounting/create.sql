@@ -19,6 +19,6 @@ set schema 'accounting';
 
 \ir tables/transactions.sql
 \ir tables/transaction_items.sql
-
+\ir tables/transaction_attachments.sql
 
 set schema 'public';
