@@ -52,12 +52,23 @@ def includeme(config):
     )
 
     # journals
+    # config.add_route(
+    #     'api.accounting.journals.add',
+    #     '/api/accounting/journals/add'
+    # )
+
+    # config.add_route(
+    #     'api.accounting.journals.post',
+    #     '/api/accounting/journals/post'
+    # )
+
+    # transactions
     config.add_route(
-        'api.accounting.journals.reference.add',
-        '/api/accounting/journals/reference/add'
+        'api.accounting.transactions.add',
+        '/api/accounting/transactions/add'
     )
 
     config.add_route(
-        'api.accounting.journals.add',
-        '/api/accounting/journals/add'
+        'api.accounting.transactions.update',
+        '/api/accounting/transactions/update'
     )
