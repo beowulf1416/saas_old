@@ -1,14 +1,23 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "$id": "/static/schemas/accounting/account_journal.json",
+    "$id": "/static/schemas/accounting/account_transaction.json",
     "definitions": {
         "entry": {
             "type": "object",
             "properties": {
+                "id": { "type": "string", "format": "uuid" },
                 "accountId": { "type": "string", "format": "uuid" },
                 "debit": { "type": "number" },
-                "credit": { "type": "number" }
-            }
+                "credit": { "type": "number" },
+                "status": { "type": "string", "enum": ["update", "remove"] }
+            },
+            "required": [
+                "id",
+                "accountId",
+                "debit",
+                "credit"
+            ],
+            "additionalProperties": false
         },
         "file": {
             "type": "object",
@@ -16,28 +25,38 @@
                 "id": { "type": "string", "format": "uuid" },
                 "filename": { "type": "string" },
                 "type": { "type": "string" },
-                "size": { "type": "number" }
-            }
+                "size": { "type": "number" },
+                "data": { "type": "string" },
+                "status": { "type": "string", "enum": ["remove"] }
+            },
+            "required": [
+                "id",
+                "filename",
+                "type",
+                "size",
+                "data"
+            ],
+            "additionalProperties": false
         }
     },
     "type": "object",
     "properties": {
         "clientId": { "type": "string", "format": "uuid" },
-        "journalId": { "type": "string", "format": "uuid" },
+        "transactionId": { "type": "string", "format": "uuid" },
         "description": { "type": "string" },
         "currencyId": { "type": "number" },
         "entries": {
             "type": "array",
             "entry": { "$ref": "#/defintions/entry" }
         },
-        "files": {
+        "attachments": {
             "type": "array",
             "file": { "$ref": "#/definitions/file" }
         }
     },
     "required": [
         "clientId",
-        "journalId",
+        "transactionId",
         "description",
         "entries"
     ],
