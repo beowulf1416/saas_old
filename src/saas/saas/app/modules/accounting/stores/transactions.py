@@ -134,3 +134,55 @@ class TransactionStore(BaseStore):
             log.error(e)
             super(TransactionStore, self).rollback(cn)
             raise StoreException(e)
+
+
+    def get(self, client_id: UUID, transaction_id: UUID):
+        try:
+            result = super(TransactionStore, self).runProc('accounting.transaction_attachments_get', [
+                client_id,
+                transaction_id
+            ])
+            attachments = [
+                {
+                    'id': r[0],
+                    'filename': r[1],
+                    'type': r[2],
+                    'size': r[3],
+                    'data': r[4]
+                }
+                for r in result
+            ]
+
+            result = super(TransactionStore, self).runProc('accounting.transaction_items_get', [
+                client_id,
+                transaction_id
+            ])
+            entries = [
+                {
+                    'id': r[0],
+                    'accountId': r[1],
+                    'debit': r[2],
+                    'credit': [3]
+                }
+                for r in result
+            ]
+
+            result = super(TransactionStore, self).runProc('accounting.transaction_get', [
+                client_id,
+                transaction_id
+            ])
+            r = result[0]
+
+            transaction = {
+                'clientId': client_id,
+                'transactionId': transaction_id,
+                'description': r[2],
+                'currencyId': r[1],
+                'entries': entries,
+                'attachments': attachments
+            }
+
+            return transaction
+        except Exception as e:
+            log.error(e)
+            raise StoreException(e)

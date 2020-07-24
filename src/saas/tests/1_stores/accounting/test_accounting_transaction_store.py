@@ -138,3 +138,60 @@ class TestTransactionStore(unittest.TestCase):
             self.transactionStore.update(transaction)
         except Exception as e:
             self.fail(e)
+
+    def test_transaction_get(self):
+        client_id = self.defaultClient[0]
+        transaction_id = str(uuid.uuid4())
+        currency_id = self.defaultClient[5]
+        description = self.generate_random_str(10)
+
+        account_id_1 = str(uuid.uuid4())
+        account_id_2 = str(uuid.uuid4())
+
+        account_name_1 = self.generate_random_str(10)
+        account_name_2 = self.generate_random_str(10)
+
+        self.accountsStore.add(client_id, account_id_1, AccountTypes.ASSETS, account_name_1, account_name_1)
+        self.accountsStore.add(client_id, account_id_2, AccountTypes.ASSETS, account_name_2, account_name_2)
+
+        transaction = {
+            'clientId': client_id,
+            'transactionId': transaction_id,
+            'description': description,
+            'currencyId': currency_id,
+            'entries': [
+                {
+                    'id': str(uuid.uuid4()),
+                    'accountId': account_id_1,
+                    'debit': 100,
+                    'credit': 0,
+                    'status': 'update'
+                },
+                {
+                    'id': str(uuid.uuid4()),
+                    'accountId': account_id_2,
+                    'debit': 0,
+                    'credit': 100,
+                    'status': 'update'
+                }
+            ],
+            'attachments': [
+                {
+                    'id': str(uuid.uuid4()),
+                    'filename': f'{account_name_1}.pdf',
+                    'type': 'document/pdf',
+                    'size': '100',
+                    'data': '1234567890',
+                    'status': 'update'
+                }
+            ]
+        }
+
+        self.transactionStore.add(transaction)
+
+        try:
+            result = self.transactionStore.get(client_id, transaction_id)
+
+            self.assertEqual(result['transactionId'], transaction_id, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
