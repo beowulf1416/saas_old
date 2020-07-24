@@ -11,7 +11,7 @@ class Transaction {
     }
 
     static get(clientId = '', transactionId = '') {
-        return Util.fetch('api.accounting.transactions.get', {
+        return Util.fetch('/api/accounting/transactions/get', {
             clientId: clientId,
             transactionId: transactionId
         })
