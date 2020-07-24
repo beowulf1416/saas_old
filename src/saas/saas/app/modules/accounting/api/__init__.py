@@ -72,3 +72,13 @@ def includeme(config):
         'api.accounting.transactions.update',
         '/api/accounting/transactions/update'
     )
+
+    config.add_route(
+        'api.accounting.transactions.get',
+        '/api/accounting/transactions/get'
+    )
+
+    config.add_route(
+        'api.accounting.transactions.filter',
+        '/api/accounting/transactions/filter'
+    )
