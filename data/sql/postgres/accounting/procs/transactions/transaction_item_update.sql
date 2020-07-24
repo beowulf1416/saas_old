@@ -1,4 +1,4 @@
-create or replace function transaction_item_add (
+create or replace function transaction_item_update (
     p_client_id clients.clients.id%type,
     p_transaction_id accounting.transactions.id%type,
     p_transaction_item_id accounting.transaction_items.id%type,
