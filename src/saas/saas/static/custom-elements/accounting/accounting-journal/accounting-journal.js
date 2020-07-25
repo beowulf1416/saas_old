@@ -34,6 +34,14 @@ class AccountingJournal extends HTMLElement {
     }
 
     _init(container) {
+        const transaction_id = this.getAttribute('transaction-id');
+        const btnpost = transaction_id ? `
+            <button type="button" id="btn-post" class="btn btn-post" title="Post Journal Entry">
+                <span class="material-icons">save_alt</span>
+            </button>
+        ` : '';
+
+
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
@@ -41,6 +49,7 @@ class AccountingJournal extends HTMLElement {
                 <button type="button" id="btn-save" class="btn btn-save" title="Save Journal Entry">
                     <span class="material-icons">save</span>
                 </button>
+                ${btnpost}
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form id="form-journals">
@@ -186,6 +195,15 @@ class AccountingJournal extends HTMLElement {
                 });
             }
         });
+
+        const btnpost = shadow.getElementById('btn-post');
+        if (btnpost) {
+            btnpost.addEventListener('click', function() {
+                Transaction.post(client_id, transaction_id).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            });
+        }
 
         const linkadd = shadow.getElementById('link-add');
         linkadd.addEventListener('click', function(e) {
