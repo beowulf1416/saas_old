@@ -1,5 +1,6 @@
 'use strict';
 import { notify, showInView } from '/static/js/ui/ui.js';
+import { Accounts } from '/static/js/modules/accounting/accounts.js';
 class AccountSelector extends HTMLElement {
 
     constructor() {
@@ -25,19 +26,11 @@ class AccountSelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.value = this.value.bind(this);
+        this._fetch = this._fetch.bind(this);
 
         this._attachEventHandlers();
+        this._fetch();
     }
-
-    // static get observedAttributes() { 
-    //     return ['account-id']; 
-    // }
-
-    // attributeChangedCallback(name, oldValue, newValue) {
-    //     if (name == 'account-id') {
-    //         self._account_id = this.getAttribute('account-id');
-    //     }
-    // }
 
     _init(container) {
         const div = document.createElement('div');
@@ -72,6 +65,26 @@ class AccountSelector extends HTMLElement {
 
     value() {
         return this.getAttribute('account-id');
+    }
+
+    _fetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+        const account_id = this.getAttribute('account-id');
+        if (account_id) {
+            const input_display = shadow.getElementById('display');
+
+            Accounts.get(client_id, account_id).then((r) => {
+                if (r.status == 'success') {
+                    const account = r.json.account;
+                    input_display.value = account.name;
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('account-selector', AccountSelector);
