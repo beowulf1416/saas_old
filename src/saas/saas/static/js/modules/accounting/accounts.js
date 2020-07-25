@@ -35,5 +35,12 @@ class Accounts {
             filter: filter
         })
     }
+
+    static get(clientId = '', accountId = '') {
+        return Util.fetch('/api/accounting/accounts/get', {
+            clientId: clientId,
+            accountId: accountId
+        });
+    }
 }
 export { Accounts };
