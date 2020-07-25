@@ -1,6 +1,6 @@
 create or replace function transaction_post (
     p_client_id clients.clients.id%type,
-    transaction_id accounting.transactions.id%type
+    p_transaction_id accounting.transactions.id%type
 )
 returns void
 as $$

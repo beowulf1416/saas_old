@@ -23,6 +23,7 @@ set schema 'accounting';
 \ir procs/transactions/transaction_update.sql
 \ir procs/transactions/transaction_get.sql
 \ir procs/transactions/transactions_filter.sql
+\ir procs/transactions/transaction_post.sql
 
 \ir procs/transactions/transaction_item_add.sql
 \ir procs/transactions/transaction_item_update.sql
