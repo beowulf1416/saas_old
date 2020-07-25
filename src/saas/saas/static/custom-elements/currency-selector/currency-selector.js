@@ -1,5 +1,6 @@
 'use strict';
 import { showInView } from '/static/js/ui/ui.js';
+import { Common } from '/static/js/modules/common/common.js';
 class CurrencySelector extends HTMLElement {
 
     constructor() {
@@ -25,21 +26,21 @@ class CurrencySelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.value = this.value.bind(this);
+        this._fetch = this._fetch.bind(this);
 
         this._attachEventHandlers();
+        this._fetch();
+    }
+    
+    static get observedAttributes() { 
+        return ['currency-id']; 
     }
 
-    // static get observedAttributes() { 
-    //     return ['currency-id']; 
-    // }
-
-    // attributeChangedCallback(name, oldValue, newValue) {
-    //     if (name == 'currency-id') {
-    //         console.log('update currency id');
-    //         self._currency_id = this.getAttribute('currency-id');
-    //         console.log(self._currency_id);
-    //     }
-    // }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name == 'currency-id') {
+            this._fetch();
+        }
+    }
 
     _init(container) {
         const div = document.createElement('div');
@@ -64,8 +65,6 @@ class CurrencySelector extends HTMLElement {
             const selector = showInView('Select Currency', `<currency-selector-view></currency-selector-view>`);
             selector.addEventListener('selected', function(e) {
                 const currency = e.detail.currency;
-
-                input_display.value = currency.name;
                 self.setAttribute('currency-id', currency.id);
             });
         });
@@ -73,6 +72,24 @@ class CurrencySelector extends HTMLElement {
 
     value() {
         return this.getAttribute('currency-id');
+    }
+
+    _fetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const currency_id = this.getAttribute('currency-id');
+        if (currency_id) {
+            const input_display = shadow.getElementById('display');
+            Common.currency_get(currency_id).then((r) => {
+                if (r.status == 'success') {
+                    const currency = r.json.currency;
+                    input_display.value = currency.name;
+                } else {
+                    notify(r.status, r.message, 3000);
+                }
+            });
+        }
     }
 }
 customElements.define('currency-selector', CurrencySelector);
