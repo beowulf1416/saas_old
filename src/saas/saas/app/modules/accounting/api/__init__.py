@@ -16,6 +16,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.accounting.accounts.get',
+        '/api/accounting/accounts/get'
+    )
+
+    config.add_route(
         'api.accounting.accounts.assign.parent',
         '/api/accounting/accounts/parent/assign'
     )
