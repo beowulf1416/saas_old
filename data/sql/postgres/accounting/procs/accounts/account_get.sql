@@ -1,4 +1,5 @@
 create or replace function account_get(
+    p_client_id accounting.accounts.id%type,
     p_acct_id accounting.accounts.id%type
 )
 returns table (
@@ -20,7 +21,8 @@ begin
         a.name,
         a.description
     from accounting.accounts a
-    where a.id = p_acct_id;
+    where a.client_id = p_client_id
+        and a.id = p_acct_id;
 end
 $$
 language plpgsql;
