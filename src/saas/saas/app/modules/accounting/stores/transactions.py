@@ -197,3 +197,13 @@ class TransactionStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException(e)
+
+    def post(self, client_id: UUID, transaction_id: UUID) -> None:
+        try:
+            super(TransactionStore, self).runProcTransactional('accounting.transaction_post', [
+                client_id,
+                transaction_id
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException(e)
