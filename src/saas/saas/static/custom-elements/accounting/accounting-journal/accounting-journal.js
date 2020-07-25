@@ -27,20 +27,11 @@ class AccountingJournal extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._fetchData = this._fetchData.bind(this);
+        this.setTransaction = this.setTransaction.bind(this);
 
         this._attachEventHandlers();
         this._fetchData();
     }
-    
-    // static get observedAttributes() { 
-    //     return ['transaction-id']; 
-    // }
-
-    // attributeChangedCallback(name, oldValue, newValue) {
-    //     if (name == 'transaction-id') {
-    //         self._account_id = this.getAttribute('account-id');
-    //     }
-    // }
 
     _init(container) {
         const div = document.createElement('div');
@@ -282,7 +273,78 @@ class AccountingJournal extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const transaction_id = this.getAttribute('transaction-id');
+        if (transaction_id) {
+            Transaction.get(client_id, transaction_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setTransaction(r.json.transaction);
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
+    }
+
+    setTransaction(transaction = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        shadow.getElementById('description').value = transaction.description;
+        shadow.getElementById('currency').setAttribute('currency-id', transaction.currencyId);
+
+        // entries
+        const tbody = shadow.querySelector('table#tbl-entries tbody');
+        transaction.entries.forEach((e) => {
+            const tr = document.createElement('tr');
+            tr.dataset.id = e.id;
+            tr.innerHTML = `
+                <td><a title="Remove" class="link-remove-entry" href="#">&minus;</a></td>
+                <td><account-selector client-id="${client_id}" account-id="${e.accountId}"></account-selector></td>
+                <td><input type="number" name="debit" class="form-input-debit" title="Debit" value="${e.debit}"/></td>
+                <td><input type="number" name="credit" class="form-input-credit" title="Credit" value="${e.credit}" /></td>
+            `;
+            tbody.appendChild(tr);
+
+            // event handlers
+            const linkremoveentry = tr.querySelector('.link-remove-entry');
+            linkremoveentry.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const parent_tr = linkremoveentry.parentElement.parentElement;
+                parent_tr.classList.toggle('remove');
+            });
+        });
+
+        // attachments
+        if (transaction.attachments) {
+            const tbody = shadow.querySelector('table#tbl-refs tbody');
+            transaction.attachments.forEach((a) => {
+                const tr = document.createElement('tr');
+                tr.dataset.id = a.id;
+                tr.innerHTML = `
+                    <td><a class="link-remove-ref" title="Remove File" href="#">&minus;</a></td>
+                    <td>
+                        <img src="${a.data}" alt="${a.filename}" height="100px" width="100px"  />
+                        <span>${a.filename}</span>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+
+                // event handlers
+                const linkremoveref = tr.querySelector('.link-remove-ref');
+                linkremoveref.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const parent_tr = linkremoveref.parentElement.parentElement;
+                    tbody.removeChild(parent_tr);
+                });
+            });
+        }
     }
 }
 customElements.define('accounting-journal', AccountingJournal);
