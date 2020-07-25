@@ -199,6 +199,8 @@ class AccountingJournal extends HTMLElement {
         const btnpost = shadow.getElementById('btn-post');
         if (btnpost) {
             btnpost.addEventListener('click', function() {
+                const transaction_id = this.getAttribute('transaction-id');
+                
                 Transaction.post(client_id, transaction_id).then((r) => {
                     notify(r.status, r.message, 3000);
                 });
