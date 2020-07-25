@@ -6,6 +6,8 @@ import string
 import random
 import uuid
 
+from saas.app.modules.accounting.models.account_types import AccountTypes
+
 
 class TestAccountStore(unittest.TestCase):
 
@@ -41,9 +43,20 @@ class TestAccountStore(unittest.TestCase):
         account_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
 
-        from saas.app.modules.accounting.models.account_types import AccountTypes
         try:
             self.accountsStore.add(client_id, account_id, AccountTypes.ASSETS, random_name, random_name)
+        except Exception as e:
+            self.fail(e)
+
+    def test_account_get(self):
+        client_id = self.defaultClient[0]
+        account_id = str(uuid.uuid4())
+        random_name = self.generate_random_str(10)
+        self.accountsStore.add(client_id, account_id, AccountTypes.ASSETS, random_name, random_name)
+        
+        try:
+            result = self.accountsStore.get(client_id, account_id)
+            self.assertEqual(result[0], account_id, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
 

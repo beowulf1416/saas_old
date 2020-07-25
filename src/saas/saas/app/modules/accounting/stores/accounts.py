@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 from uuid import UUID
 from saas.app.modules.accounting.models.account_types import AccountTypes
@@ -31,6 +31,20 @@ class AccountsStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add account')
+
+    def get(self, client_id: UUID, account_id: UUID) -> {}:
+        try:
+            result = super(AccountsStore, self).runProc('accounting.account_get', [
+                client_id,
+                account_id
+            ])
+            if len(result) > 0:
+                return result[0]
+            else:
+                raise StoreException('Missing account')
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve account')
 
     def assign_account_parent(self, clientId: UUID, accountId: UUID, parentAccountId: UUID):
         '''assign an account as the parent account
