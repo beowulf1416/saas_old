@@ -162,7 +162,7 @@ class TransactionStore(BaseStore):
                     'id': r[0],
                     'accountId': r[1],
                     'debit': r[2],
-                    'credit': [3]
+                    'credit': r[3]
                 }
                 for r in result
             ]
