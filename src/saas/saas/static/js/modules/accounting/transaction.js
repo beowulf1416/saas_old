@@ -23,5 +23,12 @@ class Transaction {
             filter: filter
         })
     }
+
+    static post(clientId = '', transactionId = '') {
+        return Util.fetch('/api/accounting/transactions/post', {
+            clientId: clientId,
+            transactionId: transactionId
+        });
+    }
 }
 export { Transaction }

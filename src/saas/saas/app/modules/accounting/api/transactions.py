@@ -13,7 +13,8 @@ from saas.app.core.stores.base import StoreException
 @view_config(
     route_name='api.accounting.transactions.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_transactions_add(request):
     params = request.json_body
@@ -46,7 +47,8 @@ def api_accounting_transactions_add(request):
 @view_config(
     route_name='api.accounting.transactions.update',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_transactions_update(request):
     params = request.json_body
@@ -78,7 +80,8 @@ def api_accounting_transactions_update(request):
 @view_config(
     route_name='api.accounting.transactions.filter',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_transactions_filter(request):
     params = request.json_body
@@ -125,7 +128,8 @@ def api_accounting_transactions_filter(request):
 @view_config(
     route_name='api.accounting.transactions.get',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_transactions_get(request):
     params = request.json_body
@@ -159,4 +163,38 @@ def api_accounting_transactions_get(request):
     )
 
 
-    
+@view_config(
+    route_name='api.accounting.transactions.post',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_accounting_transactions_post(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    transaction_id = params['transactionId'] if 'transactionId' in params else None
+
+    if client_id is None or transaction_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Transaction Id is required'
+        )
+
+    services = request.services()
+    store = services['store.accounting.transactions']
+
+    try:
+        store.post(client_id, transaction_id)
+    except StoreException as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='transaction posted',
+        body={
+            'message': 'transaction posted'
+        }
+    )

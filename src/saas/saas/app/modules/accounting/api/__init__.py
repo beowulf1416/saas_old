@@ -56,17 +56,6 @@ def includeme(config):
         '/api/accounting/groups/tree'
     )
 
-    # journals
-    # config.add_route(
-    #     'api.accounting.journals.add',
-    #     '/api/accounting/journals/add'
-    # )
-
-    # config.add_route(
-    #     'api.accounting.journals.post',
-    #     '/api/accounting/journals/post'
-    # )
-
     # transactions
     config.add_route(
         'api.accounting.transactions.add',
@@ -86,4 +75,9 @@ def includeme(config):
     config.add_route(
         'api.accounting.transactions.filter',
         '/api/accounting/transactions/filter'
+    )
+
+    config.add_route(
+        'api.accounting.transactions.post',
+        '/api/accounting/transactions/post'
     )
