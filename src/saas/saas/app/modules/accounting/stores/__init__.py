@@ -14,6 +14,7 @@ def includeme(config):
     services = get_service(None)
     mgr = services['connection.manager']
 
-    services['store.accounting.accounts'] = AccountsStore(mgr, 'default')
-    services['store.accounting.groups'] = GroupStore(mgr, 'default')
+    groups = GroupStore(mgr, 'default')
+    services['store.accounting.groups'] = groups
+    services['store.accounting.accounts'] = AccountsStore(mgr, 'default', groups)
     services['store.accounting.transactions'] = TransactionStore(mgr, 'default')
