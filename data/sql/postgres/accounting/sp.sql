@@ -18,6 +18,7 @@ set schema 'accounting';
 \ir procs/groups/account_group_add.sql
 \ir procs/groups/account_group_assign_parent.sql
 \ir procs/groups/account_group_tree.sql
+\ir procs/groups/account_group_accounts.sql
 
 \ir procs/transactions/transaction_add.sql
 \ir procs/transactions/transaction_update.sql
