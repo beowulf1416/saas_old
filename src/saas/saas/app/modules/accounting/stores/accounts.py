@@ -7,11 +7,14 @@ from saas.app.core.stores.base import BaseStore, StoreException
 from uuid import UUID
 from saas.app.modules.accounting.models.account_types import AccountTypes
 
+from saas.app.modules.accounting.stores.groups import GroupStore
+
 
 class AccountsStore(BaseStore):
 
-    def __init__(self, manager: ConnectionManager, name: str):
+    def __init__(self, manager: ConnectionManager, name: str, groupStore: GroupStore):
         super(AccountsStore, self).__init__(manager, name)
+        self._groups = groupStore
 
     def accountTypesAll(self):
         '''retrieve all account types
@@ -98,3 +101,32 @@ class AccountsStore(BaseStore):
 
     def assignGroup(self, client_id: UUID, account_id: UUID, group_id: UUID):
         pass
+
+    def chart(self, client_id: UUID):
+        try:
+            result = self._groups.tree(client_id)
+            chart = [
+                {
+                    'group_id': r[0],
+                    'group_name': r[1],
+                    'group_level': r[2],
+                    'accounts': []
+                }
+                for r in result
+            ]
+            for r in result:
+                group_id = r[0]
+                a_result = self._groups.accounts(client_id, group_id)
+                accounts = [
+                    {
+                        'account_id': r[0],
+                        'account_name': r[1]
+                    }
+                    for r in a_result
+                ]
+                chart[group_id]['accounts'] = accounts
+
+            return chart
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve chart of accounts')

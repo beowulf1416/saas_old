@@ -43,4 +43,15 @@ class GroupStore(BaseStore):
             return result
         except Exception as e:
             log.error(e)
-            raise StoreException
+            raise StoreException('Unable to retrieve account group tree')
+
+    def accounts(self, client_id: UUID, group_id: UUID) -> []:
+        try:
+            result = super(GroupStore, self).runProc('accounting.account_group_accounts', [
+                client_id,
+                group_id
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve account group accounts')
