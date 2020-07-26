@@ -52,7 +52,7 @@ class AccountingJournal extends HTMLElement {
                 ${btnpost}
             </div><!-- .toolbar -->
             <div class="form-wrapper">
-                <form id="form-journals">
+                <form id="form-journals" role="search">
                     <fieldset id="general">
                         <!-- description -->
                         <label for="description">Description</label>
@@ -199,7 +199,7 @@ class AccountingJournal extends HTMLElement {
         const btnpost = shadow.getElementById('btn-post');
         if (btnpost) {
             btnpost.addEventListener('click', function() {
-                const transaction_id = this.getAttribute('transaction-id');
+                const transaction_id = self.getAttribute('transaction-id');
                 
                 Transaction.post(client_id, transaction_id).then((r) => {
                     notify(r.status, r.message, 3000);
