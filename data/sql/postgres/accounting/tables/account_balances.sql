@@ -7,6 +7,6 @@ create table if not exists account_balances (
     constraint pk_account_balances primary key (client_id, acct_id),
     constraint fk_account_balances_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
-    constraint fk_account_balances_2 foreign key (acct_id)
-        references accounts (id) on delete restrict on update restrict
+    constraint fk_account_balances_2 foreign key (client_id, acct_id)
+        references accounting.accounts (client_id, id) on delete restrict on update restrict
 );
