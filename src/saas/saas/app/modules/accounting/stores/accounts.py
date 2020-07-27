@@ -110,21 +110,16 @@ class AccountsStore(BaseStore):
                     'group_id': r[0],
                     'group_name': r[1],
                     'group_level': r[2],
-                    'accounts': []
+                    'accounts': [
+                        {
+                            'account_id': rr[0],
+                            'account_name': rr[1]
+                        }
+                        for rr in self._groups.accounts(client_id, r[0])
+                    ]
                 }
                 for r in result
             ]
-            for r in result:
-                group_id = r[0]
-                a_result = self._groups.accounts(client_id, group_id)
-                accounts = [
-                    {
-                        'account_id': r[0],
-                        'account_name': r[1]
-                    }
-                    for r in a_result
-                ]
-                chart[group_id]['accounts'] = accounts
 
             return chart
         except Exception as e:
