@@ -35,6 +35,18 @@ class AccountsStore(BaseStore):
             log.error(e)
             raise Exception('Unable to add account')
 
+    def update(self, client_id: UUID, account_id: UUID, name: str, description: str) -> None:
+        try:
+            super(AccountsStore, self).runProc('accounting.account_update', [
+                client_id,
+                account_id,
+                name,
+                description
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to update account')
+
     def get(self, client_id: UUID, account_id: UUID) -> {}:
         try:
             result = super(AccountsStore, self).runProc('accounting.account_get', [

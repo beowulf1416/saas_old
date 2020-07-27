@@ -50,6 +50,18 @@ class TestAccountStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_account_udpate(self):
+        client_id = self.defaultClient[0]
+        account_id = str(uuid.uuid4())
+        random_name = self.generate_random_str(10)
+        self.accountsStore.add(client_id, account_id, AccountTypes.ASSETS, random_name, random_name)
+        try:
+            random_name = self.generate_random_str(10)
+            self.accountsStore.update(client_id, account_id, random_name, random_name)
+        except Exception as e:
+            self.fail(e)
+
+
     def test_account_get(self):
         client_id = self.defaultClient[0]
         account_id = str(uuid.uuid4())
