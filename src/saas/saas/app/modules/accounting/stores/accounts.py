@@ -125,7 +125,7 @@ class AccountsStore(BaseStore):
                     'accounts': [
                         {
                             'account_id': rr[0],
-                            'account_name': rr[1]
+                            'account_name': rr[4]
                         }
                         for rr in self._groups.accounts(client_id, r[0])
                     ]
