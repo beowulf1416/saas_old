@@ -151,10 +151,17 @@ class AccountTree extends HTMLElement {
                     const tr = document.createElement('tr');
                     tr.classList.add('account');
 
+                    tr.setAttribute('tabindex', -1);
+                    tr.setAttribute('role', 'row');
                     tr.setAttribute('aria-level', c.group_level);
+                    tr.setAttribute('aria-posinset', 1);
+                    tr.setAttribute('aria-setsize', 1);
+                    tr.setAttribute('aria-expanded', true);
+                    tr.setAttribute('draggable', true);
 
                     tr.innerHTML = `
                         <td>${a.account_name}</td>
+                        <td>${a.value}</td>
                     `;
 
                     tbody.appendChild(tr);
