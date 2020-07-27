@@ -15,7 +15,8 @@ begin
 
     -- process transaction items
     update accounting.account_balances ab
-        set value = value + debit - credit
+        set value = value + debit - credit,
+            updated_ts = now()
     from accounting.transaction_items ti
     where ti.account_id = ab.acct_id
         and ti.client_id = ab.client_id
