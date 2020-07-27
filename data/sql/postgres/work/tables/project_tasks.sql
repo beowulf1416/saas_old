@@ -15,6 +15,6 @@ create table if not exists project_tasks (
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_project_tasks_2 foreign key (project_id)
         references work.projects (id) on delete restrict on update restrict,
-    constraint u_project_tasks_1 check (end_ts > start_ts),
+    constraint u_project_tasks_1 check (planned_end_ts > planned_start_ts),
     constraint u_project_tasks_2 check (actual_end_ts > actual_start_ts)
 );
