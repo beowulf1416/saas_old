@@ -8,7 +8,8 @@ import pyramid.httpexceptions as exception
 @view_config(
     route_name='api.accounting.accounts.types',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_types(request):
     types = []
@@ -37,7 +38,8 @@ def view_accounting_accounts_types(request):
 @view_config(
     route_name='api.accounting.accounts.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_add(request):
     params = request.json_body
@@ -74,7 +76,8 @@ def view_accounting_accounts_add(request):
 @view_config(
     route_name='api.accounting.accounts.get',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_account_get(request):
     params = request.json_body
@@ -117,7 +120,8 @@ def api_accounting_account_get(request):
 @view_config(
     route_name='api.accounting.accounts.assign.parent',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_set_parent(request):
     params = request.json_body
@@ -152,7 +156,8 @@ def view_accounting_accounts_set_parent(request):
 @view_config(
     route_name='api.accounting.accounts.all',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_all(request):
     params = request.json_body
@@ -189,7 +194,8 @@ def view_accounting_accounts_all(request):
 @view_config(
     route_name='api.accounting.accounts.children',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_children(request):
     params = request.json_body
@@ -228,7 +234,8 @@ def view_accounting_accounts_children(request):
 @view_config(
     route_name='api.accounting.account.tree',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_account_tree(request):
     params = request.json_body
@@ -286,8 +293,6 @@ def api_accounting_accounts_chart(request):
             explanation='Client Id is required'
         )
 
-    
-
     services = request.services()
     chart = []
     try:
@@ -311,7 +316,8 @@ def api_accounting_accounts_chart(request):
 @view_config(
     route_name='api.accounting.accounts.filter',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_accounting_accounts_filter(request):
     params = request.json_body
