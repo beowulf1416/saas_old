@@ -8,10 +8,10 @@ returns void
 as $$
 begin
     update accounting.accounts set
-        a.name = p_name,
-        a.description = p_description
-    where a.client_id = p_client_id
-        and a.id = p_account_id;
+        name = p_name,
+        description = p_description
+    where client_id = p_client_id
+        and id = p_account_id;
 end
 $$
 language plpgsql;
