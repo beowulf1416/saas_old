@@ -81,7 +81,7 @@ begin
         a.id into t_root_account_group_id
     from accounting.account_groups a
     where a.client_id = p_client_id
-        and a.name = 'root';
+        and a.name = t_acct_type_name;
 
     insert into accounting.account_group (
         client_id,
