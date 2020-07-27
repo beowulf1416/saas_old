@@ -17,13 +17,15 @@ class TestTransactionStore(unittest.TestCase):
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.client import ClientStore
         from saas.app.modules.accounting.stores.accounts import AccountsStore
+        from saas.app.modules.accounting.stores.groups import GroupStore
         from saas.app.modules.accounting.stores.transactions import TransactionStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
         self.clientStore = ClientStore(self.mgr, 'default')
-        self.accountsStore = AccountsStore(self.mgr, 'default')
+        self.groupStore = GroupStore(self.mgr, 'default')
+        self.accountsStore = AccountsStore(self.mgr, 'default', self.groupStore)
         self.transactionStore = TransactionStore(self.mgr, 'default')
 
         self.defaultClient = self.clientStore.getDefaultClient()

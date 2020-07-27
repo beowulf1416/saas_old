@@ -23,8 +23,8 @@ class TestAccountGroupStore(unittest.TestCase):
             'app.config': '../../etc'
         })
         self.clientStore = ClientStore(self.mgr, 'default')
-        self.accountsStore = AccountsStore(self.mgr, 'default')
         self.groupStore = GroupStore(self.mgr, 'default')
+        self.accountsStore = AccountsStore(self.mgr, 'default', self.groupStore)
 
         self.defaultClient = self.clientStore.getDefaultClient()
     
