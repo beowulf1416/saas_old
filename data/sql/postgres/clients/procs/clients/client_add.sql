@@ -13,7 +13,9 @@ as $$
 declare
     t_role_id iam.roles.id%type;
     t_permission_id iam.permissions.id%type;
+    t_account_group_root_id accounting.account_groups.id%type;
     t_account_group_id accounting.account_groups.id%type;
+    t_account_types record;
 begin
     insert into clients.clients (
         id,
@@ -53,7 +55,7 @@ begin
     );
 
     -- create root accounting account group for client
-    t_account_group_id := public.gen_random_uuid();
+    t_account_group_root_id := public.gen_random_uuid();
     insert into accounting.account_groups (
         client_id,
         id,
@@ -61,7 +63,7 @@ begin
         description
     ) values (
         p_client_id, 
-        t_account_group_id, 
+        t_account_group_root_id, 
         'root', 
         'root account group'
     );
@@ -73,10 +75,40 @@ begin
         path
     ) values (
         p_client_id,
-        t_account_group_id,
-        t_account_group_id,
+        t_account_group_root_id,
+        t_account_group_root_id,
         text2ltree('root')
     );
+
+    -- create default accounting groups for client
+    for t_account_types in select * from accounting.account_types where name <> 'root' loop
+        t_account_group_id := public.gen_random_uuid();
+        insert into accounting.account_groups (
+            client_id,
+            id,
+            name,
+            description
+        ) values (
+            p_client_id, 
+            t_account_group_id, 
+            t_account_types.name, 
+            'root account group - ' || t_account_types.name
+        );
+
+        insert into accounting.account_group_tree (
+            client_id,
+            group_id,
+            parent_group_id,
+            path
+        ) values (
+            p_client_id,
+            t_account_group_id,
+            t_account_group_root_id,
+            text2ltree('root.' || t_account_types.name)
+        );
+    end loop;
+
+    
 end
 $$
 language plpgsql;
