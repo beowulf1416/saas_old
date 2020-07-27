@@ -246,7 +246,14 @@ def view_accounting_account_tree(request):
         accountStore = services['store.accounting.accounts']
         result = accountStore.getTree(client_id)
         accounts = [
-            { 'id': r[0], 'type_id': r[1], 'name': r[2], 'description': r[3], 'level': r[4], 'path': r[5] }
+            { 
+                'id': r[0], 
+                'type_id': r[1], 
+                'name': r[2], 
+                'description': r[3], 
+                'level': r[4], 
+                'path': r[5] 
+            }
             for r in result
         ]
     except Exception as e:
