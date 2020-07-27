@@ -1,6 +1,7 @@
 'use strict';
 import { showInTab, notify } from '/static/js/ui/ui.js';
 import { Accounts } from '/static/js/modules/accounting/accounts.js';
+import { Groups } from '/static/js/modules/accounting/groups.js';
 import { Util } from '/static/js/util.js';
 class AccountTree extends HTMLElement {
 
@@ -26,9 +27,10 @@ class AccountTree extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.addAccounts = this.addAccounts.bind(this);
-        this._getClientId = this._getClientId.bind(this);
+        // this.addAccounts = this.addAccounts.bind(this);
+        // this._getClientId = this._getClientId.bind(this);
         this._refresh = this._refresh.bind(this);
+        this.setChart = this.setChart.bind(this);
 
         this._attachEventHandlers();
         this._refresh();
@@ -38,19 +40,6 @@ class AccountTree extends HTMLElement {
         const self = this;
 
         const client_id = this.getAttribute('client-id');
-
-        const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
-        const tbody = [];
-        account_types.forEach((type) => {
-            tbody.push(`
-            <tbody id="${type}">
-                <tr class="header" role="row" aria-level="1" tab-index="-1">
-                    <th scope="row" colspan="2" aria-level="1"><span>${type}</span></th>
-                </tr>
-            </tbody>
-            `);
-        });
-        const tbodyall = tbody.join('');
 
         const div = document.createElement('div');
         div.classList.add('wrapper');
@@ -72,7 +61,7 @@ class AccountTree extends HTMLElement {
                 </button>
             </div><!-- .toolbar -->
             <div class="table-wrapper">
-                <table class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
+                <table id="tbl-accounts" class="tbl-accounts" role="treegrid" aria-label="Chart of Accounts">
                     <caption>Chart of Accounts</caption>
                     <colgroup>
                         <col class="col-name">
@@ -84,7 +73,8 @@ class AccountTree extends HTMLElement {
                             <th scope="col">Amount</th>
                         </tr>
                     </thead>
-                    ${tbodyall}
+                    <tbody>
+                    </tbody>
                 </table>
             </div><!-- .table-wrapper -->
         `;
@@ -92,17 +82,11 @@ class AccountTree extends HTMLElement {
         container.appendChild(div);
     }
 
-    _getClientId() {
-        const shadow = this.shadowRoot;
-        const client = shadow.getElementById('client-id');
-        return client.value;
-    }
-
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = this._getClientId();
+        const client_id = this.getAttribute('client-id');
 
         const btnnew = shadow.querySelector('button.btn-new');
         btnnew.addEventListener('click', function(e) {
@@ -124,114 +108,58 @@ class AccountTree extends HTMLElement {
 
     _refresh() {
         const self = this;
-        const client_id = this._getClientId();
+        const client_id = this.getAttribute('client-id');
 
-        Accounts.getTree(client_id).then((r) => {
+        Accounts.chart(client_id).then((r) => {
             if (r.status == 'success') {
-                const accounts = r.json.accounts;
-                self.addAccounts(accounts);
+                self.setChart(r.json.chart);
             } else {
-                notify(r.status, r.message);
+                notify(r.status, r.message, 3000);
             }
         });
     }
 
-    addAccounts(accounts = []) {
+    setChart(chart = []) {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const client_id = this._getClientId();
+        const tbody = shadow.querySelector('table#tbl-accounts tbody');
+        while(tbody.firstChild) {
+            tbody.removeChild(tbody.lastChild);
+        }
 
-        const tbodys = [];
-        const account_types = ['asset', 'liability', 'equity', 'income', 'expense'];
-        account_types.forEach((type) => {
-            const tbody = shadow.querySelector(`table.tbl-accounts tbody#${type}`);
-            const rows = shadow.querySelectorAll(`table.tbl-accounts tbody#${type} tr`);
-            rows.forEach((tr) => {
-                if (!tr.classList.contains('header')) {
-                    tbody.removeChild(tr);
-                }
-            });
-
-            tbodys.push(tbody);
-        });
-
-        accounts.forEach((account) => {
-            const id = Util.generateId();
-
+        chart.forEach((c) => {
             const tr = document.createElement('tr');
+            tr.classList.add('account-group');
+
             tr.setAttribute('tabindex', -1);
             tr.setAttribute('role', 'row');
-            tr.setAttribute('aria-level', account.level - 1);
+            tr.setAttribute('aria-level', c.group_level - 1);
             tr.setAttribute('aria-posinset', 1);
             tr.setAttribute('aria-setsize', 1);
             tr.setAttribute('aria-expanded', true);
             tr.setAttribute('draggable', true);
 
-            tr.id = `id${id}`;
-            tr.dataset.typeid = account.type_id;
-            tr.dataset.acctid = account.id;
-
             tr.innerHTML = `
-                <td>
-                    <span>${account.name}</span>
-                </td>
+                <td>${c.group_name}</td>
                 <td></td>
             `;
-
-            const tbody = tbodys[account.type_id - 1];
             tbody.appendChild(tr);
 
-            // event handlers
-            tr.addEventListener('dragstart', function(e) {
-                e.dataTransfer.setData('text/plain', JSON.stringify({
-                    id: tr.id,
-                    typeid: tr.dataset.typeid
-                }));
-                tr.classList.add('drag-start');
-            });
+            if (c.accounts) {
+                c.accounts.forEach((a) => {
+                    const tr = document.createElement('tr');
+                    tr.classList.add('account');
 
-            tr.addEventListener('dragenter', function(e) {
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                if (data.typeid == tr.dataset.typeid) {
-                    tr.classList.add('drag-valid');
-                } else {
-                    tr.classList.add('drag-invalid');
-                }
-            });
+                    tr.setAttribute('aria-level', c.group_level);
 
-            tr.addEventListener('dragexit', function(e) {
-                tr.classList.remove('drag-valid', 'drag-invalid');
-            });
+                    tr.innerHTML = `
+                        <td>${a.account_name}</td>
+                    `;
 
-            tr.addEventListener('dragover', function(e) {
-                e.preventDefault();
-
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                const tr = shadow.getElementById(data.id);
-                tr.classList.remove('drag-start');
-            });
-
-            tr.addEventListener('drop', function(e) {
-                e.preventDefault();
-
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                if (data.typeid == tr.dataset.typeid) {
-                    const tr_start = shadow.getElementById(data.id);
-
-                    const parentAcctId = tr.dataset.acctid;
-                    const acctId = tr_start.dataset.acctid;
-                    Accounts.assignParent(client_id, acctId, parentAcctId).then((r) => {
-                        if (r.status == 'success') {
-                            self._refresh();
-                        } else {
-                            notify(r.status, r.message);
-                        }
-                    });
-                } else {
-                    console.log('ignore invalid drop target');
-                }
-            });
+                    tbody.appendChild(tr);
+                });
+            }
         });
     }
 }
