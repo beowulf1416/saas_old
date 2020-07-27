@@ -22,7 +22,33 @@ class GroupStore(BaseStore):
             ])
         except Exception as e:
             log.error(e)
-            raise StoreException(e)
+            raise StoreException('Unable to add account group')
+
+    def update(self, client_id: UUID, group_id: UUID, name: str, description: str) -> None:
+        try:
+            super(GroupStore, self).runProcTransactional('accounting.account_group_update', [
+                client_id,
+                group_id,
+                name,
+                description
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to update account group')
+
+    def get(self, client_id: UUID, group_id: UUID) -> {}:
+        try:
+            result = super(GroupStore, self).runProc('accounting.account_group_get', [
+                client_id,
+                group_id
+            ])
+            if len(result) > 0:
+                return result[0]
+            else:
+                raise StoreException('No account group found')
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve account group')
 
     def assignParent(self, client_id: UUID, group_id: UUID, parent_group_id: UUID):
         try:

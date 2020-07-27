@@ -41,6 +41,80 @@ class TestAccountGroupStore(unittest.TestCase):
         except StoreException as e:
             self.fail(e)
 
+    def test_group_add_fail(self):
+        '''should not be able to add group named 'asset' - predefined group
+        '''
+        client_id = self.defaultClient[0]
+        group_id = str(uuid.uuid4())
+        random_str = 'asset'
+        self.assertRaises(
+            Exception,
+            self.groupStore.add,
+            client_id,
+            group_id,
+            random_str,
+            random_str
+        )
+
+    def test_group_update(self):
+        client_id = self.defaultClient[0]
+        group_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+
+        self.groupStore.add(client_id, group_id, random_str, random_str)
+        try:
+            random_str = self.generate_random_str(10)
+            self.groupStore.update(client_id, group_id, random_str, random_str)
+        except StoreException as e:
+            self.fail(e)
+
+    def test_group_get(self):
+        client_id = self.defaultClient[0]
+        group_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+
+        self.groupStore.add(client_id, group_id, random_str, random_str)
+        try:
+            result = self.groupStore.get(client_id, group_id)
+
+        except StoreException as e:
+            self.fail(e)
+
+    def test_group_update_fail(self):
+        '''should not be able to update name to a predefined group
+        '''
+        client_id = self.defaultClient[0]
+        group_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+        self.groupStore.add(client_id, group_id, random_str, random_str)
+        random_str = 'asset'
+        self.assertRaises(
+            Exception,
+            self.groupStore.update,
+            client_id,
+            group_id,
+            random_str,
+            random_str
+        )
+
+    def test_group_update_fail2(self):
+        '''should not be able to update a predefined group
+        '''
+        # client_id = self.defaultClient[0]
+        # group_id = str(uuid.uuid4())
+        # random_str = self.generate_random_str(10)
+        # self.groupStore.add(client_id, group_id, random_str, random_str)
+        # self.assertRaises(
+        #     Exception,
+        #     self.groupStore.update,
+        #     client_id,
+        #     group_id,
+        #     random_str,
+        #     random_str
+        # )
+        # // TODO: how to retrieve predefined group
+        pass
+
     def test_assign_parent(self):
         client_id = self.defaultClient[0]
 
