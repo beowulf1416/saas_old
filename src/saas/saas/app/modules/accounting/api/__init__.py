@@ -41,6 +41,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.accounting.accounts.chart',
+        '/api/accounting/accounts/chart'
+    )
+
+    config.add_route(
         'api.accounting.accounts.filter',
         '/api/accounting/accounts/filter'
     )

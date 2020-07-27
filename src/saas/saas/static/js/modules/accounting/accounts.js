@@ -21,6 +21,12 @@ class Accounts {
         });
     }
 
+    static chart(clientId = '') {
+        return Util.fetch('/api/accounting/accounts/chart', {
+            clientId: clientId
+        });
+    }
+
     static assignParent(clientId, accountId, parentAccountId) {
         return Util.fetch('/api/accounting/accounts/parent/assign', {
             clientId: clientId,

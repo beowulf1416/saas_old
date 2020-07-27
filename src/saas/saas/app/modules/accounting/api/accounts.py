@@ -271,6 +271,44 @@ def view_accounting_account_tree(request):
 
 
 @view_config(
+    route_name='api.accounting.accounts.chart',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_accounting_accounts_chart(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id is required'
+        )
+
+    
+
+    services = request.services()
+    chart = []
+    try:
+        accountStore = services['store.accounting.accounts']
+        chart = accountStore.chart(client_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='{0} accounts found'.format(len(chart)),
+        body={
+            'chart': chart
+        }
+    )
+
+
+
+@view_config(
     route_name='api.accounting.accounts.filter',
     request_method='POST',
     renderer='json'
