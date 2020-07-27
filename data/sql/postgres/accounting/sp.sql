@@ -8,6 +8,7 @@ set schema 'accounting';
 \ir procs/accounts/account_types_all.sql
 
 \ir procs/accounts/account_add.sql
+\ir procs/accounts/account_update.sql
 \ir procs/accounts/account_get.sql
 -- \ir procs/accounts/account_assign_parent.sql
 \ir procs/accounts/accounts_all.sql
@@ -16,6 +17,8 @@ set schema 'accounting';
 -- \ir procs/accounts/account_tree_all.sql
 
 \ir procs/groups/account_group_add.sql
+\ir procs/groups/account_group_update.sql
+\ir procs/groups/account_group_get.sql
 \ir procs/groups/account_group_assign_parent.sql
 \ir procs/groups/account_group_tree.sql
 \ir procs/groups/account_group_accounts.sql

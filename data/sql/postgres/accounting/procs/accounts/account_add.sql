@@ -47,35 +47,6 @@ begin
     from accounting.account_types a
     where a.id = p_type_id;
 
-    -- get root account id
-    /*
-    select
-        a.id into t_root_acct_id
-    from accounting.accounts a
-    where a.client_id = p_client_id
-        and a.type_id = 0;
-    */
-
-    -- account tree
-    /*
-    select
-        'root.' || t_acct_type_name || '.' || replace(t_acct_id::text, '-', '_')
-        into 
-        t_path;
-
-    insert into accounting.account_tree (
-        client_id,
-        acct_id,
-        parent_acct_id,
-        path
-    ) values (
-        p_client_id,
-        t_acct_id,
-        t_root_acct_id,
-        text2ltree(t_path)
-    );
-    */
-
     -- account group
     select
         a.id into t_root_account_group_id
