@@ -31,6 +31,7 @@ class AccountTree extends HTMLElement {
         // this._getClientId = this._getClientId.bind(this);
         this._refresh = this._refresh.bind(this);
         this.setChart = this.setChart.bind(this);
+        this._attachEventHandlerForGroupRow = this._attachEventHandlerForGroupRow.bind(this);
 
         this._attachEventHandlers();
         this._refresh();
@@ -130,21 +131,26 @@ class AccountTree extends HTMLElement {
 
         chart.forEach((c) => {
             const tr = document.createElement('tr');
+            tr.id = 'id' + Util.generateId();
             tr.classList.add('account-group');
 
             tr.setAttribute('tabindex', -1);
             tr.setAttribute('role', 'row');
-            tr.setAttribute('aria-level', c.group_level - 1);
+            tr.setAttribute('aria-level', c.groupLevel - 1);
             tr.setAttribute('aria-posinset', 1);
             tr.setAttribute('aria-setsize', 1);
             tr.setAttribute('aria-expanded', true);
             tr.setAttribute('draggable', true);
 
+            tr.dataset.groupId = c.groupId;
+
             tr.innerHTML = `
-                <td>${c.group_name}</td>
+                <td>${c.groupName}</td>
                 <td></td>
             `;
             tbody.appendChild(tr);
+
+            self._attachEventHandlerForGroupRow(tr);
 
             if (c.accounts) {
                 c.accounts.forEach((a) => {
@@ -153,20 +159,69 @@ class AccountTree extends HTMLElement {
 
                     tr.setAttribute('tabindex', -1);
                     tr.setAttribute('role', 'row');
-                    tr.setAttribute('aria-level', c.group_level);
+                    tr.setAttribute('aria-level', c.groupLevel);
                     tr.setAttribute('aria-posinset', 1);
                     tr.setAttribute('aria-setsize', 1);
                     tr.setAttribute('aria-expanded', true);
                     tr.setAttribute('draggable', true);
 
+                    tr.dataset.accountId = a.accountId;
+
                     tr.innerHTML = `
-                        <td>${a.account_name}</td>
+                        <td>${a.accountName}</td>
                         <td>${a.value}</td>
                     `;
 
                     tbody.appendChild(tr);
                 });
             }
+        });
+    }
+
+    _attachEventHandlerForGroupRow(tr) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        tr.addEventListener('dragstart', function(e) {
+            tr.classList.add('drag-start');
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                dragId: tr.id,
+                groupId: tr.dataset.groupId
+            }));
+        });
+
+        tr.addEventListener('dragenter', function(e) {
+
+        });
+
+        tr.addEventListener('dragexit', function(e) {
+
+        });
+
+        tr.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'link';
+        });
+
+        tr.addEventListener('drop', function(e) {
+            e.preventDefault();
+
+            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+            const tr_start = shadow.getElementById(data.dragId);
+            tr_start.classList.remove('drag-start');
+
+            const group_id = data.groupId;
+            const parent_group_id = tr.dataset.groupId;
+
+            Groups.assignParentGroup(client_id, group_id, parent_group_id).then((r) => {
+                if (r.status == 'success') {
+                    self._refresh();
+                } else {
+                    notify(r.status, r.message, 3000);
+                }
+            });
         });
     }
 }
