@@ -119,13 +119,13 @@ class AccountsStore(BaseStore):
             result = self._groups.tree(client_id)
             chart = [
                 {
-                    'group_id': r[0],
-                    'group_name': r[1],
-                    'group_level': r[2],
+                    'groupId': r[0],
+                    'groupName': r[1],
+                    'groupLevel': r[2],
                     'accounts': [
                         {
-                            'account_id': rr[0],
-                            'account_name': rr[4],
+                            'accountId': rr[0],
+                            'accountName': rr[4],
                             'value': rr[6]
                         }
                         for rr in self._groups.accounts(client_id, r[0])
