@@ -12,26 +12,27 @@ class GroupStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(GroupStore, self).__init__(manager, name)
 
-    def add(self, client_id: UUID, group_id: UUID, name: str, description: str):
+    def add(self, client_id: UUID, group_id: UUID, type_id: int, name: str, description: str):
         try:
-            super(GroupStore, self).runProcTransactional('accounting.account_group_add', [
-                client_id,
-                group_id,
-                name,
-                description
-            ])
+            super(GroupStore, self).executeTransactional(
+                f"select * from accounting.account_group_add('{client_id}', '{group_id}', {type_id}::smallint, '{name}','{description}')"
+            )
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to add account group')
 
-    def update(self, client_id: UUID, group_id: UUID, name: str, description: str) -> None:
+    def update(self, client_id: UUID, group_id: UUID, type_id: int, name: str, description: str) -> None:
         try:
-            super(GroupStore, self).runProcTransactional('accounting.account_group_update', [
-                client_id,
-                group_id,
-                name,
-                description
-            ])
+            super(GroupStore, self).executeTransactional(
+                f"select * from accounting.account_group_update('{client_id}', '{group_id}', {type_id}::smallint, '{name}','{description}')"
+            )
+            # super(GroupStore, self).runProcTransactional('accounting.account_group_update', [
+            #     client_id,
+            #     group_id,
+            #     type_id,
+            #     name,
+            #     description
+            # ])
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to update account group')
