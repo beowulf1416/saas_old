@@ -6,6 +6,8 @@ import string
 import random
 import uuid
 
+
+from saas.app.modules.accounting.models.account_types import AccountTypes
 from saas.app.core.stores.base import StoreException
 
 
@@ -37,7 +39,7 @@ class TestAccountGroupStore(unittest.TestCase):
         group_id = str(uuid.uuid4())
         random_str = self.generate_random_str(10)
         try:
-            self.groupStore.add(client_id, group_id, random_str, random_str)
+            self.groupStore.add(client_id, group_id, AccountTypes.ASSETS, random_str, random_str)
         except StoreException as e:
             self.fail(e)
 
@@ -52,6 +54,7 @@ class TestAccountGroupStore(unittest.TestCase):
             self.groupStore.add,
             client_id,
             group_id,
+            AccountTypes.ASSETS,
             random_str,
             random_str
         )
@@ -61,10 +64,10 @@ class TestAccountGroupStore(unittest.TestCase):
         group_id = str(uuid.uuid4())
         random_str = self.generate_random_str(10)
 
-        self.groupStore.add(client_id, group_id, random_str, random_str)
+        self.groupStore.add(client_id, group_id, AccountTypes.ASSETS, random_str, random_str)
         try:
             random_str = self.generate_random_str(10)
-            self.groupStore.update(client_id, group_id, random_str, random_str)
+            self.groupStore.update(client_id, group_id, AccountTypes.ASSETS, random_str, random_str)
         except StoreException as e:
             self.fail(e)
 
@@ -73,7 +76,7 @@ class TestAccountGroupStore(unittest.TestCase):
         group_id = str(uuid.uuid4())
         random_str = self.generate_random_str(10)
 
-        self.groupStore.add(client_id, group_id, random_str, random_str)
+        self.groupStore.add(client_id, group_id,  AccountTypes.ASSETS, random_str, random_str)
         try:
             result = self.groupStore.get(client_id, group_id)
 
@@ -86,13 +89,14 @@ class TestAccountGroupStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         group_id = str(uuid.uuid4())
         random_str = self.generate_random_str(10)
-        self.groupStore.add(client_id, group_id, random_str, random_str)
+        self.groupStore.add(client_id, group_id,  AccountTypes.ASSETS, random_str, random_str)
         random_str = 'asset'
         self.assertRaises(
             Exception,
             self.groupStore.update,
             client_id,
             group_id,
+            AccountTypes.ASSETS,
             random_str,
             random_str
         )
@@ -124,8 +128,8 @@ class TestAccountGroupStore(unittest.TestCase):
         group_id_2 = str(uuid.uuid4())
         random_str_2 = self.generate_random_str(10)
         try:
-            self.groupStore.add(client_id, group_id_1, random_str_1, random_str_1)
-            self.groupStore.add(client_id, group_id_2, random_str_2, random_str_2)
+            self.groupStore.add(client_id, group_id_1, AccountTypes.ASSETS,  random_str_1, random_str_1)
+            self.groupStore.add(client_id, group_id_2, AccountTypes.ASSETS, random_str_2, random_str_2)
 
             self.groupStore.assignParent(client_id, group_id_1, group_id_2)
         except StoreException as e:
