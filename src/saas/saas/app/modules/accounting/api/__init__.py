@@ -57,6 +57,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.accounting.groups.update',
+        '/api/accounting/groups/update'
+    )
+
+    config.add_route(
         'api.accounting.groups.tree',
         '/api/accounting/groups/tree'
     )
