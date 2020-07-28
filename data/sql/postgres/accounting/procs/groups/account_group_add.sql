@@ -8,7 +8,9 @@ create or replace function account_group_add (
 returns void
 as $$
 declare
-    t_root_group_id accounting.account_groups.id%type;
+    t_parent_group_id accounting.account_groups.id%type;
+    t_parent_path accounting.account_group_tree.path%type;
+    t_new_path accounting.account_group_tree.path%type;
     t_count int;
 begin
     select
@@ -35,12 +37,27 @@ begin
         p_description
     );
 
-    -- retrieve root account group and assign as parent
+    -- retrieve parent group based on type
     select
-        a.id into t_root_group_id
+        a.id into t_parent_group_id
     from accounting.account_groups a
     where a.client_id = p_client_id
-        and a.name = 'root';
+        and a.name = (
+            select
+                b.name
+            from accounting.account_types b
+            where b.id = p_type_id
+        );
+
+    select
+        a.path into t_parent_path
+    from accounting.account_group_tree a
+    where a.client_id = p_client_id
+        and a.group_id = t_parent_group_id;
+
+    -- compute path
+    t_new_path := text2ltree(ltree2text(t_parent_path) || '.' || replace(p_group_id::text, '-', '_'));
+    
     -- account group tree
     insert into accounting.account_group_tree (
         client_id,
@@ -50,8 +67,8 @@ begin
     ) values (
         p_client_id,
         p_group_id,
-        t_root_group_id,
-        text2ltree('root.' || replace(p_group_id::text, '-', '_'))
+        t_parent_group_id,
+        t_new_path
     );
 end
 $$
