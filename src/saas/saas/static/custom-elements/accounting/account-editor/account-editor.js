@@ -99,7 +99,9 @@ class AccountEditor extends HTMLElement {
             const description = shadow.getElementById('description');
 
             if (account_id) {
-                console.log('//TODO account update');
+                Accounts.update(client_id, account_id, type.value, name.value, description.value).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
             } else {
                 const tmp_account_id = Util.generateUUID();
                 Accounts.add(client_id, tmp_account_id, type.value, name.value, description.value).then((r) => {
