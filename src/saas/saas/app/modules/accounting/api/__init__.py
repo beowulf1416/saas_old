@@ -61,6 +61,11 @@ def includeme(config):
         '/api/accounting/groups/tree'
     )
 
+    config.add_route(
+        'api.accounting.groups.assign',
+        '/api/accounting/groups/assign'
+    )
+
     # transactions
     config.add_route(
         'api.accounting.transactions.add',

@@ -8,7 +8,8 @@ import pyramid.httpexceptions as exception
 @view_config(
     route_name='api.accounting.groups.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_groups_add(request):
     params = request.json_body
@@ -44,7 +45,8 @@ def api_accounting_groups_add(request):
 @view_config(
     route_name='api.accounting.groups.tree',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_accounting_groups_tree(request):
     params = request.json_body
@@ -79,5 +81,42 @@ def api_accounting_groups_tree(request):
         detail=f'{len(groups)} account groups found',
         body={
             'groups': groups
+        }
+    )
+
+
+@view_config(
+    route_name='api.accounting.groups.assign',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_accounting_groups_assign(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    group_id = params['groupId'] if 'groupId' in params else None
+    parent_group_id = params['parentGroupId'] if 'parentGroupId' in params else None
+
+
+    if client_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id is required'
+        )
+
+    services = request.services()
+    store = services['store.accounting.groups']
+    try:
+        store.assignParent(client_id, group_id, parent_group_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Account assigned to group',
+        body={
+            'message': 'Account assigned to group'
         }
     )
