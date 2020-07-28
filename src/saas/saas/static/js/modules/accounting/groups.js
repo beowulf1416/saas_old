@@ -16,5 +16,13 @@ class Groups {
             clientId: clientId
         });
     }
+
+    static assignParentGroup(clientId = '', groupId = '', parentGroupId = '') {
+        return Util.fetch('/api/accounting/groups/assign', {
+            clientId: clientId,
+            groupId: groupId,
+            parentGroupId: parentGroupId
+        });
+    }
 }
 export { Groups };
