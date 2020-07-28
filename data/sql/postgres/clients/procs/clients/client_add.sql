@@ -59,11 +59,14 @@ begin
     insert into accounting.account_groups (
         client_id,
         id,
+        type_id,
         name,
         description
     ) values (
         p_client_id, 
-        t_account_group_root_id, 
+        t_account_group_root_id,
+        -- root account type
+        0,
         'root', 
         'root account group'
     );
@@ -86,11 +89,13 @@ begin
         insert into accounting.account_groups (
             client_id,
             id,
+            type_id,
             name,
             description
         ) values (
             p_client_id, 
-            t_account_group_id, 
+            t_account_group_id,
+            t_account_types.id, 
             t_account_types.name, 
             'root account group - ' || t_account_types.name
         );
