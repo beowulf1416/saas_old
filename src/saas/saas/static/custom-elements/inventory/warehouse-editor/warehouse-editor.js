@@ -14,10 +14,6 @@ class WarehouseEditor extends HTMLElement {
         default_style.setAttribute('rel', 'stylesheet');
         default_style.setAttribute('href', '/static/css/default.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
-
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
@@ -26,7 +22,6 @@ class WarehouseEditor extends HTMLElement {
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
         shadow.appendChild(default_style);
-        shadow.appendChild(google_web_fonts);
         shadow.appendChild(div);
 
         this._getClientId = this._getClientId.bind(this);
