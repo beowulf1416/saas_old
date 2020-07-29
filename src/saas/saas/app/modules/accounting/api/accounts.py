@@ -118,6 +118,42 @@ def api_accounting_account_get(request):
 
 
 @view_config(
+    route_name='api.accounting.accounts.assign.group',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_accounting_account_assign_group(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    account_id = params['accountId'] if 'accountId' in params else None
+    group_id = params['groupId'] if 'groupId' in params else None
+
+    if client_id is None or account_id is None or group_id is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id, Account Id and Group Id is required'
+        )
+
+    services = request.services()
+    try:
+        accountStore = services['store.accounting.accounts']
+        accountStore.assign_group(client_id, account_id, group_id)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Account assigned to group',
+        body={
+            'message': 'account assigned to group'
+        }
+    )
+
+
+@view_config(
     route_name='api.accounting.accounts.assign.parent',
     request_method='POST',
     renderer='json',
