@@ -1,4 +1,4 @@
-create or replace function location_add (
+create or replace function location_update (
     p_client_id clients.clients.id%type,
     p_location_id inventory.locations.id%type,
     p_warehouse_id inventory.warehouses.id%type,
@@ -13,29 +13,17 @@ create or replace function location_add (
 returns void
 as $$
 begin
-    insert into inventory.locations (
-        client_id,
-        id,
-        warehouse_id,
-        name,
-        floor_id,
-        aisle_id,
-        shelf_id,
-        rack_id,
-        level_id,
-        bin_id
-    ) values (
-        p_client_id,
-        p_location_id,
-        p_warehouse_id,
-        p_name,
-        p_floor_id,
-        p_aisle_id,
-        p_shelf_id,
-        p_rack_id,
-        p_level_id,
-        p_bin_id
-    );
+    update inventory.locations set
+        warehouse_id = p_warehouse_id,
+        name = p_name,
+        floor_id = p_floor_id,
+        aisle_id = p_aisle_id,
+        shelf_id = p_shelf_id,
+        rack_id = p_rack_id,
+        level_id = p_level_id,
+        bin_id = p_bin_id
+    where client_id = p_client_id
+        and id = p_location_id;
 end
 $$
 language plpgsql;
