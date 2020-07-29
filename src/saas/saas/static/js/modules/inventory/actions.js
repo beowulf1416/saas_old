@@ -21,6 +21,6 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions['inventory.locations'] = function() {
         const client_id = window.clientId;
-        console.log('// TODO inventory.locations');
+        showInTab('inventory-locations', 'Locations', `<location-explorer client-id="${client_id}"></location-explorer>`);
     };
 })();
