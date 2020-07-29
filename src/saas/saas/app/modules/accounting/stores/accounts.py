@@ -111,8 +111,17 @@ class AccountsStore(BaseStore):
             log.error(e)
             raise Exception('Unable to retrieve accounts filtered')
 
-    def assignGroup(self, client_id: UUID, account_id: UUID, group_id: UUID):
-        pass
+    def assign_group(self, client_id: UUID, account_id: UUID, group_id: UUID):
+        try:
+            super(AccountsStore, self).runProcTransactional('accounting.account_assign_group', [
+                client_id,
+                account_id,
+                group_id
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to assign account to group')
+        
 
     def chart(self, client_id: UUID):
         try:

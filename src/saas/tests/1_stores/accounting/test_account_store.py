@@ -82,26 +82,21 @@ class TestAccountStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_assign_account_group(self):
+        client_id = self.defaultClient[0]
+        account_id = str(uuid.uuid4())
+        account_name = self.generate_random_str(10)
+        self.accountsStore.add(client_id, account_id, AccountTypes.ASSETS, account_name, account_name)
 
-    # def test_assign_parent_account(self):
-    #     client_id = self.defaultClient[0]
-    #     random_name_1 = self.generate_random_str(10)
-    #     random_name_2 = self.generate_random_str(10)
+        group_id = str(uuid.uuid4())
+        group_name = self.generate_random_str(10)
 
-    #     from saas.app.modules.accounting.models.account_types import AccountTypes
-    #     try:
-    #         account_1 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_1, random_name_1)
-    #         account_2 = self.accountsStore.add(client_id, AccountTypes.ASSETS, random_name_2, random_name_2)
-    #         self.accountsStore.assign_account_parent(client_id, account_1, account_2)
-    #     except Exception as e:
-    #         self.fail(e)
+        self.groupStore.add(client_id, group_id, AccountTypes.ASSETS, group_name, group_name)
 
-    # def test_account_tree_all(self):
-    #     (client_id, active, name, address, country_id)  = self.clientStore.getDefaultClient()
-    #     try:
-    #         result = self.accountsStore.getTree(client_id)
-    #     except Exception as e:
-    #         self.fail(e)
+        try:
+            self.accountsStore.assign_group(client_id, account_id, group_id)
+        except Exception as e:
+            self.fail(e)
 
     def test_account_filter(self):
         client_id = self.defaultClient[0]
