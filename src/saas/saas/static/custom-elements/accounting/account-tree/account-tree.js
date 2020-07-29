@@ -32,6 +32,7 @@ class AccountTree extends HTMLElement {
         this._refresh = this._refresh.bind(this);
         this.setChart = this.setChart.bind(this);
         this._attachEventHandlerForGroupRow = this._attachEventHandlerForGroupRow.bind(this);
+        this._attachEventHandlerForAccountRow = this._attachEventHandlerForAccountRow.bind(this);
 
         this._attachEventHandlers();
         this._refresh();
@@ -154,6 +155,7 @@ class AccountTree extends HTMLElement {
 
             if (c.accounts) {
                 c.accounts.forEach((a) => {
+                    const id_account = 'id' + Util.generateId();
                     const tr = document.createElement('tr');
                     tr.classList.add('account');
 
@@ -165,6 +167,7 @@ class AccountTree extends HTMLElement {
                     tr.setAttribute('aria-expanded', true);
                     tr.setAttribute('draggable', true);
 
+                    tr.id = id_account;
                     tr.dataset.accountId = a.accountId;
 
                     tr.innerHTML = `
@@ -173,6 +176,8 @@ class AccountTree extends HTMLElement {
                     `;
 
                     tbody.appendChild(tr);
+
+                    self._attachEventHandlerForAccountRow(tr);
                 });
             }
         });
@@ -212,16 +217,73 @@ class AccountTree extends HTMLElement {
             const tr_start = shadow.getElementById(data.dragId);
             tr_start.classList.remove('drag-start');
 
-            const group_id = data.groupId;
-            const parent_group_id = tr.dataset.groupId;
+            if (tr_start.classList.contains('account-group')) {
+                const group_id = data.groupId;
+                const parent_group_id = tr.dataset.groupId;
 
-            Groups.assignParentGroup(client_id, group_id, parent_group_id).then((r) => {
-                if (r.status == 'success') {
-                    self._refresh();
-                } else {
-                    notify(r.status, r.message, 3000);
-                }
-            });
+                Groups.assignParentGroup(client_id, group_id, parent_group_id).then((r) => {
+                    if (r.status == 'success') {
+                        self._refresh();
+                    } else {
+                        notify(r.status, r.message, 3000);
+                    }
+                });
+            }
+
+            if (tr_start.classList.contains('account')) {
+                const account_id = data.accountId;
+                const group_id = tr.dataset.groupId;
+    
+                Accounts.assignGroup(client_id, account_id, group_id).then((r) => {
+                    if (r.status == 'success') {
+                        self._refresh();
+                    } else {
+                        notify(r.status, r.message);
+                    }
+                });   
+            }
+        });
+    }
+
+    _attachEventHandlerForAccountRow(tr) {
+        const self = this;
+        const shadow = this.shadowRoot;
+        const client_id = this.getAttribute('client-id');
+
+        tr.addEventListener('dragstart', function(e) {
+            tr.classList.add('drag-start');
+            e.dataTransfer.setData('text/plain', JSON.stringify({
+                dragId: tr.id,
+                accountId: tr.dataset.accountId
+            }));
+        });
+
+        tr.addEventListener('dragenter', function(e) {
+
+        });
+
+        tr.addEventListener('dragexit', function(e) {
+
+        });
+
+        tr.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'link';
+        });
+
+        tr.addEventListener('drop', function(e) {
+            e.preventDefault();
+
+            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+            const tr_start = shadow.getElementById(data.dragId);
+            tr_start.classList.remove('drag-start');
+
+            // const group_id = tr.dataset.groupId;
+            // const account_id = data.accountId;
+
+            // Accounts.assignGroup(client_id, account_id, group_id).then((r) => {
+            //     notify(r.status, r.message);
+            // });
         });
     }
 }
