@@ -112,18 +112,37 @@ class AccountTree extends HTMLElement {
         const self = this;
         const client_id = this.getAttribute('client-id');
 
-        Accounts.chart(client_id).then((r) => {
-            if (r.status == 'success') {
-                self.setChart(r.json.chart);
-            } else {
-                notify(r.status, r.message, 3000);
-            }
-        });
+        if (self._account_types) {
+            Accounts.chart(client_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setChart(r.json.chart, self._account_types);
+                } else {
+                    notify(r.status, r.message, 3000);
+                }
+            });
+        } else {
+            Accounts.getAccountTypes().then((r) => {
+                self._account_types = [];
+                r.json.types.forEach((t) => {
+                    self._account_types.push(t.name);
+                });
+                
+                Accounts.chart(client_id).then((r) => {
+                    if (r.status == 'success') {
+                        self.setChart(r.json.chart, self._account_types);
+                    } else {
+                        notify(r.status, r.message, 3000);
+                    }
+                });
+            });
+        }
     }
 
-    setChart(chart = []) {
+    setChart(chart = [], types = []) {
         const self = this;
         const shadow = this.shadowRoot;
+
+        console.log(types);
 
         const tbody = shadow.querySelector('table#tbl-accounts tbody');
         while(tbody.firstChild) {
@@ -145,13 +164,40 @@ class AccountTree extends HTMLElement {
 
             tr.dataset.groupId = c.groupId;
 
-            tr.innerHTML = `
-                <td>${c.groupName}</td>
-                <td></td>
-            `;
+            console.log(c.groupName);
+
+            if (types.includes(c.groupName)) {
+                tr.innerHTML = `
+                    <td>
+                        ${c.groupName}
+                    </td>
+                    <td></td>
+                `;
+            } else {
+                tr.innerHTML = `
+                    <td>
+                        <a title="Edit Group" class="link-edit-group" href="#">
+                            <span class="material-icons">edit</span>
+                        </a>
+                        ${c.groupName}
+                    </td>
+                    <td></td>
+                `;
+            }
+
             tbody.appendChild(tr);
 
+            // event handlers
             self._attachEventHandlerForGroupRow(tr);
+            
+            const linkeditgroup = tr.querySelector('.link-edit-group');
+            if (linkeditgroup) {
+                linkeditgroup.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // TODO
+                });
+            }
 
             if (c.accounts) {
                 c.accounts.forEach((a) => {
@@ -171,13 +217,28 @@ class AccountTree extends HTMLElement {
                     tr.dataset.accountId = a.accountId;
 
                     tr.innerHTML = `
-                        <td>${a.accountName}</td>
+                        <td>
+                            <a title="Edit Account" class="link-edit-account" href="#">
+                                <span class="material-icons">edit</span>
+                            </a>
+                            ${a.accountName}
+                        </td>
                         <td>${a.value}</td>
                     `;
 
                     tbody.appendChild(tr);
 
+                    // event handlers
                     self._attachEventHandlerForAccountRow(tr);
+
+                    const linkeditaccount = tr.querySelector('.link-edit-account');
+                    if (linkeditaccount) {
+                        linkeditaccount.addEventListener('click', function(e) {
+                            e.preventDefault();
+
+                            // TODO
+                        });
+                    }
                 });
             }
         });
