@@ -4,6 +4,7 @@ create or replace function account_group_tree (
 returns table (
     group_id accounting.account_groups.id%type,
     name accounting.account_groups.name%type,
+    type_id accounting.account_groups.type_id%type,
     level int
 )
 as $$
@@ -20,6 +21,7 @@ begin
     select
         a.group_id,
         b.name,
+        b.type_id,
         nlevel(a.path)
     from accounting.account_group_tree a
         inner join accounting.account_groups b on a.group_id = b.id
