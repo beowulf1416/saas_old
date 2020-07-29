@@ -39,47 +39,63 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/js/modules/inventory/inventory.js'
+                'script': '/static/js/modules/inventory/inventory.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js'
+                'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/item-selector/item-selector.js' 
+                'script': '/static/custom-elements/inventory/item-selector/item-selector.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js' 
+                'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/item-editor/item-editor.js'
+                'script': '/static/custom-elements/inventory/item-editor/item-editor.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/warehouse-editor/warehouse-editor.js'
+                'script': '/static/custom-elements/inventory/warehouse-editor/warehouse-editor.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/inventory/warehouse-explorer/warehouse-explorer.js'
+                'script': '/static/custom-elements/inventory/warehouse-explorer/warehouse-explorer.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector.js'
+                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector-view.js'
+                'script': 'static/custom-elements/inventory/warehouse-selector/warehouse-selector-view.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': 'static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js'
+                'script': 'static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js',
+                'async': True,
             },
             {
                 'type': 'module',
-                'script': 'static/custom-elements/inventory/receiving-editor/receiving-editor.js'
+                'script': 'static/custom-elements/inventory/receiving-editor/receiving-editor.js',
+                'async': True,
+            },
+            {
+                'type': 'module',
+                'script': 'static/custom-elements/inventory/location-explorer/location-explorer.js',
+                'async': True,
             },
             {
                 'external': 'true',
