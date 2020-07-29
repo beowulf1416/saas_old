@@ -1,4 +1,5 @@
 'use strict';
+import { showInTab } from '/static/js/ui/ui.js';
 class LocationExplorer extends HTMLElement {
 
     constructor() {
@@ -70,6 +71,13 @@ class LocationExplorer extends HTMLElement {
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        const btnnewloc = shadow.getElementById('btn-new-location');
+        btnnewloc.addEventListener('click', function(e) {
+            showInTab('inventory-location', 'New Location', `<location-editor client-id="${client_id}"></location-editor>`);
+        });
     }
 }
 customElements.define('location-explorer', LocationExplorer);
