@@ -48,5 +48,13 @@ class Accounts {
             accountId: accountId
         });
     }
+
+    static assignGroup(clientId = '', accountId = '', groupId = '') {
+        return Util.fetch('/api/accounting/accounts/assign/group', {
+            clientId: clientId,
+            accountId: accountId,
+            groupId: groupId
+        });
+    }
 }
 export { Accounts };
