@@ -98,6 +98,11 @@ def includeme(config):
                 'async': True,
             },
             {
+                'type': 'module',
+                'script': 'static/custom-elements/inventory/location-editor/location-editor.js',
+                'async': True,
+            },
+            {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
             }
