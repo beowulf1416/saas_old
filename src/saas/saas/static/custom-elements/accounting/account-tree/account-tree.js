@@ -163,6 +163,7 @@ class AccountTree extends HTMLElement {
             tr.setAttribute('draggable', true);
 
             tr.dataset.groupId = c.groupId;
+            tr.dataset.typeId = c.groupTypeId;
 
             console.log(c.groupName);
 
@@ -215,6 +216,7 @@ class AccountTree extends HTMLElement {
 
                     tr.id = id_account;
                     tr.dataset.accountId = a.accountId;
+                    tr.dataset.typeId = a.accountTypeId;
 
                     tr.innerHTML = `
                         <td>
@@ -254,12 +256,28 @@ class AccountTree extends HTMLElement {
             tr.classList.add('drag-start');
             e.dataTransfer.setData('text/plain', JSON.stringify({
                 dragId: tr.id,
-                groupId: tr.dataset.groupId
+                groupId: tr.dataset.groupId,
+                groupTypeId: tr.dataset.typeId
             }));
         });
 
         tr.addEventListener('dragenter', function(e) {
+            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+            if (data.groupId) {
+                if (data.groupTypeId == tr.dataset.typeId) {
+                    tr.classList.add('drag-valid');
+                } else {
+                    tr.classList.add('drag-invalid');
+                }
+            }
 
+            if (data.accountId) {
+                if (data.accountTypeId == tr.dataset.typeId) {
+                    tr.classList.add('drag-valid');
+                } else {
+                    tr.classList.add('drag-invalid');
+                }
+            }
         });
 
         tr.addEventListener('dragexit', function(e) {
@@ -315,17 +333,18 @@ class AccountTree extends HTMLElement {
             tr.classList.add('drag-start');
             e.dataTransfer.setData('text/plain', JSON.stringify({
                 dragId: tr.id,
-                accountId: tr.dataset.accountId
+                accountId: tr.dataset.accountId,
+                accountTypeId: tr.dataset.typeId
             }));
         });
 
-        tr.addEventListener('dragenter', function(e) {
+        // tr.addEventListener('dragenter', function(e) {
 
-        });
+        // });
 
-        tr.addEventListener('dragexit', function(e) {
+        // tr.addEventListener('dragexit', function(e) {
 
-        });
+        // });
 
         tr.addEventListener('dragover', function(e) {
             e.preventDefault();
