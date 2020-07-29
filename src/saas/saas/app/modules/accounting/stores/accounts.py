@@ -130,11 +130,13 @@ class AccountsStore(BaseStore):
                 {
                     'groupId': r[0],
                     'groupName': r[1],
-                    'groupLevel': r[2],
+                    'groupTypeId': r[2],
+                    'groupLevel': r[3],
                     'accounts': [
                         {
                             'accountId': rr[0],
                             'accountName': rr[4],
+                            'accountTypeId': rr[3],
                             'value': rr[6]
                         }
                         for rr in self._groups.accounts(client_id, r[0])
