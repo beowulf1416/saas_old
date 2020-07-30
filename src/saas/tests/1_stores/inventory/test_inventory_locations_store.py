@@ -46,7 +46,71 @@ class TestInventoryItemsStore(unittest.TestCase):
                 random_str,
                 random_str,
                 random_str,
-                random_str 
+                random_str,
+                random_str
             )
+        except Exception as e:
+            self.fail(e)
+
+    def test_location_update(self):
+        random_str = self.generate_random_str(10)
+        client_id = self.client[0]
+        location_id = str(uuid.uuid4())
+        warehouse_id = str(uuid.uuid4())
+
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.locationStore.add(
+            client_id, 
+            location_id,
+            warehouse_id,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str
+        )
+
+        try:
+            random_str = self.generate_random_str(10)
+            self.locationStore.update(
+                client_id, 
+                location_id,
+                warehouse_id,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str
+            )
+        except Exception as e:
+            self.fail(e)
+
+    def test_location_filter(self):
+        random_str = self.generate_random_str(10)
+        client_id = self.client[0]
+        location_id = str(uuid.uuid4())
+        warehouse_id = str(uuid.uuid4())
+
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.locationStore.add(
+            client_id, 
+            location_id,
+            warehouse_id,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str
+        )
+
+        try:
+            result = self.locationStore.filter(client_id, random_str[1:9])
+            self.assertGreater(len(result), 0, '{0} {1} {2}'.format(result, random_str, random_str[1:9]))
         except Exception as e:
             self.fail(e)
