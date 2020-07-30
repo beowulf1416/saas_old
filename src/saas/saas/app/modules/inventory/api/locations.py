@@ -118,6 +118,56 @@ def api_inventory_locations_update(request):
     )
 
 @view_config(
+    route_name='api.inventory.locations.get',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_inventory_locations_get(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    location_id = params['locationId'] if 'locationId' in params else None
+
+    if client_id is None or filter is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameters',
+            explanation='Client Id and Location Id is required'
+        )
+
+    services = request.services()
+    store = services['store.inventory.locations']
+    location = {}
+    try:
+        r = store.get(
+            client_id,
+            location_id
+        )
+        location = {
+            'id': r[0],
+            'warehouseId': r[1],
+            'name': r[2],
+            'floorId': r[3],
+            'aisleId': r[4],
+            'shelfId': r[5],
+            'rackId': r[6],
+            'levelId': r[7],
+            'binId': r[8]
+        }
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='location found',
+        body={
+            'location': location
+        }
+    )
+
+@view_config(
     route_name='api.inventory.locations.filter',
     request_method='POST',
     renderer='json',
@@ -138,7 +188,7 @@ def api_inventory_locations_filter(request):
     store = services['store.inventory.locations']
     locations = []
     try:
-        result = store.update(
+        result = store.filter(
             client_id,
             filter
         )
