@@ -37,6 +37,17 @@ class TestInventoryWarehouseStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_warehouse_update(self):
+        random_str = self.generate_random_str(10)
+        warehouse_id = str(uuid.uuid4())
+        client_id = self.defaultClient[0]
+        try:
+            self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+            random_str = self.generate_random_str(10)
+            self.warehouseStore.update(client_id, warehouse_id, random_str, random_str)
+        except Exception as e:
+            self.fail(e)
+
     def test_warehouse_all(self):
         client_id = self.defaultClient[0]
         try:

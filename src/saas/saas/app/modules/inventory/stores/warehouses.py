@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 from uuid import UUID
 
@@ -24,6 +24,18 @@ class WarehouseStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add warehouse')
+
+    def update(self, client_id: UUID, warehouse_id: UUID, name: str, address: str) -> None:
+        try:
+            super(WarehouseStore, self).runProcTransactional('inventory.warehouse_update', [
+                client_id,
+                warehouse_id,
+                name,
+                address
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to update warehouse')
 
     def all(self, clientId: UUID):
         try:
