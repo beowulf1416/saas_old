@@ -10,6 +10,8 @@ create table if not exists locations (
     name varchar(100) not null,
     floor_id varchar(100),
     aisle_id varchar(100),
+    area_id varchar(100),
+    section_id varchar(100),
     shelf_id varchar(100),
     rack_id varchar(100),
     level_id varchar(100),
