@@ -8,7 +8,8 @@ import pyramid.httpexceptions as exception
 @view_config(
     route_name='api.inventory.warehouses.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_warehouses_add(request):
     params = request.json_body
@@ -41,9 +42,47 @@ def view_inventory_warehouses_add(request):
     )
 
 @view_config(
+    route_name='api.inventory.warehouses.update',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_inventory_warehouse_udpate(request):
+    params = request.json_body
+    client_id = params['clientId'] if 'clientId' in params else None
+    warehouse_id = params['warehouseId'] if 'warehouseId' in params else None
+    name = params['name'] if 'name' in params else None
+    address = params['address'] if 'address' in params else ''
+
+    if client_id is None or name is None:
+        raise exception.HTTPBadRequest(
+            detail='Missing required parameter',
+            explanation='Client Id, Warehouse Id and Name is required'
+        )
+
+    services = request.services()
+    try:
+        warehouseStore = services['store.inventory.warehouses']
+        warehouseStore.update(client_id, warehouse_id, name, address)
+    except Exception as e:
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Inventory Warehouse updated',
+        body={
+            'message': 'Inventory Warehouse updated'
+        }
+    )
+
+
+@view_config(
     route_name='api.inventory.warehouses.all',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_warehouses_all(request):
     params = request.json_body
@@ -86,7 +125,8 @@ def view_inventory_warehouses_all(request):
 @view_config(
     route_name='api.inventory.warehouses.filter',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_warehouses_filter(request):
     params = request.json_body
@@ -130,7 +170,8 @@ def view_inventory_warehouses_filter(request):
 @view_config(
     route_name='api.inventory.warehouses.get',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_warehouses_get(request):
     params = request.json_body

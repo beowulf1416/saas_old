@@ -1,70 +1,43 @@
 'use strict';
-
+import { Util } from '/static/js/util.js';
 class InventoryWarehouse {
     
     static add(clientId = '', warehouseId = '', name = '', address = '') {
-        return fetch('/api/inventory/warehouses/add', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                warehouseId: warehouseId,
-                name: name,
-                address: address
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/inventory/warehouses/add', {
+            clientId: clientId,
+            warehouseId: warehouseId,
+            name: name,
+            address: address
+        });
+    }
+
+    static update(clientId = '', warehouseId = '', name = '', address = '') {
+        return Util.fetch('/api/inventory/warehouses/update', {
+            clientId: clientId,
+            warehouseId: warehouseId,
+            name: name,
+            address: address
+        });
     }
 
     static all(clientId = '') {
-        return fetch('/api/inventory/warehouses/all', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/inventory/warehouses/all', {
+            clientId: clientId
+        });
     }
 
     static filter(clientId = '', filter = '') {
-        return fetch('/api/inventory/warehouses/filter', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                filter: filter
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/inventory/warehouses/filter', {
+            clientId: clientId,
+            filter: filter
+        });
     }
 
     static get(clientId = '', warehouseId = '') {
-        return fetch('/api/inventory/warehouses/get', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                warehouseId: warehouseId
-            })
-        })
-        .then((r) => r.json());
+        return Util.fetch('/api/inventory/warehouses/get', {
+            clientId: clientId,
+            warehouseId: warehouseId
+        });
     }
 }
 export { InventoryWarehouse };

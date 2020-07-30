@@ -44,6 +44,11 @@ def includeme(config):
         'api.inventory.warehouses.add',
         '/api/inventory/warehouses/add'
     )
+
+    config.add_route(
+        'api.inventory.warehouses.update',
+        '/api/inventory/warehouses/update'
+    )
     
     config.add_route(
         'api.inventory.warehouses.all',
