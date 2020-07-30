@@ -89,6 +89,33 @@ class TestInventoryItemsStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_location_get(self):
+        random_str = self.generate_random_str(10)
+        client_id = self.client[0]
+        location_id = str(uuid.uuid4())
+        warehouse_id = str(uuid.uuid4())
+
+        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.locationStore.add(
+            client_id, 
+            location_id,
+            warehouse_id,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str,
+            random_str
+        )
+
+        try:
+            result = self.locationStore.get(client_id, location_id)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)
+
+
     def test_location_filter(self):
         random_str = self.generate_random_str(10)
         client_id = self.client[0]

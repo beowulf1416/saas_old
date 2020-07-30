@@ -14,7 +14,7 @@ class LocationStore(BaseStore):
 
     def add(self, clientId: UUID, location_id: UUID, 
         warehouseId: UUID, name: str, floor_id: str, aisle_id: str, 
-        shelf_id: str, rack_id: str, level_id: str, bin_id: str):
+        shelf_id: str, rack_id: str, level_id: str, bin_id: str) -> None:
         try:
             super(LocationStore, self).runProcTransactional('inventory.location_add', [
                 clientId, 
@@ -34,7 +34,7 @@ class LocationStore(BaseStore):
 
     def update(self, clientId: UUID, location_id: UUID, 
         warehouseId: UUID, name: str, floor_id: str, aisle_id: str, 
-        shelf_id: str, rack_id: str, level_id: str, bin_id: str):
+        shelf_id: str, rack_id: str, level_id: str, bin_id: str) -> None:
         try:
             super(LocationStore, self).runProcTransactional('inventory.location_update', [
                 clientId, 
@@ -52,7 +52,21 @@ class LocationStore(BaseStore):
             log.error(e)
             raise StoreException('Unable to add inventory location')
 
-    def filter(self, client_id: UUID, filter: str):
+    def get(self, client_id: UUID, location_id: UUID) -> {}:
+        try:
+            result = super(LocationStore, self).runProc('inventory.location_get', [
+                client_id,
+                location_id
+            ])
+            if len(result) > 0:
+                return result[0]
+            else:
+                raise StoreException('No location found')
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve location')
+
+    def filter(self, client_id: UUID, filter: str) -> []:
         try:
             # result = super(LocationStore, self).runProc('inventory.location_fiter', [
             #     str(client_id),
