@@ -1,12 +1,13 @@
 /**
  * inventory management
  */
+\echo '** INVENTORY **'
+
 create schema if not exists inventory;
 set schema 'inventory';
 
-\echo '** INVENTORY **'
-
 /** tables **/
+\ir tables/facilities.sql
 \ir tables/warehouses.sql
 \ir tables/locations.sql
 
