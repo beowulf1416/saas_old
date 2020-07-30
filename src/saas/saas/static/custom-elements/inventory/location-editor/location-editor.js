@@ -1,4 +1,6 @@
 'use strict';
+import { Locations } from '/static/js/modules/inventory/locations.js';
+import { notify } from '/static/js/ui/ui.js';
 class LocationEditor extends HTMLElement {
 
     constructor() {
@@ -30,7 +32,6 @@ class LocationEditor extends HTMLElement {
     _init(container) {
         const client_id = this.getAttribute('client-id');
 
-
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
@@ -50,7 +51,7 @@ class LocationEditor extends HTMLElement {
                     <fieldset id="locator">
                         <!-- warehouse -->
                         <label for="warehouse">Warehouse</label>
-                        <warehouse-selector client-id="${client_id}"></warehouse-selector>
+                        <warehouse-selector id="warehouse" client-id="${client_id}"></warehouse-selector>
 
                         <!-- floor -->
                         <label for="floor">Floor</label>
@@ -79,12 +80,61 @@ class LocationEditor extends HTMLElement {
                 </form>
             </div><!-- .form-wrapper -->
         `;
+
         container.appendChild(div);
     }
 
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+        const location_id = this.getAttribute('location-id');
+
+        const btnsave = shadow.getElementById('btn-save');
+        btnsave.addEventListener('click', function() {
+            const input_name = shadow.getElementById('name');
+            const input_warehouse = shadow.getElementById('warehouse');
+            const input_floor = shadow.getElementById('floor');
+            const input_aisle = shadow.getElementById('aisle');
+            const input_shelf = shadow.getElementById('shelf');
+            const input_rack = shadow.getElementById('rack');
+            const input_level = shadow.getElementById('level');
+            const input_bin = shadow.getElementById('bin');
+
+            if (location_id) {
+                Locations.update(
+                    client_id, 
+                    location_id,
+                    input_warehouse.value(),
+                    input_name.value,
+                    input_floor.value,
+                    input_aisle.value,
+                    input_shelf.value,
+                    input_rack.value,
+                    input_level.rack,
+                    input_bin.value
+                    ).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
+            } else {
+                const tmp_location_id = uuidv4();
+                Locations.add(
+                    client_id,
+                    tmp_location_id,
+                    input_warehouse.value(),
+                    input_name.value,
+                    input_floor.value,
+                    input_aisle.value,
+                    input_shelf.value,
+                    input_rack.value,
+                    input_level.rack,
+                    input_bin.value
+                    ).then((r) => {
+                    notify(r.status, r.mesage, 3000);
+                });
+            }
+        });
     }
 }
 customElements.define('location-editor', LocationEditor);
