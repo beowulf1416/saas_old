@@ -25,8 +25,10 @@ class LocationEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._fetch = this._fetch.bind(this);
 
         this._attachEventHandlers();
+        this._fetch();
     }
 
     _init(container) {
@@ -135,6 +137,33 @@ class LocationEditor extends HTMLElement {
                 });
             }
         });
+    }
+
+    _fetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+        const location_id = this.getAttribute('location-id');
+
+        if (location_id) {
+            Locations.get(client_id, location_id).then((r) => {
+                if (r.status == 'success') {
+                    const location = r.json.location;
+
+                    shadow.getElementById('name').value = location.name;
+                    shadow.getElementById('warehouse').setAttribute('warehouse-id', location.warehouseId);
+                    shadow.getElementById('floor').value = location.floorId;
+                    shadow.getElementById('aisle').value = location.aisleId;
+                    shadow.getElementById('shelf').value = location.shelfId;
+                    shadow.getElementById('rack').value = location.rackId;
+                    shadow.getElementById('level').value = location.levelId;
+                    shadow.getElementById('bin').value = location.binId;
+                } else {
+                    notify(r.status, r.message);
+                }
+            });
+        }
     }
 }
 customElements.define('location-editor', LocationEditor);
