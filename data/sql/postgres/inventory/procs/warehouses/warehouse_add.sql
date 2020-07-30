@@ -17,8 +17,7 @@ begin
         p_client_id,
         p_name,
         p_address
-    )
-    on conflict do nothing;
+    );
 end
 $$
 language plpgsql;
