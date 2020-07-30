@@ -122,18 +122,22 @@ class AccountTree extends HTMLElement {
             });
         } else {
             Accounts.getAccountTypes().then((r) => {
-                self._account_types = [];
-                r.json.types.forEach((t) => {
-                    self._account_types.push(t.name);
-                });
-                
-                Accounts.chart(client_id).then((r) => {
-                    if (r.status == 'success') {
-                        self.setChart(r.json.chart, self._account_types);
-                    } else {
-                        notify(r.status, r.message, 3000);
-                    }
-                });
+                if (r.status == 'success') {
+                    self._account_types = [];
+                    r.json.types.forEach((t) => {
+                        self._account_types.push(t.name);
+                    });
+                    
+                    Accounts.chart(client_id).then((r) => {
+                        if (r.status == 'success') {
+                            self.setChart(r.json.chart, self._account_types);
+                        } else {
+                            notify(r.status, r.message, 3000);
+                        }
+                    });
+                } else {
+                    notify(r.status, r.message, 3000);
+                }
             });
         }
     }
