@@ -6,6 +6,7 @@ class Locations {
         clientId = '',
         locationId = '',
         warehouseId = '',
+        name = '',
         floorId = '',
         aisleId = '',
         shelfId = '',
@@ -16,6 +17,7 @@ class Locations {
             clientId: clientId,
             locationId: locationId,
             warehouseId: warehouseId,
+            name: name,
             floorId: floorId,
             aisleId: aisleId,
             shelfId: shelfId,
@@ -29,6 +31,7 @@ class Locations {
         clientId = '',
         locationId = '',
         warehouseId = '',
+        name = '',
         floorId = '',
         aisleId = '',
         shelfId = '',
@@ -39,6 +42,7 @@ class Locations {
             clientId: clientId,
             locationId: locationId,
             warehouseId: warehouseId,
+            name: name,
             floorId: floorId,
             aisleId: aisleId,
             shelfId: shelfId,
@@ -62,3 +66,4 @@ class Locations {
         });
     }
 }
+export { Locations };
