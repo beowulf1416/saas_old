@@ -87,9 +87,16 @@ class WarehouseEditor extends HTMLElement {
 
             const name = shadow.getElementById('name');
             const address = shadow.getElementById('address');
-            InventoryWarehouse.add(client_id, warehouse_id, name.value, address.value).then((r) => {
-                notify(r.status, r.message);
-            });
+            
+            if (this.getAttribute('warehouse-id')) {
+                InventoryWarehouse.update(client_id, warehouse_id, name.value, address.value).then((r) => {
+                    notify(r.status, r.message);
+                });
+            } else {
+                InventoryWarehouse.add(client_id, warehouse_id, name.value, address.value).then((r) => {
+                    notify(r.status, r.message);
+                });
+            }
         });
     }
 
