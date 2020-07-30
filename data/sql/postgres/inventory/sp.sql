@@ -29,6 +29,7 @@ set schema 'inventory';
 \ir procs/locations/location_add.sql
 \ir procs/locations/location_update.sql
 \ir procs/locations/location_filter.sql
+\ir procs/locations/location_get.sql
 
 
 set schema 'public';
