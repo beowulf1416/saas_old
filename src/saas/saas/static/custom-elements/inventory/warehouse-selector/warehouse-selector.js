@@ -29,6 +29,7 @@ class WarehouseSelector extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.getWarehouseId = this.getWarehouseId.bind(this);
         this._setWarehouse = this._setWarehouse.bind(this);
+        this.value = this.value.bind(this);
 
         this._attachEventHandlers();
     }
@@ -80,7 +81,8 @@ class WarehouseSelector extends HTMLElement {
                         // const selector = shadow.getElementById('selector');
 
                         // selector.value = warehouse.name;
-                        self._setWarehouse(warehouse);
+                        // self._setWarehouse(warehouse);
+                        self.setAttribute('warehouse-id', warehouse.id);
                     } else {
                         notify(r.status, r.message);
                     }
@@ -126,6 +128,10 @@ class WarehouseSelector extends HTMLElement {
                 }
             });
         }
+    }
+
+    value() {
+        return this.getAttribute('warehouse-id');
     }
 }
 customElements.define('warehouse-selector', WarehouseSelector);
