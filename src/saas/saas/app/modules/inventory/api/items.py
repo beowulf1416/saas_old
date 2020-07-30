@@ -12,7 +12,8 @@ import json
 @view_config(
     route_name='api.inventory.uom.all',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_items_uom(request):
     params = request.json_body
@@ -61,7 +62,8 @@ def view_inventory_items_uom(request):
 @view_config(
     route_name='api.inventory.item.get',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_item_get(request):
     params = request.json_body
@@ -147,7 +149,8 @@ def view_inventory_item_get(request):
 @view_config(
     route_name='api.inventory.items.filter',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_items_filter(request):
     params = request.json_body
@@ -199,7 +202,8 @@ def view_inventory_items_filter(request):
 @view_config(
     route_name='api.inventory.items.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_items_add(request):
     params = request.json_body
@@ -246,7 +250,8 @@ def view_inventory_items_add(request):
 @view_config(
     route_name='api.inventory.items.update',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_item_update(request):
     params = request.json_body
@@ -293,7 +298,8 @@ def view_inventory_item_update(request):
 @view_config(
     route_name='api.inventory.items.substitutes',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_item_substitutes(request):
     params = request.json_body
@@ -332,7 +338,8 @@ def view_inventory_item_substitutes(request):
 @view_config(
     route_name='api.inventory.items.substitutes.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_inventory_item_substitutes_add(request):
     params = request.json_body
