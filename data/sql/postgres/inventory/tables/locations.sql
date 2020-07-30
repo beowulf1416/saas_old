@@ -7,14 +7,16 @@ create table if not exists locations (
     created_ts timestamp without time zone not null default(now() at time zone 'utc'),
     client_id uuid not null,
     warehouse_id uuid not null,
+    name varchar(100) not null,
     floor_id varchar(100),
     aisle_id varchar(100),
     shelf_id varchar(100),
     rack_id varchar(100),
     level_id varchar(100),
     bin_id varchar(100),
-    constraint pk_locations primary key (id),
+    constraint pk_locations primary key (client_id, id),
     constraint u_locations_1 unique (client_id, warehouse_id, floor_id, aisle_id, shelf_id, rack_id, level_id, bin_id),
+    constraint u_locations_2 unique (client_id, name),
     constraint fk_locations_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
     constraint fk_locations_2 foreign key (warehouse_id)

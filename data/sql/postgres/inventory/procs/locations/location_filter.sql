@@ -27,7 +27,8 @@ begin
         a.level_id,
         a.bin_id
     from inventory.locations a
-    where a.client_id = p_client_id;
+    where a.client_id = p_client_id
+        and a.name ilike p_filter;
 end
 $$
 language plpgsql
