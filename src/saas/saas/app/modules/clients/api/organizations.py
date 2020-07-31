@@ -8,7 +8,8 @@ import pyramid.httpexceptions as exception
 @view_config(
     route_name='api.clients.organizations.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_clients_organizations_add(request):
     params = request.json_body
@@ -46,7 +47,8 @@ def view_clients_organizations_add(request):
 @view_config(
     route_name='api.clients.organizations.update',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_clients_organizations_update(request):
     params = request.json_body
@@ -84,7 +86,8 @@ def view_clients_organizations_update(request):
 @view_config(
     route_name='api.clients.organizations.tree',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_clients_organizations_tree(request):
     session = request.session
@@ -116,7 +119,8 @@ def view_clients_organizations_tree(request):
 @view_config(
     route_name='api.clients.organizations.assign.parent',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def view_clients_organizations_set_parent(request):
     params = request.json_body
