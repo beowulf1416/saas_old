@@ -17,4 +17,9 @@ import { showInTab } from '/static/js/ui/ui.js';
     window.actions['accounting.trial_balance'] = function() {
         const client_id = window.clientId;
     };
+
+    window.actions['accounting.invoice'] = function() {
+        const client_id = window.clientId;
+        showInTab('accounting-invoices', 'Invoices', `<invoice-dashboard client-id="${client_id}"></invoice-dashboard>`);
+    };
 })();
