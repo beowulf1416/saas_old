@@ -1,4 +1,5 @@
 /** common styles **/
+@import url(https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
 html {
@@ -7,6 +8,10 @@ html {
 }
 
 .hide {
+    display: none;
+}
+
+.sr-only {
     display: none;
 }
 
