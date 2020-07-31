@@ -11,5 +11,6 @@ import { showInTab } from '/static/js/ui/ui.js';
 
     window.actions['kiosk.clients'] = function() {
         const client_id = window.clientId;
+        showInTab('kiosk-clients', 'Clients', `<client-list></client-list>`);
     };
 })();
