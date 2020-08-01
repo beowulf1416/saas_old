@@ -2,15 +2,15 @@ create or replace function countries_filter (
     p_filter common.countries.iso_4217_currency_country_name%type
 )
 returns table (
-    name varchar(100),
-    iso_3166_1_alpha_2 varchar(5),
-    iso_3166_1_alpha_3 varchar(5),
-    iso_3166_1_numeric int,
-    iso_4217_currency_alpha varchar(10),
-    iso_4217_currency_country_name varchar(100),
-    iso_4217_currency_minor_unit varchar(100),
-    iso_4217_currency_name varchar(100),
-    iso_4217_currency_numeric int
+    name common.countries.name%type,
+    iso_3166_1_alpha_2 common.countries.iso_3166_1_alpha_2%type,
+    iso_3166_1_alpha_3 common.countries.iso_3166_1_alpha_3%type,
+    iso_3166_1_numeric common.countries.iso_3166_1_numeric%type,
+    iso_4217_currency_alpha common.countries.iso_4217_currency_alpha%type,
+    iso_4217_currency_country_name common.countries.iso_4217_currency_country_name%type,
+    iso_4217_currency_minor_unit common.countries.iso_4217_currency_minor_unit%type,
+    iso_4217_currency_name common.countries.iso_4217_currency_name%type,
+    iso_4217_currency_numeric common.countries.iso_4217_currency_numeric%type
 )
 as $$
 begin
