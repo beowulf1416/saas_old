@@ -2,7 +2,8 @@ set schema 'common';
 
 
 /** functions **/
-\ir procs/countries_all.sql
+\ir procs/countries/countries_all.sql
+\ir procs/countries/countries_filter.sql
 
 \ir procs/currencies/currencies_all.sql
 \ir procs/currencies/currencies_filter.sql

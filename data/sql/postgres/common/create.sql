@@ -1,8 +1,10 @@
+/**
+ * common schema
+ */
+\echo '** COMMON **'
 create schema if not exists common;
 set schema 'common';
 
-
-\echo '** COMMON **'
 
 /** tables **/
 \ir tables/dimensions.sql

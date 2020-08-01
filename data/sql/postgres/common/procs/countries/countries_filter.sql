@@ -1,4 +1,6 @@
-create or replace function countries_all ()
+create or replace function countries_filter (
+    p_filter common.countries.iso_4217_currency_country_name%type
+)
 returns table (
     name varchar(100),
     iso_3166_1_alpha_2 varchar(5),
@@ -23,7 +25,9 @@ begin
         a.iso_4217_currency_minor_unit,
         a.iso_4217_currency_name,
         a.iso_4217_currency_numeric
-    from common.countries a;
+    from common.countries a
+    where a.iso_4217_currency_country_name ilike p_filter;
 end
 $$
-language plpgsql;
+language plpgsql
+stable;
