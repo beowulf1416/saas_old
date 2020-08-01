@@ -87,7 +87,7 @@ class CountrySelectorView extends HTMLElement {
             const country_name = c.name.replace(filter, `<strong>${filter}</strong>`);
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Country" value="${c.id}" /></td>
+                <td><input type="radio" id="${id}" name="selected" class="form-input-selected" title="Select Country" value="${c.id}" data-name="${c.name}" /></td>
                 <td><label for="${id}">${country_name}</label></td>
             `;
 
@@ -100,7 +100,8 @@ class CountrySelectorView extends HTMLElement {
                     cancelable: true,
                     detail: {
                         country: {
-                            id: this.value
+                            id: this.value,
+                            name: this.dataset.name
                         }
                     }
                 }));
