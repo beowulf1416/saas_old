@@ -74,6 +74,11 @@ def includeme(config):
             },
             {
                 'type': 'module',
+                'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js',
+                'async': True,
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom-elements/inventory/warehouse-explorer/warehouse-explorer.js',
                 'async': True,
             },
