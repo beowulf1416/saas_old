@@ -23,6 +23,16 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/currency-selector/currency-selector-view.js',
                 'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/country-selector/country-selector.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/country-selector/country-selector-view.js',
+                'async': True
             }
         ]
     }
