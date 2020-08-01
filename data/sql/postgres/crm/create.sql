@@ -22,8 +22,5 @@ set schema 'crm';
 
 \ir tables/org_people.sql
 
-\ir tables/tags.sql
-\ir tables/tag_organizations.sql
-
 
 set schema 'public';
