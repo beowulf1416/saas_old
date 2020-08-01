@@ -26,7 +26,7 @@ begin
         a.iso_4217_currency_name,
         a.iso_4217_currency_numeric
     from common.countries a
-    where a.iso_4217_currency_country_name ilike p_filter;
+    where a.name ilike p_filter;
 end
 $$
 language plpgsql
