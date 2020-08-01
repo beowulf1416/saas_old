@@ -1,4 +1,5 @@
 'use strict';
+import { notify, showInTab } from '/static/js/ui/ui.js';
 class FacilityBrowser extends HTMLElement {
 
     constructor() {
@@ -6,7 +7,7 @@ class FacilityBrowser extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom-elements/inventory/item-editor/item-editor.css');
+        style.setAttribute('href', '/static/custom-elements/inventory/facility/facility-browser/facility-browser.css');
 
         const default_style = document.createElement("link");
         default_style.setAttribute('rel', 'stylesheet');
@@ -44,11 +45,17 @@ class FacilityBrowser extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const search = shadow.getElementById('search');
         search.addEventListener('search', function(e) {
             const filter = e.detail.filter;
 
             console.log(filter);
+        });
+
+        shadow.getElementById('btn-new-facility').addEventListener('click', function() {
+            showInTab('inventory-facility', 'New Facility', `<facility-editor client-id="${client_id}"></facility-editor>`);
         });
     }
 }
