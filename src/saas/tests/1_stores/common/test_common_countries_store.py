@@ -19,3 +19,7 @@ class TestCountryStore(unittest.TestCase):
     def test_countries_all(self):
         result = self.countryStore.all()
         self.assertGreater(len(result), 0)
+
+    def test_countries_filter(self):
+        result = self.countryStore.filter('%%')
+        self.assertGreater(len(result), 0, '{0}'.format(result))

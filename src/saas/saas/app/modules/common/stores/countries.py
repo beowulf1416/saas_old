@@ -16,3 +16,12 @@ class CountryStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve all countries')
+
+    def filter(self, filter: str) -> []:
+        try:
+            return super(CountryStore, self).runProc('common.countries_filter', [
+                filter
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve a filtered list of countries')
