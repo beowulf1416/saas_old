@@ -1,8 +1,16 @@
 'use strict';
 import { Util } from '/static/js/util.js';
 class Common {
-    static countries() {
-        return Util.fetch('/api/common/countries', {});
+    static countries(filter = '') {
+        return Util.fetch('/api/common/countries', {
+            filter: filter
+        });
+    }
+
+    static country_get(countryId = '') {
+        return Util.fetch('/api/common/countries/get', {
+            countryId: countryId
+        });
     }
 
     static currencies(filter = '') {

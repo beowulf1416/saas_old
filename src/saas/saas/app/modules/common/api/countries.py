@@ -12,20 +12,35 @@ import pyramid.httpexceptions as exception
     permission='user.authenticated'
 )
 def api_common_countries(request):
+    params = request.json_body
+    filter = params['filter'] if 'filter' in params else None
+
     services = request.services()
     store = services['stores.common.countries']
     countries = []
     try:
-        result = store.all()
-        countries = [
-            {
-                'name': r[0],
-                'alpha_2': r[1],
-                'alpha_3': r[2],
-                'id': r[3]
-            }
-            for r in result
-        ]
+        if filter is None:
+            result = store.all()
+            countries = [
+                {
+                    'name': r[0],
+                    'alpha_2': r[1],
+                    'alpha_3': r[2],
+                    'id': r[3]
+                }
+                for r in result
+            ]
+        else:
+            result = store.filter(filter)
+            countries = [
+                {
+                    'name': r[0],
+                    'alpha_2': r[1],
+                    'alpha_3': r[2],
+                    'id': r[3]
+                }
+                for r in result
+            ]
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
