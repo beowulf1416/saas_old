@@ -23,3 +23,7 @@ class TestCountryStore(unittest.TestCase):
     def test_countries_filter(self):
         result = self.countryStore.filter('%%')
         self.assertGreater(len(result), 0, '{0}'.format(result))
+
+    def test_countries_get(self):
+        result = self.countryStore.get(608) # country id for philippines
+        self.assertGreater(len(result), 0, '{0}'.format(result))
