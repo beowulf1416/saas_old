@@ -20,7 +20,7 @@ class CountryStore(BaseStore):
     def filter(self, filter: str) -> []:
         try:
             return super(CountryStore, self).runProc('common.countries_filter', [
-                filter
+                f'%{filter}%'
             ])
         except Exception as e:
             log.error(e)
