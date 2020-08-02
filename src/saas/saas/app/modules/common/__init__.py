@@ -33,6 +33,16 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/country-selector/country-selector-view.js',
                 'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/uom-selector/uom-selector.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/uom-selector/uom-selector-view.js',
+                'async': True
             }
         ]
     }
