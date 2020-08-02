@@ -10,6 +10,11 @@ def includeme(config):
         '/api/common/countries'
     )
 
+    config.add_route(
+        'api.common.countries.get',
+        '/api/common/countries/get'
+    )
+
     # currencies
     config.add_route(
         'api.common.currencies',
@@ -19,4 +24,15 @@ def includeme(config):
     config.add_route(
         'api.common.currencies.get',
         '/api/common/currencies/get'
+    )
+
+    # uoms
+    config.add_route(
+        'api.common.uom.filter',
+        '/api/common/uom/filter'
+    )
+
+    config.add_route(
+        'api.common.uom.get',
+        '/api/common/uom/get'
     )
