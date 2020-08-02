@@ -1,6 +1,7 @@
 'use strict';
 import { Common } from '/static/js/modules/common/common.js';
 import { Util } from '/static/js/util.js';
+import { notify } from '/static/js/ui/ui.js';
 class UomSelectorView extends HTMLElement {
 
     constructor() {
@@ -35,7 +36,7 @@ class UomSelectorView extends HTMLElement {
             <form-search id="search"></form-search>
             <div class="table-wrapper">
                 <table id="tbl-uoms">
-                    <caption>Units if Measure</caption>
+                    <caption>Units of Measure</caption>
                     <colgroup>
                         <col class="select">
                         <col class="name">
@@ -65,7 +66,7 @@ class UomSelectorView extends HTMLElement {
         shadow.getElementById('search').addEventListener('search', function(e) {
             const filter = e.detail.filter;
 
-            Common.uom_filter(client_id, dimension, filter).then((r) => {
+            Common.uoms(client_id, dimension, filter).then((r) => {
                 if (r.status == 'success') {
                     self.setUoms(r.json.uoms, filter);
                 } else {
