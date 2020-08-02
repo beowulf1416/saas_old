@@ -21,9 +21,15 @@ class FacilityEditor extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(default_style);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
+        const client_id = this.getAttribute('client-id');
+
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="toolbar" role="toolbar">
@@ -55,8 +61,7 @@ class FacilityEditor extends HTMLElement {
 
                     <!-- area uom -->
                     <label for="area-uom">Unit</label>
-                    <select id="area-uom" name="area_uom" class="form-input-area-uom" title="Area Unit of Measure">
-                    </select>
+                    <uom-selector id="area-uom" client-id="${client_id}" dimension="area"></uom-selector>
                 </form>
             </div><!-- .form-wrapper -->
         `;
