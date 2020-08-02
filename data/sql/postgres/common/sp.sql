@@ -17,5 +17,8 @@ set schema 'common';
 \ir procs/uom_weight_all.sql
 \ir procs/uom_quantity_all.sql
 
+\ir procs/uom/uom_filter.sql
+\ir procs/uom/uom_get.sql
+
 
 set schema 'public';
