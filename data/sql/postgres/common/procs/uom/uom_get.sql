@@ -18,7 +18,7 @@ begin
                 a.id,
                 a.name,
                 a.symbol,
-                a.dimension_id
+                1
             from common.uom_length a
             where a.id = p_uom_id;
         when p_dimension = 'area' then
@@ -27,7 +27,7 @@ begin
                 a.id,
                 a.name,
                 a.symbol,
-                a.dimension_id
+                2
             from common.uom_area a
             where a.id = p_uom_id;
         when p_dimension = 'volume' then
@@ -36,7 +36,7 @@ begin
                 a.id,
                 a.name,
                 a.symbol,
-                a.dimension_id
+                3
             from common.uom_volume a
             where a.id = p_uom_id;
         when p_dimension ='weight' then
@@ -45,7 +45,7 @@ begin
                 a.id,
                 a.name,
                 a.symbol,
-                a.dimension_id
+                4
             from common.uom_weight a
             where a.id = p_uom_id;
         when p_dimension = 'quantity' then
@@ -54,7 +54,7 @@ begin
                 a.id,
                 a.name,
                 a.symbol,
-                a.dimension_id
+                5
             from common.uom_quantity a
             where a.id = p_uom_id;
         else
