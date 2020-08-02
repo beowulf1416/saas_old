@@ -1,4 +1,6 @@
 'use strict';
+import { showInView } from '/static/js/ui/ui.js';
+import { Common } from '/static/js/modules/common/common.js';
 class UomSelector extends HTMLElement {
 
     constructor() {
@@ -24,7 +26,7 @@ class UomSelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._fetch = this._fetch.bind(this);
-        this.value = this.value.bind(this);
+        // this.value = this.value.bind(this);
  
         this._attachEventHandlers();
         this._fetch();
@@ -62,7 +64,7 @@ class UomSelector extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
-        const dimention = this.hasAttribute('dimension') ? this.getAttribute('dimension') : 'quantity';
+        const dimension = this.hasAttribute('dimension') ? this.getAttribute('dimension') : 'quantity';
 
         shadow.getElementById('btn-select').addEventListener('click', function() {
             const selector = showInView('Select Unit of Measure', `<uom-selector-view client-id="${client_id}" dimension="${dimension}"></uom-selector-view>`);
@@ -83,7 +85,7 @@ class UomSelector extends HTMLElement {
         const uom_id = this.getAttribute('uom-id');
 
         if (dimension && uom_id) {
-            Common.uom_get(client_id, dimension, uom_id).then((r) => {
+            Common.uom(client_id, dimension, uom_id).then((r) => {
                 if (r.status == 'success') {
                     const uom = r.json.uom
                     
