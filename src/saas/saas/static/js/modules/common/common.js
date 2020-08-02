@@ -24,5 +24,21 @@ class Common {
             currencyId: currencyId
         })
     }
+
+    static uoms(clientId = '', dimension = '', filter = '') {
+        return Util.fetch('/api/common/uom/filter', {
+            clientId: clientId,
+            dimension: dimension,
+            filter: filter
+        });
+    }
+
+    static uom(clientId = '', dimension = '', uomId = '') {
+        return Util.fetch('/api/common/uom/get', {
+            clientId: clientId,
+            dimension: dimension,
+            uomId: uomId
+        });
+    }
 }
 export { Common };
