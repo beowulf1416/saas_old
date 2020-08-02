@@ -16,4 +16,4 @@ def includeme(config):
 
     services['stores.common.countries'] = CountryStore(mgr, 'default')
     services['stores.common.currencies'] = CurrencyStore(mgr, 'default')
-    services['stores.common.uom'] = UOMStore(mgr, 'default')
+    services['stores.common.uoms'] = UOMStore(mgr, 'default')
