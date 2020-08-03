@@ -23,7 +23,7 @@ class PurchaseOrderStore(BaseStore):
                 client_id,
                 purchase_order_id,
                 order['description'],
-                order['warehouseId'],
+                order['facilityId'],
                 order['vendorId'],
                 order['instructions'],
             ])

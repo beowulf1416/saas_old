@@ -126,7 +126,7 @@ def api_purchasing_po_get(request):
             'id': r[0],
             'created': r[1],
             'description': r[2],
-            'warehouseId': r[3],
+            'facilityId': r[3],
             'vendorId': r[4],
             'instructions': r[5],
             'items': items

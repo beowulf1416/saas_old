@@ -6,7 +6,7 @@ returns table (
     id purchasing.purchase_orders.id%type,
     created purchasing.purchase_orders.created_ts%type,
     description purchasing.purchase_orders.description%type,
-    warehouse_id purchasing.purchase_orders.warehouse_id%type,
+    facility_id purchasing.purchase_orders.facility_id%type,
     vendor_id purchasing.purchase_orders.vendor_id%type,
     instructions purchasing.purchase_orders.instructions%type
 )
@@ -17,7 +17,7 @@ begin
         a.id,
         a.created_ts,
         a.description,
-        a.warehouse_id,
+        a.facility_id,
         a.vendor_id,
         a.instructions
     from purchasing.purchase_orders a
