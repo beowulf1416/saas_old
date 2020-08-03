@@ -30,7 +30,10 @@ class AccountsStore(BaseStore):
         '''add an account record for a specified client
         '''
         try:
-            super(AccountsStore, self).executeTransactional(f"select * from accounting.account_add('{client_id}','{account_id}',{type_id}::smallint,'{name}','{description}')")
+            super(AccountsStore, self).executeTransactional(
+                'select * from accounting.account_add(%s,%s,%s::smallint,%s,%s)',
+                (client_id, account_id, type_id, name, description)
+            )
         except Exception as e:
             log.error(e)
             raise Exception('Unable to add account')

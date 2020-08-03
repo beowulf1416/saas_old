@@ -15,7 +15,8 @@ class GroupStore(BaseStore):
     def add(self, client_id: UUID, group_id: UUID, type_id: int, name: str, description: str):
         try:
             super(GroupStore, self).executeTransactional(
-                f"select * from accounting.account_group_add('{client_id}', '{group_id}', {type_id}::smallint, '{name}','{description}')"
+                'select * from accounting.account_group_add(%s,%s,%s::smallint,%s,%s)',
+                (client_id, group_id, type_id, name, description)
             )
         except Exception as e:
             log.error(e)
@@ -24,7 +25,8 @@ class GroupStore(BaseStore):
     def update(self, client_id: UUID, group_id: UUID, type_id: int, name: str, description: str) -> None:
         try:
             super(GroupStore, self).executeTransactional(
-                f"select * from accounting.account_group_update('{client_id}', '{group_id}', {type_id}::smallint, '{name}','{description}')"
+                "select * from accounting.account_group_update(%s,%s,%s::smallint,%s,%s)",
+                (client_id, group_id, type_id, name, description)
             )
             # super(GroupStore, self).runProcTransactional('accounting.account_group_update', [
             #     client_id,
