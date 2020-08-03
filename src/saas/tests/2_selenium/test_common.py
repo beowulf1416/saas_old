@@ -48,15 +48,12 @@ class TestCommonPages(unittest.TestCase):
             elem = self.driver.find_element_by_class_name('link-google')
             elem.click()
 
-            elem2 = WebDriverWait(self.driver, 10).until(
+            elem = WebDriverWait(self.driver, 10).until(
                 EC.title_contains('Google')
             )
 
-            elem = self.driver.find_element_by_css_selector('.profileIdentifier')
-            elem.click()
-
-            elem2 = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(By.CLASS_NAME, 'link-news')
+            elem = WebDriverWait(self.driver, 30).until(
+                EC.title_contains('Welcome')
             )
 
             self.assertIn('Welcome', self.driver.title)
