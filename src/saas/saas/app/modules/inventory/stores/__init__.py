@@ -5,6 +5,7 @@ from saas.app.core.services import get_service
 
 from saas.app.modules.inventory.stores.items import ItemsStore
 from saas.app.modules.inventory.stores.warehouses import WarehouseStore
+from saas.app.modules.inventory.stores.facility import FacilityStore
 from saas.app.modules.inventory.stores.locations import LocationStore
 
 
@@ -16,4 +17,5 @@ def includeme(config):
 
     services['store.inventory.items'] = ItemsStore(mgr, 'default')
     services['store.inventory.warehouses'] = WarehouseStore(mgr, 'default')
+    services['store.inventory.facilities'] = FacilityStore(mgr, 'default')
     services['store.inventory.locations'] = LocationStore(mgr, 'default')
