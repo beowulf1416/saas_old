@@ -10,7 +10,7 @@ from uuid import UUID
 from saas.app.core.stores.base import StoreException
 
 
-class TestInventoryItemsStore(unittest.TestCase):
+class TestInventoryLocationStore(unittest.TestCase):
 
     def setUp(self):
         self.config = testing.setUp()
