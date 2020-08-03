@@ -10,7 +10,7 @@ class Facility {
         countryId = '',
         area = '',
         areaUomId = '') {
-        return Util.fetch('/api/inventory/facility/add', {
+        return Util.fetch('/api/inventory/facilities/add', {
             clientId: clientId,
             facilityId: facilityId,
             name: name,
@@ -30,7 +30,7 @@ class Facility {
         countryId = '',
         area = '',
         areaUomId = '') {
-        return Util.fetch('/api/inventory/facility/update', {
+        return Util.fetch('/api/inventory/facilities/update', {
             clientId: clientId,
             facilityId: facilityId,
             name: name,
@@ -39,6 +39,13 @@ class Facility {
             countryId: countryId,
             area: area,
             areaUomId: areaUomId
+        });
+    }
+
+    static get(clientId = '', facilityId = '') {
+        return Util.fetch('/api/inventory/facilities/get', {
+            clientId: clientId,
+            facilityId: facilityId
         });
     }
 

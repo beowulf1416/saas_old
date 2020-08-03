@@ -77,6 +77,11 @@ def includeme(config):
     )
 
     config.add_route(
+        'api.inventory.facilities.get',
+        'api/inventory/facilites/get'
+    )
+
+    config.add_route(
         'api.inventory.facilities.filter',
         '/api/inventory/facilities/filter'
     )
