@@ -139,3 +139,26 @@ class TestInventoryFacilityStore(unittest.TestCase):
             self.assertGreater(len(result), 0, '{0}'.format(result))
         except Exception as e:
             self.fail(e)
+
+    def test_facility_get(self):
+        client_id = self.defaultClient[0]
+        facility_id = str(uuid.uuid4())
+        random_name = self.generate_random_str(10)
+        country_id = 608 # philippines country id
+        uom_id = 1 #
+
+        self.facilityStore.add(
+            client_id,
+            facility_id,
+            random_name,
+            random_name,
+            random_name,
+            country_id,
+            100,
+            uom_id
+        )
+        try:
+            result = self.facilityStore.get(client_id, facility_id)
+            self.assertGreater(len(result), 0, '{0}'.format(result))
+        except Exception as e:
+            self.fail(e)

@@ -69,3 +69,17 @@ class FacilityStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to retrieve facilities')
+
+    def get(self, client_id: UUID, facility_id: UUID):
+        try:
+            result = super(FacilityStore, self).runProc('inventory.facility_get', [
+                client_id,
+                facility_id
+            ])
+            if len(result) > 0:
+                return result[0]
+            else:
+                raise StoreException('Facility not found')
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve facility')
