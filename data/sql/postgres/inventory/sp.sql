@@ -11,6 +11,7 @@ set schema 'inventory';
 \ir procs/facility/facility_add.sql
 \ir procs/facility/facility_update.sql
 \ir procs/facility/facility_filter.sql
+\ir procs/facility/facility_get.sql
 
 \ir procs/items/item_add.sql
 \ir procs/items/item_update.sql
