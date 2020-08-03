@@ -23,6 +23,8 @@ def api_inventory_locations_add(request):
     name = params['name'] if 'name' in params else None
     floor_id = params['floorId'] if 'floorId' in params else None
     aisle_id = params['aisleId'] if 'aisleId' in params else None
+    area_id = params['areaId'] if 'areaId' in params else None
+    section_id = params['sectionId'] if 'sectionId' in params else None
     shelf_id = params['shelfId'] if 'shelfId' in params else None
     rack_id = params['rackId'] if 'rackId' in params else None
     level_id = params['levelId'] if 'levelId' in params else None
@@ -44,6 +46,8 @@ def api_inventory_locations_add(request):
             name,
             floor_id,
             aisle_id,
+            area_id,
+            section_id,
             shelf_id,
             rack_id,
             level_id,
@@ -77,6 +81,8 @@ def api_inventory_locations_update(request):
     name = params['name'] if 'name' in params else None
     floor_id = params['floorId'] if 'floorId' in params else None
     aisle_id = params['aisleId'] if 'aisleId' in params else None
+    area_id = params['areaId'] if 'areaId' in params else None
+    section_id = params['sectionId'] if 'sectionId' in params else None
     shelf_id = params['shelfId'] if 'shelfId' in params else None
     rack_id = params['rackId'] if 'rackId' in params else None
     level_id = params['levelId'] if 'levelId' in params else None
@@ -98,6 +104,8 @@ def api_inventory_locations_update(request):
             name,
             floor_id,
             aisle_id,
+            area_id,
+            section_id,
             shelf_id,
             rack_id,
             level_id,
@@ -148,10 +156,12 @@ def api_inventory_locations_get(request):
             'name': r[2],
             'floorId': r[3],
             'aisleId': r[4],
-            'shelfId': r[5],
-            'rackId': r[6],
-            'levelId': r[7],
-            'binId': r[8]
+            'areaId': r[5],
+            'sectionId': r[6],
+            'shelfId': r[7],
+            'rackId': r[8],
+            'levelId': r[9],
+            'binId': r[10]
         }
     except Exception as e:
         log.error(e)
@@ -199,10 +209,12 @@ def api_inventory_locations_filter(request):
                 'name': r[2],
                 'floorId': r[3],
                 'aisleId': r[4],
-                'shelfId': r[5],
-                'rackId': r[6],
-                'levelId': r[7],
-                'binId': r[8]
+                'areaId': r[5],
+                'sectionId': r[6],
+                'shelfId': r[7],
+                'rackId': r[8],
+                'levelId': r[9],
+                'binId': r[10]
             }
             for r in result
         ]
