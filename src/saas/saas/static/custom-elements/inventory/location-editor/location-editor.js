@@ -55,6 +55,10 @@ class LocationEditor extends HTMLElement {
                         <label for="warehouse">Warehouse</label>
                         <warehouse-selector id="warehouse" client-id="${client_id}"></warehouse-selector>
 
+                        <!-- facility -->
+                        <label for="facility">Facility</label>
+                        <facility-selector id="facility" client-id="${client_id}"></facility-selector>
+
                         <!-- floor -->
                         <label for="floor">Floor</label>
                         <input type="text" id="floor" name="floor" class="form-input-floor" title="Floor" placeholder="Floor" />
