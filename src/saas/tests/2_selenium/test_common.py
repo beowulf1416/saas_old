@@ -31,3 +31,34 @@ class TestCommonPages(unittest.TestCase):
             EC.title_contains('Sign In')
         )
         self.assertIn('Sign In', self.driver.title)
+
+    def test_google_signin(self):
+        elem = self.driver.find_element_by_css_selector('.navbar-item.has-dropdown.is-hoverable')
+        hover = ActionChains(self.driver).move_to_element(elem)
+        hover.perform()
+
+        elem = self.driver.find_element_by_id('link-add-security-signin')
+        elem.click()
+
+        elem2 = WebDriverWait(self.driver, 10).until(
+            EC.title_contains('Sign In')
+        )
+
+        if 'Sign In' in self.driver.title:
+            elem = self.driver.find_element_by_class_name('link-google')
+            elem.click()
+
+            elem2 = WebDriverWait(self.driver, 10).until(
+                EC.title_contains('Google')
+            )
+
+            elem = self.driver.find_element_by_css_selector('.profileIdentifier')
+            elem.click()
+
+            elem2 = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located(By.CLASS_NAME, 'link-news')
+            )
+
+            self.assertIn('Welcome', self.driver.title)
+        else:
+            self.fail('failed to navigate to google signin')
