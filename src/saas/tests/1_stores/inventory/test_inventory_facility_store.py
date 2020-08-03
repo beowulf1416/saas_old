@@ -34,7 +34,7 @@ class TestInventoryFacilityStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         facility_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
-        country_id = 608 # philippines country id
+        country_id = self.defaultClient[4]
         uom_id = 1 #
 
         try:
@@ -55,7 +55,7 @@ class TestInventoryFacilityStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         facility_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
-        country_id = 608 # philippines country id
+        country_id = self.defaultClient[4]
         uom_id = 1 #
 
         self.facilityStore.add(
@@ -89,7 +89,7 @@ class TestInventoryFacilityStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         facility_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
-        country_id = 608 # philippines country id
+        country_id = self.defaultClient[4]
         uom_id = 1 #
 
         self.facilityStore.add(
@@ -121,7 +121,7 @@ class TestInventoryFacilityStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         facility_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
-        country_id = 608 # philippines country id
+        country_id = self.defaultClient[4]
         uom_id = 1 #
 
         self.facilityStore.add(
@@ -144,7 +144,7 @@ class TestInventoryFacilityStore(unittest.TestCase):
         client_id = self.defaultClient[0]
         facility_id = str(uuid.uuid4())
         random_name = self.generate_random_str(10)
-        country_id = 608 # philippines country id
+        country_id = self.defaultClient[4]
         uom_id = 1 #
 
         self.facilityStore.add(
