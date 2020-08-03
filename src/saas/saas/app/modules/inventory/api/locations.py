@@ -19,7 +19,7 @@ def api_inventory_locations_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
     location_id = params['locationId'] if 'locationId' in params else None
-    warehouse_id = params['warehouseId'] if 'warehouseId' in params else None
+    facility_id = params['facilityId'] if 'facilityId' in params else None
     name = params['name'] if 'name' in params else None
     floor_id = params['floorId'] if 'floorId' in params else None
     aisle_id = params['aisleId'] if 'aisleId' in params else None
@@ -28,10 +28,10 @@ def api_inventory_locations_add(request):
     level_id = params['levelId'] if 'levelId' in params else None
     bin_id = params['binId'] if 'binId' in params else None
 
-    if client_id is None or location_id is None or warehouse_id is None or name is None:
+    if client_id is None or location_id is None or facility_id is None or name is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
-            explanation='Client Id, Warehouse Id and name is required'
+            explanation='Client Id, Facility Id and name is required'
         )
 
     services = request.services()
@@ -40,7 +40,7 @@ def api_inventory_locations_add(request):
         store.add(
             client_id,
             location_id,
-            warehouse_id,
+            facility_id,
             name,
             floor_id,
             aisle_id,
@@ -73,7 +73,7 @@ def api_inventory_locations_update(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
     location_id = params['locationId'] if 'locationId' in params else None
-    warehouse_id = params['warehouseId'] if 'warehouseId' in params else None
+    facility_id = params['facilityId'] if 'facilityId' in params else None
     name = params['name'] if 'name' in params else None
     floor_id = params['floorId'] if 'floorId' in params else None
     aisle_id = params['aisleId'] if 'aisleId' in params else None
@@ -82,7 +82,7 @@ def api_inventory_locations_update(request):
     level_id = params['levelId'] if 'levelId' in params else None
     bin_id = params['binId'] if 'binId' in params else None
 
-    if client_id is None or location_id is None or warehouse_id is None or name is None:
+    if client_id is None or location_id is None or facility_id is None or name is None:
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
             explanation='Client Id, Warehouse Id and name is required'
@@ -94,7 +94,7 @@ def api_inventory_locations_update(request):
         store.update(
             client_id,
             location_id,
-            warehouse_id,
+            facility_id,
             name,
             floor_id,
             aisle_id,
@@ -144,7 +144,7 @@ def api_inventory_locations_get(request):
         )
         location = {
             'id': r[0],
-            'warehouseId': r[1],
+            'facilityId': r[1],
             'name': r[2],
             'floorId': r[3],
             'aisleId': r[4],
@@ -195,7 +195,7 @@ def api_inventory_locations_filter(request):
         locations = [
             {
                 'id': r[0],
-                'warehouseId': r[1],
+                'facilityId': r[1],
                 'name': r[2],
                 'floorId': r[3],
                 'aisleId': r[4],
