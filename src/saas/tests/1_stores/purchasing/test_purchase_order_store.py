@@ -15,7 +15,6 @@ class TestPurchaseOrderStore(unittest.TestCase):
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.core.stores.client import ClientStore
         from saas.app.modules.purchasing.stores.purchase_order import PurchaseOrderStore
-        # from saas.app.modules.inventory.stores.warehouses import WarehouseStore
         from saas.app.modules.inventory.stores.facility import FacilityStore
         from saas.app.modules.purchasing.stores.vendors import VendorStore
 
@@ -24,7 +23,6 @@ class TestPurchaseOrderStore(unittest.TestCase):
         })
         self.clientStore = ClientStore(self.mgr, 'default')
         self.poStore = PurchaseOrderStore(self.mgr, 'default')
-        # self.warehouseStore = WarehouseStore(self.mgr, 'default')
         self.facilityStore = FacilityStore(self.mgr, 'default')
         self.vendorStore = VendorStore(self.mgr, 'default')
         
@@ -41,7 +39,6 @@ class TestPurchaseOrderStore(unittest.TestCase):
 
         facility_id = str(uuid.uuid4())
         uom_id = 1 #
-        # self.warehouseStore.add(client_id, facility_id, random_str, random_str)
         self.facilityStore.add(
             client_id,
             facility_id,
@@ -82,10 +79,8 @@ class TestPurchaseOrderStore(unittest.TestCase):
             country_id = self.defaultClient[4]
 
             random_str = self.generate_random_str(10)
-            # warehouse_id = str(uuid.uuid4())
             facility_id = str(uuid.uuid4())
             uom_id = 1 #
-            # self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
             self.facilityStore.add(
                 client_id,
                 facility_id,
@@ -131,10 +126,8 @@ class TestPurchaseOrderStore(unittest.TestCase):
         country_id = self.defaultClient[4]
         random_str = self.generate_random_str(10)
 
-        # warehouse_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        uom_id = 1 #
-        # self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        uom_id = 1
         self.facilityStore.add(
             client_id,
             facility_id,
@@ -181,8 +174,6 @@ class TestPurchaseOrderStore(unittest.TestCase):
         country_id = self.defaultClient[4]
         random_str = self.generate_random_str(10)
 
-        # warehouse_id = str(uuid.uuid4())
-        # self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
         facility_id = str(uuid.uuid4())
         uom_id = 1 #
         self.facilityStore.add(
