@@ -12,14 +12,22 @@ class LocationStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(LocationStore, self).__init__(manager, name)
 
-    def add(self, clientId: UUID, location_id: UUID, 
-        warehouseId: UUID, name: str, floor_id: str, aisle_id: str, 
-        shelf_id: str, rack_id: str, level_id: str, bin_id: str) -> None:
+    def add(self, 
+        client_id: UUID, 
+        location_id: UUID, 
+        facility_id: UUID, 
+        name: str, 
+        floor_id: str, 
+        aisle_id: str, 
+        shelf_id: str, 
+        rack_id: str, 
+        level_id: str, 
+        bin_id: str) -> None:
         try:
             super(LocationStore, self).runProcTransactional('inventory.location_add', [
-                clientId, 
+                client_id, 
                 location_id, 
-                warehouseId,
+                facility_id,
                 name,
                 floor_id, 
                 aisle_id, 
@@ -32,14 +40,22 @@ class LocationStore(BaseStore):
             log.error(e)
             raise StoreException('Unable to add inventory location')
 
-    def update(self, clientId: UUID, location_id: UUID, 
-        warehouseId: UUID, name: str, floor_id: str, aisle_id: str, 
-        shelf_id: str, rack_id: str, level_id: str, bin_id: str) -> None:
+    def update(self, 
+        client_id: UUID, 
+        location_id: UUID, 
+        facility_id: UUID, 
+        name: str, 
+        floor_id: str, 
+        aisle_id: str, 
+        shelf_id: str, 
+        rack_id: str, 
+        level_id: str, 
+        bin_id: str) -> None:
         try:
             super(LocationStore, self).runProcTransactional('inventory.location_update', [
-                clientId, 
+                client_id, 
                 location_id, 
-                warehouseId,
+                facility_id,
                 name,
                 floor_id, 
                 aisle_id, 
@@ -50,7 +66,7 @@ class LocationStore(BaseStore):
             ])
         except Exception as e:
             log.error(e)
-            raise StoreException('Unable to add inventory location')
+            raise StoreException('Unable to update inventory location')
 
     def get(self, client_id: UUID, location_id: UUID) -> {}:
         try:

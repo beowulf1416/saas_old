@@ -7,6 +7,8 @@ import random
 import uuid
 from uuid import UUID
 
+from saas.app.core.stores.base import StoreException
+
 
 class TestInventoryItemsStore(unittest.TestCase):
 
@@ -14,14 +16,14 @@ class TestInventoryItemsStore(unittest.TestCase):
         self.config = testing.setUp()
 
         from saas.app.core.services.connection import ConnectionManager
-        from saas.app.modules.inventory.stores.warehouses import WarehouseStore
+        from saas.app.modules.inventory.stores.facility import FacilityStore
         from saas.app.modules.inventory.stores.locations import LocationStore
         from saas.app.core.stores.client import ClientStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
-        self.warehouseStore = WarehouseStore(self.mgr, 'default')
+        self.facilityStore = FacilityStore(self.mgr, 'default')
         self.locationStore = LocationStore(self.mgr, 'default')
         self.clientStore = ClientStore(self.mgr, 'default')
         self.client = self.clientStore.getDefaultClient()
@@ -34,13 +36,74 @@ class TestInventoryItemsStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
-        warehouse_id = str(uuid.uuid4())
+        facility_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        area_uom_id = 1
         try:
-            self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+            self.facilityStore.add(
+                client_id, 
+                facility_id, 
+                random_str, 
+                random_str, 
+                random_str,
+                country_id,
+                100,
+                area_uom_id
+            )
             self.locationStore.add(
                 client_id, 
                 location_id,
-                warehouse_id,
+                facility_id,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str
+            )
+        except Exception as e:
+            self.fail(e)
+
+    def test_location_add_duplicate(self):
+        random_str = self.generate_random_str(10)
+        client_id = self.client[0]
+        location_id = str(uuid.uuid4())
+        facility_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        area_uom_id = 1
+
+        self.facilityStore.add(
+            client_id, 
+            facility_id, 
+            random_str, 
+            random_str, 
+            random_str,
+            country_id,
+            100,
+            area_uom_id
+        )
+        try:
+            self.locationStore.add(
+                client_id, 
+                location_id,
+                facility_id,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str,
+                random_str
+            )
+
+            location_id = str(uuid.uuid4())
+            self.assertRaises(
+                StoreException,
+                self.locationStore.add,
+                client_id, 
+                location_id,
+                facility_id,
                 random_str,
                 random_str,
                 random_str,
@@ -56,13 +119,24 @@ class TestInventoryItemsStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
-        warehouse_id = str(uuid.uuid4())
+        facility_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        area_uom_id = 1
 
-        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.facilityStore.add(
+            client_id, 
+            facility_id, 
+            random_str, 
+            random_str, 
+            random_str,
+            country_id,
+            100,
+            area_uom_id
+        )
         self.locationStore.add(
             client_id, 
             location_id,
-            warehouse_id,
+            facility_id,
             random_str,
             random_str,
             random_str,
@@ -77,7 +151,7 @@ class TestInventoryItemsStore(unittest.TestCase):
             self.locationStore.update(
                 client_id, 
                 location_id,
-                warehouse_id,
+                facility_id,
                 random_str,
                 random_str,
                 random_str,
@@ -93,13 +167,24 @@ class TestInventoryItemsStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
-        warehouse_id = str(uuid.uuid4())
+        facility_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        area_uom_id = 1
 
-        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.facilityStore.add(
+            client_id, 
+            facility_id, 
+            random_str, 
+            random_str, 
+            random_str,
+            country_id,
+            100,
+            area_uom_id
+        )
         self.locationStore.add(
             client_id, 
             location_id,
-            warehouse_id,
+            facility_id,
             random_str,
             random_str,
             random_str,
@@ -120,13 +205,24 @@ class TestInventoryItemsStore(unittest.TestCase):
         random_str = self.generate_random_str(10)
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
-        warehouse_id = str(uuid.uuid4())
+        facility_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        area_uom_id = 1
 
-        self.warehouseStore.add(client_id, warehouse_id, random_str, random_str)
+        self.facilityStore.add(
+            client_id, 
+            facility_id, 
+            random_str, 
+            random_str, 
+            random_str,
+            country_id,
+            100,
+            area_uom_id
+        )
         self.locationStore.add(
             client_id, 
             location_id,
-            warehouse_id,
+            facility_id,
             random_str,
             random_str,
             random_str,
