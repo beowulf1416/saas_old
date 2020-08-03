@@ -65,6 +65,22 @@ def includeme(config):
         '/api/inventory/warehouses/get'
     )
 
+    # facilities
+    config.add_route(
+        'api.inventory.facilities.add',
+        '/api/inventory/facilities/add'
+    )
+
+    config.add_route(
+        'api.inventory.facilities.update',
+        '/api/inventory/facilities/update'
+    )
+
+    config.add_route(
+        'api.inventory.facilities.filter',
+        '/api/inventory/facilities/filter'
+    )
+
     # locations
     config.add_route(
         'api.inventory.locations.add',
