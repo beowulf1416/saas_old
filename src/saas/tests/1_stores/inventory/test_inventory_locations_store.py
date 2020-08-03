@@ -37,7 +37,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        country_id = 608 # philippines
+        country_id = self.client[4]
         area_uom_id = 1
         try:
             self.facilityStore.add(
@@ -60,6 +60,8 @@ class TestInventoryItemsStore(unittest.TestCase):
                 random_str,
                 random_str,
                 random_str,
+                random_str,
+                random_str,
                 random_str
             )
         except Exception as e:
@@ -70,7 +72,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        country_id = 608 # philippines
+        country_id = self.client[4]
         area_uom_id = 1
 
         self.facilityStore.add(
@@ -94,6 +96,8 @@ class TestInventoryItemsStore(unittest.TestCase):
                 random_str,
                 random_str,
                 random_str,
+                random_str,
+                random_str,
                 random_str
             )
 
@@ -110,6 +114,8 @@ class TestInventoryItemsStore(unittest.TestCase):
                 random_str,
                 random_str,
                 random_str,
+                random_str,
+                random_str,
                 random_str
             )
         except Exception as e:
@@ -120,7 +126,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        country_id = 608 # philippines
+        country_id = self.client[4]
         area_uom_id = 1
 
         self.facilityStore.add(
@@ -137,6 +143,8 @@ class TestInventoryItemsStore(unittest.TestCase):
             client_id, 
             location_id,
             facility_id,
+            random_str,
+            random_str,
             random_str,
             random_str,
             random_str,
@@ -158,6 +166,8 @@ class TestInventoryItemsStore(unittest.TestCase):
                 random_str,
                 random_str,
                 random_str,
+                random_str,
+                random_str,
                 random_str
             )
         except Exception as e:
@@ -168,7 +178,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        country_id = 608 # philippines
+        country_id = self.client[4]
         area_uom_id = 1
 
         self.facilityStore.add(
@@ -185,6 +195,8 @@ class TestInventoryItemsStore(unittest.TestCase):
             client_id, 
             location_id,
             facility_id,
+            random_str,
+            random_str,
             random_str,
             random_str,
             random_str,
@@ -206,7 +218,7 @@ class TestInventoryItemsStore(unittest.TestCase):
         client_id = self.client[0]
         location_id = str(uuid.uuid4())
         facility_id = str(uuid.uuid4())
-        country_id = 608 # philippines
+        country_id = self.client[4]
         area_uom_id = 1
 
         self.facilityStore.add(
@@ -223,6 +235,8 @@ class TestInventoryItemsStore(unittest.TestCase):
             client_id, 
             location_id,
             facility_id,
+            random_str,
+            random_str,
             random_str,
             random_str,
             random_str,
