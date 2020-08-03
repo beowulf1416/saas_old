@@ -1,4 +1,6 @@
 'use strict';
+import { Facility } from '/static/js/modules/inventory/facility.js';
+import { notify } from '/static/js/ui/ui.js';
 class FacilityEditor extends HTMLElement {
 
     constructor() {
@@ -23,8 +25,11 @@ class FacilityEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._fetch = this._fetch.bind(this);
+        this.setFacility = this.setFacility.bind(this);
 
         this._attachEventHandlers();
+        this._fetch();
     }
 
     _init(container) {
@@ -53,7 +58,7 @@ class FacilityEditor extends HTMLElement {
 
                     <!-- country -->
                     <label for="country">Country</label>
-                    <country-selector></country-selector>
+                    <country-selector id="country"></country-selector>
 
                     <!-- area -->
                     <label for="area">Area</label>
@@ -73,7 +78,72 @@ class FacilityEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+        const facility_id = this.getAttribute('facility-id');
 
+        shadow.getElementById('btn-save').addEventListener('click', function() {
+            const input_name = shadow.getElementById('name');
+            const input_desc = shadow.getElementById('description');
+            const input_addr = shadow.getElementById('address');
+            const input_country = shadow.getElementById('country');
+            const input_area = shadow.getElementById('area');
+            const input_area_uom = shadow.getElementById('area-uom-id');
+
+            if (facility_id) {
+                Facility.update(
+                    client_id,
+                    facility_id,
+                    input_name.value,
+                    input_desc.value,
+                    input_addr.value,
+                    input_country.value,
+                    input_area.value,
+                    input_area_uom.value
+                );
+            } else {
+                const tmp_facility_id = uuidv4();
+                Facility.add(
+                    client_id,
+                    tmp_facility_id,
+                    input_name.value,
+                    input_desc.value,
+                    input_addr.value,
+                    input_country.value,
+                    input_area.value,
+                    input_area_uom.value
+                );
+            }
+        });
+    }
+
+    _fetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+        const facility_id = this.getAttribute('facility-id');
+
+        if (client_id && facility_id) {
+            Facility.get(client_id, facility_id).then((r) => {
+                if (r.status == 'success') {
+                    self.setFacility(r.json.facility);
+                } else {
+                    notify(r.status, r.message, 3000);
+                }
+            });
+        }
+    }
+
+    setFacility(facility = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        shadow.getElementById('name').value = facility.name;
+        shadow.getElementById('description').value = facility.description;
+        shadow.getElementById('address').value = facility.address;
+        shadow.getElementById('country').setAttribute('country-id', facility.countryId);
+        shadow.getElementById('area').value = facility.area;
+        shadow.getElementById('area-uom').setAttribute('uom-id', facility.areaUomId);
     }
 }
 customElements.define('facility-editor', FacilityEditor);
