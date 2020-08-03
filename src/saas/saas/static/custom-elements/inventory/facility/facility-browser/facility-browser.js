@@ -26,7 +26,7 @@ class FacilityBrowser extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this.setFacilities = this.setFacilities.bind(this);
-        
+
         this._attachEventHandlers();
     }
 
@@ -119,7 +119,7 @@ class FacilityBrowser extends HTMLElement {
             tr.querySelector('.link-edit-facility').addEventListener('click', function(e) {
                 e.preventDefault();
 
-                showInTab('inventory-facility', 'Edit Facility', `<facility-editor client-id="${client_id}" facility-id="${f.id}"></facility-editor>`);
+                showInTab('inventory-facility', 'Edit Facility', `<facility-editor client-id="${client_id}" facility-id="${f.facilityId}"></facility-editor>`);
             });
         });
     }
