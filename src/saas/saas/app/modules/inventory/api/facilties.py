@@ -166,7 +166,7 @@ def api_inventory_facility_filter(request):
     renderer='json',
     permission='user.authenticated'
 )
-def api_inventory_facility_filter(request):
+def api_inventory_facility_get(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
     facility_id = params['facilityId'] if 'facilityId' in params else None
