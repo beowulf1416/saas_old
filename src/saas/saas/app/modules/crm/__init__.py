@@ -45,10 +45,6 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom-elements/crm/contact-explorer/contact-explorer.js'
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/crm/tag-editor/tag-editor.js'
             }
         ]
     }
