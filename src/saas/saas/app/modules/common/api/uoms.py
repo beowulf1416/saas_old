@@ -65,7 +65,7 @@ def api_common_uom_filter(request):
     renderer='json',
     permission='user.authenticated'
 )
-def api_common_uom_filter(request):
+def api_common_uom_get(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
     dimension = params['dimension'] if 'dimension' in params else None
