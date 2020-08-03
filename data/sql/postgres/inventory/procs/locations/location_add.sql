@@ -1,7 +1,7 @@
 create or replace function location_add (
     p_client_id clients.clients.id%type,
     p_location_id inventory.locations.id%type,
-    p_warehouse_id inventory.warehouses.id%type,
+    p_facility_id inventory.facilities.id%type,
     p_name inventory.locations.name%type,
     p_floor_id inventory.locations.floor_id%type,
     p_aisle_id inventory.locations.aisle_id%type,
@@ -16,7 +16,7 @@ begin
     insert into inventory.locations (
         client_id,
         id,
-        warehouse_id,
+        facility_id,
         name,
         floor_id,
         aisle_id,
@@ -27,7 +27,7 @@ begin
     ) values (
         p_client_id,
         p_location_id,
-        p_warehouse_id,
+        p_facility_id,
         p_name,
         p_floor_id,
         p_aisle_id,

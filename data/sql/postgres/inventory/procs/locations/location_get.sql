@@ -4,7 +4,7 @@ create or replace function location_get(
 )
 returns table (
     location_id inventory.locations.id%type,
-    warehouse_id inventory.warehouses.id%type,
+    facility_id inventory.facilities.id%type,
     name inventory.locations.name%type,
     floor_id inventory.locations.floor_id%type,
     aisle_id inventory.locations.aisle_id%type,
@@ -18,7 +18,7 @@ begin
     return query
     select
         a.id,
-        a.warehouse_id,
+        a.facility_id,
         a.name,
         a.floor_id,
         a.aisle_id,

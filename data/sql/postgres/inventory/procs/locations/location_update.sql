@@ -1,7 +1,7 @@
 create or replace function location_update (
     p_client_id clients.clients.id%type,
     p_location_id inventory.locations.id%type,
-    p_warehouse_id inventory.warehouses.id%type,
+    p_facility_id inventory.facilities.id%type,
     p_name inventory.locations.name%type,
     p_floor_id inventory.locations.floor_id%type,
     p_aisle_id inventory.locations.aisle_id%type,
@@ -14,7 +14,7 @@ returns void
 as $$
 begin
     update inventory.locations set
-        warehouse_id = p_warehouse_id,
+        facility_id = p_facility_id,
         name = p_name,
         floor_id = p_floor_id,
         aisle_id = p_aisle_id,
