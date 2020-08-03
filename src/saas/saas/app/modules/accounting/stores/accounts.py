@@ -31,8 +31,14 @@ class AccountsStore(BaseStore):
         '''
         try:
             super(AccountsStore, self).executeTransactional(
-                'select * from accounting.account_add(%s,%s,%s::smallint,%s,%s)',
-                (client_id, account_id, type_id, name, description)
+                'select * from accounting.account_add(%(client_id)s,%(account_id)s,%(type_id)s::smallint,%(name)s,%(description)s)',
+                { 
+                    'client_id': client_id,
+                    'account_id': account_id,
+                    'type_id': type_id,
+                    'name': name,
+                    'description': description
+                }
             )
         except Exception as e:
             log.error(e)

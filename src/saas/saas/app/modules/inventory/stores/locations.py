@@ -97,8 +97,11 @@ class LocationStore(BaseStore):
             #     f"%{filter}%"
             # ])
             result = super(LocationStore, self).execute(
-                'select * from inventory.location_filter(%s,%s)',
-                (client_id, f'%{filter}%')
+                'select * from inventory.location_filter(%(client_id)s,%(filter)s)',
+                { 
+                    'client_id': client_id, 
+                    'filter': f'%{filter}%'
+                }
             )
             return result
         except Exception as e:
