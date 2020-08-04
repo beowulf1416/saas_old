@@ -27,6 +27,28 @@ class TaskEditor extends HTMLElement {
         this._attachEventHandlers();
     }
 
+    get value() {
+        const shadow = this.shadowRoot;
+
+        const tasks = [];
+        shadow.querySelectorAll('task-editor').forEach((editor) => {
+            const value = editor.value;
+
+            tasks.push(value);
+        });
+
+        const input_name = shadow.getElementById('name');
+        const input_desc = shadow.getElementById('description');
+        const task_id = this.hasAttribute('task-id') ? this.getAttribute('task-id') : uuidv4();
+
+        return {
+            taskId: task_id,
+            name: input_name.value,
+            description: input_desc.value,
+            tasks: tasks
+        };
+    }
+
     _init(container) {
         const div = document.createElement('div');
         div.innerHTML = `
@@ -42,6 +64,11 @@ class TaskEditor extends HTMLElement {
             <div id="tasks-wrapper">
                 <header>Tasks</header>
                 <main>
+                    <div class="toolbar" role="toolbar">
+                        <button type="button" id="btn-add-task" class="btn btn-add-task" title="Add Task">
+                            <span class="material-icons">add_task</span>
+                        </button>
+                    </div><!-- .toolbar -->
                     <ul id="tasks">
                     </ul><!-- #tasks -->
                     <a title="Add Task" id="link-add-task" class="link-add-task" href="#">&plus;</a>
@@ -58,7 +85,20 @@ class TaskEditor extends HTMLElement {
 
         const client_id = this.getAttribute('client-id');
 
-        shadow.getElementById('link-add-task').addEventListener('click', function(e) {
+        const input_name = shadow.getElementById('name');
+        input_name.addEventListener('blur', function() {
+            self.dispatchEvent(new CustomEvent('change', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    task: {
+                        name: input_name.value
+                    }
+                }
+            }));
+        });
+
+        shadow.getElementById('btn-add-task').addEventListener('click', function(e) {
             e.preventDefault();
 
             const li = document.createElement('li');
@@ -82,6 +122,12 @@ class TaskEditor extends HTMLElement {
                 e.preventDefault();
 
                 li.classList.toggle('collapsed');
+            });
+
+            li.querySelector('task-editor').addEventListener('change', function(e) {
+                const task = e.detail.task;
+
+                li.querySelector('.link-task').text = task.name;
             });
         });
     }

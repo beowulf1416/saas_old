@@ -1,5 +1,6 @@
 'use strict';
 import { Util } from '/static/js/util.js';
+import { Project } from '/static/js/modules/project/project.js';
 class ProjectEditor extends HTMLElement {
 
     constructor() {
@@ -24,6 +25,7 @@ class ProjectEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._buildProject = this._buildProject.bind(this);
 
         this._attachEventHandlers();
     }
@@ -60,6 +62,11 @@ class ProjectEditor extends HTMLElement {
 
                     <fieldset id="tasks-wrapper">
                         <legend>Tasks</legend>
+                        <div class="toolbar" role="toolbar">
+                            <button type="button" id="btn-add-task" class="btn btn-add-task" title="Add Task">
+                                <span class="material-icons">add_task</span>
+                            </button>
+                        </div><!-- .toolbar -->
                         <ul id="tasks">
                         </ul>
                         <a title="Add Task" id="link-add-task" class="link-add-task" href="#">&plus;</a>
@@ -80,6 +87,9 @@ class ProjectEditor extends HTMLElement {
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
             console.log('btn-save');
+
+            const project = self._buildProject()
+            Project.add(project);
         });
 
         const btnnoteadd = shadow.getElementById('btn-note-add');
@@ -87,7 +97,7 @@ class ProjectEditor extends HTMLElement {
             console.log('btn-note-add');
         });
 
-        shadow.getElementById('link-add-task').addEventListener('click', function(e) {
+        shadow.getElementById('btn-add-task').addEventListener('click', function(e) {
             e.preventDefault();
 
             const id = 'id' + Util.generateId();
@@ -114,7 +124,38 @@ class ProjectEditor extends HTMLElement {
 
                 li.classList.toggle('collapsed');
             });
+
+            li.querySelector('task-editor').addEventListener('change', function(e) {
+                const task = e.detail.task;
+
+                li.querySelector('.link-task').text = task.name;
+            });
         });
+    }
+
+    _buildProject() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const tasks = [];
+        shadow.querySelectorAll('task-editor').forEach((editor) => {
+            const value = editor.value;
+
+            tasks.push(value);
+        });
+
+        const input_name = shadow.getElementById('name');
+        const input_desc = shadow.getElementById('description');
+        const project_id = this.hasAttribute('project-id') ? this.getAttribute('project-id') : uuidv4();
+        const client_id = this.getAttribute('client-id');
+
+        return {
+            clientId: client_id,
+            projectId: project_id,
+            name: input_name.value,
+            description: input_desc.value,
+            tasks: tasks
+        };
     }
 }
 customElements.define('project-editor', ProjectEditor);
