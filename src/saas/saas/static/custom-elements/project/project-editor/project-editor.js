@@ -1,4 +1,5 @@
 'use strict';
+import { Util } from '/static/js/util.js';
 class ProjectEditor extends HTMLElement {
 
     constructor() {
@@ -89,13 +90,30 @@ class ProjectEditor extends HTMLElement {
         shadow.getElementById('link-add-task').addEventListener('click', function(e) {
             e.preventDefault();
 
+            const id = 'id' + Util.generateId();
+
             const li = document.createElement('li');
+            li.classList.add('task-items','collapsable');
             li.innerHTML = `
-                <task-editor client-id="${client_id}"></task-editor>
+                <section class="task">
+                    <header>
+                        <a class="link-task link-collapse" id="${id}" title="Task" href="#${id}">Task</a>
+                    </header>
+                    <main>
+                        <task-editor client-id="${client_id}"></task-editor>
+                    </main>
+                </section>
             `;
 
             const tasks = shadow.getElementById('tasks');
             tasks.appendChild(li);
+
+            // event handlers
+            li.querySelector('.link-collapse').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                li.classList.toggle('collapsed');
+            });
         });
     }
 }
