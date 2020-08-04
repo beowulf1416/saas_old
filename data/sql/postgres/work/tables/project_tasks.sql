@@ -10,11 +10,11 @@ create table if not exists project_tasks (
     planned_end_ts timestamp without time zone,
     actual_start_ts timestamp without time zone,
     actual_end_ts timestamp without time zone,
-    constraint pk_project_tasks primary key (id),
+    constraint pk_project_tasks primary key (client_id, id),
     constraint fk_project_tasks_1 foreign key (client_id)
         references clients.clients (id) on delete restrict on update restrict,
-    constraint fk_project_tasks_2 foreign key (project_id)
-        references work.projects (id) on delete restrict on update restrict,
+    constraint fk_project_tasks_2 foreign key (client_id, project_id)
+        references work.projects (client_id, id) on delete restrict on update restrict,
     constraint u_project_tasks_1 check (planned_end_ts > planned_start_ts),
     constraint u_project_tasks_2 check (actual_end_ts > actual_start_ts)
 );
