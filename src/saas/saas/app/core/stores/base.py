@@ -40,11 +40,11 @@ class BaseStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
-    def execute(self, query: str):
+    def execute(self, query: str, params: list):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
-            c.execute(query)
+            c.execute(query, params)
             return c.fetchall()
         except Exception as e:
             log.error(e)
@@ -52,11 +52,11 @@ class BaseStore(object):
         finally:
             self._mgr.returnConnection(self._name, cn)
 
-    def executeTransactional(self, query: str):
+    def executeTransactional(self, query: str, params: list):
         cn = self._mgr.getConnection(self._name)
         try:
             c = cn.cursor()
-            c.execute(query)
+            c.execute(query, params)
             cn.commit()
             return c.fetchall()
         except Exception as e:
