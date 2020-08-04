@@ -21,6 +21,10 @@ class TaskEditor extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(style_default);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -46,6 +50,40 @@ class TaskEditor extends HTMLElement {
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const client_id = this.getAttribute('client-id');
+
+        shadow.getElementById('link-add-task').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const li = document.createElement('li');
+            li.classList.add('task', 'collapsable');
+            li.innerHTML = `
+                <section class="task">
+                    <header>
+                        <a class="link-task link-collapse" title="Task" href="#">Task</a>
+                    </header>
+                    <main>
+                        <task-editor client-id="${client_id}"></task-editor>
+                    </main>
+                </section>
+            `;
+
+            const ul = shadow.getElementById('tasks');
+            ul.appendChild(li);
+
+            // event handler
+            li.querySelector('.link-task').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                li.classList.toggle('collapsed');
+            });
+        });
     }
 }
 customElements.define('task-editor', TaskEditor);

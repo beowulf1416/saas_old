@@ -12,6 +12,8 @@ form {
 }
 
 #tasks {
+    list-style: outside;
+    padding-left: 1rem;
     counter-reset: task_count;
 }
 

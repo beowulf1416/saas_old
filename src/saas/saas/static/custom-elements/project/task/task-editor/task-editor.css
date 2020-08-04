@@ -2,3 +2,12 @@
     display: grid;
     grid-template-columns: min-content auto;
 }
+
+#tasks-wrapper .task.collapsable.collapsed main {
+    display: none;
+}
+
+#tasks-wrapper #tasks {
+    list-style: outside;
+    padding-left: 1rem;
+}
