@@ -1,0 +1,12 @@
+form {
+    display: grid;
+    grid-template-columns: min-content auto;
+}
+
+.form-group-active {
+    grid-column: 2/3;
+}
+
+#tasks-wrapper {
+    grid-column: 1/3;
+}

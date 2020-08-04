@@ -52,8 +52,17 @@ class ProjectEditor extends HTMLElement {
                     <textarea id="description" name="description" class="form-input-description" title="Description"></textarea>
 
                     <!-- active -->
-                    <input type="checkbox" id="active" name="active" class="form-input-active" title="Project Status" />
-                    <label for="active">Active</label>
+                    <div class="form-group form-group-active">
+                        <input type="checkbox" id="active" name="active" class="form-input-active" title="Project Status" />
+                        <label for="active">Active</label>
+                    </div><!-- .form-group -->
+
+                    <fieldset id="tasks-wrapper">
+                        <legend>Tasks</legend>
+                        <ul id="tasks">
+                        </ul>
+                        <a title="Add Task" id="link-add-task" class="link-add-task" href="#">&plus;</a>
+                    </fieldset>
                 </form>
             </div><!-- .form-wrapper -->
         `;
@@ -65,6 +74,8 @@ class ProjectEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = this.getAttribute('client-id');
+
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
             console.log('btn-save');
@@ -73,6 +84,18 @@ class ProjectEditor extends HTMLElement {
         const btnnoteadd = shadow.getElementById('btn-note-add');
         btnnoteadd.addEventListener('click', function(e) {
             console.log('btn-note-add');
+        });
+
+        shadow.getElementById('link-add-task').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <task-editor client-id="${client_id}"></task-editor>
+            `;
+
+            const tasks = shadow.getElementById('tasks');
+            tasks.appendChild(li);
         });
     }
 }

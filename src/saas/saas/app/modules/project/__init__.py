@@ -31,11 +31,23 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/project/project-explorer/project-explorer.js'
+                'script': '/static/custom-elements/project/project-explorer/project-explorer.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/project/project-editor/project-editor.js'
+                'script': '/static/custom-elements/project/project-editor/project-editor.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/project/task/task-editor/task-editor.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/gantt-chart/gantt-chart.js',
+                'async': True
             },
         ]
     }
