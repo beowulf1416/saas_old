@@ -1,14 +1,14 @@
 create or replace function task_add(
     p_client_id clients.clients.id%type,
     p_project_id work.projects.id%type,
-    p_task_id work.project_tasks.id%type,
-    p_name work.project_tasks.name%type,
-    p_description work.project_tasks.description%type
+    p_task_id work.tasks.id%type,
+    p_name work.tasks.name%type,
+    p_description work.tasks.description%type
 )
 returns void
 as $$
 begin
-    insert into work.project_tasks (
+    insert into work.tasks (
         client_id,
         project_id,
         id,

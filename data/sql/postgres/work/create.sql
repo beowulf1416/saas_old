@@ -8,11 +8,8 @@ set schema 'work';
 
 /** tables **/
 \ir tables/projects.sql
-\ir tables/project_tasks.sql
-\ir tables/project_task_dependencies.sql
-
-
-/** functions **/
+\ir tables/tasks.sql
+\ir tables/task_dependencies.sql
 
 
 
