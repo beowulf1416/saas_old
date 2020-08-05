@@ -8,10 +8,10 @@
                 "id": { "type": "string", "format": "uuid" },
                 "name": { "type": "string" },
                 "description": { "type": "string" },
-                "start": { "type": "string", "format": "date" },
-                "end": { "type": "string", "format": "date" },
-                "actual_start": { "type": "string", "format": "date" },
-                "actual_end": { "type": "string", "format": "date" },
+                "plannedStart": { "type": "string", "format": "date-time" },
+                "plannedEnd": { "type": "string", "format": "date-time" },
+                "actualStart": { "type": "string", "format": "date-time" },
+                "actualEnd": { "type": "string", "format": "date-time" },
                 "status": { "anyOf": [
                     { "type": "string", "enum": ["new", "remove"] },
                     { "type": "null" }
@@ -29,6 +29,10 @@
         "projectId": { "type": "string", "format": "uuid" },
         "name": { "type": "string" },
         "description": { "type": "string" },
+        "plannedStart": { "type": "string", "format": "date-time" },
+        "plannedEnd": { "type": "string", "format": "date-time" },
+        "actualStart": { "type": "string", "format": "date-time" },
+        "actualEnd": { "type": "string", "format": "date-time" },
         "tasks": {
             "type": "array",
             "task": { "$ref": "#/definitions/task" }
