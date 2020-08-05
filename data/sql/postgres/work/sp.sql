@@ -15,5 +15,6 @@ set schema 'work';
 \ir procs/tasks/task_add.sql
 \ir procs/tasks/task_update.sql
 \ir procs/tasks/task_get.sql
+\ir procs/tasks/task_assign_parent.sql
 
 set schema 'work';
