@@ -19,10 +19,14 @@ class ProjectStore(BaseStore):
         name: str,
         description: str,
         planned_start: datetime,
-        planned_end: datetime
+        planned_end: datetime,
+        tasks: list
         ) -> None:
+
+        cn = super(ProjectStore, self).begin()
         try:
-            super(ProjectStore, self).runProcTransactional('work.project_add', [
+            c = cn.cursor()
+            c.callproc('work.project_add', [
                 client_id,
                 project_id,
                 name,
@@ -30,8 +34,19 @@ class ProjectStore(BaseStore):
                 planned_start,
                 planned_end
             ])
+
+            self._tasks_add(
+                client_id, 
+                project_id, 
+                None, 
+                tasks, 
+                c
+            )
+
+            super(ProjectStore, self).commit(cn)
         except Exception as e:
             log.error(e)
+            super(ProjectStore, self).rollback(cn)
             raise StoreException('Unable to add project')
 
     def update(self,
@@ -83,3 +98,31 @@ class ProjectStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to retrieve projects')
+
+    def _tasks_add(self, client_id: UUID, project_id: UUID, parent_task_id: UUID, tasks: list, cursor: object) -> None:
+        try:
+            for t in tasks:
+                task_id = t['taskId']
+                cursor.callproc('work.task_add', [
+                    client_id,
+                    project_id,
+                    task_id,
+                    t['name'],
+                    t['description']
+                ])
+
+                if parent_task_id is not None:
+                    cursor.callproc('work.task_assign_parent', [
+                        client_id,
+                        project_id,
+                        task_id,
+                        parent_task_id
+                    ])
+
+                if 'tasks' in t:
+                    if len(t['tasks']) > 0:
+                        self._tasks_add(
+                            client_id, project_id, task_id, t['tasks'], cursor)
+        except Exception as e:
+            log.error(e)
+            raise e

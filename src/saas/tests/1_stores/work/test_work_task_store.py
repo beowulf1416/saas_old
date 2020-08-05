@@ -45,7 +45,8 @@ class TestWorkProjectTaskStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         try:
@@ -71,7 +72,8 @@ class TestWorkProjectTaskStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         self.tasks.add(
@@ -107,7 +109,8 @@ class TestWorkProjectTaskStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         self.tasks.add(

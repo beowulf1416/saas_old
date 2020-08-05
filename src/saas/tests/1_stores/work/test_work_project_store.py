@@ -42,7 +42,45 @@ class TestWorkProjectStore(unittest.TestCase):
                 random_str,
                 random_str,
                 datetime.datetime.now(),
-                datetime.datetime.now()
+                datetime.datetime.now(),
+                []
+            )
+        except Exception as e:
+            self.fail(e)
+
+    def test_project_add_2(self):
+        client_id = self.defaultClient[0]
+        project_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+        try:
+            tasks = [
+                {
+                    'taskId': str(uuid.uuid4()),
+                    'name': random_str,
+                    'description': random_str,
+                    'tasks': [
+                        {
+                            'taskId': str(uuid.uuid4()),
+                            'name': random_str,
+                            'description': random_str
+                        }
+                    ]
+                },
+                {
+                    'taskId': str(uuid.uuid4()),
+                    'name': random_str,
+                    'description': random_str
+                },
+            ]
+
+            self.projects.add(
+                client_id,
+                project_id,
+                random_str,
+                random_str,
+                datetime.datetime.now(),
+                datetime.datetime.now(),
+                tasks
             )
         except Exception as e:
             self.fail(e)
@@ -58,7 +96,8 @@ class TestWorkProjectStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         try:
@@ -87,7 +126,8 @@ class TestWorkProjectStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         try:
@@ -110,7 +150,8 @@ class TestWorkProjectStore(unittest.TestCase):
             random_str,
             random_str,
             datetime.datetime.now(),
-            datetime.datetime.now()
+            datetime.datetime.now(),
+            []
         )
 
         try:
