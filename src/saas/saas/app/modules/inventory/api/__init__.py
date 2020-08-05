@@ -39,32 +39,6 @@ def includeme(config):
         '/api/inventory/items/substitutes/add'
     )
 
-    # warehouses
-    config.add_route(
-        'api.inventory.warehouses.add',
-        '/api/inventory/warehouses/add'
-    )
-
-    config.add_route(
-        'api.inventory.warehouses.update',
-        '/api/inventory/warehouses/update'
-    )
-    
-    config.add_route(
-        'api.inventory.warehouses.all',
-        '/api/inventory/warehouses/all'
-    )
-
-    config.add_route(
-        'api.inventory.warehouses.filter',
-        '/api/inventory/warehouses/filter'
-    )
-
-    config.add_route(
-        'api.inventory.warehouses.get',
-        '/api/inventory/warehouses/get'
-    )
-
     # facilities
     config.add_route(
         'api.inventory.facilities.add',
