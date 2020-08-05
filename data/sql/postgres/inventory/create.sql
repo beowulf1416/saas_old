@@ -8,7 +8,7 @@ set schema 'inventory';
 
 /** tables **/
 \ir tables/facilities.sql
-\ir tables/warehouses.sql
+-- \ir tables/warehouses.sql
 \ir tables/locations.sql
 
 \ir tables/categories.sql

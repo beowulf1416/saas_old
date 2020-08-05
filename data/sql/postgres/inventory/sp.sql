@@ -26,11 +26,11 @@ set schema 'inventory';
 \ir procs/items/item_by_id.sql
 \ir procs/items/items_filter.sql
 
-\ir procs/warehouses/warehouse_add.sql
-\ir procs/warehouses/warehouse_update.sql
-\ir procs/warehouses/warehouses_all.sql
-\ir procs/warehouses/warehouses_filter.sql
-\ir procs/warehouses/warehouses_get.sql
+-- \ir procs/warehouses/warehouse_add.sql
+-- \ir procs/warehouses/warehouse_update.sql
+-- \ir procs/warehouses/warehouses_all.sql
+-- \ir procs/warehouses/warehouses_filter.sql
+-- \ir procs/warehouses/warehouses_get.sql
 
 \ir procs/locations/location_add.sql
 \ir procs/locations/location_update.sql
