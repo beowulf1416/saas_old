@@ -1,6 +1,7 @@
 'use strict';
 import { Util } from '/static/js/util.js';
 import { Project } from '/static/js/modules/project/project.js';
+import { notify } from '/static/js/ui/ui.js';
 class ProjectEditor extends HTMLElement {
 
     constructor() {
@@ -60,6 +61,36 @@ class ProjectEditor extends HTMLElement {
                         <label for="active">Active</label>
                     </div><!-- .form-group -->
 
+                    <div class="wrapper-dates">
+                        <fieldset id="dates-planned">
+                            <legend>Planned</legend>
+
+                            <!-- start -->
+                            <label for="planned-start-date">Start</label>
+                            <input type="date" id="planned-start-date" name="planned_start_date" class="form-input-planned-start-date" title="Planned Start Date" />
+                            <input type="time" id="planned-start-time" name="planned_start_name" class="form-input-planned-start-time" title="Planned Start Time" />
+
+                            <!-- end -->
+                            <label for="planned-end-date">End</label>
+                            <input type="date" id="planned-end-date" name="planned_end_date" class="form-input-planned-end-date" title="Planned End Date" />
+                            <input type="time" id="planned-end-time" name="planned_end_time" class="form-input-planned-end-time" title="Planned End Time" />
+                        </fieldset>
+
+                        <fieldset id="dates-actual">
+                            <legend>Actual</legend>
+
+                            <!-- start -->
+                            <label for="actual-start-date">Start</label>
+                            <input type="date" id="actual-start-date" name="actual_start_date" class="form-input-actual-start-date" title="Actual Start Date" />
+                            <input type="time" id="actual-start-time" name="actual_start_time" class="form-input-actual-start-time" title="Actual Start Time" />
+
+                            <!-- end -->
+                            <label for="actual-end-date">End</label>
+                            <input type="date" id="actual-end-date" name="actual_end_date" class="form-input-actual-end-date" title="Actual End Date" />
+                            <input type="time" id="actual-end-time" name="actual_end_time" class="form-input-actual-end-time" title="Actual End Time" />
+                        </fieldset>
+                    </div><!-- .wrapper-dates -->
+                    
                     <fieldset id="tasks-wrapper">
                         <legend>Tasks</legend>
                         <div class="toolbar" role="toolbar">
@@ -69,7 +100,6 @@ class ProjectEditor extends HTMLElement {
                         </div><!-- .toolbar -->
                         <ul id="tasks">
                         </ul>
-                        <a title="Add Task" id="link-add-task" class="link-add-task" href="#">&plus;</a>
                     </fieldset>
                 </form>
             </div><!-- .form-wrapper -->
@@ -86,10 +116,10 @@ class ProjectEditor extends HTMLElement {
 
         const btnsave = shadow.getElementById('btn-save');
         btnsave.addEventListener('click', function(e) {
-            console.log('btn-save');
-
             const project = self._buildProject()
-            Project.add(project);
+            Project.add(project).then((r) => {
+                notify(r.status, r.message, 3000);
+            });
         });
 
         const btnnoteadd = shadow.getElementById('btn-note-add');
@@ -121,13 +151,11 @@ class ProjectEditor extends HTMLElement {
             // event handlers
             li.querySelector('.link-collapse').addEventListener('click', function(e) {
                 e.preventDefault();
-
                 li.classList.toggle('collapsed');
             });
 
             li.querySelector('task-editor').addEventListener('change', function(e) {
                 const task = e.detail.task;
-
                 li.querySelector('.link-task').text = task.name;
             });
         });

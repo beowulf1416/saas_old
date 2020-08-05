@@ -7,6 +7,22 @@ form {
     grid-column: 2/3;
 }
 
+.wrapper-dates {
+    grid-column: 1/3;
+    display: flex;
+    flex-direction: row;
+}
+
+fieldset#dates-planned {
+    display: grid;
+    grid-template-columns: min-content 50% 50%;
+}
+
+fieldset#dates-actual {
+    display: grid;
+    grid-template-columns: min-content auto auto;
+}
+
 #tasks-wrapper {
     grid-column: 1/3;
 }
