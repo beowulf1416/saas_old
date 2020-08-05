@@ -65,3 +65,18 @@ class TaskStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to retrieve project task')
+
+    def get_root(self, client_id: UUID, project_id: UUID) -> list:
+        try:
+            result = super(TaskStore, self).runProc('work.task_root', [
+                client_id,
+                project_id
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve project root tasks')
+
+    def get_dependents(self, client_id: UUID, project_id: UUID, task_id: UUID) -> list:
+        try:
+            result = super(TaskStore, self).runProc('work.')
