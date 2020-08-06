@@ -11,3 +11,4 @@ gradle/
 */env/**
 /etc/client_secret.json
 etc/databases.json
+*.log
