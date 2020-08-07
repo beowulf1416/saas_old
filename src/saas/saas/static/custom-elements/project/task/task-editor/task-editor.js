@@ -30,22 +30,27 @@ class TaskEditor extends HTMLElement {
     get value() {
         const shadow = this.shadowRoot;
 
-        const tasks = [];
-        shadow.querySelectorAll('task-editor').forEach((editor) => {
-            const value = editor.value;
-
-            tasks.push(value);
-        });
+        const task_id = this.hasAttribute('task-id') ? this.getAttribute('task-id') : uuidv4();
 
         const input_name = shadow.getElementById('name');
         const input_desc = shadow.getElementById('description');
-        const task_id = this.hasAttribute('task-id') ? this.getAttribute('task-id') : uuidv4();
+        const input_start_date = shadow.getElementById('start-date');
+        const input_start_time = shadow.getElementById('start-time');
+        const input_end_date = shadow.getElementById('end-date');
+        const input_end_time = shadow.getElementById('end-time');
 
         return {
             taskId: task_id,
             name: input_name.value,
             description: input_desc.value,
-            tasks: tasks
+            start: {
+                date: input_start_date.value,
+                time: input_start_time.value
+            },
+            end: {
+                date: input_end_date.value,
+                time: input_end_time.value
+            }
         };
     }
 
@@ -53,27 +58,37 @@ class TaskEditor extends HTMLElement {
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="form-wrapper">
-                <!-- name -->
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" class="form-input-name" title="Task Name" placeholder="Task" />
+                <form id="task">
+                    <!-- name -->
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" class="form-input-name" title="Task Name" placeholder="Task" required />
 
-                <!-- description -->
-                <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-input-description" title="Task Description"></textarea>
+                    <!-- description -->
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" class="form-input-description" title="Task Description"></textarea>
+
+                    <fieldset id="dates">
+                        <legend>Dates</legend>
+
+                        <!-- start -->
+                        <label for="start">Start</label>
+                        <div id="start" class="form-group">
+                            <input type="date" id="start-date" name="start_date" class="form-date-start" title="Start Date" />
+                            <input type="time" id="start-time" name="start_time" class="form-time-start" title="Start Time" />
+                        </div><!-- .form-group -->
+
+                        <!-- end -->
+                        <label for="end">End</label>
+                        <div id="start" class="form-group">
+                            <input type="date" id="end-date" name="end_date" class="form-date-end" title="End Date" />
+                            <input type="time" id="end-time" name="end_time" class="form-time-end" title="End Time" />
+                        </div><!-- .form-group -->
+                    </fieldset>
+                    <button type="button" id="btn-save" class="btn btn-save" title="Save Task">
+                        <span class="material-icons">save</span>
+                    </button>
+                </form>
             </div><!-- .form-wrapper -->
-            <div id="tasks-wrapper">
-                <header>Tasks</header>
-                <main>
-                    <div class="toolbar" role="toolbar">
-                        <button type="button" id="btn-add-task" class="btn btn-add-task" title="Add Task">
-                            <span class="material-icons">add_task</span>
-                        </button>
-                    </div><!-- .toolbar -->
-                    <ul id="tasks">
-                    </ul><!-- #tasks -->
-                    <a title="Add Task" id="link-add-task" class="link-add-task" href="#">&plus;</a>
-                </main>
-            </div><!-- #tasks-wrapper -->
         `;
 
         container.appendChild(div);
@@ -98,37 +113,21 @@ class TaskEditor extends HTMLElement {
             }));
         });
 
-        shadow.getElementById('btn-add-task').addEventListener('click', function(e) {
-            e.preventDefault();
+        shadow.getElementById('btn-save').addEventListener('click', function() {
+            const input_name = shadow.getElementById('name');
+            const input_desc = shadow.getElementById('description');
+            const input_start_date = shadow.getElementById('start-date');
+            const input_start_time = shadow.getElementById('start-time');
+            const input_end_date = shadow.getElementById('end-date');
+            const input_end_time = shadow.getElementById('end-time');
 
-            const li = document.createElement('li');
-            li.classList.add('task', 'collapsable');
-            li.innerHTML = `
-                <section class="task">
-                    <header>
-                        <a class="link-task link-collapse" title="Task" href="#">Task</a>
-                    </header>
-                    <main>
-                        <task-editor client-id="${client_id}"></task-editor>
-                    </main>
-                </section>
-            `;
-
-            const ul = shadow.getElementById('tasks');
-            ul.appendChild(li);
-
-            // event handler
-            li.querySelector('.link-task').addEventListener('click', function(e) {
-                e.preventDefault();
-
-                li.classList.toggle('collapsed');
-            });
-
-            li.querySelector('task-editor').addEventListener('change', function(e) {
-                const task = e.detail.task;
-
-                li.querySelector('.link-task').text = task.name;
-            });
+            self.dispatchEvent(new CustomEvent('save', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    task: self.value
+                }
+            }));
         });
     }
 }
