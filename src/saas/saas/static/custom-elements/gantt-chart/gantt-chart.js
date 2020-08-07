@@ -142,7 +142,10 @@ class GanttChart extends HTMLElement {
                 .attr('x', d => x(d.start))
                 .attr('y', (d, i) => row_height * i)
                 .attr('width', d => x(d.end))
-                .attr('height', row_height);
+                .attr('height', row_height)
+                .on('click', function(e) {
+                    console.log(e);
+                });
     }
 }
 customElements.define('gantt-chart', GanttChart);
