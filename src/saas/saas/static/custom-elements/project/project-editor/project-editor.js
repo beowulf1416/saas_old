@@ -90,6 +90,10 @@ class ProjectEditor extends HTMLElement {
                             <input type="time" id="actual-end-time" name="actual_end_time" class="form-input-actual-end-time" title="Actual End Time" />
                         </fieldset>
                     </div><!-- .wrapper-dates -->
+
+                    <div id="chart-wrapper">
+                        <gantt-chart id="chart"></gantt-chart>
+                    </div><!-- .chart-wrapper -->
                     
                     <fieldset id="tasks-wrapper">
                         <legend>Tasks</legend>
@@ -127,36 +131,31 @@ class ProjectEditor extends HTMLElement {
             console.log('btn-note-add');
         });
 
+        shadow.getElementById('chart').addEventListener('taskclick', function(e) {
+            console.log(e);
+        });
+
         shadow.getElementById('btn-add-task').addEventListener('click', function(e) {
             e.preventDefault();
 
-            const id = 'id' + Util.generateId();
-
             const li = document.createElement('li');
-            li.classList.add('task-items','collapsable');
+            li.classList.add('task-item');
             li.innerHTML = `
                 <section class="task">
-                    <header>
-                        <a class="link-task link-collapse" id="${id}" title="Task" href="#${id}">Task</a>
-                    </header>
+                    <header>Task</header>
                     <main>
-                        <task-editor client-id="${client_id}"></task-editor>
+                        <task-editor client="${client_id}"></task-editor>
                     </main>
                 </section>
             `;
 
-            const tasks = shadow.getElementById('tasks');
-            tasks.appendChild(li);
+            const ul = shadow.getElementById('tasks');
+            ul.appendChild(li);
 
-            // event handlers
-            li.querySelector('.link-collapse').addEventListener('click', function(e) {
-                e.preventDefault();
-                li.classList.toggle('collapsed');
-            });
-
-            li.querySelector('task-editor').addEventListener('change', function(e) {
+            // event handler
+            li.querySelector('task-editor').addEventListener('save', function(e) {
                 const task = e.detail.task;
-                li.querySelector('.link-task').text = task.name;
+                console.log(task);
             });
         });
     }
