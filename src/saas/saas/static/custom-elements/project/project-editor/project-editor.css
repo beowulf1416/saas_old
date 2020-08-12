@@ -51,3 +51,7 @@ fieldset#dates-actual {
 #tasks .task-items.collapsable.collapsed .task main {
     display: none;
 }
+
+.task-item.collapsable.collapsed main {
+    display: none;
+}

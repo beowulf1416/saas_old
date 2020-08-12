@@ -142,11 +142,15 @@ class ProjectEditor extends HTMLElement {
             .addEventListener('click', function(e) {
                 e.preventDefault();
 
+                const id = Util.generateId();
+
                 const li = document.createElement('li');
-                li.classList.add('task-item');
+                li.classList.add('task-item', 'collapsable');
                 li.innerHTML = `
                     <section class="task">
-                        <header>Task</header>
+                        <header>
+                            <a id="id-${id}" class="link-task-header collapsable" title="Task" href="#id-${id}">Task</a>
+                        </header>
                         <main>
                             <task-editor client="${client_id}"></task-editor>
                         </main>
@@ -165,11 +169,15 @@ class ProjectEditor extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        parent.querySelector('a.link-task-header').addEventListener('click', function(e) {
+            e.preventDefault();
+            parent.classList.toggle('collapsed');
+        });
+
         editor.addEventListener('change', function(e) {
             const name = e.detail.task.name;
             if (name != '') {
-                // console.log(parent.querySelector('header'));
-                parent.querySelector('header').innerText = e.detail.task.name;
+                parent.querySelector('header a.link-task-header').innerText = `Task: ${e.detail.task.name}`;
             }
         });
 
