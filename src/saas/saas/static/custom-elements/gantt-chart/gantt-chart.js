@@ -23,9 +23,32 @@ class GanttChart extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._draw_chart = this._draw_chart.bind(this);
         this.setProject = this.setProject.bind(this);
 
-        // this._attachEventHandlers();
+        this._attachEventHandlers();
+    }
+
+    static get observedAttributes() {
+        return [
+            'min',
+            'max'
+        ];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch(name) {
+            case 'min': {
+                break;
+            }
+            case 'max': {
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+        this._draw_chart();
     }
 
     _init(container) {
@@ -33,6 +56,7 @@ class GanttChart extends HTMLElement {
         this._tasks = [];
 
         const div = document.createElement('div');
+        div.classList.add('chart-wrapper');
         div.innerHTML = `
             <svg id="chart" xmlns="http://www.w3.org/2000/svg">
             </svg>
@@ -42,72 +66,40 @@ class GanttChart extends HTMLElement {
     }
 
     _attachEventHandlers() {
-        // const self = this;
-        // const shadow = this.shadowRoot;
-
-        console.log('attach');
+        const self = this;
+        const shadow = this.shadowRoot;
     }
 
     connectedCallback() {
         if (this.isConnected) {
             const shadow = this.shadowRoot;
-            // this.render();
+
+            this._draw_chart();
         }
     }
-
-    // render() {
-    //     const self = this;
-    //     const shadow = this.shadowRoot;
-
-    //     const parent = this.parentElement;
-    //     const chart = shadow.getElementById('chart');
-
-    //     const width = parent.clientWidth;
-    //     const height = parent.clientHeight;
-    //     // chart.setAttribute('viewBox', `0 0 ${width - 2} ${height}`);
-
-    //     const data = [
-    //         { x: 1, y: 2 },
-    //         { x: 2, y: 4},
-    //         { x: 3, y: 5 }
-    //     ];
-        
-    //     const svg = d3.select(shadow)
-    //         .select('#chart')
-    //         .attr('viewBox', [0, 0, width, height]);
-
-    //     const start_x = d3.scaleLinear()
-    //         .domain([0, d3.max(data, d => d.x )])
-    //         .range([0, 10]);
-
-    //     const y = d3.scaleBand()
-    //         .domain(d3.range(data.length))
-    //         .rangeRound([0, height])
-    //         .padding(1);
-        
-    //     svg.append('g')
-    //         .attr('fill', 'steelblue')
-    //         .selectAll('rect')
-    //         .data(data)
-    //         .join('rect')
-    //             .attr('x', d=> start_x(d.x))
-    //             .attr('y', (d, i) => y(i))
-    //             .attr('width', 10)
-    //             .attr('height', 10);
-    // }
 
     setProject(project = {}) {
         const self = this;
         const shadow = this.shadowRoot;
+        
+        self._project = project;
+        self._draw_chart();
+    }
+
+    _draw_chart() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const project = self._project ? self._project : { tasks: [] };
 
         const parent = this.parentElement;
-        const chart = shadow.getElementById('chart');
+        // const table = shadow.querySelector('table#tasks');
 
-        const width = parent.clientWidth;
+        // const chart = shadow.getElementById('chart');
+
+        const width = parent.clientWidth - 200;
         const height = parent.clientHeight;
         const row_height = 16;
-
-        console.log(project);
 
         const margin = {
             top: 20,
@@ -117,8 +109,9 @@ class GanttChart extends HTMLElement {
         };
 
         const x = d3.scaleTime()
-            .domain([Date.now(), Date.now() + 24*60*60*1000])
-            .rangeRound([0, width]);
+            .domain([Date.now() - 12*60*60*1000, Date.now() + 48*60*60*1000])
+            .rangeRound([0, width])
+            .nice();
 
         const y = d3.scaleBand()
             .domain([0, project.tasks.length]);
@@ -128,24 +121,47 @@ class GanttChart extends HTMLElement {
             .attr('viewBox', [ 0, 0, width, height]);
 
         // x-axis
-        svg.append('g')
-            .attr('fill', 'black')
-            .attr('transform', `translate(0, 0)`)
-            .call(d3.axisBottom(x).ticks());
+        if (svg.select('g.x-axis').empty()) {
+            svg.append('g')
+                .attr('class', 'x-axis')
+                .attr('fill', 'red')
+                .attr('transform', `translate(0, 0)`)
+                .call(d3.axisBottom(x).ticks());
+        }
 
-        svg.append('g')
-            .attr('fill', 'red')
-            .attr('transform', `translate(0, ${margin.top})`)
-            .selectAll('rect')
-            .data(project.tasks)
-            .join('rect')
-                .attr('x', d => x(d.start))
-                .attr('y', (d, i) => row_height * i)
-                .attr('width', d => x(d.end))
-                .attr('height', row_height)
-                .on('click', function(e) {
-                    console.log(e);
-                });
+        // tasks
+        if (svg.select('g.tasks').empty()) {
+            svg.append('g')
+                .attr('fill', 'red')
+                .attr('transform', `translate(0, ${margin.top})`)
+                .attr('class', 'tasks');
+        } else {
+            svg.select('g.tasks')
+                // .attr('fill', 'red')
+                // .attr('transform', `translate(0, ${margin.top})`)
+                // .attr('class', 'tasks')
+                .selectAll('rect')
+                .data(project.tasks)
+                .join(
+                    enter => enter.append('rect'),
+                    update => update,
+                    exit => exit.remove()
+                )
+                    .attr('class', 'task')
+                    .attr('x', d => { console.log(`${d.start.date} ${d.start.time}`); return x(moment(`${d.start.date} ${d.start.time}`, 'YYYY-MM-DD HH:mm').toDate()); })
+                    .attr('y', (d, i) => (row_height * (i + 1))- 2)
+                    .attr('width', d => x(moment(`${d.end.date} ${d.end.time}`).toDate()))
+                    .attr('height', row_height - 4)
+                    .on('click', function(e) {
+                        self.dispatchEvent(new CustomEvent('taskclick', {
+                            bubbles: true,
+                            cancelable: true,
+                            detail: {
+                                task: e
+                            }
+                        }));
+                    });
+        }
     }
 }
 customElements.define('gantt-chart', GanttChart);

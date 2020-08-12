@@ -1,7 +1,7 @@
-.component-wrapper {
-    border: solid 1px red;
-}
-
 svg {
     background-color: #eeeeee;
+}
+
+svg .task {
+    rx: 5px;
 }
