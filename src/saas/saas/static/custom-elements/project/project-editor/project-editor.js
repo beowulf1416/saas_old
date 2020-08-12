@@ -28,6 +28,7 @@ class ProjectEditor extends HTMLElement {
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._attachTaskEditorHandlers = this._attachTaskEditorHandlers.bind(this);
         this._buildProject = this._buildProject.bind(this);
+        this._updateChart = this._updateChart.bind(this);
 
         this._attachEventHandlers();
     }
@@ -173,8 +174,8 @@ class ProjectEditor extends HTMLElement {
         });
 
         editor.addEventListener('save', function(e) {
-            const task = e.detail.task;
-            console.log(task);
+            // const task = e.detail.task;
+            self._updateChart(self._buildProject());
         });
     }
 
@@ -200,6 +201,13 @@ class ProjectEditor extends HTMLElement {
             description: input_desc.value,
             tasks: tasks
         };
+    }
+
+    _updateChart(project = {}) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        shadow.getElementById('chart').setProject(project);
     }
 }
 customElements.define('project-editor', ProjectEditor);

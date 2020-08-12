@@ -55,8 +55,8 @@ class TaskEditor extends HTMLElement {
     }
 
     _init(container) {
-        const current_date = moment();
-        const tomorrow_date = moment().add(1, 'days');
+        const current_date = moment().startOf('day');
+        const tomorrow_date = moment().add(1, 'days').startOf('day');
 
         const div = document.createElement('div');
         div.innerHTML = `
@@ -77,14 +77,14 @@ class TaskEditor extends HTMLElement {
                         <label for="start">Start</label>
                         <div id="start" class="form-group">
                             <input type="date" id="start-date" name="start_date" class="form-date-start" title="Start Date" value="${current_date.format('YYYY-MM-DD')}"/>
-                            <input type="time" id="start-time" name="start_time" class="form-time-start" title="Start Time" />
+                            <input type="time" id="start-time" name="start_time" class="form-time-start" title="Start Time" value="${current_date.format('HH:mm')}"/>
                         </div><!-- .form-group -->
 
                         <!-- end -->
                         <label for="end">End</label>
                         <div id="start" class="form-group">
                             <input type="date" id="end-date" name="end_date" class="form-date-end" title="End Date" value="${tomorrow_date.format('YYYY-MM-DD')}" />
-                            <input type="time" id="end-time" name="end_time" class="form-time-end" title="End Time" />
+                            <input type="time" id="end-time" name="end_time" class="form-time-end" title="End Time" value="${tomorrow_date.format('HH:mm')}" />
                         </div><!-- .form-group -->
                     </fieldset>
                     <button type="button" id="btn-save" class="btn btn-save" title="Save Task">
@@ -117,12 +117,12 @@ class TaskEditor extends HTMLElement {
         });
 
         shadow.getElementById('btn-save').addEventListener('click', function() {
-            const input_name = shadow.getElementById('name');
-            const input_desc = shadow.getElementById('description');
-            const input_start_date = shadow.getElementById('start-date');
-            const input_start_time = shadow.getElementById('start-time');
-            const input_end_date = shadow.getElementById('end-date');
-            const input_end_time = shadow.getElementById('end-time');
+            // const input_name = shadow.getElementById('name');
+            // const input_desc = shadow.getElementById('description');
+            // const input_start_date = shadow.getElementById('start-date');
+            // const input_start_time = shadow.getElementById('start-time');
+            // const input_end_date = shadow.getElementById('end-date');
+            // const input_end_time = shadow.getElementById('end-time');
 
             self.dispatchEvent(new CustomEvent('save', {
                 bubbles: true,
