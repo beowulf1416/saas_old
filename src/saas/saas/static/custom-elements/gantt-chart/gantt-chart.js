@@ -72,8 +72,6 @@ class GanttChart extends HTMLElement {
 
     connectedCallback() {
         if (this.isConnected) {
-            const shadow = this.shadowRoot;
-
             this._draw_chart();
         }
     }
@@ -91,11 +89,7 @@ class GanttChart extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const project = self._project ? self._project : { tasks: [] };
-
         const parent = this.parentElement;
-        // const table = shadow.querySelector('table#tasks');
-
-        // const chart = shadow.getElementById('chart');
 
         const width = parent.clientWidth - 200;
         const height = parent.clientHeight;
@@ -108,8 +102,11 @@ class GanttChart extends HTMLElement {
             left: 20
         };
 
+        const xmin = project.tasks.length > 0 ? d3.min(project.tasks, t => t.start) : moment().subtract(12, 'hours').toDate();
+        const xmax = project.tasks.length > 0 ? d3.max(project.tasks, t => t.end) : moment().add(24, 'hours').toDate();
+
         const x = d3.scaleTime()
-            .domain([Date.now() - 12*60*60*1000, Date.now() + 48*60*60*1000])
+            .domain([xmin.getTime(), xmax.getTime()])
             .rangeRound([0, width])
             .nice();
 
@@ -127,40 +124,43 @@ class GanttChart extends HTMLElement {
                 .attr('fill', 'red')
                 .attr('transform', `translate(0, 0)`)
                 .call(d3.axisBottom(x).ticks());
+        } else {
+            svg.select('g.x-axis')
+                .call(d3.axisBottom(x).ticks());
         }
 
         // tasks
         if (svg.select('g.tasks').empty()) {
             svg.append('g')
-                .attr('fill', 'red')
+                // .attr('fill', 'red')
                 .attr('transform', `translate(0, ${margin.top})`)
                 .attr('class', 'tasks');
         } else {
             svg.select('g.tasks')
-                // .attr('fill', 'red')
-                // .attr('transform', `translate(0, ${margin.top})`)
-                // .attr('class', 'tasks')
                 .selectAll('rect')
                 .data(project.tasks)
                 .join(
-                    enter => enter.append('rect'),
+                    enter => enter.append('g'),
                     update => update,
                     exit => exit.remove()
                 )
-                    .attr('class', 'task')
-                    .attr('x', d => { console.log(`${d.start.date} ${d.start.time}`); return x(moment(`${d.start.date} ${d.start.time}`, 'YYYY-MM-DD HH:mm').toDate()); })
-                    .attr('y', (d, i) => (row_height * (i + 1))- 2)
-                    .attr('width', d => x(moment(`${d.end.date} ${d.end.time}`).toDate()))
-                    .attr('height', row_height - 4)
-                    .on('click', function(e) {
-                        self.dispatchEvent(new CustomEvent('taskclick', {
-                            bubbles: true,
-                            cancelable: true,
-                            detail: {
-                                task: e
-                            }
-                        }));
-                    });
+                    .class('task')
+                    .append('rect')
+                        .attr('class', 'task-bar')
+                        .attr('x', d => x(d.start))
+                        .attr('y', (d, i) => (row_height * (i + 1))- 2)
+                        .attr('width', d => x(d.end))
+                        .attr('height', row_height - 4)
+                        .attr('fill', d => d.color )
+                        .on('click', function(e) {
+                            self.dispatchEvent(new CustomEvent('taskclick', {
+                                bubbles: true,
+                                cancelable: true,
+                                detail: {
+                                    task: e
+                                }
+                            }));
+                        });
         }
     }
 }
