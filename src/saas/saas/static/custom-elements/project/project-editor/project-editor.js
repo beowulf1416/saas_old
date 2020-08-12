@@ -26,6 +26,7 @@ class ProjectEditor extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._attachTaskEditorHandlers = this._attachTaskEditorHandlers.bind(this);
         this._buildProject = this._buildProject.bind(this);
 
         this._attachEventHandlers();
@@ -118,45 +119,62 @@ class ProjectEditor extends HTMLElement {
 
         const client_id = this.getAttribute('client-id');
 
-        const btnsave = shadow.getElementById('btn-save');
-        btnsave.addEventListener('click', function(e) {
-            const project = self._buildProject()
-            Project.add(project).then((r) => {
-                notify(r.status, r.message, 3000);
+        shadow.getElementById('btn-save')
+            .addEventListener('click', function(e) {
+                const project = self._buildProject()
+                Project.add(project).then((r) => {
+                    notify(r.status, r.message, 3000);
+                });
             });
-        });
 
-        const btnnoteadd = shadow.getElementById('btn-note-add');
-        btnnoteadd.addEventListener('click', function(e) {
-            console.log('btn-note-add');
-        });
-
-        shadow.getElementById('chart').addEventListener('taskclick', function(e) {
-            console.log(e);
-        });
-
-        shadow.getElementById('btn-add-task').addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const li = document.createElement('li');
-            li.classList.add('task-item');
-            li.innerHTML = `
-                <section class="task">
-                    <header>Task</header>
-                    <main>
-                        <task-editor client="${client_id}"></task-editor>
-                    </main>
-                </section>
-            `;
-
-            const ul = shadow.getElementById('tasks');
-            ul.appendChild(li);
-
-            // event handler
-            li.querySelector('task-editor').addEventListener('save', function(e) {
-                const task = e.detail.task;
-                console.log(task);
+        shadow.getElementById('btn-note-add')
+            .addEventListener('click', function(e) {
+                console.log('btn-note-add');
             });
+
+        shadow.getElementById('chart')
+            .addEventListener('taskclick', function(e) {
+                console.log(e);
+            });
+
+        shadow.getElementById('btn-add-task')
+            .addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const li = document.createElement('li');
+                li.classList.add('task-item');
+                li.innerHTML = `
+                    <section class="task">
+                        <header>Task</header>
+                        <main>
+                            <task-editor client="${client_id}"></task-editor>
+                        </main>
+                    </section>
+                `;
+
+                const ul = shadow.getElementById('tasks');
+                ul.appendChild(li);
+
+                // event handler
+                self._attachTaskEditorHandlers(li.querySelector('task-editor'), li);
+            });
+    }
+
+    _attachTaskEditorHandlers(editor, parent) {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        editor.addEventListener('change', function(e) {
+            const name = e.detail.task.name;
+            if (name != '') {
+                // console.log(parent.querySelector('header'));
+                parent.querySelector('header').innerText = e.detail.task.name;
+            }
+        });
+
+        editor.addEventListener('save', function(e) {
+            const task = e.detail.task;
+            console.log(task);
         });
     }
 
@@ -167,7 +185,6 @@ class ProjectEditor extends HTMLElement {
         const tasks = [];
         shadow.querySelectorAll('task-editor').forEach((editor) => {
             const value = editor.value;
-
             tasks.push(value);
         });
 
