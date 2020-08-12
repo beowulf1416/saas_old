@@ -55,6 +55,9 @@ class TaskEditor extends HTMLElement {
     }
 
     _init(container) {
+        const current_date = moment();
+        const tomorrow_date = moment().add(1, 'days');
+
         const div = document.createElement('div');
         div.innerHTML = `
             <div class="form-wrapper">
@@ -73,14 +76,14 @@ class TaskEditor extends HTMLElement {
                         <!-- start -->
                         <label for="start">Start</label>
                         <div id="start" class="form-group">
-                            <input type="date" id="start-date" name="start_date" class="form-date-start" title="Start Date" />
+                            <input type="date" id="start-date" name="start_date" class="form-date-start" title="Start Date" value="${current_date.format('YYYY-MM-DD')}"/>
                             <input type="time" id="start-time" name="start_time" class="form-time-start" title="Start Time" />
                         </div><!-- .form-group -->
 
                         <!-- end -->
                         <label for="end">End</label>
                         <div id="start" class="form-group">
-                            <input type="date" id="end-date" name="end_date" class="form-date-end" title="End Date" />
+                            <input type="date" id="end-date" name="end_date" class="form-date-end" title="End Date" value="${tomorrow_date.format('YYYY-MM-DD')}" />
                             <input type="time" id="end-time" name="end_time" class="form-time-end" title="End Time" />
                         </div><!-- .form-group -->
                     </fieldset>
