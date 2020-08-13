@@ -1,4 +1,5 @@
 'use strict';
+import { Util } from '/static/js/util.js';
 class GanttChart extends HTMLElement {
 
     constructor() {
@@ -176,14 +177,17 @@ class GanttChart extends HTMLElement {
                             .attr('class', 'task-text')
                             .attr('x', d => x(d.start) + margin_task.left)
                             .attr('y', (d, i) => (row_height * i) + margin_task.top + task_text_height)
-                            .attr('font-size', task_text_height);
+                            .attr('font-size', task_text_height)
+                            .attr('fill', d => Util.getColorComplement(d.color));
                         return g;
                     },
                     update => {
                         update.select('rect.task-bar')
-                            .attr('width', d => x(d.end));
+                            .attr('width', d => x(d.end))
+                            .attr('fill', d => d.color );
                         update.select('text.task-text')
-                            .text(d => d.name);
+                            .text(d => d.name)
+                            .attr('fill', d => Util.getColorComplement(d.color));
                         return update;
                     },
                     exit => exit.remove()
