@@ -88,19 +88,35 @@ class GanttChart extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const styles = window.getComputedStyle(this.shadowRoot.firstChild);
+
         const project = self._project ? self._project : { tasks: [] };
         const parent = this.parentElement;
 
-        const width = parent.clientWidth - 200;
-        const height = parent.clientHeight;
-        const row_height = 16;
-
-        const margin = {
+        const margin_chart = {
             top: 20,
             right: 0,
             bottom: 20,
             left: 20
         };
+        const margin_task_text = {
+            top: 2,
+            left: 2,
+            bottom: 2,
+            right: 2
+        };
+        const margin_task = {
+            top: 2,
+            left: 20,
+            bottom: 2,
+            right: 2
+        };
+
+        const width = parent.clientWidth - 200;
+        const height = parent.clientHeight;
+        const task_text_height = parseInt(styles.getPropertyValue('font-size'));
+        const task_height = task_text_height + margin_task_text.top + margin_task_text.bottom;
+        const row_height = task_height + margin_task.top + margin_task.bottom;
 
         const xmin = project.tasks.length > 0 ? d3.min(project.tasks, t => t.start) : moment().subtract(12, 'hours').toDate();
         const xmax = project.tasks.length > 0 ? d3.max(project.tasks, t => t.end) : moment().add(24, 'hours').toDate();
@@ -110,8 +126,8 @@ class GanttChart extends HTMLElement {
             .rangeRound([0, width])
             .nice();
 
-        const y = d3.scaleBand()
-            .domain([0, project.tasks.length]);
+        // const y = d3.scaleBand()
+        //     .domain([0, project.tasks.length]);
 
         const svg = d3.select(shadow)
             .select('#chart')
@@ -132,11 +148,10 @@ class GanttChart extends HTMLElement {
         // tasks
         if (svg.select('g.tasks').empty()) {
             svg.append('g')
-                // .attr('fill', 'red')
-                .attr('transform', `translate(0, ${margin.top})`)
+                .attr('transform', `translate(0, ${margin_chart.top})`)
                 .attr('class', 'tasks');
         } else {
-            svg.select('g.tasks')
+            const tasks = svg.select('g.tasks')
                 .selectAll('rect')
                 .data(project.tasks)
                 .join(
@@ -144,23 +159,28 @@ class GanttChart extends HTMLElement {
                     update => update,
                     exit => exit.remove()
                 )
-                    .class('task')
-                    .append('rect')
-                        .attr('class', 'task-bar')
-                        .attr('x', d => x(d.start))
-                        .attr('y', (d, i) => (row_height * (i + 1))- 2)
-                        .attr('width', d => x(d.end))
-                        .attr('height', row_height - 4)
-                        .attr('fill', d => d.color )
-                        .on('click', function(e) {
-                            self.dispatchEvent(new CustomEvent('taskclick', {
-                                bubbles: true,
-                                cancelable: true,
-                                detail: {
-                                    task: e
-                                }
-                            }));
-                        });
+                    .attr('class', 'task');
+            tasks.append('rect')
+                .attr('class', 'task-bar')
+                .attr('x', d => x(d.start))
+                .attr('y', (d, i) => (row_height * (i + 1)))
+                .attr('width', d => x(d.end))
+                .attr('height', row_height)
+                .attr('fill', d => d.color )
+                .on('click', function(e) {
+                    self.dispatchEvent(new CustomEvent('taskclick', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            task: e
+                        }
+                    }));
+                });
+            tasks.append('text')
+                .text(d => d.name)
+                .attr('x', d => x(d.start) + margin_task.left)
+                .attr('y', (d, i) => (row_height * (i + 1)) + margin_task.top)
+                .attr('font-size', task_text_height);
         }
     }
 }
