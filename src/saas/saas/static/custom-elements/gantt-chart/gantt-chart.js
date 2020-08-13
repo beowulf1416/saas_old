@@ -151,36 +151,39 @@ class GanttChart extends HTMLElement {
                 .attr('transform', `translate(0, ${margin_chart.top})`)
                 .attr('class', 'tasks');
         } else {
-            const tasks = svg.select('g.tasks')
-                .selectAll('rect')
+            svg.select('g.tasks')
+                .selectAll('g.task')
                 .data(project.tasks)
                 .join(
-                    enter => enter.append('g'),
+                    enter => {
+                        const g = enter.append('g')
+                            .attr('class', 'task');
+                        g.append('rect')
+                            .attr('class', 'task-bar')
+                            .attr('x', d => x(d.start))
+                            .attr('y', (d, i) => (row_height * i))
+                            .attr('width', d => x(d.end))
+                            .attr('height', task_height)
+                            .attr('fill', d => d.color )
+                            .on('click', function(e) {
+                                self.dispatchEvent(new CustomEvent('taskclick', {
+                                    bubbles: true,
+                                    cancelable: true,
+                                    detail: {
+                                        task: e
+                                    }
+                                }));
+                            });
+                        g.append('text')
+                            .text(d => d.name)
+                            .attr('x', d => x(d.start) + margin_task.left)
+                            .attr('y', (d, i) => (row_height * i) + margin_task.top + task_text_height)
+                            .attr('font-size', task_text_height);
+                        return g;
+                    },
                     update => update,
                     exit => exit.remove()
-                )
-                    .attr('class', 'task');
-            tasks.append('rect')
-                .attr('class', 'task-bar')
-                .attr('x', d => x(d.start))
-                .attr('y', (d, i) => (row_height * (i + 1)))
-                .attr('width', d => x(d.end))
-                .attr('height', task_height)
-                .attr('fill', d => d.color )
-                .on('click', function(e) {
-                    self.dispatchEvent(new CustomEvent('taskclick', {
-                        bubbles: true,
-                        cancelable: true,
-                        detail: {
-                            task: e
-                        }
-                    }));
-                });
-            tasks.append('text')
-                .text(d => d.name)
-                .attr('x', d => x(d.start) + margin_task.left)
-                .attr('y', (d, i) => (row_height * (i + 1)) + margin_task.top + task_text_height)
-                .attr('font-size', task_text_height);
+                );
         }
     }
 }
