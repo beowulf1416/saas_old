@@ -121,19 +121,16 @@ class GanttChart extends HTMLElement {
         const xmin = project.tasks.length > 0 ? d3.min(project.tasks, t => t.start) : moment().subtract(12, 'hours').toDate();
         const xmax = project.tasks.length > 0 ? d3.max(project.tasks, t => t.end) : moment().add(24, 'hours').toDate();
 
+        const svg = d3.select(shadow)
+            .select('#chart')
+            .attr('viewBox', [ 0, 0, width, height]);
+
         const x = d3.scaleTime()
             .domain([xmin.getTime(), xmax.getTime()])
             .rangeRound([0, width])
             .nice();
 
-        // const y = d3.scaleBand()
-        //     .domain([0, project.tasks.length]);
-
-        const svg = d3.select(shadow)
-            .select('#chart')
-            .attr('viewBox', [ 0, 0, width, height]);
-
-        // x-axis
+        // draw x-axis
         if (svg.select('g.x-axis').empty()) {
             svg.append('g')
                 .attr('class', 'x-axis')
@@ -145,7 +142,7 @@ class GanttChart extends HTMLElement {
                 .call(d3.axisBottom(x).ticks());
         }
 
-        // tasks
+        // draw tasks
         if (svg.select('g.tasks').empty()) {
             svg.append('g')
                 .attr('transform', `translate(0, ${margin_chart.top})`)
@@ -176,12 +173,19 @@ class GanttChart extends HTMLElement {
                             });
                         g.append('text')
                             .text(d => d.name)
+                            .attr('class', 'task-text')
                             .attr('x', d => x(d.start) + margin_task.left)
                             .attr('y', (d, i) => (row_height * i) + margin_task.top + task_text_height)
                             .attr('font-size', task_text_height);
                         return g;
                     },
-                    update => update,
+                    update => {
+                        update.select('rect.task-bar')
+                            .attr('width', d => x(d.end));
+                        update.select('text.task-text')
+                            .text(d => d.name);
+                        return update;
+                    },
                     exit => exit.remove()
                 );
         }
