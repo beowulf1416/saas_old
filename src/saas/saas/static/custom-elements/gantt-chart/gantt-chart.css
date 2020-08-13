@@ -4,4 +4,5 @@ svg {
 
 svg .task {
     rx: 5px;
+    cursor: alias;
 }

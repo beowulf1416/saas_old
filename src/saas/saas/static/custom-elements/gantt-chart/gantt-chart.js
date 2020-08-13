@@ -165,7 +165,7 @@ class GanttChart extends HTMLElement {
                 .attr('x', d => x(d.start))
                 .attr('y', (d, i) => (row_height * (i + 1)))
                 .attr('width', d => x(d.end))
-                .attr('height', row_height)
+                .attr('height', task_height)
                 .attr('fill', d => d.color )
                 .on('click', function(e) {
                     self.dispatchEvent(new CustomEvent('taskclick', {
@@ -179,7 +179,7 @@ class GanttChart extends HTMLElement {
             tasks.append('text')
                 .text(d => d.name)
                 .attr('x', d => x(d.start) + margin_task.left)
-                .attr('y', (d, i) => (row_height * (i + 1)) + margin_task.top)
+                .attr('y', (d, i) => (row_height * (i + 1)) + margin_task.top + task_text_height)
                 .attr('font-size', task_text_height);
         }
     }
