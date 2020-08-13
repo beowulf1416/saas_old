@@ -97,6 +97,38 @@ class TestWorkProjectTaskStore(unittest.TestCase):
         except Exception as e:
             self.fail(e)
 
+    def test_remove(self):
+        client_id = self.defaultClient[0]
+        project_id = str(uuid.uuid4())
+        task_id = str(uuid.uuid4())
+        random_str = self.generate_random_str(10)
+
+        self.projects.add(
+            client_id,
+            project_id,
+            random_str,
+            random_str,
+            datetime.datetime.now(),
+            datetime.datetime.now(),
+            []
+        )
+
+        self.tasks.add(
+            client_id,
+            project_id,
+            task_id,
+            random_str,
+            random_str
+        )
+
+        self.tasks.remove(
+            client_id,
+            project_id,
+            task_id
+        )
+
+
+
     def test_get(self):
         client_id = self.defaultClient[0]
         project_id = str(uuid.uuid4())

@@ -51,6 +51,21 @@ class TaskStore(BaseStore):
             log.error(e)
             raise StoreException('Unable to update project task')
 
+    def remove(self,
+        client_id: UUID,
+        project_id: UUID,
+        task_id: UUID
+        ) -> None:
+        try:
+            super(TaskStore, self).runProcTransactional('work.task_remove', [
+                client_id,
+                project_id,
+                task_id
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to remove task')
+
     def get(self, client_id: UUID, project_id: UUID, task_id: UUID) -> dict:
         try:
             result = super(TaskStore, self).runProc('work.task_get', [
@@ -77,6 +92,6 @@ class TaskStore(BaseStore):
             log.error(e)
             raise StoreException('Unable to retrieve project root tasks')
 
-    def get_dependents(self, client_id: UUID, project_id: UUID, task_id: UUID) -> list:
-        try:
-            result = super(TaskStore, self).runProc('work.')
+    # def get_dependents(self, client_id: UUID, project_id: UUID, task_id: UUID) -> list:
+    #     try:
+    #         result = super(TaskStore, self).runProc('work.')
