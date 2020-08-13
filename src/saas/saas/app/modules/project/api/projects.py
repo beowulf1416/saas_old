@@ -83,6 +83,7 @@ def api_work_projects_update(request):
             params['plannedEnd'] if 'plannedEnd' in params else None,
             params['actualStart'] if 'actualStart' in params else None,
             params['actualEnd'] if 'actualEnd' in params else None,
+            params['tasks'] if 'tasks' in params else []
         )
     except ValidationError as e:
         log.error(e)
@@ -175,6 +176,3 @@ def api_work_projects_get(request):
             'project': project
         }
     )
-
-def _get_child_tasks(store: TaskStore, client_id: UUID, project_id: UUID, task_id: UUID):
-    result = store.
