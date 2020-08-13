@@ -110,7 +110,8 @@ class TestWorkProjectStore(unittest.TestCase):
                 datetime.datetime.now(),
                 datetime.datetime.now(),
                 datetime.datetime.now(),
-                datetime.datetime.now()
+                datetime.datetime.now(),
+                []
             )
         except Exception as e:
             self.fail(e)

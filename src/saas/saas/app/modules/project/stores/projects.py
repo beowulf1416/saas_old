@@ -35,18 +35,20 @@ class ProjectStore(BaseStore):
                 planned_end
             ])
 
-            self._tasks_add(
-                client_id, 
-                project_id, 
-                None, 
-                tasks, 
-                c
-            )
+            for t in tasks:
+                current_task_id = t['taskId']
+                c.callproc('work.task_add', [
+                    client_id,
+                    project_id,
+                    current_task_id,
+                    t['name'],
+                    t['description']
+                ])
 
             super(ProjectStore, self).commit(cn)
         except Exception as e:
-            log.error(e)
             super(ProjectStore, self).rollback(cn)
+            log.error(e)
             raise StoreException('Unable to add project')
 
     def update(self,
@@ -57,10 +59,13 @@ class ProjectStore(BaseStore):
         planned_start: datetime,
         planned_end: datetime,
         actual_start: datetime,
-        actual_end: datetime
+        actual_end: datetime,
+        tasks: list
         ) -> None:
+        cn = super(ProjectStore, self).begin()
         try:
-            super(ProjectStore, self).runProcTransactional('work.project_update', [
+            c = cn.cursor()
+            c.callproc('work.project_update', [
                 client_id,
                 project_id,
                 name,
@@ -70,7 +75,34 @@ class ProjectStore(BaseStore):
                 actual_start,
                 actual_end
             ])
+
+            for t in tasks:
+                current_task_id = t['taskId']
+                status = t['status']
+                if status is None:
+                    c.callproc('work.task_add', [
+                        client_id,
+                        project_id,
+                        current_task_id,
+                        t['name'],
+                        t['description']
+                    ])
+                elif status == 'update':
+                    c.callproc('work.task_update', [
+
+                    ])
+                elif status == 'remove':
+                    c.callproc('work.task_remove', [
+                        client_id,
+                        project_id,
+                        current_task_id
+                    ])
+                else:
+                    log.warn('Unhandled case %s', status)
+
+                super(ProjectStore, self).commit(cn)
         except Exception as e:
+            super(ProjectStore, self).rollback(cn)
             log.error(e)
             raise StoreException('Unable to update project')
 
@@ -110,19 +142,6 @@ class ProjectStore(BaseStore):
                     t['name'],
                     t['description']
                 ])
-
-                # if parent_task_id is not None:
-                #     cursor.callproc('work.task_assign_parent', [
-                #         client_id,
-                #         project_id,
-                #         task_id,
-                #         parent_task_id
-                #     ])
-
-                # if 'tasks' in t:
-                #     if len(t['tasks']) > 0:
-                #         self._tasks_add(
-                #             client_id, project_id, current_task_id, t['tasks'], cursor)
         except Exception as e:
             log.error(e)
             raise e
