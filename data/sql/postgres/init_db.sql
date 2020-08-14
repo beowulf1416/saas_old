@@ -12,6 +12,7 @@ begin;
 \ir accounting/pre_init.sql
 \ir crm/pre_init.sql
 \ir inventory/pre_init.sql
+\ir purchasing/pre_init.sql
 
 /** post init **/
 \ir clients/post_init.sql
