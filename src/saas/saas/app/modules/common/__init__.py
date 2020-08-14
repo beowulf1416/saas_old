@@ -15,6 +15,11 @@ def includeme(config):
     modules['common'] = {
         'js': [
             {
+                'script': 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js',
+                'external': True,
+                'async': True
+            },
+            {
                 'type': 'module',
                 'script': '/static/custom-elements/currency-selector/currency-selector.js',
                 'async': True
