@@ -18,12 +18,37 @@ def includeme(config):
     validator = SchemaValidator(schema_path)
     __services['validator.json'] = validator
 
-    # __services['navigators'] = {}
-    __services['modules'] = {}
-    
-    # __services['page.styles'] = {}
-    # __services['page.scripts'] = {}
-    # __services['page.actions'] = {}
+    # default modules
+    __services['modules'] = {
+        'global': {
+            'js': [
+                {
+                    'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
+                    'async': True,
+                    'external': True
+                }
+            ]
+        },
+        'user': {
+            'navigators': [
+                {
+                    'id': 'user',
+                    'title': 'User',
+                    'help': 'User Dashboard',
+                    'icon': '<span class="material-icons">person</span>',
+                    'template': 'saas.app.core:templates/user/module.html'
+                }
+            ],
+            'js': [
+                {
+                    'type': 'module',
+                    'script': '/static/custom-elements/user/profile-editor.js',
+                    'async': True
+                }
+            ]
+        }
+    }
+
 
     config.add_request_method(
         get_service,

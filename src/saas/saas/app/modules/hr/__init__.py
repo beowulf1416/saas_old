@@ -57,10 +57,10 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/hr/time-entries/time-entries.js'
             },
-            {
-                'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
-                'external': 'true'
-            },
+            # {
+            #     'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
+            #     'external': 'true'
+            # },
             {
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.8.28/dayjs.min.js',
                 'external': 'true'
