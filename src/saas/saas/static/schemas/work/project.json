@@ -13,14 +13,14 @@
                 "actualStart": { "type": "string", "format": "date-time" },
                 "actualEnd": { "type": "string", "format": "date-time" },
                 "status": { "anyOf": [
-                    { "type": "string", "enum": ["new", "remove"] },
+                    { "type": "string", "enum": ["update", "remove"] },
                     { "type": "null" }
-                ]},
-                "tasks": {
-                    "type": "array",
-                    "task": { "$ref": "#/definitions/item" }
-                }
-            }
+                ]}
+            },
+            "required": [
+                "id",
+                "name"
+            ]
         }
     },
     "type": "object",

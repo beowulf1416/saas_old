@@ -41,6 +41,9 @@ class ProjectEditor extends HTMLElement {
                 <button type="button" id="btn-save" class="btn btn-new" title="Save">
                     <span class="material-icons">save</span>
                 </button>
+                <button type="button" id="btn-add-task" class="btn btn-add-task" title="Add Task">
+                    <span class="material-icons">add_task</span>
+                </button>
                 <div class="button-group">
                     <button type="button" id="btn-note-add" class="btn btn-note-add" title="Add Note">
                         <span class="material-icons">note</span>
@@ -100,9 +103,6 @@ class ProjectEditor extends HTMLElement {
                     <fieldset id="tasks-wrapper">
                         <legend>Tasks</legend>
                         <div class="toolbar" role="toolbar">
-                            <button type="button" id="btn-add-task" class="btn btn-add-task" title="Add Task">
-                                <span class="material-icons">add_task</span>
-                            </button>
                         </div><!-- .toolbar -->
                         <ul id="tasks">
                         </ul>
@@ -144,6 +144,11 @@ class ProjectEditor extends HTMLElement {
 
                 const id = Util.generateId();
 
+                // close open tasks
+                shadow.querySelectorAll('.task-item.collapsable').forEach((n) => {
+                    n.classList.add('collapsed');
+                });
+
                 const li = document.createElement('li');
                 li.classList.add('task-item', 'collapsable');
                 li.innerHTML = `
@@ -182,7 +187,6 @@ class ProjectEditor extends HTMLElement {
         });
 
         editor.addEventListener('save', function(e) {
-            // const task = e.detail.task;
             self._updateChart(self._buildProject());
         });
     }

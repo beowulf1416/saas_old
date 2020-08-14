@@ -27,6 +27,11 @@ class TaskEditor extends HTMLElement {
         this._attachEventHandlers();
     }
 
+    // connectedCallback() {
+    //     if (this.isConnected) {
+    //     }
+    // }
+
     get value() {
         const shadow = this.shadowRoot;
 
@@ -38,19 +43,15 @@ class TaskEditor extends HTMLElement {
         const input_start_time = shadow.getElementById('start-time');
         const input_end_date = shadow.getElementById('end-date');
         const input_end_time = shadow.getElementById('end-time');
+        const input_color = shadow.getElementById('color');
 
         return {
             taskId: task_id,
             name: input_name.value,
             description: input_desc.value,
-            start: {
-                date: input_start_date.value,
-                time: input_start_time.value
-            },
-            end: {
-                date: input_end_date.value,
-                time: input_end_time.value
-            }
+            start: moment(`${input_start_date.value} ${input_start_time.value}`).toDate(),
+            end: moment(`${input_end_date.value} ${input_end_time.value}`).toDate(),
+            color: input_color.value
         };
     }
 
@@ -87,6 +88,13 @@ class TaskEditor extends HTMLElement {
                             <input type="time" id="end-time" name="end_time" class="form-time-end" title="End Time" value="${tomorrow_date.format('HH:mm')}" />
                         </div><!-- .form-group -->
                     </fieldset>
+
+                    <fieldset id="extra">
+                        <!-- color -->
+                        <label for="color">Color</label>
+                        <input type="color" id="color" name="color" title="Task Color" />
+                    </fieldset>
+
                     <button type="button" id="btn-save" class="btn btn-save" title="Save Task">
                         <span class="material-icons">save</span>
                     </button>
@@ -117,13 +125,6 @@ class TaskEditor extends HTMLElement {
         });
 
         shadow.getElementById('btn-save').addEventListener('click', function() {
-            // const input_name = shadow.getElementById('name');
-            // const input_desc = shadow.getElementById('description');
-            // const input_start_date = shadow.getElementById('start-date');
-            // const input_start_time = shadow.getElementById('start-time');
-            // const input_end_date = shadow.getElementById('end-date');
-            // const input_end_time = shadow.getElementById('end-time');
-
             self.dispatchEvent(new CustomEvent('save', {
                 bubbles: true,
                 cancelable: true,
