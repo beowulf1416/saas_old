@@ -7,6 +7,9 @@ set schema 'purchasing';
 \ir procs/vendors/vendor_assign_org.sql
 
 \ir procs/purchase_orders/purchase_order_save.sql
+\ir procs/purchase_orders/purchase_order_add.sql
+\ir procs/purchase_orders/purchase_order_update.sql
+\ir procs/purchase_orders/purchase_order_update_status.sql
 \ir procs/purchase_orders/purchase_orders_filter.sql
 \ir procs/purchase_orders/purchase_order_get.sql
 
