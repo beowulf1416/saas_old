@@ -1,3 +1,6 @@
+import logging
+log = logging.getLogger(__name__)
+
 from pyramid.config import Configurator
 
 
