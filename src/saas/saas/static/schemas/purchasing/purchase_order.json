@@ -13,7 +13,13 @@
                     { "type": "string", "enum": ["new", "remove"] },
                     { "type": "null" }
                 ]}
-            }
+            },
+            "required": [
+                "id",
+                "description",
+                "quantity",
+                "uom"
+            ]
         }
     },
     "type": "object",
