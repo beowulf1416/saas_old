@@ -30,6 +30,11 @@ def includeme(config):
                 'script': '/static/js/modules/project/actions.js'
             },
             {
+                'script': 'https://d3js.org/d3.v5.min.js',
+                'external': True,
+                'async': True
+            },
+            {
                 'type': 'module',
                 'script': '/static/custom-elements/project/project-explorer/project-explorer.js',
                 'async': True
