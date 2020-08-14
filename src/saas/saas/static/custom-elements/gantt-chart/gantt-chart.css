@@ -2,7 +2,7 @@ svg {
     background-color: #eeeeee;
 }
 
-svg .task {
+svg .task-bar {
     rx: 5px;
     cursor: alias;
 }
