@@ -36,6 +36,9 @@ class Util {
         });
     }
 
+    /**
+     * depends on https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js
+     */
     static generateUUID() {
         return uuidv4();
     }
