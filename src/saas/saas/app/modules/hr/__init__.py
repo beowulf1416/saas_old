@@ -19,7 +19,7 @@ def includeme(config):
                 'title': 'Human Resources',
                 'help': 'Manage Human Resources',
                 'icon': '<span class="material-icons">group</span>',
-                'template': 'saas.app.modules.hr:templates/module.html'
+                'template': 'saas.app.modules.hr:templates/navigator.html'
             }
         ],
         'views': [],

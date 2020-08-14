@@ -3,6 +3,20 @@ import { showInTab } from '/static/js/ui/ui.js';
 (function(){
     console.log('hr actions');
 
+    const menu = document.createElement('div');
+    menu.classList.add('hr');
+    menu.innerHTML = `
+        <div class="menu-label">HR</div>
+        <ul class="menu-list">
+            <li>Test</li>
+        </ul>
+    `;
+    const extension = document.querySelector('.module-user .extensions');
+    if (extension) {
+        extension.appendChild(menu);
+    }
+    
+
     window.actions = window.actions ? window.actions : {};
     window.actions['hr.dashboard'] = function() {
         // const client_id = window.clientId;

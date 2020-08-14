@@ -16,7 +16,7 @@ def includeme(config):
                 'title': 'User',
                 'help': 'User Dashboard',
                 'icon': '<span class="material-icons">person</span>',
-                'template': 'saas.app.core:templates/user/module.html'
+                'template': 'saas.app.core.modules.user:templates/navigator.html'
             }
         ],
         'js': [
