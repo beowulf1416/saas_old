@@ -10,7 +10,7 @@
                 "quantity": { "type": "number" },
                 "uom": { "type": "number" },
                 "status": { "anyOf": [
-                    { "type": "string", "enum": ["new", "remove"] },
+                    { "type": "string", "enum": ["new","update","remove"] },
                     { "type": "null" }
                 ]}
             },
