@@ -16,7 +16,7 @@ begin
         facility_id,
         vendor_id,
         instructions,
-        status
+        status_id
     ) values  (
         p_po_id,
         p_client_id,

@@ -12,14 +12,98 @@ class PurchaseOrderStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(PurchaseOrderStore, self).__init__(manager, name)
 
-    def save(self, order = {}):
+    # def save(self, order = {}):
+    #     cn = super(PurchaseOrderStore, self).begin()
+    #     try:
+    #         client_id = order['clientId']
+    #         purchase_order_id = order['purchaseOrderId']
+
+    #         c = cn.cursor()
+    #         c.callproc('purchasing.purchase_order_save', [
+    #             client_id,
+    #             purchase_order_id,
+    #             order['description'],
+    #             order['facilityId'],
+    #             order['vendorId'],
+    #             order['instructions'],
+    #         ])
+
+    #         c = cn.cursor()
+    #         items = order['items']
+    #         for item in items:
+    #             status = item['status'] if 'status' in item else None
+    #             if status == 'new':
+    #                 c.callproc('purchasing.purchase_order_item_add', [
+    #                     client_id,
+    #                     purchase_order_id,
+    #                     item['id'],
+    #                     item['description'],
+    #                     item['quantity'],
+    #                     item['uom']
+    #                 ])
+    #             elif status == 'remove':
+    #                 c.callproc('purchasing.purchase_order_item_remove', [
+    #                     client_id,
+    #                     purchase_order_id,
+    #                     item['id']
+    #                 ])
+    #             else:
+    #                 c.callproc('purchasing.purchase_order_item_update', [
+    #                     client_id,
+    #                     purchase_order_id,
+    #                     item['id'],
+    #                     item['description'],
+    #                     item['quantity'],
+    #                     item['uom']
+    #                 ])
+    #         super(PurchaseOrderStore, self).commit(cn)
+    #     except Exception as e:
+    #         super(PurchaseOrderStore, self).rollback(cn)
+    #         log.error(e)
+    #         raise Exception('Unable to save purchase order')
+
+    def add(self, order = {}) -> None:
         cn = super(PurchaseOrderStore, self).begin()
         try:
             client_id = order['clientId']
             purchase_order_id = order['purchaseOrderId']
 
             c = cn.cursor()
-            c.callproc('purchasing.purchase_order_save', [
+            c.callproc('purchasing.purchase_order_add', [
+                client_id,
+                purchase_order_id,
+                order['description'],
+                order['facilityId'],
+                order['vendorId'],
+                order['instructions'],
+            ])
+
+            c = cn.cursor()
+            items = order['items']
+            for item in items:
+                c.callproc('purchasing.purchase_order_item_add', [
+                    client_id,
+                    purchase_order_id,
+                    item['id'],
+                    item['description'],
+                    item['quantity'],
+                    item['uom']
+                ])
+
+            super(PurchaseOrderStore, self).commit(cn)
+        except Exception as e:
+            super(PurchaseOrderStore, self).rollback(cn)
+            log.error(e)
+            raise Exception('Unable to add purchase order')
+
+    def update(self, order = {}) -> None:
+        cn = super(PurchaseOrderStore, self).begin()
+        try:
+            client_id = order['clientId']
+            purchase_order_id = order['purchaseOrderId']
+
+            c = cn.cursor()
+            c.callproc('purchasing.purchase_order_update', [
                 client_id,
                 purchase_order_id,
                 order['description'],
@@ -41,26 +125,13 @@ class PurchaseOrderStore(BaseStore):
                         item['quantity'],
                         item['uom']
                     ])
-                elif status == 'remove':
-                    c.callproc('purchasing.purchase_order_item_remove', [
-                        client_id,
-                        purchase_order_id,
-                        item['id']
-                    ])
-                else:
-                    c.callproc('purchasing.purchase_order_item_update', [
-                        client_id,
-                        purchase_order_id,
-                        item['id'],
-                        item['description'],
-                        item['quantity'],
-                        item['uom']
-                    ])
+
             super(PurchaseOrderStore, self).commit(cn)
         except Exception as e:
             super(PurchaseOrderStore, self).rollback(cn)
             log.error(e)
-            raise Exception('Unable to save purchase order')
+            raise Exception('Unable to add purchase order')
+
 
     def filter(self, client_id: UUID, filter: str):
         try:

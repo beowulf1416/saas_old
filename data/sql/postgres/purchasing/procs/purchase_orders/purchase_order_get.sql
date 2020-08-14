@@ -8,7 +8,8 @@ returns table (
     description purchasing.purchase_orders.description%type,
     facility_id purchasing.purchase_orders.facility_id%type,
     vendor_id purchasing.purchase_orders.vendor_id%type,
-    instructions purchasing.purchase_orders.instructions%type
+    instructions purchasing.purchase_orders.instructions%type,
+    status_id purchasing.purchase_orders.status_id%type
 )
 as $$
 begin
@@ -19,7 +20,8 @@ begin
         a.description,
         a.facility_id,
         a.vendor_id,
-        a.instructions
+        a.instructions,
+        a.status_id
     from purchasing.purchase_orders a
     where a.client_id = p_client_id
         and a.id = p_order_id;

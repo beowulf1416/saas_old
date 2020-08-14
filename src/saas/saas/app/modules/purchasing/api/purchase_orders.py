@@ -9,9 +9,10 @@ import json
 
 
 @view_config(
-    route_name='api.purchasing.purchase.orders.save',
+    route_name='api.purchasing.purchase.orders.add',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_purchasing_po_add(request):
     params = request.json_body
@@ -24,7 +25,45 @@ def api_purchasing_po_add(request):
             instance = params,
             schema_file = 'purchasing/purchase_order.json'
         )
-        poStore.save(params)
+        poStore.add(params)
+    except ValidationError as e:
+        log.error(e)
+        raise exception.HTTPBadRequest(
+            detail=e.message,
+            explanation='Incorrect parameters'
+        )
+    except Exception as e:
+        log.error(e)
+        raise exception.HTTPInternalServerError(
+            detail=str(e),
+            explanation=str(e)
+        )
+
+    raise exception.HTTPOk(
+        detail='Purchase Order created',
+        body={
+            'message': 'Purchase Order created'
+        }
+    )
+
+@view_config(
+    route_name='api.purchasing.purchase.orders.update',
+    request_method='POST',
+    renderer='json',
+    permission='user.authenticated'
+)
+def api_purchasing_po_update(request):
+    params = request.json_body
+
+    services = request.services()
+    validator = services['validator.json']
+    poStore = services['store.purchasing.po']
+    try:
+        validator.validate(
+            instance = params,
+            schema_file = 'purchasing/purchase_order.json'
+        )
+        poStore.update(params)
     except ValidationError as e:
         log.error(e)
         raise exception.HTTPBadRequest(
@@ -48,7 +87,8 @@ def api_purchasing_po_add(request):
 @view_config(
     route_name='api.purchasing.purchase.orders.filter',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_purchasing_po_filter(request):
     params = request.json_body
@@ -91,7 +131,8 @@ def api_purchasing_po_filter(request):
 @view_config(
     route_name='api.purchasing.purchase.orders.get',
     request_method='POST',
-    renderer='json'
+    renderer='json',
+    permission='user.authenticated'
 )
 def api_purchasing_po_get(request):
     params = request.json_body
