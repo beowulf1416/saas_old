@@ -26,7 +26,12 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/user/profile-editor.js',
+                'script': '/static/custom-elements/user/dashboard/user-dashboard.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/user/profile-editor/profile-editor.js',
                 'async': True
             }
         ]
