@@ -46,7 +46,7 @@ class ClientsTable extends HTMLElement {
 
     init(container) {
         const show_new = this.hasAttribute('show-new') ? `
-            <button type="button" class="btn btn-new" title="New Client">
+            <button type="button" id="btn-new" class="btn btn-new" title="New Client">
                 <span class="material-icons">create_new_folder</span>
             </button>
             ` : '';
