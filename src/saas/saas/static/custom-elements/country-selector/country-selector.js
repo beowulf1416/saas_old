@@ -44,8 +44,9 @@ class CountrySelector extends HTMLElement {
     _init(container) {
         const div = document.createElement('div');
         div.innerHTML = `
-            <input type="text" id="display" name="display" class="form-input-display" title="Select Country" placeholder="Country" readonly />
-            <button type="button" id="btn-select" class="btn btn-select" title="Select Country">&hellip;</button>
+            <button type="button" id="btn-select" class="btn btn-select" title="Select Country">
+                Select Country
+            </button>
         `;
 
         container.appendChild(div);
@@ -74,9 +75,7 @@ class CountrySelector extends HTMLElement {
             Common.country_get(country_id).then((r) => {
                 if (r.status == 'success') {
                     const country = r.json.country;
-
-                    const input_display = shadow.getElementById('display');
-                    input_display.value = country.name;
+                    shadow.getElementById('btn-select').innerText = country.name;
                 } else {
                     notify(r.status, r.mesasge, 3000);
                 }

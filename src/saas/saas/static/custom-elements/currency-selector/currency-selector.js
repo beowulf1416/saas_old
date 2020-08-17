@@ -46,9 +46,8 @@ class CurrencySelector extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <input type="text" id="display" name="display" class="form-input-display" title="Currency" placeholder="Currency" readonly />
             <button type="button" id="btn-select" class="btn btn-select" title="Select Currency">
-                <span>&hellip;</span>
+                Select Currency
             </button>
         `;
         container.appendChild(div);
@@ -80,11 +79,11 @@ class CurrencySelector extends HTMLElement {
 
         const currency_id = this.getAttribute('currency-id');
         if (currency_id) {
-            const input_display = shadow.getElementById('display');
+            const btn_select = shadow.getElementById('btn-select');
             Common.currency_get(currency_id).then((r) => {
                 if (r.status == 'success') {
                     const currency = r.json.currency;
-                    input_display.value = currency.name;
+                    shadow.getElementById('btn-select').innerText = currency.name;
                 } else {
                     notify(r.status, r.message, 3000);
                 }
