@@ -18,6 +18,9 @@ import jwt
 import logging
 log = logging.getLogger(__name__)
 
+import string
+import random
+
 
 class TestAdminModulePage(unittest.TestCase):
 
@@ -36,6 +39,9 @@ class TestAdminModulePage(unittest.TestCase):
         users = usersStore.getAllClientUsers(default_client_id)
         default_user = users[0]
         default_user_email = default_user[2]
+
+        log.warning('email: %s', default_user_email)
+        log.warning('client: %s', self.defaultClient[2])
 
         # self.session = webdriver.Firefox()
         self.session = webdriver.Chrome()
@@ -74,7 +80,15 @@ class TestAdminModulePage(unittest.TestCase):
     def tearDown(self):
         self.session.close()
 
-    def test_clients_list(self):
+    def get_shadow_root(self, element):
+        # element = self.session.find_element_by_css_selector(selector)
+        return self.session.execute_script('return arguments[0].shadowRoot;', element)
+
+    def generate_random_str(self, length: int):
+        allowed = string.ascii_lowercase + string.digits
+        return ''.join(random.choice(allowed) for i in range(length))
+
+    def test_add_client(self):
         WebDriverWait(self.session, 10).until(
             EC.presence_of_element_located((By.ID, 'nav-admin'))
         )
@@ -85,8 +99,29 @@ class TestAdminModulePage(unittest.TestCase):
         elem = self.session.find_element_by_css_selector('[data-action="admin.clients"]')
         elem.click()
 
-        tab = self.session.find_element_by_tag_name('tab-container')
-        sr = self.session.execute_script('return arguments[0].shadowRoot;', tab)
+        tab = self.get_shadow_root(self.session.find_element_by_css_selector('tab-container'))
 
-        self.assertTrue(sr.find_element_by_id('link-admin.clients'))
+        clients_table = tab.find_element_by_css_selector('clients-table')
+        sr = self.get_shadow_root(clients_table)
+        btn = sr.find_element_by_id('btn-new')
+        btn.click()
+
+        client_editor = tab.find_element_by_css_selector('client-editor')
+        sr = self.get_shadow_root(client_editor)
+        random_str = self.generate_random_str(10)
+        
+        input_name = sr.find_element_by_id('name')
+        input_name.send_keys(random_str)
+
+        input_address = sr.find_element_by_id('address')
+        input_address.send_keys(random_str)
+
+        btn_save = sr.find_element_by_id('btn-save')
+        btn_save.click()
+
+        notifier = self.get_shadow_root(self.session.find_element_by_css_selector('notification-list'))
+        elem = WebDriverWait(self.session, 10).until(
+            lambda notifier: notifier.find_element_by_css_selector('.notification .is-success') 
+        )
+        self.assertTrue(elem)
 
