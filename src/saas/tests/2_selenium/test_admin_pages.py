@@ -37,7 +37,8 @@ class TestAdminModulePage(unittest.TestCase):
         default_user = users[0]
         default_user_email = default_user[2]
 
-        self.session = self.driver = webdriver.Firefox()
+        # self.session = webdriver.Firefox()
+        self.session = webdriver.Chrome()
         self.session.get('http://saas.com')
 
         # set up cookie
@@ -71,7 +72,7 @@ class TestAdminModulePage(unittest.TestCase):
         self.session.get('http://saas.com')
 
     def tearDown(self):
-        self.driver.close()
+        self.session.close()
 
     def test_clients_list(self):
         WebDriverWait(self.session, 10).until(
