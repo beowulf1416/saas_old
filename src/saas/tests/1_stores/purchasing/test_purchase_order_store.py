@@ -32,7 +32,48 @@ class TestPurchaseOrderStore(unittest.TestCase):
         allowed = string.ascii_lowercase + string.digits
         return ''.join(random.choice(allowed) for i in range(length))
 
-    def test_save_po(self):
+    # def test_save_po(self):
+    #     random_str = self.generate_random_str(10)
+    #     client_id = self.defaultClient[0]
+    #     country_id = self.defaultClient[4]
+
+    #     facility_id = str(uuid.uuid4())
+    #     uom_id = 1 #
+    #     self.facilityStore.add(
+    #         client_id,
+    #         facility_id,
+    #         random_str,
+    #         random_str,
+    #         random_str,
+    #         country_id,
+    #         100,
+    #         uom_id
+    #     )
+
+    #     vendor_id = str(uuid.uuid4())
+    #     vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+
+    #     po_id = str(uuid.uuid4())
+    #     order = {
+    #         'clientId': client_id,
+    #         'purchaseOrderId': po_id,
+    #         'description': random_str,
+    #         'facilityId': facility_id,
+    #         'vendorId': vendor_id,
+    #         'instructions': random_str,
+    #         'items': [
+    #             {
+    #                 'id': str(uuid.uuid4()),
+    #                 'description': random_str,
+    #                 'quantity': 1,
+    #                 'uom': 1,
+    #                 'status': 'new'
+    #             }
+    #         ]
+    #     }
+    #     self.poStore.save(order)
+
+    def test_add_po(self):
         random_str = self.generate_random_str(10)
         client_id = self.defaultClient[0]
         country_id = self.defaultClient[4]
@@ -51,7 +92,13 @@ class TestPurchaseOrderStore(unittest.TestCase):
         )
 
         vendor_id = str(uuid.uuid4())
-        vendor = self.vendorStore.add(client_id, vendor_id, random_str, random_str, country_id)
+        vendor = self.vendorStore.add(
+            client_id, 
+            vendor_id, 
+            random_str, 
+            random_str, 
+            country_id
+        )
 
         po_id = str(uuid.uuid4())
         order = {
@@ -71,7 +118,73 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 }
             ]
         }
-        self.poStore.save(order)
+        self.poStore.add(order)
+
+    def test_update_po(self):
+        random_str = self.generate_random_str(10)
+        client_id = self.defaultClient[0]
+        country_id = self.defaultClient[4]
+
+        facility_id = str(uuid.uuid4())
+        uom_id = 1 #
+        self.facilityStore.add(
+            client_id,
+            facility_id,
+            random_str,
+            random_str,
+            random_str,
+            country_id,
+            100,
+            uom_id
+        )
+
+        vendor_id = str(uuid.uuid4())
+        vendor = self.vendorStore.add(
+            client_id, 
+            vendor_id, 
+            random_str, 
+            random_str, 
+            country_id
+        )
+
+        po_id = str(uuid.uuid4())
+        order = {
+            'clientId': client_id,
+            'purchaseOrderId': po_id,
+            'description': random_str,
+            'facilityId': facility_id,
+            'vendorId': vendor_id,
+            'instructions': random_str,
+            'items': [
+                {
+                    'id': str(uuid.uuid4()),
+                    'description': random_str,
+                    'quantity': 1,
+                    'uom': 1,
+                    'status': 'new'
+                }
+            ]
+        }
+        self.poStore.add(order)
+
+        random_str = self.generate_random_str(10)
+        order = {
+            'clientId': client_id,
+            'purchaseOrderId': po_id,
+            'description': random_str,
+            'facilityId': facility_id,
+            'vendorId': vendor_id,
+            'instructions': random_str,
+            'items': [
+                {
+                    'id': str(uuid.uuid4()),
+                    'description': random_str,
+                    'quantity': 2,
+                    'uom': 1,
+                }
+            ]
+        }
+        self.poStore.update(order)
 
     def test_filter_po(self):
         try:
@@ -113,7 +226,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                     }
                 ]
             }
-            self.poStore.save(order)
+            self.poStore.add(order)
 
             result = self.poStore.filter(client_id, '')
             self.assertGreater(len(result), 0, '{0}'.format(result))
@@ -161,7 +274,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 }
             ]
         }
-        self.poStore.save(order)
+        self.poStore.add(order)
         try:
             result = self.poStore.get(client_id, po_id)
             self.assertEqual(result[0], po_id, '{0}'.format(result))
@@ -208,7 +321,7 @@ class TestPurchaseOrderStore(unittest.TestCase):
                 }
             ]
         }
-        self.poStore.save(order)
+        self.poStore.add(order)
         try:
             result = self.poStore.get_items(client_id, po_id)
             self.assertGreater(len(result), 0, '{0}'.format(result))
