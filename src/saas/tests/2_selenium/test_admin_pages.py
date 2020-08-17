@@ -120,8 +120,11 @@ class TestAdminModulePage(unittest.TestCase):
         btn_save.click()
 
         notifier = self.get_shadow_root(self.session.find_element_by_css_selector('notification-list'))
-        elem = WebDriverWait(self.session, 10).until(
-            lambda notifier: notifier.find_element_by_css_selector('.notification .is-success') 
-        )
-        self.assertTrue(elem)
+        try:
+            elem = WebDriverWait(self.session, 10).until(
+                lambda notifier: notifier.find_element_by_css_selector('.notification .is-success') 
+            )
+            self.assertTrue(elem)
+        except Exception as e:
+            self.fail(e)
 
