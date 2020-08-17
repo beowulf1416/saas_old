@@ -48,9 +48,6 @@ class ClientEditor extends HTMLElement {
                         const address = shadow.getElementById('address');
                         address.value = client.address;
 
-                        const country = shadow.getElementById('country');
-                        country.value = client.country_id;
-
                         shadow.getElementById('country').setAttribute('country-id', client.countryId);
                         shadow.getElementById('currency').setAttribute('currency-id', client.currencyId);
                     } else {
@@ -77,19 +74,21 @@ class ClientEditor extends HTMLElement {
                     <!-- name -->
                     <label for="name">Name</label>
                     <div class="form-group form-group-name">
-                        <input type="text" id="name" name="name" class="form-input-name" title="Client Name" placeholder="Name" />
+                        <input type="text" id="name" name="name" class="form-input form-input-name" title="Client Name" placeholder="Name" />
                     </div><!-- .form-group -->
 
                     <!-- address -->
                     <label for="address">Address</label>
                     <div class="form-group form-group-address">
-                        <textarea id="address" name="address" class="form-input-address" title="Address" placeholder="Address"></textarea>
+                        <textarea id="address" name="address" class="form-input form-input-address" title="Address" placeholder="Address"></textarea>
                     </div><!-- .form-group -->
 
                     <!-- country -->
+                    <label for="country">Country</label>
                     <country-selector id="country"></country-selector>
 
                     <!-- currency -->
+                    <label for="currency">Currency</label>
                     <currency-selector id="currency"></currency-selector>
                 </form>
             </div><!-- .form-wrapper -->

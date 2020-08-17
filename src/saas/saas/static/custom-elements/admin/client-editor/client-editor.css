@@ -1,0 +1,15 @@
+.form-wrapper form {
+    display: grid;
+    grid-template-columns: min-content auto;
+    gap: 4px;
+}
+
+.form-group .form-input {
+    width: 100%;
+}
+
+.form-group .form-input-address {
+    padding: 4px;
+    border: solid 1px #bbb;
+    border-radius: 5px;
+}
