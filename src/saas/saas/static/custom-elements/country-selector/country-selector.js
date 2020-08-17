@@ -26,7 +26,7 @@ class CountrySelector extends HTMLElement {
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
         this._fetch = this._fetch.bind(this);
-        this.value = this.value.bind(this);
+        // this.value = this.value.bind(this);
 
         this._attachEventHandlers();
     }
@@ -83,7 +83,7 @@ class CountrySelector extends HTMLElement {
         }
     }
 
-    value() {
+    get value() {
         return this.getAttribute('country-id');
     }
 }

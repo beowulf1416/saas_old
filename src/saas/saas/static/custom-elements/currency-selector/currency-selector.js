@@ -25,7 +25,7 @@ class CurrencySelector extends HTMLElement {
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.value = this.value.bind(this);
+        // this.value = this.value.bind(this);
         this._fetch = this._fetch.bind(this);
 
         this._attachEventHandlers();
@@ -69,7 +69,7 @@ class CurrencySelector extends HTMLElement {
         });
     }
 
-    value() {
+    get value() {
         return this.getAttribute('currency-id');
     }
 
