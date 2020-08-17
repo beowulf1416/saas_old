@@ -22,6 +22,10 @@ def includeme(config):
         'js': [
             {
                 'type': 'module',
+                'script': '/static/js/modules/user/actions.js'
+            },
+            {
+                'type': 'module',
                 'script': '/static/custom-elements/user/profile-editor.js',
                 'async': True
             }
