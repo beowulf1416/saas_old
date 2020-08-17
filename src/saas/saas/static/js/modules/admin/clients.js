@@ -5,7 +5,6 @@ class Clients {
         return Util.fetch('/api/clients/all', {});
     }
 
-    // TODO include client id in params
     static add(clientId = '', name = '', address = '', countryId = '', currencyId = '') {
         return Util.fetch('/api/clients/add', {
             clientId: clientId,
