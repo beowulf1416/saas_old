@@ -1,7 +1,7 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
 import { Clients } from '/static/js/modules/admin/clients.js';
-import { Common } from '/static/js/modules/common/common.js';
+import { Util } from '/static/js/util.js';
 class ClientEditor extends HTMLElement {
 
     constructor() {
@@ -11,9 +11,9 @@ class ClientEditor extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/admin/client-editor/client-editor.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,7 +22,7 @@ class ClientEditor extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandler = this._attachEventHandler.bind(this);
@@ -37,8 +37,8 @@ class ClientEditor extends HTMLElement {
             const self = this;
             const shadow = this.shadowRoot;
 
-            const client_id = this.hasAttribute('client-id') ? this.getAttribute('client-id') : '';
-            if (client_id != '') {
+            const client_id = this.getAttribute('client-id');
+            if (client_id != null) {
                 Clients.get(client_id).then((r) => {
                     if (r.status == 'success') {
                         const client = r.json.client;
@@ -50,6 +50,9 @@ class ClientEditor extends HTMLElement {
 
                         const country = shadow.getElementById('country');
                         country.value = client.country_id;
+
+                        shadow.getElementById('country').setAttribute('country-id', client.countryId);
+                        shadow.getElementById('currency').setAttribute('currency-id', client.currencyId);
                     } else {
                         notify(r.status, r.message);
                     }
@@ -65,7 +68,7 @@ class ClientEditor extends HTMLElement {
         div.innerHTML = `
             <div class="form-wrapper">
                 <div class="toolbar" role="toolbar">
-                    <button type="button" class="btn btn-save" title="Save">
+                    <button type="button" id="btn-save" class="btn btn-save" title="Save">
                         <span class="material-icons">save</span>
                     </button>
                 </div><!-- .toolbar -->
@@ -84,9 +87,10 @@ class ClientEditor extends HTMLElement {
                     </div><!-- .form-group -->
 
                     <!-- country -->
-                    <label for="country">Country</label>
-                    <select id="country" name="country" title="Country">
-                    </select>
+                    <country-selector id="country"></country-selector>
+
+                    <!-- currency -->
+                    <currency-selector id="currency"></currency-selector>
                 </form>
             </div><!-- .form-wrapper -->
         `;
@@ -97,21 +101,6 @@ class ClientEditor extends HTMLElement {
     _prefetch() {
         const self = this;
         const shadow = this.shadowRoot;
-
-        Common.countries().then((r) => {
-            if (r.status == 'success') {
-                const countries = r.json.countries;
-                const select = shadow.getElementById('country');
-                countries.forEach((c) => {
-                    const o = document.createElement('option');
-                    o.value = c.id;
-                    o.text = c.name;
-                    select.appendChild(o);
-                });
-            } else {
-                notify(r.status, r.message);
-            }
-        });
     }
 
     _attachEventHandler() {
@@ -120,26 +109,27 @@ class ClientEditor extends HTMLElement {
 
         const btnsave = shadow.querySelector('button.btn-save');
         btnsave.addEventListener('click', function(e) {
-            const client_id = shadow.getElementById('client_id');
+            const client_id = self.getAttribute('client-id');
             const name = shadow.getElementById('name');
             const address = shadow.getElementById('address');
             const country = shadow.getElementById('country');
+            const currency = shadow.getElementById('currency');
 
-            if (client_id.value == '') {
-                Clients.add(name.value, address.value, country.value).then((r) => {
+            if (client_id == null) {
+                const t_client_id = Util.generateUUID();
+                Clients.add(t_client_id, name.value, address.value, country.value, currency.value).then((r) => {
                     if (r.status == 'success') {
                         client_id.value = r.json.clientId;
                     } else {
-                        notify(r.status, r.message);
+                        notify(r.status, r.message, 3000);
                     }
                 });
             } else {
-                Clients.update(client_id.value, name.value, address.value, country.value).then((r) => {
-                    notify(r.status, r.message);
+                Clients.update(client_id, name.value, address.value, country.value, currency.value).then((r) => {
+                    notify(r.status, r.message, 3000);
                 });
             }
         });
     }
 }
 customElements.define('client-editor', ClientEditor);
-export { ClientEditor };
