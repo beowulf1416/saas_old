@@ -98,7 +98,7 @@ class ProjectStore(BaseStore):
                         current_task_id
                     ])
                 else:
-                    log.warn('Unhandled case %s', status)
+                    log.warning('Unhandled case %s', status)
 
                 super(ProjectStore, self).commit(cn)
         except Exception as e:

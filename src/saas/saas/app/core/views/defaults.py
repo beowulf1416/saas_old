@@ -24,8 +24,11 @@ def view_default(request):
     for m, module in modules.items():
         if 'js' in module:
             for js in module['js']:
-                k = js['script']
-                scripts[k] = js
+                if 'script' in js:
+                    k = js['script']
+                    scripts[k] = js
+                else:
+                    log.warning("module '%s' does not have 'script' key", m)
 
     # aggregate js that have external = true
     # and add to content-security-policy
