@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 from uuid import UUID
 
@@ -32,3 +32,13 @@ class ClientStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve client')
+
+    def join(self, client_id: UUID, user_id: UUID) -> None:
+        try:
+            super(ClientStore, self).runProcTransactional('clients.client_user_add', [
+                client_id,
+                user_id
+            ])
+        except Excepion as e:
+            log.error(e)
+            raise StoreException('Unable to join client')
