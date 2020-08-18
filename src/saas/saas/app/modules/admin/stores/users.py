@@ -26,7 +26,10 @@ class UsersStore(BaseStore):
         try:
             for userId in userIds:
                 c = cn.cursor()
-                c.callproc('iam.client_user_add', [clientId, userId])
+                c.callproc('iam.client_user_add', [
+                    clientId, 
+                    userId
+                ])
             super(UsersStore, self).commit(cn)
         except Exception as e:
             log.error(e)

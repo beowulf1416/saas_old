@@ -33,12 +33,25 @@ class ClientStore(BaseStore):
             log.error(e)
             raise Exception('Unable to retrieve client')
 
+    def by_name(self, name: str) -> UUID:
+        try:
+            result = super(ClientStore, self).runProc('clients.client_by_email', [
+                super(ClientStore, self).remove_wildcards(name)
+            ])
+            if (len(result) > 0):
+                return result[0]
+            else:
+                return None
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to find client using name')
+
     def join(self, client_id: UUID, user_id: UUID) -> None:
         try:
-            super(ClientStore, self).runProcTransactional('clients.client_user_add', [
-                client_id,
-                user_id
+            super(ClientStore, self).runProcTransactional('iam.client_user_add', [
+                str(client_id),
+                str(user_id)
             ])
-        except Excepion as e:
+        except Exception as e:
             log.error(e)
             raise StoreException('Unable to join client')
