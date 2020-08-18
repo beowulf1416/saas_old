@@ -35,13 +35,10 @@ class ClientStore(BaseStore):
 
     def by_name(self, name: str) -> UUID:
         try:
-            result = super(ClientStore, self).runProc('clients.client_by_email', [
+            result = super(ClientStore, self).runProc('clients.client_by_name', [
                 super(ClientStore, self).remove_wildcards(name)
             ])
-            if (len(result) > 0):
-                return result[0]
-            else:
-                return None
+            return result
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to find client using name')
