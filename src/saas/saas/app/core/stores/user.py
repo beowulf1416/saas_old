@@ -4,7 +4,7 @@ log = logging.getLogger(__name__)
 from uuid import UUID
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 
 class UserStore(BaseStore):
@@ -22,15 +22,18 @@ class UserStore(BaseStore):
             log.error(e)
             raise Exception('Unable to check if email exists')
 
-    def userAdd(self, email: str, name: str):
+    def userAdd(self, user_id: UUID, email: str, name: str) -> None:
         ''' add user
         '''
         try:
-            [(user_id, )] = super(UserStore, self).runProcTransactional('iam.user_add', [email, name])
-            return user_id
+            super(UserStore, self).runProcTransactional('iam.user_add', [
+                str(user_id),
+                email,
+                name
+            ])
         except Exception as e:
             log.error(e)
-            raise Exception('Unable to add user')
+            raise StoreException('Unable to add user')
         
 
     def userByEmail(self, email: str):
@@ -43,21 +46,27 @@ class UserStore(BaseStore):
             log.error(e)
             raise Exception("Unable to find user account by email address")
 
-    def userClients(self, user_id: str):
+    def userClients(self, user_id: UUID):
         '''retrieve clients allowed/available to user
         '''
         try:
-            result = super(UserStore, self).runProc('iam.user_clients_all', [user_id, ])
+            result = super(UserStore, self).runProc('iam.user_clients_all', [
+                str(user_id), 
+            ])
             return result
         except Exception as e:
             log.error(e)
-            raise Exception("Unable to retrieve user clients")
+            raise StoreException("Unable to retrieve user clients")
 
-    def userHasPermission(self, user_id: str, client_id: UUID, permission: str):
+    def userHasPermission(self, user_id: UUID, client_id: UUID, permission: str):
         '''check if user has permission on client
         '''
         try:
-            [(result, )] = super(UserStore, self).runProc('iam.user_has_permission', [user_id, client_id, permission])
+            [(result, )] = super(UserStore, self).runProc('iam.user_has_permission', [
+                str(user_id), 
+                str(client_id), 
+                permission
+            ])
             return result
         except Exception as e:
             log.error(e)
