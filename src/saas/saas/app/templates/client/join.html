@@ -1,0 +1,57 @@
+{% extends "saas.app:templates/default.html" %}
+
+{% block styles %}
+<style>
+    .form-wrapper {
+        width: 50%;
+        margin: auto;
+    }
+
+    .form-wrapper form > * {
+        display: block;
+        padding: 4px;
+        margin: 4px;
+    }
+</style>
+{% endblock styles %}
+
+{% block title %}
+Join Client
+{% endblock title %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h3>Join Client</h3>
+    <notification-list></notification-list>
+    <form id="form-client-join">
+        <!-- name -->
+        <label for="name">Client</label>
+        <input type="text" id="client" name="client" class="form-input form-input-client" title="Client Name" placeholder="Client" required />
+
+        <button type="button" id="btn-submit" class="btn btn-submit" title="Submit">
+            Submit
+        </button>
+    </form>
+</div><!-- .form-wrapper -->
+{% endblock content %}
+
+{% block scripts %}
+<script type="module">
+import { Util } from '/static/js/util.js';
+import { notify } from '/static/js/ui/ui.js';
+(function(){
+    document.getElementById('btn-submit').addEventListener('click', function() {
+        const input_name = document.getElementById('client');
+        if (input_name.value != '') {
+            Util.fetch('/api/client/join', {
+                client: input_name.value
+            }).then((r) => {
+                notify(r.status, r.message, 5000);
+            });
+        } else {
+            notify('error', 'Please provide Client name', 3000);
+        }
+    });
+})();
+</script>
+{% endblock scripts %}
