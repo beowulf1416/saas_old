@@ -72,7 +72,15 @@ def api_client_join(request):
         current_email = session['email']
         user = users.userByEmail(current_email)
         user_id = user[0]
-        
+
+        client_id = clients.by_name(client)
+        if client_id is None:
+            raise exception.HTTPBadRequest(
+                detail = 'Client not found',
+                explanation = f"Client with name '${client}' not found"
+            )
+
+        client.join(client_id, user_id)
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
