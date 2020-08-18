@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 from uuid import UUID
 from typing import List
@@ -39,6 +39,17 @@ class UsersStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception('Unable to remove client user')
+
+    def client_user_set_active(self, client_id: UUID, user_id: UUID, active: bool) -> None:
+        try:
+            super(UsersStore, self).runProcTransactional('iam.client_user_set_active', [
+                str(client_id),
+                str(user_id),
+                active
+            ])
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to set client user to active')
 
     def clientRoles(self, clientId: UUID, userId: UUID):
         try:
