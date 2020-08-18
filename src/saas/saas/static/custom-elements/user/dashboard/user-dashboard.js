@@ -6,7 +6,7 @@ class UserDashboard extends HTMLElement {
 
         const style = document.createElement("link");
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', '/static/custom-elements/user/user-dashboard/user-dashboard.css');
+        style.setAttribute('href', '/static/custom-elements/user/dashboard/user-dashboard.css');
 
         const default_style = document.createElement("link");
         default_style.setAttribute('rel', 'stylesheet');
