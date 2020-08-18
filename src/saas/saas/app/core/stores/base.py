@@ -77,3 +77,7 @@ class BaseStore(object):
     def rollback(self, cn):
         cn.rollback()
         self._mgr.returnConnection(self._name, cn)
+
+    def remove_wildcards(self, filter: str) -> str:
+        filter = filter.replace('%', '')
+        return filter.replace('*', '')
