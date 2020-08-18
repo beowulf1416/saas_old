@@ -7,3 +7,8 @@ def includeme(config):
         'api.client.get',
         '/api/client/get'
     )
+
+    config.add_route(
+        'api.client.join',
+        '/api/client/join'
+    )

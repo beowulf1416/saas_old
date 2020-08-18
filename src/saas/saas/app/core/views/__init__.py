@@ -28,6 +28,7 @@ def includeme(config):
         '/security/signin/google/oauth/redirect'
     )
 
+    # clients
     config.add_route(
         'client.select',
         '/client/select/{client_id}'
@@ -36,6 +37,11 @@ def includeme(config):
     config.add_route(
         'client.list',
         '/client/list'
+    )
+
+    config.add_route(
+        'client.join',
+        '/client/join'
     )
 
     config.add_route(

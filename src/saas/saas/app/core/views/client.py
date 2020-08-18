@@ -46,3 +46,12 @@ def view_client_select(request):
 
     raise exception.HTTPFound(destination)
     return {}
+
+@view_config(
+    route_name='client.join',
+    request_method='GET',
+    renderer='saas.app:templates/client/join.html',
+    permission='user.authenticated'
+)
+def view_client_join(request):
+    return {}
