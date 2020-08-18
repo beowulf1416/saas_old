@@ -15,12 +15,14 @@ class TestAdminClientStore(unittest.TestCase):
         from saas.app.core.services.connection import ConnectionManager
         from saas.app.modules.admin.stores.clients import ClientsStore
         from saas.app.core.stores.client import ClientStore
+        from saas.app.core.stores.user import UserStore
 
         self.mgr = ConnectionManager({
             'app.config': '../../etc'
         })
         self.clientStore = ClientsStore(self.mgr, 'default')
         self.cStore = ClientStore(self.mgr, 'default')
+        self.userStore = UserStore(self.mgr, 'default')
 
     def generate_random_str(self, length: int):
         allowed = string.ascii_lowercase + string.digits
@@ -97,5 +99,35 @@ class TestAdminClientStore(unittest.TestCase):
         try:
             result = self.clientStore.filter('defau')
             self.assertGreater(len(result), 0)
+        except Exception as e:
+            self.fail(e)
+
+    def test_client_join(self) -> None:
+        random_name = self.generate_random_str(10)
+        client_id = str(uuid.uuid4())
+        country_id = 608 # philippines
+        currency_id = 108 # philippine peso
+        self.clientStore.add(
+            client_id, 
+            random_name, 
+            random_name, 
+            country_id, 
+            currency_id
+        )
+        
+        random_name = self.generate_random_str(10)
+        user_id = uuid.uuid4()
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        self.userStore.userAdd(
+            user_id, 
+            email, 
+            random_name
+        )
+
+        try:
+            self.cStore.join(
+                client_id,
+                user_id
+            )
         except Exception as e:
             self.fail(e)
