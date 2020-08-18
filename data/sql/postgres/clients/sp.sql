@@ -11,6 +11,7 @@ set schema 'clients';
 \ir procs/clients/client_set_active.sql
 \ir procs/clients/clients_filter.sql
 \ir procs/clients/client_update.sql
+\ir procs/clients/client_by_email.sql
 
 /** organizations **/
 \ir procs/organizations/organization_add.sql
