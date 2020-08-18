@@ -15,7 +15,7 @@ class ClientRoles extends HTMLElement {
 
         const google_web_fonts = document.createElement("link");
         google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        google_web_fonts.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');

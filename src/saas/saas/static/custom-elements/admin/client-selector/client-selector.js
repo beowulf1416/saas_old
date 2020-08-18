@@ -11,9 +11,9 @@ class ClientSelector extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/admin/client-selector/client-selector.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,12 +22,28 @@ class ClientSelector extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._fetch = this._fetch.bind(this);
 
         this._attachEventHandlers();
+    }
+
+    static get observedAttributes() {
+        return ['client-id'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name == 'client-id') {
+            this._fetch();
+        }
+    }
+
+    _fetch() {
+        const self = this;
+        const shadow = this.shadowRoot;
     }
 
     connectedCallback() {
