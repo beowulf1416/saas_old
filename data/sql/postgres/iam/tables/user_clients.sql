@@ -2,6 +2,7 @@
  * user and clients mapping
  */
 create table if not exists user_clients (
+    active boolean not null default false,
     user_id uuid not null,
     client_id uuid not null,
     created_ts timestamp without time zone not null default(now() at time zone 'utc'),
