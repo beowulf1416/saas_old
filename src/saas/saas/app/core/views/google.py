@@ -11,6 +11,7 @@ from pyramid.view import view_config
 from pyramid.security import remember
 
 import httplib2
+import uuid
 
 def parse_credentials_file(file):
     data = {}
@@ -92,9 +93,10 @@ def view_google_oauth_redirect(request):
 
             # check if email is already registered
             if not userStore.emailExists(email):
-                userStore.userAdd(email, name)
+                user_id = uuid.uuid4()
+                userStore.userAdd(user_id, email, name)
 
-            user = userStore.userByEmail(email)
+            # user = userStore.userByEmail(email)
             client = clientStore.getDefaultClient()
             client_id = client[0]
             remember(request, email, client=client_id)
