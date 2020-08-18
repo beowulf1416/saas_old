@@ -25,6 +25,10 @@
 <link rel="stylesheet" href="/static/css/ui/tabs.css">
 {%- endblock links %}
 
+{% block base_page_styles %}
+{% block styles %}
+{% endblock styles %}
+{% endblock base_page_styles %}
 
 {% block header_left %}
 <nav class="navbar is-transparent">
@@ -49,12 +53,15 @@
 <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
     <div id="topRightMenu" class="navbar-menu">
         <div class="navbar-end">
-            <div class="navbar-item">
+            <div class="navbar-item has-dropdown is-hoverable">
             {% if client_name is defined %}
                 <a class="navbar-link client-select-link" title="Select Client" href="/client/list?destination={{ current_path }}">{{ client_name }}</a>
             {% else %}
                 <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list?destination={{ current_path }}">None</a>
             {% endif %}
+                <div class="navbar-dropdown">
+                    <a title="Join" class="navbar-item" href="/client/join" >Join Client</a>
+                </div><!-- .nav-dropdown -->
             </div><!-- .navbar-item -->
             <div class="navbar-item has-dropdown is-hoverable">
             {% if email is defined %}
@@ -62,7 +69,7 @@
                     <span class="material-icons">lock_open</span>
                 </a>
                 <div class="navbar-dropdown is-right">
-                    <a title="Profile" class="navbar-item" href="/profile">{{ email }}</a>
+                    <a title="Profile" class="navbar-item" href="#" data-action="user.profile">{{ email }}</a>
                     <hr class="navbar-divider">
                     <a title="Sign Out" class="navbar-item" href="/security/signout">Sign Out</a>
                 </div><!-- .navbar-dropdown -->
