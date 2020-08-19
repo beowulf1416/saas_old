@@ -6,6 +6,8 @@ from uuid import UUID
 from saas.app.core.services.connection import ConnectionManager
 from saas.app.core.stores.base import BaseStore, StoreException
 
+from typing import List
+
 
 class UserStore(BaseStore):
 
@@ -72,7 +74,7 @@ class UserStore(BaseStore):
             log.error(e)
             raise Exception("Unable to check if user has permission on client")
 
-    def permissions(self, client_id: UUID, user_id: UUID) -> list[str]:
+    def permissions(self, client_id: UUID, user_id: UUID) -> List[str]:
         try:
             result = super(UserStore, self).runProc('iam.client_user_permissions', [
                 str(client_id),
