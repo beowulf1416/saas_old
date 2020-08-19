@@ -39,7 +39,7 @@ class TestAdminRolesStore(unittest.TestCase):
     def test_add_role(self):
         client_id = self.client[0]
         try:
-            role_id = str(uuid.uuid4())
+            role_id = uuid.uuid4()
             random_name = self.generate_random_str(10)
             self.rolesStore.add(client_id, role_id, random_name)
         except Exception as e:
@@ -47,8 +47,8 @@ class TestAdminRolesStore(unittest.TestCase):
 
     def test_add_role_not_unique(self):
         client_id = self.client[0]
-        role_id1 = str(uuid.uuid4())
-        role_id2 = str(uuid.uuid4())
+        role_id1 = uuid.uuid4()
+        role_id2 = uuid.uuid4()
         random_name = self.generate_random_str(10)
         self.rolesStore.add(client_id, role_id1, random_name)
         self.assertRaises(
