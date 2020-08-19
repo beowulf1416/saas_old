@@ -58,6 +58,12 @@ begin
         a.id into t_permission_id_client_admin
     from iam.permissions a
     where a.name = 'clients.admin';
+
+    perform * from iam.permissions_role_assign(
+        p_client_id, 
+        t_role_id, 
+        t_permission_id_user_auth
+    );
     perform * from iam.permissions_role_assign(
         p_client_id, 
         t_role_id, 
