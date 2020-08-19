@@ -2,7 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from saas.app.core.services.connection import ConnectionManager
-from saas.app.core.stores.base import BaseStore
+from saas.app.core.stores.base import BaseStore, StoreException
 
 from uuid import UUID
 from typing import List
@@ -13,63 +13,84 @@ class RolesStore(BaseStore):
     def __init__(self, manager: ConnectionManager, name: str):
         super(RolesStore, self).__init__(manager, name)
 
-    def getAll(self, clientId: UUID):
+    def getAll(self, client_id: UUID):
         try:
-            result = super(RolesStore, self).runProc('iam.client_roles_all', [clientId, ])
+            result = super(RolesStore, self).runProc('iam.client_roles_all', [
+                str(client_id),
+            ])
             return result
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve all roles')
 
-    def filter(self, clientId: UUID, filter: str):
+    def filter(self, client_id: UUID, filter: str):
         try:
-            result = super(RolesStore, self).runProc('iam.clients_roles_filter', 
-                [clientId, '%{0}%'.format(filter)])
+            result = super(RolesStore, self).runProc('iam.clients_roles_filter', [
+                str(client_id),
+                '%{0}%'.format(filter)
+            ])
             return result
         except Exception as e:
             log.error(e)
             raise Exception('Unable to filter roles')
 
 
-    def add(self, clientId: UUID, roleId: UUID, name: str):
+    def add(self, client_id: UUID, role_id: UUID, name: str) -> None:
         try:
-            [(role_id, )] = super(RolesStore, self).runProcTransactional('iam.role_add', [clientId, roleId, name])
-            return role_id
+            super(RolesStore, self).runProcTransactional('iam.role_add', [
+                str(client_id), 
+                str(role_id), 
+                name
+            ])
         except Exception as e:
             log.error(e)
-            raise Exception('Unable to add client role')
+            raise StoreException('Unable to add client role')
 
-    def setActive(self, roleId: UUID, active: bool):
+    def setActive(self, role_id: UUID, active: bool):
         try:
-            super(RolesStore, self).runProcTransactional('iam.role_set_active', [roleId, active])
+            super(RolesStore, self).runProcTransactional('iam.role_set_active', [
+                str(role_id), 
+                active
+            ])
         except Exception as e:
             log.error(e)
             raise Exception('Unable to set role active state')
 
-    def permissions(self, clientId: UUID, roleId: UUID):
+    def permissions(self, client_id: UUID, role_id: UUID):
         try:
-            result = super(RolesStore, self).runProc('iam.permissions_role', [clientId, roleId])
+            result = super(RolesStore, self).runProc('iam.permissions_role', [
+                str(client_id),
+                str(role_id)
+            ])
             return result
         except Exception as e:
             log.error(e)
             raise Exception('Unable to retrieve permissions granted to role')
 
 
-    def assignPermissions(self, clientId: UUID, roleId: UUID, permissionIds: List[UUID]):
+    def assignPermissions(self, client_id: UUID, role_id: UUID, permission_ids: List[UUID]):
         cn = super(RolesStore, self).begin()
         try:
             for permissionId in permissionIds:
                 c = cn.cursor()
-                c.callproc('iam.permissions_role_assign', [clientId, roleId, permissionId])
+                c.callproc('iam.permissions_role_assign', [
+                    str(client_id), 
+                    str(role_id), 
+                    str(permission_ids)
+                ])
             super(RolesStore, self).commit(cn)
         except Exception as e:
             log.error(e)
             super(RolesStore, self).rollback(cn)
             raise Exception('Unable to grant permissions to role')
 
-    def removePermission(self, clientId: UUID, roleId: UUID, permissionId: UUID):
+    def removePermission(self, client_id: UUID, role_id: UUID, permission_id: UUID):
         try:
-            super(RolesStore, self).runProcTransactional('iam.permissions_role_revoke', [clientId, roleId, permissionId])
+            super(RolesStore, self).runProcTransactional('iam.permissions_role_revoke', [
+                str(client_id),
+                str(roleId),
+                str(permission_id)
+            ])
         except Exception as e:
             log.error(e)
             raise Exception('Unable to revoke permissions to role')
