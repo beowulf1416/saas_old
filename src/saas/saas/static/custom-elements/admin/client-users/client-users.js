@@ -12,9 +12,9 @@ class ClientUsers extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/admin/client-users/client-users.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -23,12 +23,10 @@ class ClientUsers extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
-        this.setClientId = this.setClientId.bind(this);
-        this._getClientId = this._getClientId.bind(this);
         this._refreshUsers = this._refreshUsers.bind(this);
         this.setUsers = this.setUsers.bind(this);
         this._refreshRoles = this._refreshRoles.bind(this);
@@ -47,8 +45,6 @@ class ClientUsers extends HTMLElement {
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form class="form-client-user">
-                    <input type="hidden" id="client_id" name="client_id" value="" />
-
                     <!-- client -->
                     <label for="client">Client</label>
                     <client-selector id="client"></client-selector>
@@ -102,22 +98,14 @@ class ClientUsers extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        // const btnclient = shadow.querySelector('button.btn-client');
-        // btnclient.addEventListener('click', function(e) {
-        //     const selector = showInView('Select Clients','<client-selector></client-selector>');
-        //     selector.addEventListener('selected', function(e) {
-        //         if (e.detail.client) {
-        //             const client_id = e.detail.client;
-        //             self.setClientId(client_id);
-        //         }
-        //         e.preventDefault();
-        //     });
-        //     e.preventDefault();
-        // });
+        const input_client = shadow.getElementById('client');
+        input_client.addEventListener('change', function(e) {
+            self._refreshUsers(input_client.value);
+        });
 
         const adduser = shadow.querySelector('.link-user-add');
         adduser.addEventListener('click', function(e) {
-            const client_id = self._getClientId();
+            const client_id = input_client.value;
             const selector = showInView('Select Users', `<user-selector client-id="${client_id}"></user-selector>`);
             selector.addEventListener('assign', function(e) {
                 const userIds = e.detail.userIds;
@@ -135,7 +123,7 @@ class ClientUsers extends HTMLElement {
 
         const addrole = shadow.querySelector('.link-role-add');
         addrole.addEventListener('click', function(e) {
-            const client_id = self._getClientId();
+            const client_id = input_client.value;
             const selector = showInView('Select Roles', `<role-selector client-id="${client_id}"></role-selector>`);
             
             selector.addEventListener('assign', function(e) {
@@ -156,33 +144,6 @@ class ClientUsers extends HTMLElement {
         });
     }
 
-    setClientId(client_id = '') {
-        const self = this;
-        const shadow = this.shadowRoot;
-
-        const client = shadow.getElementById('client_id');
-        client.value = client_id;
-
-        Clients.get(client_id).then((r) => {
-            if (r.status == 'success') {
-                const client = r.json.client;
-                const client_name = shadow.getElementById('client');
-                client_name.value = client.name;
-            } else {
-                notify(r.status, r.message);
-            }
-        });
-
-        self._refreshUsers(client_id);
-    }
-
-    _getClientId() {
-        const shadow = this.shadowRoot;
-
-        const client = shadow.getElementById('client_id');
-        return client.value;
-    }
-
     _refreshUsers(client_id) {
         const self = this;
         Users.all(client_id).then((r) => {
@@ -196,6 +157,8 @@ class ClientUsers extends HTMLElement {
     setUsers(users = []) {
         const self = this;
         const shadow = this.shadowRoot;
+
+        const client_id = shadow.getElementById('client').value;
 
         const tbody = shadow.querySelector('table.tbl-users tbody');
         while(tbody.firstChild) {
@@ -233,7 +196,6 @@ class ClientUsers extends HTMLElement {
 
             const selected = tr.querySelector('.form-input-selected');
             selected.addEventListener('change', function(e) {
-                const client_id = self._getClientId();
                 const user_id = selected.value;
                 self._refreshRoles(client_id, user_id);
             });
@@ -256,6 +218,8 @@ class ClientUsers extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const client_id = shadow.getElementById('client').value;
+
         const tbody = shadow.querySelector('table.tbl-roles tbody');
         while(tbody.firstChild) {
             tbody.removeChild(tbody.lastChild);
@@ -277,7 +241,6 @@ class ClientUsers extends HTMLElement {
             // event handlers
             const remove = tr.querySelector('.link-remove-role');
             remove.addEventListener('click', function(e) {
-                const client_id = self._getClientId();
                 const role_id = remove.dataset.roleid;
 
                 Users.removeRole(client_id, user_id, role_id).then((r) => {
