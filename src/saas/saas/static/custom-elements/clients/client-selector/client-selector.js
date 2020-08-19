@@ -76,6 +76,14 @@ class ClientSelector extends HTMLElement {
                 if (r.status == 'success') {
                     const client = r.json.client;
                     shadow.getElementById('btn-select').innerText = client.name;
+
+                    self.dispatchEvent(new CustomEvent('change', {
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            client: client
+                        }
+                    }));
                 } else {
                     notify(r.status, r.message, 5000);
                 }
