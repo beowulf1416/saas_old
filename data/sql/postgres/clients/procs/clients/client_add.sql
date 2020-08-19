@@ -12,7 +12,8 @@ returns void
 as $$
 declare
     t_role_id iam.roles.id%type;
-    t_permission_id iam.permissions.id%type;
+    t_permission_id_user_auth iam.permissions.id%type;
+    t_permission_id_client_admin iam.permissions.id%type;
     t_account_group_root_id accounting.account_groups.id%type;
     t_account_group_id accounting.account_groups.id%type;
     t_account_types record;
@@ -31,17 +32,38 @@ begin
         p_currency_id
     );
 
-    -- create default role for client
+    -- create 'everyone' role for client
     t_role_id := public.gen_random_uuid();
     perform * from iam.role_add(p_client_id, t_role_id, 'everyone');
     perform * from iam.role_set_active(t_role_id, true);
 
-    -- assign user.authenticated permission
+    -- assign user.authenticated permission to 'everyone' role
     select
-        a.id into t_permission_id
+        a.id into t_permission_id_user_auth
     from iam.permissions a
     where a.name = 'user.authenticated';
-    perform * from iam.permissions_role_assign(p_client_id,t_role_id, t_permission_id);
+    perform * from iam.permissions_role_assign(
+        p_client_id, 
+        t_role_id, 
+        t_permission_id_user_auth
+    );
+
+    -- create 'admin' role for client
+    t_role_id := public.gen_random_uuid();
+    perform * from iam.role_add(p_client_id, t_role_id, 'administrator');
+    perform * from iam.role_set_active(t_role_id, true);
+
+    -- assign user.authenticated and client.admin permission to 'admin' role
+    select
+        a.id into t_permission_id_client_admin
+    from iam.permissions a
+    where a.name = 'clients.admin';
+    perform * from iam.permissions_role_assign(
+        p_client_id, 
+        t_role_id, 
+        t_permission_id_client_admin
+    );
+
 
     -- create root organization for client
     insert into clients.organizations (
