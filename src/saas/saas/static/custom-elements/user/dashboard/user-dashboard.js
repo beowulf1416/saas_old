@@ -21,18 +21,46 @@ class UserDashboard extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(default_style);
         shadow.appendChild(div);
+
+        this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this.refresh = this.refresh.bind(this);
     }
 
     _init(container) {
         const div = document.createElement('div');
         div.innerHTML = `
+            <div class="toolbar" role="toolbar">
+                <button type="button" id="btn-refresh" class="btn btn-refresh" title="Refresh">
+                    <span class="material-icons">refresh</span>
+                </button>
+            </div><!-- .toolbar -->
             <div class="messages-wrapper">
                 <h6>Messages</h6>
                 <p>reminders and system messages should go here</p>
+                <user-messages></user-messages>
             </div><!-- .messages-wrapper -->
         `;
 
         container.appendChild(div);
+    }
+
+    _attachEventHandlers() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        shadow.getElementById('btn-refresh').addEventListener('click', function() {
+            self.refresh();
+        });
+    }
+
+    refresh() {
+        const self = this;
+        const shadow = this.shadowRoot;
+
+        const btnrefresh = shadow.getElementById('btn-refresh');
+        btnrefresh.disabled = True;
+        // do stuff
+        btnrefresh.disabled = False;
     }
 }
 customElements.define('user-dashboard', UserDashboard);
