@@ -51,8 +51,7 @@ class ClientUsers extends HTMLElement {
 
                     <!-- client -->
                     <label for="client">Client</label>
-                    <input type="text" id="client" name="client" title="Client" placeholder="Client" readonly />
-                    <button type="button" class="btn btn-client">...</button>
+                    <client-selector id="client"></client-selector>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
@@ -103,18 +102,18 @@ class ClientUsers extends HTMLElement {
         const self = this;
         const shadow = this.shadowRoot;
 
-        const btnclient = shadow.querySelector('button.btn-client');
-        btnclient.addEventListener('click', function(e) {
-            const selector = showInView('Select Clients','<client-selector></client-selector>');
-            selector.addEventListener('selected', function(e) {
-                if (e.detail.client) {
-                    const client_id = e.detail.client;
-                    self.setClientId(client_id);
-                }
-                e.preventDefault();
-            });
-            e.preventDefault();
-        });
+        // const btnclient = shadow.querySelector('button.btn-client');
+        // btnclient.addEventListener('click', function(e) {
+        //     const selector = showInView('Select Clients','<client-selector></client-selector>');
+        //     selector.addEventListener('selected', function(e) {
+        //         if (e.detail.client) {
+        //             const client_id = e.detail.client;
+        //             self.setClientId(client_id);
+        //         }
+        //         e.preventDefault();
+        //     });
+        //     e.preventDefault();
+        // });
 
         const adduser = shadow.querySelector('.link-user-add');
         adduser.addEventListener('click', function(e) {

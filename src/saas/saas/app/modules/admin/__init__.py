@@ -56,9 +56,19 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/admin/client-roles/client-roles.js'
             },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/client-selector/client-selector.js'
+            # },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/client-selector/client-selector.js'
+                'script': '/static/custom-elements/clients/client-selector/client-selector.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/clients/client-selector/client-selector-view.js',
+                'async': True
             },
             {
                 'type': 'module',
