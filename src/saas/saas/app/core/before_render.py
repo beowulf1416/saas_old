@@ -11,7 +11,6 @@ def add_renderer_globals(event):
     current_route_path = request.path
     event['current_path'] = current_route_path
 
-
     services = request.services()
     session = request.session
 
