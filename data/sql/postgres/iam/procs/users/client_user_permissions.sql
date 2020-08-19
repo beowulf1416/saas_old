@@ -21,8 +21,7 @@ begin
         and r.active = true
         and c.active = true
         and u.id = p_user_id
-        and c.id = p_client_id
-        and p.name = p_permission;
+        and c.id = p_client_id;
 end
 $$
 language plpgsql
