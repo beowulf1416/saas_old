@@ -26,4 +26,6 @@ begin
 
     return tmp > 0;
 end
-$$ language plpgsql;
+$$ 
+language plpgsql
+stable;
