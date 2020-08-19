@@ -1,5 +1,4 @@
 'use strict';
-
 import { showInView, showInTab, notify } from '/static/js/ui/ui.js';
 import { Clients } from '/static/js/modules/admin/clients.js';
 import { Roles } from '/static/js/modules/admin/roles.js';
@@ -13,9 +12,9 @@ class ClientRoles extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/admin/client-roles/client-roles.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', '/static/css/default.css');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -24,7 +23,7 @@ class ClientRoles extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this.setClientId = this.setClientId.bind(this);
@@ -62,8 +61,7 @@ class ClientRoles extends HTMLElement {
 
                     <!-- client -->
                     <label for="client">Client</label>
-                    <input type="text" id="client" name="client" title="Client" placeholder="Client" readonly />
-                    <button type="button" class="btn btn-client">...</button>
+                    <client-selector id="client"><client-selector>
                 </form>
             </div><!-- .form-wrapper -->
             <div class="table-wrapper">
@@ -106,45 +104,38 @@ class ClientRoles extends HTMLElement {
         `;
 
         container.appendChild(div);
-
-        const btnClient = div.querySelector('button.btn-client');
-        btnClient.addEventListener('click', function(e) {
-            const clientSelector = showInView('Select Clients','<client-selector></client-selector>');
-            clientSelector.addEventListener('selected', function(e) {
-                if (e.detail.client) {
-                    const client_id = e.detail.client;
-                    self.setClientId(client_id);
-                }
-            });
-        });
-
-        const linkAddRole = div.querySelector('a.link-role-add');
-        linkAddRole.addEventListener('click', function(e) {
-            const client = self.shadowRoot.getElementById('client');
-            if (client.dataset.clientid) {
-                const client_id = client.dataset.clientid;
-                const roleSelector = showInView('Select Roles',`<role-selector client="${client_id}"></role-selector>`);
-            } else {
-                notify('error', 'client id is required');
-            }
-        });
     }
 
     _attachEventHandlers() {
         const self = this;
         const shadow = this.shadowRoot;
 
+        const input_client = shadow.getElementById('client');
+        input_client.addEventListener('change', function(e) {
+            self._refreshRoles(input_client.value);
+        });
+
         const btnrefresh = shadow.querySelector('button.btn-refresh');
         btnrefresh.addEventListener('click', function(e) {
-            const client_id = shadow.getElementById('client_id');
-            self._refreshRoles(client_id.value);
+            const client_id = input_client.value
+            self._refreshRoles(client_id);
         });
 
         const btnroleadd = shadow.querySelector('button.btn-role-add');
         btnroleadd.addEventListener('click', function(e) {
-            const client_id = shadow.getElementById('client_id');
-            const client_name = shadow.getElementById('client');
-            showInTab('role-new', 'New Role', `<role-editor client-id="${client_id.value}" client-name="${client_name.value}"></role-editor>`);
+            const client_id = input_client.value;
+            showInTab('role-new', 'New Role', `<role-editor client-id="${client_id}"></role-editor>`);
+        });
+
+        const linkAddRole = shadow.querySelector('a.link-role-add');
+        linkAddRole.addEventListener('click', function(e) {
+            // const client = self.shadowRoot.getElementById('client');
+            // if (client.dataset.clientid) {
+                const client_id = input_client.value;
+                const roleSelector = showInView('Select Roles',`<role-selector client-id="${client_id}"></role-selector>`);
+            // } else {
+            //     notify('error', 'client id is required');
+            // }
         });
 
         const permissionadd = shadow.querySelector('a.link-permission-add');
