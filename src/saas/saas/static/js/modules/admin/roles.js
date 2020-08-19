@@ -1,5 +1,5 @@
 'use strict';
-
+import { Util } from '/static/js/util.js';
 class Roles {
     static all(clientId) {
         return fetch('/api/clients/roles/all', {
@@ -32,20 +32,12 @@ class Roles {
         .then((r) => r.json());
     }
 
-    static add(clientId, name) {
-        return fetch('/api/clients/roles/add', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                clientId: clientId,
-                name: name
-            })
-        })
-        .then((r) => r.json());
+    static add(clientId = '', roleId = '', name = '') {
+        return Util.fetch('/api/clients/roles/add', {
+            clientId: clientId,
+            roleId: roleId,
+            name: name
+        });
     }
 
     static setActive(roleId, active) {

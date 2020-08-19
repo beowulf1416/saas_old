@@ -99,9 +99,10 @@ def view_clients_roles_filter(request):
 def view_clients_roles_add(request):
     params = request.json_body
     client_id = params['clientId'] if 'clientId' in params else None
+    role_id = params['roleId'] if 'roleId' in params else None
     name = params['name'] if 'name' in params else None
 
-    if client_id is None or name is None:
+    if not all([client_id, role_id, name]):
         raise exception.HTTPBadRequest(
             detail='Missing required parameters',
             explanation='Client Id and Role Name is required'
@@ -110,7 +111,11 @@ def view_clients_roles_add(request):
     services = request.services()
     try:
         rolesStore = services['store.admin.roles']
-        rolesStore.add(client_id, name)
+        rolesStore.add(
+            client_id, 
+            role_id,
+            name
+        )
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
