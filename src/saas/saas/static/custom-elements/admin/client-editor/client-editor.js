@@ -119,6 +119,7 @@ class ClientEditor extends HTMLElement {
                 Clients.add(t_client_id, name.value, address.value, country.value, currency.value).then((r) => {
                     if (r.status == 'success') {
                         client_id.value = r.json.clientId;
+                        notify(r.status, r.message, 3000);
                     } else {
                         notify(r.status, r.message, 3000);
                     }
