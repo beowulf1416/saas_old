@@ -58,7 +58,7 @@ class UserStore(BaseStore):
             log.error(e)
             raise StoreException("Unable to retrieve user clients")
 
-    def userHasPermission(self, user_id: UUID, client_id: UUID, permission: str):
+    def userHasPermission(self, user_id: UUID, client_id: UUID, permission: str) -> bool:
         '''check if user has permission on client
         '''
         try:
@@ -71,3 +71,14 @@ class UserStore(BaseStore):
         except Exception as e:
             log.error(e)
             raise Exception("Unable to check if user has permission on client")
+
+    def permissions(self, client_id: UUID, user_id: UUID) -> list[str]:
+        try:
+            result = super(UserStore, self).runProc('iam.client_user_permissions', [
+                str(client_id),
+                str(user_id)
+            ])
+            return result
+        except Exception as e:
+            log.error(e)
+            raise StoreException('Unable to retrieve user permissions')

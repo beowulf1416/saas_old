@@ -84,3 +84,15 @@ class TestUserStore(unittest.TestCase):
 
         result = self.userStore.userHasPermission(user_id, client_id, 'user.authenticated')
         self.assertEqual(True, result, '{0} {1}'.format(result, email))
+
+    def test_user_permissions(self):
+        random_name = self.generate_random_str(10)
+        user_id = uuid.uuid4()
+        email = '{0}@{1}.com'.format(random_name, random_name)
+        self.userStore.userAdd(user_id, email, random_name)
+
+        client = self.clientStore.getDefaultClient()
+        client_id = client[0]
+
+        result = self.userStore.permissions(client_id, user_id)
+        self.assertGreater(len(result), 0, '{0}'.format(result))
