@@ -15,6 +15,11 @@ def includeme(config):
                 'script': 'https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js',
                 'async': True,
                 'external': True
+            },
+            {
+                'script': 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js',
+                'async': True,
+                'external': True
             }
         ]
     }
