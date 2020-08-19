@@ -46,7 +46,12 @@ import { notify } from '/static/js/ui/ui.js';
             Util.fetch('/api/client/join', {
                 client: input_name.value
             }).then((r) => {
-                notify(r.status, r.message, 5000);
+                if (r.status == 'success') {
+                    notify('success', 'A client administrator will process your request. Redirecting ...');
+                    window.location.replace('{{ request.route_url("home") }}');
+                } else {
+                    notify(r.status, r.message, 5000);
+                }
             });
         } else {
             notify('error', 'Please provide Client name', 3000);
