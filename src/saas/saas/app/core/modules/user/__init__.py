@@ -33,6 +33,11 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/user/profile-editor/profile-editor.js',
                 'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/user/user-messages/user-messages.js',
+                'async': True
             }
         ]
     }
