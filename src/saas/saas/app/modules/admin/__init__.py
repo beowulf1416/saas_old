@@ -20,25 +20,10 @@ def includeme(config):
                 'title': 'System Administration',
                 'help': 'Manage clients, users and roles',
                 'icon': '<span class="material-icons">admin_panel_settings</span>',
-                'template': 'saas.app.modules.admin:templates/navigator.html'
+                'template': 'saas.app.modules.admin:templates/navigator.html',
+                'permission': 'admin.dashboard'
             }
         ],
-        'views': [
-            {
-                'name': 'user selector',
-                'id': 'admin-user-selector',
-                'help': 'User Selector',
-                'icon': '<span class="material-icons">admin_panel_settings</span>',
-                'template': 'saas.app.modules.admin:templates/user-selector.html'
-            },
-            {
-                'name': 'client selector',
-                'id': 'client-selector',
-                'help': 'Select Client',
-                'icon': '<span class="material-icons">search</span>'
-            }
-        ],
-        'css': [],
         'js': [
             {
                 'type': 'module',
@@ -56,10 +41,6 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/admin/client-roles/client-roles.js'
             },
-            # {
-            #     'type': 'module',
-            #     'script': '/static/custom-elements/admin/client-selector/client-selector.js'
-            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/clients/client-selector/client-selector.js',
