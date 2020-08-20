@@ -4,9 +4,16 @@ import { showInTab } from '/static/js/ui/ui.js';
     console.log('clients actions');
     
     window.actions = window.actions ? window.actions : {};
+    window.actions['client.users'] = function() {
+        const client_id = window.clientId;
+        console.warn('//TODO');
+    };
     window.actions['client.organizations'] = function() {
         const client_id = window.clientId;
-        // showInTab('admin.clients', 'Clients', '<clients-table show-new show-edit></clients-table>');
         showInTab('organization-tree', 'Organizations', `<organization-tree client-id="${client_id}"></organization-tree>`);
+    };
+    window.actions['client.info'] = function() {
+        const client_id = window.clientId;
+        showInTab('client-editor', 'Client', `<client-editor client-id="${client_id}"></client-editor>`);
     };
 })();
