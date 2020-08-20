@@ -80,7 +80,8 @@ class UserStore(BaseStore):
                 str(client_id),
                 str(user_id)
             ])
-            return result
+            permissions = [r[0] for r in result]
+            return permissions
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to retrieve user permissions')
