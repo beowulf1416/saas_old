@@ -50,7 +50,7 @@ class ClientStore(BaseStore):
 
     def join(self, client_id: UUID, user_id: UUID) -> None:
         try:
-            super(ClientStore, self).runProcTransactional('iam.client_user_add', [
+            super(ClientStore, self).runProcTransactional('iam.client_user_join', [
                 str(client_id),
                 str(user_id)
             ])
