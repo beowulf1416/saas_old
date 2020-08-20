@@ -4,19 +4,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <meta content="utf-8" http-equiv="encoding">
-        {% block base_meta -%}
+        {%- block base_meta -%}
         {%- endblock base_meta %}
         <title>SAAS - {% block title %}Welcome{% endblock %}</title>
         {% block base_links -%}
         {%- endblock base_links %}
-        {% block base_page_styles %}
-        {% endblock base_page_styles %}
-        {% block base_head_scripts -%}
-        {%- endblock base_head_scripts %}
+        {%- block base_page_styles %}
+        {%- endblock base_page_styles %}
+        {%- block base_head_scripts -%}
+        {%- endblock base_head_scripts -%}
     </head>
     <body>
-        {% block base_body %}
-        {% endblock base_body %}
+        {%- block base_body -%}
+        {%- endblock base_body -%}
         <!-- scripts -->
         {% block base_body_scripts %}
         {% endblock base_body_scripts %}

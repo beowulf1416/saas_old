@@ -9,14 +9,14 @@
 {% block base_body %}
 <div class="page-main">
     <div class="main-content">
-        {% block content %}
+        {%- block content %}
         <h1>Default</h1>
-        {% endblock content %}
+        {%- endblock content -%}
     </div><!-- .main-content -->
     <div class="sidebar-left">
-        {% block sidebar_left %}
+        {%- block sidebar_left -%}
         <h2>sidebar left</h2>
-        {% endblock sidebar_left %}
+        {%- endblock sidebar_left -%}
     </div><!-- .sidebar-left -->
     <div class="sidebar-right">
         {% block sidebar_right %}
@@ -44,4 +44,4 @@
 <div class="page-footer">
     footer
 </div><!-- .page-footer -->
-{% endblock base_body %}
+{%- endblock base_body %}
