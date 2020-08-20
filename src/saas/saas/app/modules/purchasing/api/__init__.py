@@ -6,9 +6,19 @@ def includeme(config):
     log.info('including: saas.app.modules.purchasing.api')
 
     # purchase orders
+    # config.add_route(
+    #     'api.purchasing.purchase.orders.save',
+    #     '/api/purchasing/purchase/orders/save'
+    # )
+
     config.add_route(
-        'api.purchasing.purchase.orders.save',
-        '/api/purchasing/purchase/orders/save'
+        'api.purchasing.purchase.orders.add',
+        '/api/purchasing/purchase/orders/add'
+    )
+
+    config.add_route(
+        'api.purchasing.purchase.orders.update',
+        '/api/purchasing/purchase/orders/update'
     )
 
     config.add_route(
