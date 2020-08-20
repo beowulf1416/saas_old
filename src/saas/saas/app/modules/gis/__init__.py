@@ -17,7 +17,8 @@ def includeme(config):
                 'title': 'GIS',
                 'help': 'Geographical Information System',
                 'icon': '<span class="material-icons">map</span>',
-                'template': 'saas.app.modules.gis:templates/module.html'
+                'template': 'saas.app.modules.gis:templates/navigator.html',
+                'permission': 'user.authenticated'
             }
         ],
         'js': [

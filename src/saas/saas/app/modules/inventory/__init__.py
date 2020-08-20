@@ -19,19 +19,10 @@ def includeme(config):
                 'title': 'Inventory',
                 'help': 'Manage Inventory',
                 'icon': '<span class="material-icons">view_quilt</span>',
-                'template': 'saas.app.modules.inventory:templates/module.html'
+                'template': 'saas.app.modules.inventory:templates/navigator.html',
+                'permission': 'inventory.dashboard'
             }
         ],
-        'views': [
-            {
-                'id': 'inv-item-selector',
-                'title': 'Item Selector',
-                'help': 'Inventory Item Selector',
-                'icon': '<span class="material-icons">view_quilt</span>',
-                'template': 'saas.app.modules.inventory:templates/item-selector.html'
-            }
-        ],
-        'css': [],
         'js': [
             {
                 'type': 'module',

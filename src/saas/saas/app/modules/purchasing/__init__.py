@@ -19,11 +19,10 @@ def includeme(config):
                 'title': 'Purchasing',
                 'help': 'Manage Purchasing',
                 'icon': '<span class="material-icons">view_quilt</span>',
-                'template': 'saas.app.modules.purchasing:templates/module.html'
+                'template': 'saas.app.modules.purchasing:templates/navigator.html',
+                'permission': 'purchasing.dashboard'
             }
         ],
-        'views': [],
-        'css': [],
         'js': [
             {
                 'type': 'module',

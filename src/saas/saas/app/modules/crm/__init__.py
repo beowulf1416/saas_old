@@ -18,7 +18,8 @@ def includeme(config):
                 'title': 'CRM',
                 'help': 'Customer Relations Management',
                 'icon': '<span class="material-icons">contacts</span>',
-                'template': 'saas.app.modules.crm:templates/module.html'
+                'template': 'saas.app.modules.crm:templates/navigator.html',
+                'permission': 'crm.dashboard'
             }
         ],
         'js': [

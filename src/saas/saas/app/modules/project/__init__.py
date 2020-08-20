@@ -19,11 +19,10 @@ def includeme(config):
                 'title': 'Project Management',
                 'help': 'Manage Projects',
                 'icon': '<span class="material-icons">work</span>',
-                'template': 'saas.app.modules.project:templates/module.html'
+                'template': 'saas.app.modules.project:templates/navigator.html',
+                'permission': 'project.dashboard'
             }
         ],
-        'views': [],
-        'css': [],
         'js': [
             {
                 'type': 'module',

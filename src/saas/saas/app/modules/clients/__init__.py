@@ -21,7 +21,7 @@ def includeme(config):
                 'help': 'Client management',
                 'icon': '<span class="material-icons">business</span>',
                 'template': 'saas.app.modules.clients:templates/navigator.html',
-                'permission': 'clients.dashboard'
+                'permission': 'clients.admin'
             }
         ],
         'js': [

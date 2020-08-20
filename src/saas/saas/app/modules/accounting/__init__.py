@@ -19,11 +19,10 @@ def includeme(config):
                 'title': 'Accounting',
                 'help': 'Accounting',
                 'icon': '<span class="material-icons">account_balance</span>',
-                'template': 'saas.app.modules.accounting:templates/module.html'
+                'template': 'saas.app.modules.accounting:templates/navigator.html',
+                'permission': 'accounting.dashboard'
             }
         ],
-        'views': [],
-        'css': [],
         'js': [
             {
                 'type': 'module',
@@ -63,6 +62,11 @@ def includeme(config):
             {
                 'type': 'module',
                 'script': '/static/custom-elements/accounting/account-group/account-group.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/accounting/invoices/invoice-dashboard/invoice-dashboard.js',
                 'async': True
             }
         ]
