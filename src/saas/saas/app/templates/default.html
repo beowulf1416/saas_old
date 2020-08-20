@@ -19,14 +19,14 @@
 {%- endblock base_meta %}
 
 
-{% block links -%}
+{%- block links -%}
 <link rel="icon" type="image/ico" href="/static/img/favicon.ico">
 <link rel="stylesheet" href="/static/css/default.css">
 <link rel="stylesheet" href="/static/css/ui/tabs.css">
-{%- endblock links %}
+{%- endblock links -%}
 
-{% block base_page_styles %}
-{% block styles %}
+{% block base_page_styles -%}
+{% block styles -%}
 {% endblock styles %}
 {% endblock base_page_styles %}
 
@@ -53,6 +53,7 @@
 <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
     <div id="topRightMenu" class="navbar-menu">
         <div class="navbar-end">
+            {% if email is defined %}
             <div class="navbar-item has-dropdown is-hoverable">
             {% if client_name is defined %}
                 <a class="navbar-link client-select-link" title="Select Client" href="/client/list?destination={{ current_path }}">{{ client_name }}</a>
@@ -63,6 +64,7 @@
                     <a title="Join" class="navbar-item" href="/client/join" >Join Client</a>
                 </div><!-- .nav-dropdown -->
             </div><!-- .navbar-item -->
+            {% endif %}
             <div class="navbar-item has-dropdown is-hoverable">
             {% if email is defined %}
                 <a class="navbar-link">
@@ -93,8 +95,14 @@
         <div class="navigators">
             <div class="tab-vertical vertical" role="tabs" aria-label="Navigators">
                 <ul class="nav-links" role="tablist">
-                    {% for m, module in modules.items() %}
-                    {% for navigator in module.navigators %}
+                    {%- for m, module in modules.items() -%}
+                    {%- for navigator in module.navigators -%}
+                        {%- if navigator.permission is defined -%}
+                            {% set module_permission = navigator.permission %}
+                        {%- else -%}
+                            {% set module_permission = 'user.authenticated' %}
+                        {%- endif -%}
+                        {%- if module_permission in permissions %}
                         <li>
                             <a id="nav-{{ navigator.id }}"
                                 class="nav"
@@ -107,8 +115,9 @@
                                 <span>{{ navigator.title }}</span>
                             </a>
                         </li>
-                    {% endfor %}
-                    {% endfor %}
+                        {%- endif -%}
+                    {%- endfor %}
+                    {%- endfor %}
                 </ul><!-- .nav-links -->
 
                 {% for m, module in modules.items() %}
@@ -161,8 +170,12 @@ import { showInTab, showInView } from '/static/js/ui/ui.js';
 
     tabs(document);
 
+    {% if client_id is defined %}
     // show user dashboard by default
     showInTab('user-dashboard', 'Dashboard', '<user-dashboard></user-dashboard>');
+    {% else %}
+    showInTab('news', 'News', '<h1>News</h1><p>News goes here</p>');
+    {% endif %}
 
     document.querySelectorAll('[data-action]').forEach(elem => {
         elem.addEventListener('click', function(e) {
