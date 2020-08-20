@@ -5,10 +5,12 @@
 -- permissions
 insert into iam.permissions (name) values
 ('user.authenticated'),
+('admin.dashboard'),
 ('admin.clients'),
 ('admin.security.permissions'),
 ('admin.security.roles'),
 ('admin.security.users'),
+('clients.dashboard'),
 ('clients.admin'),
 ('clients.admin.users'),
 ('clients.admin.roles'),
