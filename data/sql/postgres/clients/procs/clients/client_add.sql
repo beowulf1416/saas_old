@@ -13,7 +13,9 @@ as $$
 declare
     t_role_id iam.roles.id%type;
     t_permission_id_user_auth iam.permissions.id%type;
-    t_permission_id_client_admin iam.permissions.id%type;
+    r_permissions iam.permissions%rowtype; 
+    -- t_permission_id_client_admin iam.permissions.id%type;
+    -- t_permission_id_client_info iam.permissions.id%type;
     t_account_group_root_id accounting.account_groups.id%type;
     t_account_group_id accounting.account_groups.id%type;
     t_account_types record;
@@ -53,23 +55,40 @@ begin
     perform * from iam.role_add(p_client_id, t_role_id, 'administrator');
     perform * from iam.role_set_active(t_role_id, true);
 
-    -- assign user.authenticated and client.admin permission to 'admin' role
-    select
-        a.id into t_permission_id_client_admin
-    from iam.permissions a
-    where a.name = 'clients.admin';
+    -- assign user.authenticated, client.admin, client.info, clients.admin.active 
+    -- permissions to 'admin' role
+    for r_permissions in 
+        select a.*
+        from iam.permissions a
+        where a.name in (
+            'user.authenticated',
+            'clients.admin',
+            'client.info',
+            'client.admin.active'
+        )
+    loop
+        perform * from iam.permissions_role_assign(
+            p_client_id,
+            t_role_id,
+            r_permissions.id
+        );
+    end loop;
 
-    perform * from iam.permissions_role_assign(
-        p_client_id, 
-        t_role_id, 
-        t_permission_id_user_auth
-    );
-    perform * from iam.permissions_role_assign(
-        p_client_id, 
-        t_role_id, 
-        t_permission_id_client_admin
-    );
+    -- select
+    --     a.id into t_permission_id_client_admin
+    -- from iam.permissions a
+    -- where a.name = 'clients.admin';
 
+    -- perform * from iam.permissions_role_assign(
+    --     p_client_id, 
+    --     t_role_id, 
+    --     t_permission_id_user_auth
+    -- );
+    -- perform * from iam.permissions_role_assign(
+    --     p_client_id, 
+    --     t_role_id, 
+    --     t_permission_id_client_admin
+    -- );
 
     -- create root organization for client
     insert into clients.organizations (
