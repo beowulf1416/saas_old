@@ -21,8 +21,12 @@ insert into iam.permissions (name) values
 ('inventory.items'),
 ('inventory.transactions.receiving'),
 ('inventory.transactions.receiving.add'),
+('hr.dashboard'),
+('purchasing.dashboard'),
 ('purchasing.orders.dashboard.view'),
 ('purchasing.orders.create'),
 ('purchasing.orders.approve'),
-('purchasing.orders.receive')
+('purchasing.orders.receive'),
+('project.dashboard'),
+('crm.dashboard')
 on conflict do nothing;
