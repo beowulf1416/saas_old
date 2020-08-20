@@ -44,9 +44,10 @@ class ClientSelector extends HTMLElement {
     }
 
     _init(container) {
+        const readonly = this.hasAttribute('readonly') ? 'disabled' : '' 
         const div = document.createElement('div');
         div.innerHTML = `
-            <button type="button" id="btn-select" class="btn btn-select" title="Select Client">
+            <button type="button" id="btn-select" class="btn btn-select" title="Select Client" ${readonly}>
                 Select Client
             </button>
         `;
