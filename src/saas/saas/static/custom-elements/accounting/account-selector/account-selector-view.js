@@ -84,7 +84,7 @@ class AccountSelectorView extends HTMLElement {
         };
 
         const filter = shadow.getElementById('filter');
-        filter.addEventListener('keyup', function(e) {
+        filter.addEventListener('keydown', function(e) {
             console.log(e.keyCode);
             if (e.keyCode == 13) {
                 e.preventDefault();

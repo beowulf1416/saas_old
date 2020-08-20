@@ -63,7 +63,7 @@ class AccountSelector extends HTMLElement {
         });
     }
 
-    value() {
+    get value() {
         return this.getAttribute('account-id');
     }
 
