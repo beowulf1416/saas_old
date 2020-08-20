@@ -19,7 +19,11 @@ class AuthorizationPolicy(object):
                 if isinstance(p, dict):
                     client_id = p['client_id'] if 'client_id' in p else None
                     user_id = p['user_id'] if 'user_id' in p else None
-                    result = self.userStore.userHasPermission(user_id, client_id, permission)
+                    result = self.userStore.userHasPermission(
+                        user_id, 
+                        client_id, 
+                        permission
+                    )
                     if (result):
                         return True
 
