@@ -20,11 +20,10 @@ def includeme(config):
                 'title': 'Client Management',
                 'help': 'Client management',
                 'icon': '<span class="material-icons">business</span>',
-                'template': 'saas.app.modules.clients:templates/module.html'
+                'template': 'saas.app.modules.clients:templates/navigator.html',
+                'permission': 'clients.dashboard'
             }
         ],
-        'views': [],
-        'css': [],
         'js': [
             {
                 'type': 'module',
