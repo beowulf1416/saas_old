@@ -38,7 +38,12 @@ class ClientStore(BaseStore):
             result = super(ClientStore, self).runProc('clients.client_by_name', [
                 super(ClientStore, self).remove_wildcards(name)
             ])
-            return result
+            if len(result) > 0:
+                client = result[0]
+                client_id = client[0]
+                return client_id
+            else:
+                raise StoreException('Unable to find client account using name')
         except Exception as e:
             log.error(e)
             raise StoreException('Unable to find client using name')

@@ -67,7 +67,6 @@ def api_client_join(request):
     services = request.services()
     clients = services['store.client']
     users = services['store.user']
-    client = {}
     try:
         current_email = session['email']
         user = users.userByEmail(current_email)
@@ -80,7 +79,7 @@ def api_client_join(request):
                 explanation = f"Client with name '${client}' not found"
             )
 
-        client.join(client_id, user_id)
+        clients.join(client_id, user_id)
     except Exception as e:
         log.error(e)
         raise exception.HTTPInternalServerError(
