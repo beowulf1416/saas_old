@@ -22,6 +22,7 @@ set schema 'iam';
 \ir procs/users/client_user_remove.sql
 \ir procs/users/client_user_set_active.sql
 \ir procs/users/client_user_permissions.sql
+\ir procs/users/client_user_join.sql
 
 \ir procs/users/user_has_permission.sql
 
