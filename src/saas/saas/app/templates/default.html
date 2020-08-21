@@ -116,12 +116,12 @@
                             </a>
                         </li>
                         {%- endif -%}
-                    {%- endfor %}
+                    {%- endfor -%}
                     {%- endfor %}
                 </ul><!-- .nav-links -->
 
-                {% for m, module in modules.items() %}
-                {% for navigator in module.navigators %}
+                {%- for m, module in modules.items() -%}
+                {%- for navigator in module.navigators -%}
                     {%- if navigator.permission is defined -%}
                         {% set module_permission = navigator.permission %}
                     {%- else -%}
@@ -132,8 +132,8 @@
                     {% include navigator.template %}
                     </div><!-- .tab-panel -->
                     {%- endif -%}
-                {% endfor %}
-                {% endfor %}
+                {%- endfor -%}
+                {%- endfor %}
             </div><!-- .tabs -->
         </div><!-- .navigators -->
     {% endif %}
