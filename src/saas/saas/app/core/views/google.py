@@ -32,13 +32,13 @@ def view_google_oauth_redirect(request):
 
     if code == '':
         log.error('Code is empty')
-        raise exception.HttpInternalServerError(
+        raise exception.HTTPInternalServerError(
             detail = 'Code is empty'
         )
 
     if error != '':
         log.error('Error result in redirect: {0}', error)
-        raise exception.HttpInternalServerError(
+        raise exception.HTTPInternalServerError(
             detail = error
         )
 
@@ -108,7 +108,7 @@ def view_google_oauth_redirect(request):
             )
     except httplib2.ServerNotFoundError as e:
         log.error(e)
-        raise exception.HttpInternalServerError(
+        raise exception.HTTPInternalServerError(
             message = e.message,
             detail = e.message
         )
