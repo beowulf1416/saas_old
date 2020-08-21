@@ -35,11 +35,13 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/clients-table/clients-table.js'
+                'script': '/static/custom-elements/admin/clients-table/clients-table.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/client-roles/client-roles.js'
+                'script': '/static/custom-elements/admin/client-roles/client-roles.js',
+                'async': True
             },
             {
                 'type': 'module',
@@ -53,23 +55,28 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/role-editor/role-editor.js'
+                'script': '/static/custom-elements/admin/role-editor/role-editor.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/role-selector/role-selector.js'
+                'script': '/static/custom-elements/admin/role-selector/role-selector.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/permission-selector/permission-selector.js'
+                'script': '/static/custom-elements/admin/permission-selector/permission-selector.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/client-users/client-users.js'
+                'script': '/static/custom-elements/admin/client-users/client-users.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/admin/user-selector/user-selector.js'
+                'script': '/static/custom-elements/admin/user-selector/user-selector.js',
+                'async': True
             }
         ]
     }

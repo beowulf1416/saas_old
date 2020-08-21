@@ -2,8 +2,7 @@
 import { showInTab, showInView, notify } from '/static/js/ui/ui.js';
 import { Users } from '/static/js/modules/admin/users.js';
 import { Clients } from '/static/js/modules/admin/clients.js';
-
-class ClientUsers extends HTMLElement {
+class AdminClientUsers extends HTMLElement {
 
     constructor() {
         const self = super();
@@ -255,5 +254,4 @@ class ClientUsers extends HTMLElement {
         });
     }
 }
-customElements.define('client-users', ClientUsers);
-export { ClientUsers };
+customElements.define('admin-client-users', AdminClientUsers);

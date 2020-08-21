@@ -13,6 +13,6 @@ import { showInTab } from '/static/js/ui/ui.js';
     };
 
     window.actions['admin.users'] = function() {
-        showInTab('admin.users', 'Users', '<client-users></client-users>');
+        showInTab('admin.users', 'Users', '<admin-client-users></admin-client-users>');
     };
 })();
