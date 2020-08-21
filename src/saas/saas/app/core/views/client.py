@@ -33,18 +33,16 @@ def view_client_list(request):
 
 @view_config(
     route_name='client.select',
-    # renderer='saas.app:templates/client/select.html',
     request_method='GET',
-    # match_param='client_id'
+    permission='user.authenticated'
 )
 def view_client_select(request):
-    destination = request.params['destination'] if 'destination' in request.params else request.route_url('user.dashboard')
     client_id = request.matchdict['client_id'] if 'client_id' in request.matchdict else ''
 
     session = request.session
     session['client'] = client_id
 
-    raise exception.HTTPFound(destination)
+    raise exception.HTTPFound(request.route_url('home'))
     return {}
 
 @view_config(
