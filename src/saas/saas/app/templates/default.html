@@ -122,9 +122,16 @@
 
                 {% for m, module in modules.items() %}
                 {% for navigator in module.navigators %}
+                    {%- if navigator.permission is defined -%}
+                        {% set module_permission = navigator.permission %}
+                    {%- else -%}
+                        {% set module_permission = 'user.authenticated' %}
+                    {%- endif -%}
+                    {%- if module_permission in permissions %}
                     <div id="{{ navigator.id  }}" class="tab-panel" role="tabpanel">
                     {% include navigator.template %}
                     </div><!-- .tab-panel -->
+                    {%- endif -%}
                 {% endfor %}
                 {% endfor %}
             </div><!-- .tabs -->
