@@ -124,7 +124,7 @@ def view_clients_update(request):
     route_name='api.clients.get',
     request_method='POST',
     accept='application/json',
-    permission='admin.clients'
+    permission='client.info'
 )
 def view_clients_get(request):
     params = request.json_body
@@ -170,7 +170,7 @@ def view_clients_get(request):
     route_name='api.clients.setactive',
     request_method='POST',
     accept='application/json',
-    permission='admin.clients'
+    permission='clients.admin.activate'
 )
 def view_client_set_active(request):
     params = request.json_body
@@ -203,7 +203,7 @@ def view_client_set_active(request):
     route_name='api.clients.filter',
     request_method='POST',
     accept='application/json',
-    permission='admin.clients'
+    permission='clients.filter'
 )
 def view_clients_filter(request):
     params = request.json_body
