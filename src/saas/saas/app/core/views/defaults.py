@@ -37,23 +37,10 @@ def view_default(request):
         if 'external' in script:
             csp['scripts'].append(script['script'])
 
-    # user permissions
-    session = request.session
-    permissions = []
-    if 'email' in session and 'client' in session:
-        user_email = session['email']
-        users = services['store.user']
-        if users.emailExists(user_email):
-            user = users.userByEmail(user_email)
-            user_id = user[0]
-            client_id = session['client']
-            permissions = users.permissions(client_id, user_id)
-
     return {
         'modules': modules,
         'scripts': scripts,
-        'csp': csp,
-        'permissions': permissions
+        'csp': csp
     }
 
 
