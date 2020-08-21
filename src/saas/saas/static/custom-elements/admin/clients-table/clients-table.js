@@ -11,9 +11,9 @@ class ClientsTable extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/admin/clients-table/clients-table.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -22,7 +22,7 @@ class ClientsTable extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this.setClients = this.setClients.bind(this);
@@ -67,13 +67,15 @@ class ClientsTable extends HTMLElement {
                     <colgroup>
                         <col class="col-select">
                         <col class="col-edit">
+                        <col class="col-active">
                         <col class="col-name">
                     </colgroup>
                     <thead>
                         <tr>
-                            <th></th>
-                            <th></th>
-                            <th>Name</th>
+                            <td scope="col"></td>
+                            <th scope="col"></th>
+                            <th scope="col">Active</th>
+                            <th scope="col">Name</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,6 +121,7 @@ class ClientsTable extends HTMLElement {
             if (show_edit) {
                 tds.push(`<td><a class="link-edit" title="Edit" href="#" data-clientid="${c.id}" data-clientname="${c.name}"><span class="material-icons">edit</span></a></td>`);
             }
+            tds.push(`<td><a title="Toggle Active" class="link-active" href="#" data-clientid="${c.id}" data-active="${c.active}">${c.active}</a></td>`);
             tds.push(`<td><label for="${c.id}">${c.name}</label></td>`);
             const tdall = tds.join('');
 
@@ -148,6 +151,21 @@ class ClientsTable extends HTMLElement {
                     showInTab(client_id, `Client ${client_name}`, `<client-editor client-id="${client_id}"></client-editor>`)
                 });
             }
+
+            tr.querySelector('.link-active').addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const client_id = e.target.dataset.clientid;
+                const state = e.target.dataset.active == 'true' ? 'false' : 'true';
+
+                Clients.setActive(client_id, state).then((r) => {
+                    if (r.status == 'success') {
+                        self.refresh();
+                    } else {
+                        notify(r.status, r.message, 5000);
+                    }
+                });
+            });
         });
     }
 
