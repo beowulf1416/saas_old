@@ -48,7 +48,7 @@ class UserStore(BaseStore):
             log.error(e)
             raise StoreException("Unable to find user account by email address")
 
-    def userClients(self, user_id: UUID):
+    def userClients(self, user_id: UUID) -> list:
         '''retrieve clients allowed/available to user
         '''
         try:
