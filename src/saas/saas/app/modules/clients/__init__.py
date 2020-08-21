@@ -31,11 +31,18 @@ def includeme(config):
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/clients/organization-tree/organization-tree.js'
+                'script': '/static/custom-elements/clients/organization-tree/organization-tree.js',
+                'async': True
             },
             {
                 'type': 'module',
-                'script': '/static/custom-elements/clients/organization-editor/organization-editor.js'
+                'script': '/static/custom-elements/clients/organization-editor/organization-editor.js',
+                'async': True
+            },
+            {
+                'type': 'module',
+                'script': '/static/custom-elements/clients/client-users/client-users.js',
+                'async': True
             }
         ]
     }
