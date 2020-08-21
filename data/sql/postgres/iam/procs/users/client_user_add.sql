@@ -19,8 +19,11 @@ begin
     );
 
     -- add user to 'everyone' role
-    t_role_id := iam.role_by_name('everyone');
-    iam.role_assign_user(
+    t_role_id := iam.role_by_name(
+        p_client_id, 
+        'everyone'
+    );
+    perform * from iam.role_assign_user(
         p_client_id,
         t_role_id,
         p_user_id
