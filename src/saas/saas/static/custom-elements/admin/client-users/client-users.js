@@ -112,7 +112,7 @@ class AdminClientUsers extends HTMLElement {
                     if (r.status == 'success') {
                         self._refreshUsers(client_id);
                     } else {
-                        notify(r.status, r.message);
+                        notify(r.status, r.message, 5000);
                     }
                 });
                 e.preventDefault();
@@ -134,7 +134,7 @@ class AdminClientUsers extends HTMLElement {
                     if (r.status == 'success') {
                         self._refreshRoles(client_id, user_id);
                     } else {
-                        notify(r.status, r.message);
+                        notify(r.status, r.message, 5000);
                     }
                 });
                 e.preventDefault();
@@ -208,7 +208,7 @@ class AdminClientUsers extends HTMLElement {
                 const roles = r.json.roles;
                 self.setRoles(roles);
             } else {
-                notify(r.status, r.message);
+                notify(r.status, r.message, 5000);
             }
         });
     }
@@ -246,7 +246,7 @@ class AdminClientUsers extends HTMLElement {
                     if (r.status == 'success') {
                         self._refreshRoles(client_id, user_id);
                     } else {
-                        notify(r.status, r.message);
+                        notify(r.status, r.message, 5000);
                     }
                 });
                 e.preventDefault();
