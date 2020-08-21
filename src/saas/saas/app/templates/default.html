@@ -53,14 +53,14 @@
 <nav class="navbar is-transparent" role="navigation" aria-label="navigation">
     <div id="topRightMenu" class="navbar-menu">
         <div class="navbar-end">
-            {% if email is defined %}
-            <div class="navbar-item has-dropdown is-hoverable">
             {% if client_name is defined %}
-                <a class="navbar-link client-select-link" title="Select Client" href="/client/list?destination={{ current_path }}">{{ client_name }}</a>
-            {% else %}
-                <a class="navbar-link client-select-link" title="Please Select Client" href="/client/list?destination={{ current_path }}">None</a>
-            {% endif %}
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link client-select-link" title="Select Client" href="#">{{ client_name }}</a>
                 <div class="navbar-dropdown">
+                {% for c in clients %}
+                    <a title="{{ c.name }}" class="navbar-item" href="/client/select/{{ c.id }}">{{ c.name }}</a>
+                {% endfor %}
+                    <hr class="navbar-divider">
                     <a title="Join" class="navbar-item" href="/client/join" >Join Client</a>
                 </div><!-- .nav-dropdown -->
             </div><!-- .navbar-item -->
