@@ -88,7 +88,7 @@ def view_clients_add(request):
     route_name='api.clients.update',
     request_method='POST',
     accept='application/json',
-    permission='admin.clients'
+    permission='clients.info.update'
 )
 def view_clients_update(request):
     params = request.json_body
