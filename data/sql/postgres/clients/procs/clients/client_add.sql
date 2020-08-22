@@ -64,6 +64,7 @@ begin
             'user.authenticated',
             'clients.admin',
             'client.info',
+            'clients.info.update',
             'client.admin.active'
         )
     loop
