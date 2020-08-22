@@ -9,7 +9,7 @@ import pyramid.httpexceptions as exception
     route_name='api.clients.organizations.add',
     request_method='POST',
     renderer='json',
-    permission='user.authenticated'
+    permission='clients.organizations.add'
 )
 def view_clients_organizations_add(request):
     params = request.json_body
@@ -48,7 +48,7 @@ def view_clients_organizations_add(request):
     route_name='api.clients.organizations.update',
     request_method='POST',
     renderer='json',
-    permission='user.authenticated'
+    permission='clients.organizations.update'
 )
 def view_clients_organizations_update(request):
     params = request.json_body
