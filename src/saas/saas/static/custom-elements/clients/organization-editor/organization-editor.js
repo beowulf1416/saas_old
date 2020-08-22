@@ -1,6 +1,7 @@
 'use strict';
 import { notify } from '/static/js/ui/ui.js';
 import { ClientOrganizations } from '/static/js/modules/clients/organizations.js';
+import { Util } from '/static/js/util.js';
 class OrganizationEditor extends HTMLElement {
 
     constructor() {
@@ -10,9 +11,9 @@ class OrganizationEditor extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/clients/organization-editor/organization-editor.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -21,10 +22,11 @@ class OrganizationEditor extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
+        this._attachEventHandlers();
     }
 
     _init(container) {
@@ -40,8 +42,6 @@ class OrganizationEditor extends HTMLElement {
             </div><!-- .toolbar -->
             <div class="form-wrapper">
                 <form class="form-organization">
-                    <input type="hidden" id="client-id" name="client_id" value="${client_id}" />
-
                     <!-- name -->
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" class="form-input-name" title="Organization Name" placeholder="Name" />
@@ -61,21 +61,31 @@ class OrganizationEditor extends HTMLElement {
         const shadow = this.shadowRoot;
 
         const client_id = this.getAttribute('client-id');
-        const org_id = this.hasAttribute('organization-id') ? this.getAttribute('organization-id') : uuidv4();
-        const is_new = !this.hasAttribute('organization-id');
 
-        const btnsave = shadow.getElementById('btn-save');
-        btnsave.addEventListener('click', function(e) {
+        shadow.getElementById('btn-save')
+            .addEventListener('click', function(e) {
             const name = shadow.getElementById('name');
             const description = shadow.getElementById('description');
 
-            if (is_new) {
-                ClientOrganizations.add(client_id, org_id, name.nodeValue, description.value).then((r) => {
-                    notify(r.status, r.message);
+            const org_id = this.getAttribute('organization-id');
+            if (org_id == null) {
+                const t_org_id = Util.generateUUID();
+                ClientOrganizations.add(
+                    client_id, 
+                    t_org_id, 
+                    name.value, 
+                    description.value
+                    ).then((r) => {
+                    notify(r.status, r.message, 3000);
                 });
             } else {
-                ClientOrganizations.update(client_id, org_id, name.value, description.value).then((r) => {
-                    notify(r.status, r.message);
+                ClientOrganizations.update(
+                    client_id, 
+                    org_id, 
+                    name.value, 
+                    description.value
+                    ).then((r) => {
+                    notify(r.status, r.message, 3000);
                 });
             }
         });

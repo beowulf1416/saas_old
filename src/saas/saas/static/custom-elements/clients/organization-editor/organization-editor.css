@@ -1,0 +1,8 @@
+.form-organization {
+    display: grid;
+    grid-template-columns: min-content auto;
+}
+
+.form-organization .form-input-description {
+    padding: 0.5em;
+}
