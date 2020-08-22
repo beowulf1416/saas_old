@@ -65,6 +65,8 @@ begin
             'clients.admin',
             'client.info',
             'clients.info.update',
+            'clients.organizations.add',
+            'clients.organizations.update',
             'client.admin.active'
         )
     loop
