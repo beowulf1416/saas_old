@@ -170,7 +170,6 @@ class TestAdminClients(unittest.TestCase):
         nl = self.session.find_element_by_css_selector('notification-list')
         log.error(nl.get_attribute('innerHTML'))
 
-        notifier = self.get_shadow_root(self.session.find_element_by_css_selector('notification-list'))
         try:
             # notification = notifier.find_element_by_css_selector('.notification .is-success')
             # notification = WebDriverWait(notifier, 10).until(
