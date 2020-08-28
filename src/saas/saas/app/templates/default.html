@@ -169,8 +169,10 @@
 'use strict';
 import { tabs } from '/static/js/ui/tabs.js';
 import { showInTab, showInView } from '/static/js/ui/ui.js';
+import { App } from '/static/js/app.js';
 (function(){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
+    window.app = window.app ? window.app : App;
 
     window.services = window.services ? window.services : {};
     window.actions = window.actions ? window.actions : {};
