@@ -4,8 +4,7 @@ const App = {
     actions: {},
     
     registerAction(action) {
-        const { name, func } = action;
-        if (this.actions[name]) {
+        if (name in this.actions) {
             this.actions[name].push(func);
         } else {
             this.actions[name] = [func];
@@ -13,7 +12,7 @@ const App = {
     },
 
     executeAction(name, params = {}) {
-        if (this.actions[name]) {
+        if (name in this.actions) {
             this.actions[name].forEach((f) => {
                 try {
                     f(params);
@@ -21,11 +20,17 @@ const App = {
                     console.error(e);
                 }
             });
+        } else {
+            console.log(`${name}' action does not exist`);
         }
     },
 
     registerElements(elements) {
         this.elements = elements;
+    },
+
+    showInTab(element) {
+        console.log('//TODO showInTab()');
     }
 };
 

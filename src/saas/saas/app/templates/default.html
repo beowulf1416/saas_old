@@ -195,6 +195,7 @@ import { App } from '/static/js/app.js';
             } else {
                 console.error(`missing action: ${elem.dataset.action}`);
             }
+            app.executeAction(elem.dataset.action);
         });
     });
 })(window.app ? window.app : App);
