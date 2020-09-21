@@ -39,5 +39,11 @@ def includeme(config):
                 'script': '/static/custom-elements/user/user-messages/user-messages.js',
                 'async': True
             }
+        ],
+        'elements': [
+            {
+                'tag': 'user-dashboard',
+                'script': '/static/custom-elements/user/dashboard/user-dashboard.js'
+            }
         ]
     }

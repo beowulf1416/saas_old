@@ -1,5 +1,6 @@
 'use strict';
 const App = {
+    elements: {},
     actions: {},
     
     registerAction(action) {
@@ -21,6 +22,10 @@ const App = {
                 }
             });
         }
+    },
+
+    registerElements(elements) {
+        this.elements = elements;
     }
 };
 

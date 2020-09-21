@@ -19,7 +19,15 @@ def view_default(request):
 
     # aggregate unique js
     scripts = {}
+    elements = {}
     for m, module in modules.items():
+        if 'elements' in module:
+            for element in module['elements']:
+                tag = element['tag'] if 'tag' in element else ''
+                js = element['script'] if 'script' in element else ''
+                if tag != '' and js != '':
+                    elements[tag] = js
+                    scripts[js] = js
         if 'js' in module:
             for js in module['js']:
                 if 'script' in js:
@@ -39,6 +47,7 @@ def view_default(request):
 
     return {
         'modules': modules,
+        'elements': elements,
         'scripts': scripts,
         'csp': csp
     }
