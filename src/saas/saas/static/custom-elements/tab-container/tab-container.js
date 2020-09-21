@@ -9,10 +9,9 @@ class TabContainer extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/tab-container/tab-container.css');
 
-        const google_web_fonts = document.createElement("link");
-        google_web_fonts.setAttribute('rel', 'stylesheet');
-        google_web_fonts.setAttribute('href', 'https://fonts.googleapis.com/icon?family=Material+Icons');
-
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
 
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
@@ -21,7 +20,7 @@ class TabContainer extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
-        shadow.appendChild(google_web_fonts);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this.setActiveTab = this.setActiveTab.bind(this);
@@ -32,7 +31,7 @@ class TabContainer extends HTMLElement {
         const div = document.createElement('div');
         div.classList.add('wrapper');
         div.innerHTML = `
-            <div class="tabs">
+            <div class="tabs-wrapper">
                 <ul class="tab-list" role="tablist">
                 </ul>
             </div>
@@ -79,7 +78,7 @@ class TabContainer extends HTMLElement {
             const self = this;
             const shadow = this.shadowRoot;
 
-            const tabs = shadow.querySelector('.tabs');
+            const tabs = shadow.querySelector('.tabs-wrapper');
             const ul = shadow.querySelector('[role=tablist]')
 
             // check if tab already exists
@@ -93,7 +92,7 @@ class TabContainer extends HTMLElement {
                     parent_li.classList.remove('active');
                 }
 
-                const tp = shadow.querySelector('.tabs [role=tabpanel].active');
+                const tp = shadow.querySelector('.tabs-wrapper [role=tabpanel].active');
                 if (tp != null) {
                     tp.classList.remove('active');
                 }
@@ -137,13 +136,13 @@ class TabContainer extends HTMLElement {
                 a.addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    const tab = shadow.querySelector('.tabs [role=tablist] .tab-link[aria-selected=true]');
+                    const tab = shadow.querySelector('.tabs-wrapper [role=tablist] .tab-link[aria-selected=true]');
                     if (tab != null) {
                         tab.setAttribute('aria-selected', 'false');
                         tab.parentElement.classList.remove('active');
                     }
 
-                    let tp = shadow.querySelector('.tabs [role=tabpanel].active');
+                    let tp = shadow.querySelector('.tabs-wrapper [role=tabpanel].active');
                     if (tp != null) {
                         tp.classList.remove('active');
                     }
