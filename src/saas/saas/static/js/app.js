@@ -1,9 +1,11 @@
 'use strict';
+import { showInTab } from '/static/js/ui/ui.js';
 const App = {
     elements: {},
     actions: {},
     
     registerAction(action) {
+        const { name, func } = action;
         if (name in this.actions) {
             this.actions[name].push(func);
         } else {
@@ -21,7 +23,7 @@ const App = {
                 }
             });
         } else {
-            console.log(`${name}' action does not exist`);
+            console.log(`'${name}' action does not exist`);
         }
     },
 
