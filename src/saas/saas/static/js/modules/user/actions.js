@@ -1,13 +1,21 @@
 'use strict';
 import { showInTab } from '/static/js/ui/ui.js';
-(function(){
+import { App } from '/static/js/app.js';
+(function(app){
     console.log('user actions');
 
     window.actions = window.actions ? window.actions : {};
     window.actions['user.dashboard'] = function() {
         showInTab('user-dashboard', 'Dashboard', '<user-dashboard></user-dashboard>');
     };
-    window.actions['user.profile'] = function() {
-        showInTab('user-profile', 'Profile', '<user-profile></user-profile>');
-    };
-})();
+    // window.actions['user.profile'] = function() {
+    //     showInTab('user-profile', 'Profile', '<user-profile></user-profile>');
+    // };
+
+    app.registerAction({
+        name: 'user.profile',
+        func: function() {
+            showInTab('user-profile', 'Profile', '<user-profile></user-profile>');
+        }
+    });
+})(window.app ? window.app : App);
