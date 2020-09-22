@@ -1,5 +1,4 @@
 'use strict';
-import { showInTab } from '/static/js/ui/ui.js';
 import { App } from '/static/js/app.js';
 (function(app){
     console.log('user actions');
