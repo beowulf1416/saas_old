@@ -33,11 +33,11 @@ def includeme(config):
                 'script': '/static/js/modules/inventory/inventory.js',
                 'async': True,
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js',
+            #     'async': True,
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/inventory/item-selector/item-selector.js',
@@ -96,6 +96,12 @@ def includeme(config):
             {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
+            }
+        ],
+        'elements': [
+            {
+                'tag': 'items-explorer',
+                'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js'
             }
         ]
     }
