@@ -6,11 +6,22 @@ const App = {
     actions: {},
     
     registerAction(action) {
-        const { name, func } = action;
-        if (name in this.actions) {
-            this.actions[name].push(func);
+        if (Array.isArray(action)) {
+            action.forEach(a => {
+                const { name, func } = a;
+                if (name in this.actions) {
+                    this.actions[name].push(func);
+                } else {
+                    this.actions[name] = [func];
+                }       
+            });
         } else {
-            this.actions[name] = [func];
+            const { name, func } = action;
+            if (name in this.actions) {
+                this.actions[name].push(func);
+            } else {
+                this.actions[name] = [func];
+            }
         }
     },
 
