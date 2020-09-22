@@ -156,7 +156,7 @@
 {% block base_body_scripts -%}
 {% if scripts is defined %}
 {%- for k,js in scripts.items() -%}
-<script {% if js.type %}type="{{ js.type }}"{% endif %} {% if js.async %}async{% endif %} src="{{ js.script }}" {% if js.integrity %}integrity="{{ js.integrity }}"{% endif %} {% if js.crossorigin -%}crossorigin="{{ js.crossorigin }}"{%- endif -%}></script>
+<script {% if js.type %}type="{{ js.type }}"{% endif %} {% if js.async %}async{% endif %} src="{{ js.script }}" {%- if js.integrity %}integrity="{{ js.integrity }}"{%- endif -%} {%- if js.crossorigin -%}crossorigin="{{ js.crossorigin }}"{%- endif -%}></script>
 {% endfor %}
 {% endif -%}
 
@@ -172,8 +172,7 @@ import { showInTab, showInView } from '/static/js/ui/ui.js';
 import { App } from '/static/js/app.js';
 (function(app){
     window.clientId = window.clientId ? window.clientId : '{{ client_id }}';
-    // window.app = window.app ? window.app : App;
-    app.registerElements({{elements | safe}});
+    app.registerElements({{elements | tojson(indent=1) }});
 
     window.services = window.services ? window.services : {};
     window.actions = window.actions ? window.actions : {};
@@ -200,9 +199,6 @@ import { App } from '/static/js/app.js';
     });
 })(window.app ? window.app : App);
 </script>
-<!--
-    {{elements}}
--->
-{% block scripts %}
+{%- block scripts %}
 {% endblock scripts %}
 {% endblock base_body_scripts %}
