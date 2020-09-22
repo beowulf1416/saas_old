@@ -15,7 +15,7 @@ import { App } from '/static/js/app.js';
     app.registerAction({
         name: 'user.profile',
         func: function() {
-            showInTab('user-profile', 'Profile', '<user-profile></user-profile>');
+            app.showInTab('user-profile', 'Profile', '<user-profile></user-profile>', 'user-profile');
         }
     });
 })(window.app ? window.app : App);

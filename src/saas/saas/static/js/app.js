@@ -2,6 +2,7 @@
 import { showInTab } from '/static/js/ui/ui.js';
 const App = {
     elements: {},
+    definedElements: {},
     actions: {},
     
     registerAction(action) {
@@ -31,8 +32,30 @@ const App = {
         this.elements = elements;
     },
 
-    showInTab(element) {
-        console.log('//TODO showInTab()');
+    isDefined(element) {
+        return element in this.definedElements;
+    },
+
+    showInTab(id, label, content, element = '') {
+        if (element != '' && element in this.elements) {
+            if (this.isDefined(element)) {
+                console.log(`${element} already imported`);
+            } else {
+                import(this.elements[element])
+                    .then(o => {
+                        // console.log(o);
+                        this.definedElements[element] = true;
+                    })
+                    .catch(e => {
+                        console.error(e);
+                    });
+            }
+        }
+
+        const tab = document.querySelector('tab-container');
+        if (tab) {
+            tab.addTab(id, label, content);
+        }
     }
 };
 
