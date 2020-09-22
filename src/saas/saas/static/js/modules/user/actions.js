@@ -3,14 +3,6 @@ import { showInTab } from '/static/js/ui/ui.js';
 import { App } from '/static/js/app.js';
 (function(app){
     console.log('user actions');
-
-    window.actions = window.actions ? window.actions : {};
-    // window.actions['user.dashboard'] = function() {
-    //     showInTab('user-dashboard', 'Dashboard', '<user-dashboard></user-dashboard>');
-    // };
-    // window.actions['user.profile'] = function() {
-    //     showInTab('user-profile', 'Profile', '<user-profile></user-profile>');
-    // };
     app.registerAction([
         {
             name: 'user.dashboard',
@@ -25,4 +17,4 @@ import { App } from '/static/js/app.js';
             }
         }
     ]);
-})(window.app ? window.app : App);
+})(window.app = window.app ? window.app : App);
