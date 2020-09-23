@@ -35,7 +35,7 @@ const App = {
                 }
             });
         } else {
-            console.log(`'${name}' action does not exist`);
+            console.error(`'${name}' action does not exist`);
         }
     },
 
