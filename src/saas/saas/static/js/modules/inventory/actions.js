@@ -14,10 +14,25 @@ import { App } from '/static/js/app.js';
             }
         },
         {
+            name: 'inventory.facilities',
+            func: function() {
+                const client_id = window.clientId;
+                app.showInTab('inventory-facilities', 
+                    'Facilities', 
+                    `<facility-browser client-id="${client_id}"></facility-browser>`,
+                    'facility-browser'
+                );
+            }
+        },
+        {
             name: 'inventory.transactions.receiving',
             func: function() {
                 const client_id = window.clientId;
-                app.showInTab('receiving-dashboard', 'Receiving', `<receiving-dashboard client-id="${client_id}"></receiving-dashboard>`, 'receiving-dashboard');
+                app.showInTab('receiving-dashboard', 
+                    'Receiving', 
+                    `<receiving-dashboard client-id="${client_id}"></receiving-dashboard>`,
+                    'receiving-dashboard'
+                );
             }
         }
     ]);
@@ -33,10 +48,10 @@ import { App } from '/static/js/app.js';
     //     showInTab('receiving-dashboard', 'Receiving', `<receiving-dashboard client-id="${client_id}"></receiving-dashboard>`);
     // };
 
-    window.actions['inventory.warehouses'] = function() {
-        const client_id = window.clientId;
-        showInTab('inventory-warehouses', 'Warehouses', `<warehouse-explorer client-id="${client_id}"></warehouse-explorer>`);
-    };
+    // window.actions['inventory.warehouses'] = function() {
+    //     const client_id = window.clientId;
+    //     showInTab('inventory-warehouses', 'Warehouses', `<warehouse-explorer client-id="${client_id}"></warehouse-explorer>`);
+    // };
 
     window.actions['inventory.facilities'] = function() {
         const client_id = window.clientId;

@@ -53,11 +53,11 @@ def includeme(config):
             #     'script': '/static/custom-elements/inventory/item-editor/item-editor.js',
             #     'async': True,
             # },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js',
+            #     'async': True,
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js',
@@ -106,6 +106,10 @@ def includeme(config):
             {
                 'tag': 'item-editor',
                 'script': '/static/custom-elements/inventory/item-editor/item-editor.js'
+            },
+            {
+                'tag': 'facility-browser',
+                'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js'
             }
         ]
     }
