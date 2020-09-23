@@ -58,11 +58,11 @@ def includeme(config):
             #     'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js',
             #     'async': True,
             # },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js',
+            #     'async': True,
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector.js',
@@ -110,6 +110,10 @@ def includeme(config):
             {
                 'tag': 'facility-browser',
                 'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js'
+            },
+            {
+                'tag': 'facility-editor',
+                'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js'
             }
         ]
     }

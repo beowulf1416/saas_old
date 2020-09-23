@@ -1,6 +1,7 @@
 'use strict';
-import { notify, showInTab } from '/static/js/ui/ui.js';
+import { notify } from '/static/js/ui/ui.js';
 import { Facility } from '/static/js/modules/inventory/facility.js';
+import { App } from '/static/js/app.js';
 class FacilityBrowser extends HTMLElement {
 
     constructor() {
@@ -85,7 +86,12 @@ class FacilityBrowser extends HTMLElement {
         });
 
         shadow.getElementById('btn-new-facility').addEventListener('click', function() {
-            showInTab('inventory-facility', 'New Facility', `<facility-editor client-id="${client_id}"></facility-editor>`);
+            const app = window.app ? window.app : App;
+            app.showInTab('inventory-facility', 
+                'New Facility', 
+                `<facility-editor client-id="${client_id}"></facility-editor>`,
+                'facility-editor'
+            );
         });
     }
 
@@ -119,7 +125,12 @@ class FacilityBrowser extends HTMLElement {
             tr.querySelector('.link-edit-facility').addEventListener('click', function(e) {
                 e.preventDefault();
 
-                showInTab('inventory-facility', 'Edit Facility', `<facility-editor client-id="${client_id}" facility-id="${f.facilityId}"></facility-editor>`);
+                const app = window.app ? window.app : App;
+                app.showInTab('inventory-facility',
+                    'Edit Facility', 
+                    `<facility-editor client-id="${client_id}" facility-id="${f.facilityId}"></facility-editor>`,
+                    'facility-editor'
+                );
             });
         });
     }
