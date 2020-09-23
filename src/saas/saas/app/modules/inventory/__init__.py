@@ -48,11 +48,11 @@ def includeme(config):
                 'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js',
                 'async': True,
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/item-editor/item-editor.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/item-editor/item-editor.js',
+            #     'async': True,
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/inventory/facility/facility-browser/facility-browser.js',
@@ -102,6 +102,10 @@ def includeme(config):
             {
                 'tag': 'items-explorer',
                 'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js'
+            },
+            {
+                'tag': 'item-editor',
+                'script': '/static/custom-elements/inventory/item-editor/item-editor.js'
             }
         ]
     }

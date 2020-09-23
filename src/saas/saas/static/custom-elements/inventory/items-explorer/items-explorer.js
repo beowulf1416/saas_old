@@ -1,7 +1,7 @@
 'use strict';
 import { notify, showInTab } from '/static/js/ui/ui.js';
 import { InventoryItem } from '/static/js/modules/inventory/items.js';
-
+import { App } from '/static/js/app.js';
 class ItemsExplorer extends HTMLElement {
 
     constructor() {
@@ -120,7 +120,12 @@ class ItemsExplorer extends HTMLElement {
 
         const btnitemnew = shadow.querySelector('button.btn-item-new');
         btnitemnew.addEventListener('click', function(e) {
-            showInTab('inventory-item', 'New Item', `<item-editor client-id="${client_id}"></item-editor>`);
+            const app = window.app ? window.app : App;
+            app.showInTab('inventory-item', 
+                'New Item', 
+                `<item-editor client-id="${client_id}"></item-editor>`,
+                'item-editor'
+            );
             e.preventDefault();
         });
     }
@@ -157,7 +162,12 @@ class ItemsExplorer extends HTMLElement {
             const edititem = tr.querySelector('.link-edit-item');
             edititem.addEventListener('click', function(e) {
                 const item_id = edititem.dataset.itemid;
-                showInTab(`inventory.item.${item_id}`, 'Item', `<item-editor client-id="${client_id}" item-id="${item_id}"></item-editor>`);
+                const app = window.app ? window.app : App;
+                app.showInTab(`inventory.item.${item_id}`, 
+                    'Item', 
+                    `<item-editor client-id="${client_id}" item-id="${item_id}"></item-editor>`,
+                    'item-editor'
+                    );
                 e.preventDefault();
             });
         });
