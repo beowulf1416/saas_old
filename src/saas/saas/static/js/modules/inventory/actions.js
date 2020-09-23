@@ -53,10 +53,10 @@ import { App } from '/static/js/app.js';
     //     showInTab('inventory-warehouses', 'Warehouses', `<warehouse-explorer client-id="${client_id}"></warehouse-explorer>`);
     // };
 
-    window.actions['inventory.facilities'] = function() {
-        const client_id = window.clientId;
-        showInTab('inventory-facilities', 'Facilities', `<facility-browser client-id="${client_id}"></facility-browser>`);
-    };
+    // window.actions['inventory.facilities'] = function() {
+    //     const client_id = window.clientId;
+    //     showInTab('inventory-facilities', 'Facilities', `<facility-browser client-id="${client_id}"></facility-browser>`);
+    // };
 
     window.actions['inventory.locations'] = function() {
         const client_id = window.clientId;
