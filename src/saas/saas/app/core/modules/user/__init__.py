@@ -24,16 +24,16 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/js/modules/user/actions.js'
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/user/dashboard/user-dashboard.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/user/profile-editor/profile-editor.js',
-                'async': True
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/user/dashboard/user-dashboard.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/user/profile-editor/profile-editor.js',
+            #     'async': True
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/user/user-messages/user-messages.js',
@@ -43,7 +43,12 @@ def includeme(config):
         'elements': [
             {
                 'tag': 'user-dashboard',
-                'script': '/static/custom-elements/user/dashboard/user-dashboard.js'
+                'script': '/static/custom-elements/user/dashboard/user-dashboard.js',
+                'preload': True
+            },
+            {
+                'tag': 'user-profile',
+                'script': '/static/custom-elements/user/profile-editor/profile-editor.js'
             }
         ]
     }
