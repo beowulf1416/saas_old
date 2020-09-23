@@ -16,7 +16,7 @@ def api_common_currencies(request):
     filter = params['filter'] if 'filter' in params else None
 
     services = request.services()
-    store = services['stores.common.currencies']
+    store = services['store.common.currencies']
     currencies = []
     try:
         result = []
@@ -65,7 +65,7 @@ def api_common_currencies_get(request):
         )
 
     services = request.services()
-    store = services['stores.common.currencies']
+    store = services['store.common.currencies']
     currency = {}
     try:
         result = store.get(currency_id)

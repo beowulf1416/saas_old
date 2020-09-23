@@ -24,9 +24,10 @@ def api_common_uom_filter(request):
         )
 
     services = request.services()
-    store = services['stores.common.uoms']
     uoms = []
     try:
+        store = services['store.common.uom']
+
         result = []
         if filter is None:
             result = store.all()
@@ -78,7 +79,7 @@ def api_common_uom_get(request):
         )
 
     services = request.services()
-    store = services['stores.common.uoms']
+    store = services['store.common.uom']
     uom = {}
     try:
         r = store.get(client_id, dimension, uom_id)

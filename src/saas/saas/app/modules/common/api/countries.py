@@ -16,7 +16,7 @@ def api_common_countries(request):
     filter = params['filter'] if 'filter' in params else None
 
     services = request.services()
-    store = services['stores.common.countries']
+    store = services['store.common.countries']
     countries = []
     try:
         if filter is None:
@@ -73,7 +73,7 @@ def api_common_countries_get(request):
         )
 
     services = request.services()
-    store = services['stores.common.countries']
+    store = services['store.common.countries']
     country = {}
     try:
         r = store.get(country_id)

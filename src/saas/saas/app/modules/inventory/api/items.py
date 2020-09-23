@@ -22,7 +22,7 @@ def view_inventory_items_uom(request):
     services = request.services()
     uoms = []
     try:
-        uomStore = services['stores.common.uom']
+        uomStore = services['store.common.uom']
         result = []
         if dimension == 'length':
             result = uomStore.length()
