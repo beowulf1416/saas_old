@@ -27,11 +27,12 @@ def view_default(request):
                 js = element['script'] if 'script' in element else ''
                 if tag != '' and js != '':
                     elements[tag] = js
-                    scripts[js] = {
-                        'type': 'module',
-                        'async': 'True',
-                        'script': js
-                    }
+                    if 'preload' in element:
+                        scripts[js] = {
+                            'type': 'module',
+                            'async': 'True',
+                            'script': js
+                        }
         if 'js' in module:
             for js in module['js']:
                 if 'script' in js:
