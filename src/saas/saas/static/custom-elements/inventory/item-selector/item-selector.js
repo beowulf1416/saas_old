@@ -10,6 +10,10 @@ class ItemSelector extends HTMLElement {
         style.setAttribute('rel', 'stylesheet');
         style.setAttribute('href', '/static/custom-elements/inventory/item-selector/item-selector.css');
 
+        const default_style = document.createElement("link");
+        default_style.setAttribute('rel', 'stylesheet');
+        default_style.setAttribute('href', '/static/css/default.css');
+
         const div = document.createElement('div');
         div.classList.add('component-wrapper');
 
@@ -17,6 +21,7 @@ class ItemSelector extends HTMLElement {
 
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.appendChild(style);
+        shadow.appendChild(default_style);
         shadow.appendChild(div);
 
         this._attachEventHandlers = this._attachEventHandlers.bind(this);
