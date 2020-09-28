@@ -38,16 +38,16 @@ def includeme(config):
             #     'script': '/static/custom-elements/inventory/items-explorer/items-explorer.js',
             #     'async': True,
             # },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/item-selector/item-selector.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/item-selector/item-selector.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js',
+            #     'async': True,
+            # },
             # {
             #     'type': 'module',
             #     'script': '/static/custom-elements/inventory/item-editor/item-editor.js',
@@ -63,36 +63,36 @@ def includeme(config):
             #     'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js',
             #     'async': True,
             # },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector-view.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': 'static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': 'static/custom-elements/inventory/receiving-editor/receiving-editor.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': 'static/custom-elements/inventory/location-explorer/location-explorer.js',
-                'async': True,
-            },
-            {
-                'type': 'module',
-                'script': 'static/custom-elements/inventory/location-editor/location-editor.js',
-                'async': True,
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector-view.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': 'static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': 'static/custom-elements/inventory/receiving-editor/receiving-editor.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': 'static/custom-elements/inventory/location-explorer/location-explorer.js',
+            #     'async': True,
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': 'static/custom-elements/inventory/location-editor/location-editor.js',
+            #     'async': True,
+            # },
             {
                 'external': 'true',
                 'script': 'https://unpkg.com/rxjs/bundles/rxjs.umd.min.js'
@@ -114,6 +114,38 @@ def includeme(config):
             {
                 'tag': 'facility-editor',
                 'script': '/static/custom-elements/inventory/facility/facility-editor/facility-editor.js'
+            },
+            {
+                'tag': 'facility-selector',
+                'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector.js'
+            },
+            {
+                'tag': 'facility-selector-view',
+                'script': '/static/custom-elements/inventory/facility/facility-selector/facility-selector-view.js'
+            },
+            {
+                'tag': 'location-explorer',
+                'script': '/static/custom-elements/inventory/location-explorer/location-explorer.js'
+            },
+            {
+                'tag': 'location-editor',
+                'script': '/static/custom-elements/inventory/location-editor/location-editor.js'
+            },
+            {
+                'tag': 'receiving-editor',
+                'script': '/static/custom-elements/inventory/receiving-editor/receiving-editor.js'
+            },
+            {
+                'tag': 'receiving-dashboard',
+                'script': '/static/custom-elements/inventory/receiving-dashboard/receiving-dashboard.js'
+            },
+            {
+                'tag': 'item-selector',
+                'script': '/static/custom-elements/inventory/item-selector/item-selector.js'
+            },
+            {
+                'tag': 'item-selector-view',
+                'script': '/static/custom-elements/inventory/item-selector/item-selector-view.js'
             }
         ]
     }
