@@ -47,14 +47,13 @@ const App = {
         return element in this.definedElements;
     },
 
-    showInTab(id, label, content, element = '') {
+    loadElement(element) {
         if (element != '' && element in this.elements) {
             if (this.isDefined(element)) {
                 console.log(`${element} already imported`);
             } else {
                 import(this.elements[element])
                     .then(o => {
-                        // console.log(o);
                         this.definedElements[element] = true;
                     })
                     .catch(e => {
@@ -62,6 +61,10 @@ const App = {
                     });
             }
         }
+    },
+
+    showInTab(id, label, content, element = '') {
+        this.loadElement(element);
 
         const tab = document.querySelector('tab-container');
         if (tab) {
