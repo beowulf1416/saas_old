@@ -37,7 +37,7 @@ import { App } from '/static/js/app.js';
         }
     ]);
 
-    window.actions = window.actions ? window.actions : {};
+    // window.actions = window.actions ? window.actions : {};
     // window.actions['inventory.items'] = function() {
     //     const client_id = window.clientId;
     //     showInTab('inventory-items', 'Items', `<items-explorer client-id="${client_id}"></items-explorer>`);
@@ -58,8 +58,8 @@ import { App } from '/static/js/app.js';
     //     showInTab('inventory-facilities', 'Facilities', `<facility-browser client-id="${client_id}"></facility-browser>`);
     // };
 
-    window.actions['inventory.locations'] = function() {
-        const client_id = window.clientId;
-        showInTab('inventory-locations', 'Locations', `<location-explorer client-id="${client_id}"></location-explorer>`);
-    };
+    // window.actions['inventory.locations'] = function() {
+    //     const client_id = window.clientId;
+    //     showInTab('inventory-locations', 'Locations', `<location-explorer client-id="${client_id}"></location-explorer>`);
+    // };
 })(window.app = window.app ? window.app : App);
