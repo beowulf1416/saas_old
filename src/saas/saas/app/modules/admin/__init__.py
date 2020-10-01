@@ -29,10 +29,10 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/js/modules/admin/actions.js'
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/client-editor/client-editor.js'
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/client-editor/client-editor.js'
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/admin/clients-table/clients-table.js',
@@ -43,31 +43,31 @@ def includeme(config):
                 'script': '/static/custom-elements/admin/client-roles/client-roles.js',
                 'async': True
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/clients/client-selector/client-selector.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/clients/client-selector/client-selector-view.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/role-editor/role-editor.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/role-selector/role-selector.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/permission-selector/permission-selector.js',
-                'async': True
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/clients/client-selector/client-selector.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/clients/client-selector/client-selector-view.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/role-editor/role-editor.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/role-selector/role-selector.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/permission-selector/permission-selector.js',
+            #     'async': True
+            # },
             {
                 'type': 'module',
                 'script': '/static/custom-elements/admin/client-users/client-users.js',
@@ -77,6 +77,36 @@ def includeme(config):
                 'type': 'module',
                 'script': '/static/custom-elements/admin/user-selector/user-selector.js',
                 'async': True
+            }
+        ],
+        'elements': [
+            {
+                'tag': 'client-editor',
+                'script': '/static/custom-elements/admin/client-editor/client-editor.js'
+            },
+            {
+                'tag': 'client-selector',
+                'script': '/static/custom-elements/clients/client-selector/client-selector.js'
+            },
+            {
+                'tag': 'client-selector-view',
+                'script': '/static/custom-elements/clients/client-selector/client-selector-view.js'
+            },
+            {
+                'tag': 'role-editor',
+                'script': '/static/custom-elements/admin/role-editor/role-editor.js'
+            },
+            {
+                'tag': 'role-selector',
+                'script': '/static/custom-elements/admin/role-selector/role-selector.js'
+            },
+            {
+                'tag': 'permission-selector',
+                'script': '/static/custom-elements/admin/permission-selector/permission-selector.js'
+            },
+            {
+                'tag': 'user-selector',
+                'script': '/static/custom-elements/admin/user-selector/user-selector.js'
             }
         ]
     }
