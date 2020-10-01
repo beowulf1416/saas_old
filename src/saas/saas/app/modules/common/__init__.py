@@ -19,35 +19,61 @@ def includeme(config):
                 'external': True,
                 'async': True
             },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/currency-selector/currency-selector.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/currency-selector/currency-selector-view.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/country-selector/country-selector.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/country-selector/country-selector-view.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/uom-selector/uom-selector.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/uom-selector/uom-selector-view.js',
+            #     'async': True
+            # }
+        ],
+        'elements': [
             {
-                'type': 'module',
+                'tag': 'currency-selector',
                 'script': '/static/custom-elements/currency-selector/currency-selector.js',
-                'async': True
             },
             {
-                'type': 'module',
-                'script': '/static/custom-elements/currency-selector/currency-selector-view.js',
-                'async': True
+                'tag': 'currency-selector-view',
+                'script': '/static/custom-elements/currency-selector/currency-selector-view.js'
             },
             {
-                'type': 'module',
-                'script': '/static/custom-elements/country-selector/country-selector.js',
-                'async': True
+                'tag': 'country-selector',
+                'script': '/static/custom-elements/country-selector/country-selector.js'
             },
             {
-                'type': 'module',
-                'script': '/static/custom-elements/country-selector/country-selector-view.js',
-                'async': True
+                'tag': 'country-selector-view',
+                'script': '/static/custom-elements/country-selector/country-selector-view.js'
             },
             {
-                'type': 'module',
-                'script': '/static/custom-elements/uom-selector/uom-selector.js',
-                'async': True
+                'tag': 'uom-selector',
+                'script': '/static/custom-elements/uom-selector/uom-selector.js'
             },
             {
-                'type': 'module',
-                'script': '/static/custom-elements/uom-selector/uom-selector-view.js',
-                'async': True
+                'tag': 'uom-selector-view',
+                'script': '/static/custom-elements/uom-selector/uom-selector-view.js'
             }
         ]
     }
