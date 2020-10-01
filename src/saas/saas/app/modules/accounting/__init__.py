@@ -86,7 +86,7 @@ def includeme(config):
             {
                 'tag': 'account-group',
                 'script': '/static/custom-elements/accounting/account-group/account-group.js'
-            }
+            },
             {
                 'tag': 'account-tree',
                 'script': '/static/custom-elements/accounting/account-tree/account-tree.js'
