@@ -38,11 +38,11 @@ def includeme(config):
                 'script': '/static/custom-elements/admin/clients-table/clients-table.js',
                 'async': True
             },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/client-roles/client-roles.js',
-                'async': True
-            },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/client-roles/client-roles.js',
+            #     'async': True
+            # },
             # {
             #     'type': 'module',
             #     'script': '/static/custom-elements/clients/client-selector/client-selector.js',
@@ -68,16 +68,16 @@ def includeme(config):
             #     'script': '/static/custom-elements/admin/permission-selector/permission-selector.js',
             #     'async': True
             # },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/client-users/client-users.js',
-                'async': True
-            },
-            {
-                'type': 'module',
-                'script': '/static/custom-elements/admin/user-selector/user-selector.js',
-                'async': True
-            }
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/client-users/client-users.js',
+            #     'async': True
+            # },
+            # {
+            #     'type': 'module',
+            #     'script': '/static/custom-elements/admin/user-selector/user-selector.js',
+            #     'async': True
+            # }
         ],
         'elements': [
             {
@@ -107,6 +107,18 @@ def includeme(config):
             {
                 'tag': 'user-selector',
                 'script': '/static/custom-elements/admin/user-selector/user-selector.js'
+            },
+            {
+                'tag': 'user-selector',
+                'script': '/static/custom-elements/admin/user-selector/user-selector.js'
+            },
+            {
+                'tag': 'admin-client-users',
+                'script': '/static/custom-elements/admin/client-users/client-users.js'
+            },
+            {
+                'tag': 'client-roles',
+                'script': '/static/custom-elements/admin/client-roles/client-roles.js'
             }
         ]
     }
